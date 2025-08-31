@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>RocksDB PutModel 수식 뷰어</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+      body {
+        font-family: 'Noto Sans KR', sans-serif;
+        margin: 2em;
+      }
+      h1,
+      h2,
+      h3 {
+        color: #2c3e50;
+      }
+      pre,
+      code {
+        background: #f4f4f4;
+        padding: 0.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>RocksDB PutModel.md 뷰어</h1>
+    <input type="file" id="mdfile" accept=".md" />
+    <div id="md-content"></div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+      document
+        .getElementById('mdfile')
+        .addEventListener('change', function (e) {
+          const file = e.target.files[0]
+          if (!file) return
+          const reader = new FileReader()
+          reader.onload = function (evt) {
+            const md = evt.target.result
+            document.getElementById('md-content').innerHTML = marked.parse(md)
+            MathJax.typesetPromise()
+          }
+          reader.readAsText(file)
+        })
+    </script>
+  </body>
+</html>

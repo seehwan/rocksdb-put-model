@@ -1,95 +1,155 @@
-# RocksDB Put-Rate Model — Usage Guide
+# RocksDB Put-Rate Model
 
-This repo provides small Python tools to **estimate steady-state put rate**, **break down per‑level compaction I/O**, and **plot** the results for RocksDB-like LSM settings.
-
-> For the full theory/model and derivations, see **`PutModel.md`**.
-
----
-
-## Requirements
-- Python 3.8+
-- matplotlib (for plots)
-
-Install (optional virtualenv recommended):
-```bash
-python -m venv .venv && source .venv/bin/activate
-pip install matplotlib
-```
-
----
+RocksDB의 쓰기 경로(put, flush, compaction)를 정량 모델로 기술하고, steady state에서 가능한 지속 put rate와 레벨별 I/O 대역폭을 계산하는 방법을 정리합니다.
 
 ## Repo Layout
+
 ```
 rocksdb-put-model/
-├─ README.md              # ← You are here (Usage only)
-├─ PutModel.md            # Full model + math + derivations + code
-├─ LICENSE
-├─ scripts/
-│  ├─ steady_state_put_estimator.py      # S_max vs {CR,WA}
-│  ├─ per_level_breakdown.py             # Per-level read/write MiB/s in steady state
-│  ├─ transient_depth_analysis.py        # S_in > S_max startup → depth-wise S_max/S_acc
-│  └─ rocksdb_put_viz.py                 # Matplotlib charts
-└─ figs/                                  # Generated figures (PNG)
+├── README.md                    # 이 파일 (사용법, 요구사항, 빠른 시작)
+├── PutModel.md                  # 전체 모델, 수식, 시뮬레이션 코드
+├── PutModel.html                # HTML 버전 (MathJax 수식 렌더링)
+├── styles.css                   # HTML 스타일시트
+├── md_to_html_converter.py     # Markdown → HTML 변환기
+├── section_validator.py         # HTML 섹션별 파싱 에러 검증 도구
+├── figs/                        # 생성된 그래프들
+│   ├── depth_summary.png        # 초기 버스트 vs Steady State
+│   ├── per_level_reads.png      # 레벨별 읽기 I/O
+│   ├── per_level_writes.png     # 레벨별 쓰기 I/O
+│   └── smax_vs_WA.png          # S_max vs Write Amplification
+└── scripts/                     # Python 스크립트들
+    ├── rocksdb_put_viz.py      # 그래프 생성 (matplotlib)
+    ├── steady_state_put_estimator.py  # S_max 계산기
+    ├── per_level_breakdown.py   # 레벨별 I/O 분해
+    └── transient_depth_analysis.py     # 초기 버스트 분석
 ```
-
----
 
 ## Quick Start
 
-### 1) Plot everything with defaults
+### 0) Generate HTML version with MathJax
 ```bash
-python scripts/rocksdb_put_viz.py --run
-# Creates PNGs under ./figs:
-#   - smax_vs_WA.png
-#   - per_level_writes.png
-#   - per_level_reads.png
-#   - depth_summary.png
+python3 md_to_html_converter.py
+```
+- `PutModel.md`를 읽어서 `PutModel.html` 생성
+- LaTeX 수식을 MathJax로 렌더링 가능하게 변환
+- 코드 블록과 테이블을 올바르게 처리
+
+### 1) Validate HTML sections
+```bash
+python3 section_validator.py
+```
+- HTML 파일을 섹션별로 분할하여 파싱 에러 검증
+- 각 섹션의 코드 태그, 리스트 구조, 수식 태그 문제 식별
+- 수정 우선순위 제안
+
+### 2) Run experiments
+```bash
+# 가상환경 활성화
+source .venv/bin/activate  # macOS/Linux
+# 또는
+.venv\Scripts\activate     # Windows
+
+# 그래프 생성
+python3 scripts/rocksdb_put_viz.py --run
+
+# S_max 계산
+python3 scripts/steady_state_put_estimator.py
+
+# 레벨별 I/O 분해
+python3 scripts/per_level_breakdown.py
+
+# 초기 버스트 분석
+python3 scripts/transient_depth_analysis.py
 ```
 
-### 2) Compute steady-state S_max table
+### 3) View results
+- **HTML**: `PutModel.html`을 브라우저에서 열기
+- **그래프**: `figs/` 폴더의 PNG 파일들
+- **수치**: 각 스크립트의 콘솔 출력
+
+## Requirements
+
+- Python 3.8+
+- matplotlib
+- BeautifulSoup4 (HTML 검증용)
+
+## Installation
+
 ```bash
-python scripts/steady_state_put_estimator.py
-```
-- Edit **CONFIG** at the top of the script:
-  - Device budgets: `B_w, B_r, B_eff` (MiB/s)
-  - Workload/LSM: `CR_list, WA_list, wal_factor, avg_kv_bytes`
-- The script prints a table with `S_max` and corresponding `ops/s`.
+# 가상환경 생성
+python3 -m venv .venv
 
-### 3) Per-level I/O breakdown (steady state)
+# 가상환경 활성화
+source .venv/bin/activate  # macOS/Linux
+# 또는
+.venv\Scripts\activate     # Windows
+
+# 의존성 설치
+pip install matplotlib beautifulsoup4
+```
+
+## HTML Validation Tools
+
+### section_validator.py
+HTML 파일을 섹션별로 분할하고 각 섹션의 파싱 에러를 체계적으로 검증합니다.
+
+**주요 기능:**
+- HTML 파일을 h2 태그 기준으로 섹션별 분할
+- 각 섹션별 코드 태그, 리스트 구조, 수식 태그 검증
+- 에러 현황 및 수정 우선순위 제안
+
+**사용법:**
 ```bash
-python scripts/per_level_breakdown.py
+python3 section_validator.py
 ```
-- Set accepted user throughput: `S_user`
-- Set LSM shape: `T, L, CR` (list: CR0..CRL), `wal_factor`
-- Output: table of **Read/Write MiB/s** per stage (L0, L1..L, WAL) plus device % share.
 
-### 4) Startup burst → steady state (S_in > S_max)
-```bash
-python scripts/transient_depth_analysis.py
+**출력 예시:**
 ```
-- Set offered rate: `S_in`
-- Optional external cap: `S_cap` (default = S_max at full depth)
-- See how `S_max(depth)` and accepted `S_acc(depth)` evolve as deeper levels build.
+🔍 HTML 파일 섹션별 파싱 에러 검증 시작
+📋 총 8개 섹션 발견:
+  1. Header
+  2. 0) 요약 (Key Takeaways)
+  3. 1) 시스템 모델과 기호
+  ...
 
----
+🔍 섹션 검증: 0) 요약 (Key Takeaways)
+❌ 4개의 파싱 에러 발견:
+  1. 잘못된 코드 태그 순서: </code>...<code> 패턴 발견
+  2. 코드 태그가 적절한 부모 요소에 없음
+  ...
 
-## Tuning Checklist (operational)
-- Measure device budgets with fio (**sustained** mixed workload).
-- Estimate **CR** and **WA** from RocksDB `stats` **deltas** (bytes written/read vs user input).
-- Use `steady_state_put_estimator.py` to compute **S_max**, then run with **20–30% headroom**.
-- Reserve device share for background work with a **RateLimiter** (e.g., 60–70% of write BW).
-- Prevent flapping: avoid overly tight `level0_{slowdown,stop}_writes_trigger`, use hysteresis.
-- WAL on same device reduces write budget; separate if possible.
+📊 전체 검증 결과 요약
+⚠️  총 15개의 파싱 에러가 발견되었습니다.
+```
 
----
+### md_to_html_converter.py
+Markdown 파일을 HTML로 변환하고 기본적인 파싱 에러를 자동으로 수정합니다.
 
-## Reproducibility
-The default settings are conservative engineering **approximations**. For precise numbers in your environment:
-1. Measure device `B_w, B_r, B_eff` under relevant IO depths and block sizes.
-2. Derive `CR, WA` from your workload’s stats deltas over stable intervals.
-3. Re-run the scripts and compare with production metrics.
+**주요 기능:**
+- 코드 태그 중첩 방지
+- 연속적인 코드 태그를 div로 분리
+- 수식 표현을 $$로 통일
+- 리스트 구조 문제 자동 수정
 
----
+## Tuning Checklist
+
+### Performance Analysis
+- [ ] fio로 `B_w`, `B_r`, `B_eff` 측정 (지속 부하)
+- [ ] `rocksdb.stats` 델타로 `CR`, `WA` 산정
+- [ ] 계산기로 `S_max` 산출 및 헤드룸 20–30% 반영
+- [ ] 레벨별 I/O 분해로 읽기 서비스 여유 확인
+
+### Write Control
+- [ ] `RateLimiter`와 `delayed_write_rate`로 `S_acc ≤ S_max` 보장
+- [ ] 트리거/리밋 파라미터 히스테리시스 적용 (플래핑 방지)
+- [ ] Write Bandwidth 초과 여부 확인
+- [ ] 압축률 최적화로 WA 증가에 대한 저항력 향상
+
+### Operational Planning
+- [ ] 초기 버스트 효과를 고려한 운영 계획 수립
+- [ ] HTML 검증 도구로 정기적인 파싱 에러 점검
+- [ ] 섹션별 수정 우선순위에 따른 체계적 개선
 
 ## License
-MIT — see `LICENSE`.
+
+MIT — `LICENSE` 참조.

@@ -14,6 +14,15 @@ rocksdb-put-model/
 ├── VALIDATION_GUIDE.md          # 검증 실행 가이드 (단계별 실행 방법)
 ├── styles.css                   # HTML 스타일시트
 ├── rocksdb_validation_plan.md   # 실제 시스템 검증 계획서
+├── rocksdb_bench_templates/     # RocksDB 및 fio 설정 템플릿
+│   ├── db/                      # RocksDB 옵션 파일들
+│   │   ├── options-leveled.ini  # Leveled compaction 설정
+│   │   ├── options-leveled-wal-separate.ini  # WAL 분리 설정
+│   │   └── options-universal.ini  # Universal compaction 설정
+│   └── fio/                     # fio 벤치마크 템플릿들
+│       ├── write.job            # 쓰기 대역폭 측정
+│       ├── read.job             # 읽기 대역폭 측정
+│       └── mix50.job            # 혼합 I/O 측정
 ├── figs/                        # 생성된 그래프들
 │   ├── depth_summary.png        # 초기 버스트 vs Steady State
 │   ├── per_level_reads.png      # 레벨별 읽기 I/O
@@ -61,19 +70,19 @@ python3 scripts/transient_depth_analysis.py
 ### 3) Validate with real RocksDB
 ```bash
 # 실제 RocksDB 시스템에서 모델 검증
-# 자세한 절차는 rocksdb_validation_plan.md 참조
+# 자세한 절차는 ValidationGuide.html 참조
 
-# 1. Device calibration (fio)
-fio --name=w --filename=/dev/nvme0n1 --rw=write --bs=128k --iodepth=32 \
-    --numjobs=1 --time_based=1 --runtime=60
+# 1. Device calibration (fio) - 템플릿 사용
+fio rocksdb_bench_templates/fio/write.job
+fio rocksdb_bench_templates/fio/read.job
+fio rocksdb_bench_templates/fio/mix50.job
 
-# 2. RocksDB benchmark
-./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
-  --compression_type=snappy --use_existing_db=0 --threads=8 \
-  --db=/data/rocksdb --statistics=1
+# 2. RocksDB benchmark - 템플릿 사용
+./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
+  --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8
 
 # 3. Model validation
-python3 scripts/smax_calc.py --cr 1.6 --wa 12.0 --bw 1200 --br 1800 --beff 1300
+python3 scripts/smax_calc.py --cr 0.5 --wa 8.0 --bw 1000 --br 2000 --beff 2500
 ```
 
 ## Requirements
@@ -87,6 +96,7 @@ python3 scripts/smax_calc.py --cr 1.6 --wa 12.0 --bw 1200 --br 1800 --beff 1300
 - fio (for device calibration)
 - Linux (5.x+), ext4 or XFS
 - NVMe SSD (preferred)
+- **Templates**: `rocksdb_bench_templates/` 디렉토리의 설정 파일들 사용
 
 ## Installation
 

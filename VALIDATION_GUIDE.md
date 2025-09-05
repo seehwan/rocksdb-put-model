@@ -36,10 +36,10 @@ fio --name=rw --filename=/dev/nvme0n1 --rw=rw --rwmixread=50 --bs=128k \
 # RocksDB 벤치마크 실행
 ./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
   --compression_type=snappy --use_existing_db=0 --threads=8 \
-  --db=/data/rocksdb --statistics=1
+  --db=/rocksdb/data --statistics=1
 
 # LOG 파일에서 통계 수집
-# LOG 파일은 보통 /data/rocksdb/LOG 또는 지정된 경로에 생성됩니다
+# LOG 파일은 보통 /rocksdb/data/LOG 또는 지정된 경로에 생성됩니다
 ```
 
 ### 4. 모델 검증 실행

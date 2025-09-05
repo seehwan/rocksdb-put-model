@@ -88,8 +88,8 @@ level0_stop_writes_trigger=24
 ## 5) Empty → Steady Transient (Phase‑B)
 1. Create an empty DB. Run `db_bench` with a **nearly constant ingest** target.
 ```bash
-./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
-  --compression_type=snappy --use_existing_db=0 --threads=8 \
+./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
+  --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
   --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1
 ```
 2. Monitor: `pending_compaction_bytes`, L0 file count, stall/slowdown counters.

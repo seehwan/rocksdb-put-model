@@ -9,11 +9,14 @@ git clone https://github.com/facebook/rocksdb.git
 cd rocksdb
 make db_bench -j$(nproc)
 
-# 로그 디렉토리 준비 (심볼릭 링크 사용)
+# 로그 디렉토리 준비 (LOG 파일을 ./log에 저장)
 mkdir -p ./log
-ln -sf /rocksdb/data/LOG ./log/LOG
+ln -sf ./log/LOG /rocksdb/data/LOG
 
-# 설정 파일 사용
+# 파일 디스크립터 제한 증가 (Too many open files 에러 방지)
+ulimit -n 65536
+
+# 설정 파일 사용 (레벨별 압축 설정 포함)
 ./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
   --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
   --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1

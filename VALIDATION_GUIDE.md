@@ -34,9 +34,9 @@ fio --name=rw --filename=/dev/nvme0n1 --rw=rw --rwmixread=50 --bs=128k \
 
 ```bash
 # RocksDB 벤치마크 실행
-./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
-  --compression_type=snappy --use_existing_db=0 --threads=8 \
-  --db=/rocksdb/data --statistics=1
+./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
+  --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
+  --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1
 
 # LOG 파일에서 통계 수집
 # LOG 파일은 보통 /rocksdb/data/LOG에 생성되며, 심볼릭 링크로 ./log/LOG에 연결

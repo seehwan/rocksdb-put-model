@@ -19,9 +19,12 @@ ls -la db_bench
 
 ### 2. 벤치마크 실행
 ```bash
-# 로그 디렉토리 준비 (심볼릭 링크 사용)
+# 파일 디스크립터 제한 증가 (Too many open files 에러 방지)
+ulimit -n 65536
+
+# 로그 디렉토리 준비 (LOG 파일을 ./log에 저장)
 mkdir -p ./log
-ln -sf /rocksdb/data/LOG ./log/LOG
+ln -sf ./log/LOG /rocksdb/data/LOG
 
 # 기본 벤치마크
 ./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \

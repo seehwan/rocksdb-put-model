@@ -1,0 +1,120 @@
+{
+  "experiment_info": {
+    "date": "2025-09-05",
+    "environment": "GPU-01 server",
+    "device": "/dev/nvme1n1p1",
+    "experimenter": "yooseehwan",
+    "phase": "A - Device Calibration"
+  },
+  "device_calibration": {
+    "write_test": {
+      "command": "fio --name=w --filename=/dev/nvme1n1p1 --rw=write --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
+      "bandwidth_mib_s": 1484,
+      "bandwidth_mb_s": 1556,
+      "iops": 11900,
+      "latency_avg_us": 41.55,
+      "utilization_percent": 15.74,
+      "extracted_value": "B_w = 1484 MiB/s"
+    },
+    "read_test": {
+      "command": "fio --name=r --filename=/dev/nvme1n1p1 --rw=read --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
+      "bandwidth_mib_s": 2368,
+      "bandwidth_mb_s": 2483,
+      "iops": 18900,
+      "latency_avg_us": 44.43,
+      "utilization_percent": 65.84,
+      "extracted_value": "B_r = 2368 MiB/s"
+    },
+    "mixed_test": {
+      "command": "fio --name=rw --filename=/dev/nvme1n1p1 --rw=rw --rwmixread=50 --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
+      "read_bandwidth_mib_s": 1116,
+      "write_bandwidth_mib_s": 1115,
+      "total_bandwidth_mib_s": 2231,
+      "read_iops": 8900,
+      "write_iops": 8900,
+      "utilization_percent": 36.24,
+      "extracted_value": "B_eff = 2231 MiB/s"
+    }
+  },
+  "performance_analysis": {
+    "read_vs_write_ratio": 1.6,
+    "read_performance_degradation_mixed": 0.53,
+    "write_performance_degradation_mixed": 0.25,
+    "concurrency_interference": "significant"
+  },
+  "model_parameters": {
+    "assumed_values": {
+      "CR": 0.5,
+      "WA": 8.0,
+      "RA_c": 7.0
+    },
+    "measured_values": {
+      "B_w": 1484,
+      "B_r": 2368,
+      "B_eff": 2231
+    }
+  },
+  "s_max_calculations": {
+    "raw_calculation": {
+      "S_w": 92.75,
+      "S_r": 169.1,
+      "S_m": 74.4,
+      "S_max": 74.4,
+      "bottleneck": "mixed_bound"
+    },
+    "corrected_calculation": {
+      "filesystem_overhead_percent": 20,
+      "B_w_effective": 1187,
+      "B_r_effective": 1894,
+      "B_eff_effective": 1785,
+      "S_w_corrected": 74.2,
+      "S_r_corrected": 135.3,
+      "S_m_corrected": 59.5,
+      "S_max_corrected": 59.5
+    },
+    "safe_operation": {
+      "safety_margin_percent": 20,
+      "S_max_safe": 47.6,
+      "recommended_rate_limiter_bytes_per_sec": 50000000,
+      "estimated_ops_per_sec_1kb_kv": 48000
+    }
+  },
+  "recommendations": {
+    "rocksdb_settings": {
+      "rate_limiter_bytes_per_sec": 50000000,
+      "wal_dir": "/rocksdb/wal",
+      "max_background_jobs": 8,
+      "max_subcompactions": 4
+    },
+    "expected_performance": {
+      "max_sustainable_put_rate_mib_s": 47.6,
+      "estimated_ops_per_sec": 48000,
+      "bottleneck_type": "mixed_bound"
+    }
+  },
+  "next_steps": {
+    "phase_b": [
+      "RocksDB build and configuration",
+      "fillrandom benchmark execution",
+      "Actual CR, WA measurement"
+    ],
+    "phase_c": [
+      "LOG file analysis",
+      "Per-level I/O breakdown",
+      "Mass balance verification"
+    ],
+    "phase_d": [
+      "Predicted vs measured value comparison",
+      "Error rate calculation",
+      "Success criteria verification"
+    ]
+  },
+  "notes": {
+    "environment": "Linux (GPU-01), NVMe SSD, Raw device measurement",
+    "considerations": [
+      "Raw device measurement excludes filesystem overhead",
+      "20% overhead should be considered for actual operation",
+      "Significant performance degradation confirmed in mixed workload"
+    ]
+  }
+}

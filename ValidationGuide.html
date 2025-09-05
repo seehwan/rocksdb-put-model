@@ -78,7 +78,7 @@ fio --name=rw --filename=/dev/nvme1n1p1 --rw=rw --rwmixread=50 --bs=128k \
   --db=/rocksdb/data --statistics=1
 
 # LOG 파일에서 통계 수집
-# LOG 파일은 보통 /rocksdb/data/LOG 또는 지정된 경로에 생성됩니다</code></pre>
+# LOG 파일은 보통 ./log/LOG 또는 지정된 경로에 생성됩니다</code></pre>
 
                     <h3>4. 모델 검증 실행</h3>
                     
@@ -172,22 +172,25 @@ make db_bench -j$(nproc)
 ls -la db_bench</code></pre>
 
                     <h3>3.2 벤치마크 실행</h3>
-                    <pre><code># 기본 벤치마크
+                    <pre><code># 기본 벤치마크 (분리된 디렉토리 구조)
 ./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
   --compression_type=snappy --use_existing_db=0 --threads=8 \
-  --db=/rocksdb/data --statistics=1
+  --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1
 
 # 더 긴 실행 (정확한 측정을 위해)
 ./db_bench --benchmarks=fillrandom --num=1000000000 --value_size=1024 \
   --compression_type=snappy --use_existing_db=0 --threads=16 \
-  --db=/rocksdb/data --statistics=1 --stats_dump_period_sec=60</code></pre>
+  --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1 --stats_dump_period_sec=60</code></pre>
 
                     <h3>3.3 로그 파일 확인</h3>
-                    <pre><code># LOG 파일 위치 확인
-ls -la /rocksdb/data/LOG*
+                    <pre><code># LOG 파일 위치 확인 (현재 디렉토리의 log 폴더)
+ls -la ./log/LOG*
 
 # 통계 정보 확인
-grep "Compaction Stats" /rocksdb/data/LOG</code></pre>
+grep "Compaction Stats" ./log/LOG
+
+# WAL 파일 확인
+ls -la /rocksdb/wal/</code></pre>
                 </section>
 
                 <section id="model-validation">
@@ -230,11 +233,11 @@ ops/s (1KB KV): 204800</code></pre>
                     <p>RocksDB LOG에서 실제 WAF를 분석합니다.</p>
                     
                     <pre><code># WAF 분석 실행
-python3 scripts/waf_analyzer.py --log /rocksdb/data/LOG \
+python3 scripts/waf_analyzer.py --log ./log/LOG \
   --user-mb 1000 --out-dir validation_results --plot</code></pre>
 
                     <p><strong>예상 출력:</strong></p>
-                    <pre><code>RocksDB LOG 분석 중: /rocksdb/data/LOG
+                    <pre><code>RocksDB LOG 분석 중: ./log/LOG
 사용자 데이터 크기: 1000.0 MB
 ✅ 1개의 compaction stats 발견
 
@@ -482,7 +485,7 @@ python3 scripts/smax_calc.py --cr 0.5 --wa 12.0 --bw 1000 --br 2000 --beff 2500<
 find /data -name "LOG*" -type f
 
 # RocksDB 통계 확인
-grep -i "compaction" /rocksdb/data/LOG | tail -10
+grep -i "compaction" ./log/LOG | tail -10
 
 # 디스크 사용량 확인
 df -h /data

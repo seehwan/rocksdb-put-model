@@ -28,13 +28,21 @@ rocksdb-put-model/
 │   ├── per_level_reads.png      # 레벨별 읽기 I/O
 │   ├── per_level_writes.png     # 레벨별 쓰기 I/O
 │   └── smax_vs_WA.png          # S_max vs Write Amplification
-└── scripts/                     # Python 스크립트들
+├── scripts/                     # Python 스크립트들
     ├── rocksdb_put_viz.py      # 그래프 생성 (matplotlib)
     ├── steady_state_put_estimator.py  # S_max 계산기
     ├── per_level_breakdown.py   # 레벨별 I/O 분해
     ├── transient_depth_analysis.py     # 초기 버스트 분석
     ├── waf_analyzer.py         # RocksDB LOG WAF 분석기
     └── smax_calc.py            # S_max 계산기 (검증용)
+├── experiments/                 # 실험 결과 관리
+    ├── YYYY-MM-DD/             # 날짜별 실험 디렉토리
+    │   ├── phase-a/            # 디바이스 캘리브레이션
+    │   ├── phase-b/            # RocksDB 벤치마크
+    │   ├── phase-c/            # Per-Level WAF 분석
+    │   ├── phase-d/            # 모델 검증
+    │   └── phase-e/            # 민감도 분석
+    └── templates/              # 실험 템플릿들
 ```
 
 ## Quick Start
@@ -80,7 +88,8 @@ fio rocksdb_bench_templates/fio/mix50.job
 # 2. RocksDB benchmark - 템플릿 사용
 # 디렉토리 생성: sudo mkdir -p /rocksdb/data /rocksdb/wal
 ./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
-  --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8
+  --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
+  --db=/rocksdb/data --wal_dir=/rocksdb/wal
 
 # 3. Model validation
 python3 scripts/smax_calc.py --cr 0.5 --wa 8.0 --bw 1000 --br 2000 --beff 2500
@@ -140,6 +149,34 @@ pip install matplotlib
 - [ValidationPlan.html](ValidationPlan.html) - 검증 계획 (HTML, MathJax 수식)
 - [VALIDATION_GUIDE.md](VALIDATION_GUIDE.md) - 검증 실행 가이드 (마크다운)
 - [ValidationGuide.html](ValidationGuide.html) - 검증 실행 가이드 (HTML, MathJax 수식)
+
+## 실험 결과 관리
+
+이 프로젝트는 체계적인 실험 결과 관리를 위한 디렉토리 구조를 제공합니다.
+
+### 실험 디렉토리 구조
+```
+experiments/
+├── YYYY-MM-DD/                 # 날짜별 실험 디렉토리
+│   ├── phase-a/                # 디바이스 캘리브레이션 결과
+│   ├── phase-b/                # RocksDB 벤치마크 결과
+│   ├── phase-c/                # Per-Level WAF 분석 결과
+│   ├── phase-d/                # 모델 검증 결과
+│   └── phase-e/                # 민감도 분석 결과
+└── templates/                  # 재사용 가능한 실험 템플릿들
+```
+
+### 새로운 실험 시작
+```bash
+# 현재 날짜로 실험 디렉토리 생성
+CURRENT_DATE=$(date +%Y-%m-%d)
+mkdir -p experiments/$CURRENT_DATE/{phase-a,phase-b,phase-c,phase-d,phase-e}
+
+# 템플릿 복사
+cp experiments/templates/* experiments/$CURRENT_DATE/
+```
+
+자세한 실험 관리 방법은 [experiments/README.md](experiments/README.md)를 참조하세요.
 
 ## Tuning Checklist
 

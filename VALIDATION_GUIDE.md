@@ -39,7 +39,7 @@ fio --name=rw --filename=/dev/nvme0n1 --rw=rw --rwmixread=50 --bs=128k \
   --db=/rocksdb/data --statistics=1
 
 # LOG 파일에서 통계 수집
-# LOG 파일은 보통 /rocksdb/data/LOG 또는 지정된 경로에 생성됩니다
+# LOG 파일은 보통 ./log/LOG 또는 지정된 경로에 생성됩니다
 ```
 
 ### 4. 모델 검증 실행

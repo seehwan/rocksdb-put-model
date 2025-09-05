@@ -90,7 +90,7 @@ level0_stop_writes_trigger=24
 ```bash
 ./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
   --compression_type=snappy --use_existing_db=0 --threads=8 \
-  --db=/data/rocksdb --statistics=1
+  --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1
 ```
 2. Monitor: `pending_compaction_bytes`, L0 file count, stall/slowdown counters.
 3. **Stabilization** achieved when `pending_compaction_bytes` no longer increases over long windows.

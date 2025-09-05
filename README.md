@@ -8,8 +8,10 @@ RocksDB의 쓰기 경로(put, flush, compaction)를 정량 모델로 기술하�
 rocksdb-put-model/
 ├── README.md                    # 이 파일 (사용법, 요구사항, 빠른 시작)
 ├── PutModel.md                  # 전체 모델, 수식, 시뮬레이션 코드
-├── PutModel.html                # HTML 버전 (MathJax 수식 렌더링)
-├── ValidationPlan.html          # 검증 계획 HTML 버전 (MathJax 수식 렌더링)
+├── [PutModel.html](PutModel.html)                # HTML 버전 (MathJax 수식 렌더링)
+├── [ValidationPlan.html](ValidationPlan.html)          # 검증 계획 HTML 버전 (MathJax 수식 렌더링)
+├── [ValidationGuide.html](ValidationGuide.html)         # 검증 실행 가이드 HTML 버전 (MathJax 수식 렌더링)
+├── VALIDATION_GUIDE.md          # 검증 실행 가이드 (단계별 실행 방법)
 ├── styles.css                   # HTML 스타일시트
 ├── rocksdb_validation_plan.md   # 실제 시스템 검증 계획서
 ├── figs/                        # 생성된 그래프들
@@ -21,7 +23,9 @@ rocksdb-put-model/
     ├── rocksdb_put_viz.py      # 그래프 생성 (matplotlib)
     ├── steady_state_put_estimator.py  # S_max 계산기
     ├── per_level_breakdown.py   # 레벨별 I/O 분해
-    └── transient_depth_analysis.py     # 초기 버스트 분석
+    ├── transient_depth_analysis.py     # 초기 버스트 분석
+    ├── waf_analyzer.py         # RocksDB LOG WAF 분석기
+    └── smax_calc.py            # S_max 계산기 (검증용)
 ```
 
 ## Quick Start
@@ -47,8 +51,10 @@ python3 scripts/transient_depth_analysis.py
 ```
 
 ### 2) View results
-- **HTML**: `PutModel.html`을 브라우저에서 열기 (이론 모델)
-- **HTML**: `ValidationPlan.html`을 브라우저에서 열기 (검증 계획)
+- **HTML**: 
+  - [PutModel.html](PutModel.html) - 이론 모델 (MathJax 수식 렌더링)
+  - [ValidationPlan.html](ValidationPlan.html) - 검증 계획 (이론적 방법론)
+  - [ValidationGuide.html](ValidationGuide.html) - 검증 실행 가이드 (단계별 실행법)
 - **그래프**: `figs/` 폴더의 PNG 파일들
 - **수치**: 각 스크립트의 콘솔 출력
 
@@ -118,7 +124,11 @@ pip install matplotlib
 - **Mass-balance error**: |∑Write_i - CR×WA×user_MB| / (CR×WA×user_MB) ≤ **10%**
 - **Stabilization**: pending_compaction_bytes의 장기 기울기 ≤ 0
 
-자세한 검증 절차는 [`rocksdb_validation_plan.md`](rocksdb_validation_plan.md) 또는 [`ValidationPlan.html`](ValidationPlan.html)을 참조하세요.
+자세한 검증 절차는 다음 문서들을 참조하세요:
+- [rocksdb_validation_plan.md](rocksdb_validation_plan.md) - 검증 계획 (마크다운)
+- [ValidationPlan.html](ValidationPlan.html) - 검증 계획 (HTML, MathJax 수식)
+- [VALIDATION_GUIDE.md](VALIDATION_GUIDE.md) - 검증 실행 가이드 (마크다운)
+- [ValidationGuide.html](ValidationGuide.html) - 검증 실행 가이드 (HTML, MathJax 수식)
 
 ## Tuning Checklist
 

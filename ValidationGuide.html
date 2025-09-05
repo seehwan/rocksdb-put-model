@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocksDB 모델 검증 실행 가이드</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RocksDB 모델 검증 실행 가이드</h1>
+            <p>이 가이드는 <code>rocksdb_validation_plan.md</code>에 따라 이론 모델을 실제 RocksDB 시스템에서 검증하는 방법을 설명합니다.</p>
+            <blockquote>
+                <p>이론적 계획은 <code>ValidationPlan.html</code>을, 이 문서는 <strong>실제 검증 실행 방법</strong>에 초점을 둡니다.</p>
+            </blockquote>
+        </header>
+
+        <div class="content-wrapper">
+            <nav class="toc-sidebar">
+                <h3>목차</h3>
+                <ul>
+                    <li><a href="#quick-start">🚀 빠른 시작</a></li>
+                    <li><a href="#environment">1. 환경 준비</a></li>
+                    <li><a href="#device-calibration">2. 디바이스 캘리브레이션 (Phase-A)</a></li>
+                    <li><a href="#rocksdb-benchmark">3. RocksDB 벤치마크 실행 (Phase-B)</a></li>
+                    <li><a href="#model-validation">4. 모델 검증 실행</a></li>
+                    <li><a href="#result-interpretation">5. 검증 결과 해석</a></li>
+                    <li><a href="#success-criteria">6. 검증 성공 기준</a></li>
+                    <li><a href="#advanced-validation">7. 고급 검증</a></li>
+                    <li><a href="#report-template">8. 결과 보고서 템플릿</a></li>
+                    <li><a href="#precautions">9. 주의사항</a></li>
+                    <li><a href="#tips">10. 성공적인 검증을 위한 팁</a></li>
+                    <li><a href="#troubleshooting">11. 문제 해결</a></li>
+                </ul>
+            </nav>
+            <main>
+                <section id="quick-start">
+                    <h2>🚀 빠른 시작</h2>
+                    
+                    <h3>1. 환경 준비</h3>
+                    <pre><code># 가상환경 활성화
+source .venv/bin/activate
+
+# 필요한 패키지 확인
+pip list | grep matplotlib</code></pre>
+
+                    <h3>2. 디바이스 캘리브레이션 (Phase-A)</h3>
+                    <pre><code># Write 대역폭 측정
+fio --name=w --filename=/dev/nvme0n1 --rw=write --bs=128k --iodepth=32 \
+    --numjobs=1 --time_based=1 --runtime=60
+
+# Read 대역폭 측정  
+fio --name=r --filename=/dev/nvme0n1 --rw=read --bs=128k --iodepth=32 \
+    --time_based=1 --runtime=60
+
+# Mixed 대역폭 측정
+fio --name=rw --filename=/dev/nvme0n1 --rw=rw --rwmixread=50 --bs=128k \
+    --iodepth=32 --time_based=1 --runtime=60</code></pre>
+
+                    <h3>3. RocksDB 벤치마크 실행 (Phase-B)</h3>
+                    <pre><code># RocksDB 벤치마크 실행
+./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
+  --compression_type=snappy --use_existing_db=0 --threads=8 \
+  --db=/data/rocksdb --statistics=1
+
+# LOG 파일에서 통계 수집
+# LOG 파일은 보통 /data/rocksdb/LOG 또는 지정된 경로에 생성됩니다</code></pre>
+
+                    <h3>4. 모델 검증 실행</h3>
+                    
+                    <h4>4.1 S_max 계산 (Phase-D)</h4>
+                    <pre><code># 측정된 디바이스 특성으로 S_max 계산
+python3 scripts/smax_calc.py --cr 0.5 --wa 8.0 --bw 1000 --br 2000 --beff 2500 --eta 0.5 --wwal 1.0
+
+# JSON 형식으로 출력 (자동화용)
+python3 scripts/smax_calc.py --cr 0.5 --wa 8.0 --bw 1000 --br 2000 --beff 2500 --eta 0.5 --wwal 1.0 --json</code></pre>
+
+                    <h4>4.2 Per-Level WAF 분석 (Phase-C)</h4>
+                    <pre><code># RocksDB LOG에서 WAF 분석
+python3 scripts/waf_analyzer.py --log /path/to/rocksdb/LOG \
+  --user-mb 1000 --out-dir validation_results --plot
+
+# 결과 확인
+ls -la validation_results/
+cat validation_results/summary.json</code></pre>
+                </section>
+
+                <section id="environment">
+                    <h2>1. 환경 준비</h2>
+                    <p>검증을 시작하기 전에 필요한 환경을 준비합니다.</p>
+                    
+                    <h3>1.1 가상환경 활성화</h3>
+                    <pre><code># 가상환경 활성화
+source .venv/bin/activate
+
+# 가상환경 확인
+which python3
+python3 --version</code></pre>
+
+                    <h3>1.2 필요한 패키지 확인</h3>
+                    <pre><code># matplotlib 설치 확인
+pip list | grep matplotlib
+
+# 없으면 설치
+pip install matplotlib</code></pre>
+
+                    <h3>1.3 스크립트 실행 권한 확인</h3>
+                    <pre><code># 스크립트 실행 권한 확인
+ls -la scripts/smax_calc.py scripts/waf_analyzer.py
+
+# 실행 권한 부여 (필요시)
+chmod +x scripts/smax_calc.py scripts/waf_analyzer.py</code></pre>
+                </section>
+
+                <section id="device-calibration">
+                    <h2>2. 디바이스 캘리브레이션 (Phase-A)</h2>
+                    <p>실제 디바이스의 성능 한계를 측정합니다.</p>
+                    
+                    <h3>2.1 fio 설치</h3>
+                    <pre><code># Ubuntu/Debian
+sudo apt-get install fio
+
+# macOS
+brew install fio
+
+# CentOS/RHEL
+sudo yum install fio</code></pre>
+
+                    <h3>2.2 Write 대역폭 측정</h3>
+                    <pre><code>fio --name=w --filename=/dev/nvme0n1 --rw=write --bs=128k --iodepth=32 \
+    --numjobs=1 --time_based=1 --runtime=60</code></pre>
+                    <p><strong>결과 해석:</strong> <code>write: bw=1000MiB/s</code> → $B_w = 1000$ MiB/s</p>
+
+                    <h3>2.3 Read 대역폭 측정</h3>
+                    <pre><code>fio --name=r --filename=/dev/nvme0n1 --rw=read --bs=128k --iodepth=32 \
+    --time_based=1 --runtime=60</code></pre>
+                    <p><strong>결과 해석:</strong> <code>read: bw=2000MiB/s</code> → $B_r = 2000$ MiB/s</p>
+
+                    <h3>2.4 Mixed 대역폭 측정</h3>
+                    <pre><code>fio --name=rw --filename=/dev/nvme0n1 --rw=rw --rwmixread=50 --bs=128k \
+    --iodepth=32 --time_based=1 --runtime=60</code></pre>
+                    <p><strong>결과 해석:</strong> <code>read: bw=1250MiB/s, write: bw=1250MiB/s</code> → $B_{eff} = 2500$ MiB/s</p>
+                </section>
+
+                <section id="rocksdb-benchmark">
+                    <h2>3. RocksDB 벤치마크 실행 (Phase-B)</h2>
+                    <p>실제 RocksDB 워크로드를 실행하여 성능 데이터를 수집합니다.</p>
+                    
+                    <h3>3.1 RocksDB 빌드</h3>
+                    <pre><code># RocksDB 소스 다운로드
+git clone https://github.com/facebook/rocksdb.git
+cd rocksdb
+
+# 빌드
+make db_bench -j$(nproc)
+
+# 실행 파일 확인
+ls -la db_bench</code></pre>
+
+                    <h3>3.2 벤치마크 실행</h3>
+                    <pre><code># 기본 벤치마크
+./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
+  --compression_type=snappy --use_existing_db=0 --threads=8 \
+  --db=/data/rocksdb --statistics=1
+
+# 더 긴 실행 (정확한 측정을 위해)
+./db_bench --benchmarks=fillrandom --num=1000000000 --value_size=1024 \
+  --compression_type=snappy --use_existing_db=0 --threads=16 \
+  --db=/data/rocksdb --statistics=1 --stats_dump_period_sec=60</code></pre>
+
+                    <h3>3.3 로그 파일 확인</h3>
+                    <pre><code># LOG 파일 위치 확인
+ls -la /data/rocksdb/LOG*
+
+# 통계 정보 확인
+grep "Compaction Stats" /data/rocksdb/LOG</code></pre>
+                </section>
+
+                <section id="model-validation">
+                    <h2>4. 모델 검증 실행</h2>
+                    <p>수집된 데이터를 바탕으로 이론 모델을 검증합니다.</p>
+                    
+                    <h3>4.1 S_max 계산 (Phase-D)</h3>
+                    <p>측정된 디바이스 특성으로 이론적 S_max를 계산합니다.</p>
+                    
+                    <pre><code># 기본 계산
+python3 scripts/smax_calc.py --cr 0.5 --wa 8.0 --bw 1000 --br 2000 --beff 2500 --eta 0.5 --wwal 1.0</code></pre>
+
+                    <p><strong>예상 출력:</strong></p>
+                    <pre><code>============================================================
+RocksDB S_max 계산 결과
+============================================================
+입력 파라미터:
+  압축률 (CR): 0.50
+  Write Amplification (WA): 8.0
+  쓰기 대역폭 (B_w): 1000 MiB/s
+  읽기 대역폭 (B_r): 2000 MiB/s
+  혼합 대역폭 (B_eff): 2500 MiB/s
+  읽기 가중 (η): 0.5
+  WAL 팩터 (w_wal): 1.0
+
+계산 결과:
+  per-user 쓰기 요구량: 5.00
+  per-user 읽기 요구량: 3.50
+
+바운드별 S_max:
+  Write bound:  200.0 MiB/s
+  Read bound:   571.4 MiB/s
+  Mixed bound:  370.4 MiB/s
+
+최종 S_max: 200.0 MiB/s
+병목 지점: write
+ops/s (1KB KV): 204800</code></pre>
+
+                    <h3>4.2 Per-Level WAF 분석 (Phase-C)</h3>
+                    <p>RocksDB LOG에서 실제 WAF를 분석합니다.</p>
+                    
+                    <pre><code># WAF 분석 실행
+python3 scripts/waf_analyzer.py --log /data/rocksdb/LOG \
+  --user-mb 1000 --out-dir validation_results --plot</code></pre>
+
+                    <p><strong>예상 출력:</strong></p>
+                    <pre><code>RocksDB LOG 분석 중: /data/rocksdb/LOG
+사용자 데이터 크기: 1000.0 MB
+✅ 1개의 compaction stats 발견
+
+=== Per-Level WAF 분석 ===
+L0: WAF = 1.00
+L1: WAF = 1.00
+L2: WAF = 1.50
+L3: WAF = 2.00
+L4: WAF = 2.50
+L5: WAF = 3.00
+L6: WAF = 3.50
+
+전체 WAF: 8.00
+총 쓰기: 8000.00 MB
+
+=== Mass Balance 검증 ===
+예상 쓰기: 8000.00 MB
+실제 쓰기: 8000.00 MB
+오류율: 0.00%
+✅ Mass balance 검증 통과 (≤10%)</code></pre>
+                </section>
+
+                <section id="result-interpretation">
+                    <h2>5. 검증 결과 해석</h2>
+                    
+                    <h3>5.1 S_max 계산 결과</h3>
+                    <pre><code>최종 S_max: 200.0 MiB/s
+병목 지점: write
+ops/s (1KB KV): 204800</code></pre>
+                    
+                    <p><strong>해석:</strong></p>
+                    <ul>
+                        <li><strong>S_max</strong>: 이론적으로 계산된 최대 지속 가능한 put rate</li>
+                        <li><strong>병목 지점</strong>: write/read/mixed 중 어떤 것이 제한 요소인지</li>
+                        <li><strong>ops/s</strong>: 초당 처리 가능한 operation 수</li>
+                    </ul>
+
+                    <h3>5.2 WAF 분석 결과</h3>
+                    <pre><code>=== Mass Balance 검증 ===
+예상 쓰기: 9567902.50 MB
+실제 쓰기: 9567902.50 MB
+오류율: 0.00%
+✅ Mass balance 검증 통과 (≤10%)</code></pre>
+                    
+                    <p><strong>해석:</strong></p>
+                    <ul>
+                        <li><strong>Mass Balance</strong>: 이론적 예측과 실제 측정값의 일치도</li>
+                        <li><strong>오류율 ≤10%</strong>: 검증 성공 기준</li>
+                        <li><strong>Per-Level WAF</strong>: 각 레벨별 쓰기 앰플리피케이션</li>
+                    </ul>
+                </section>
+
+                <section id="success-criteria">
+                    <h2>6. 검증 성공 기준</h2>
+                    
+                    <h3>6.1 정량적 기준</h3>
+                    <ul>
+                        <li><strong>Envelope error</strong>: $|S_{\max}^{meas} - S_{\max}^{pred}| / S_{\max}^{pred} \le \mathbf{10\%}$</li>
+                        <li><strong>Mass-balance error</strong>: $|\sum \text{Write}_i - CR \cdot WA \cdot \text{user\_MB}| / (CR \cdot WA \cdot \text{user\_MB}) \le \mathbf{10\%}$</li>
+                        <li><strong>Stabilization</strong>: pending_compaction_bytes의 장기 기울기 ≤ 0</li>
+                    </ul>
+
+                    <h3>6.2 정성적 기준</h3>
+                    <ul>
+                        <li><strong>Stall time 패턴</strong>: boundary 아래/근처/위에서 예상되는 단조 패턴</li>
+                        <li><strong>트렌드 일치</strong>: 파라미터 변경 시 성능 변화 방향이 모델과 일치</li>
+                    </ul>
+                </section>
+
+                <section id="advanced-validation">
+                    <h2>7. 고급 검증</h2>
+                    
+                    <h3>7.1 Sensitivity Analysis (Phase-E)</h3>
+                    <p>파라미터 변화에 따른 성능 영향을 분석합니다.</p>
+                    
+                    <pre><code># 압축률 변화에 따른 S_max 변화
+python3 scripts/smax_calc.py --cr 0.3 --wa 8.0 --bw 1000 --br 2000 --beff 2500
+python3 scripts/smax_calc.py --cr 0.5 --wa 8.0 --bw 1000 --br 2000 --beff 2500
+python3 scripts/smax_calc.py --cr 0.7 --wa 8.0 --bw 1000 --br 2000 --beff 2500
+
+# Write Amplification 변화에 따른 S_max 변화
+python3 scripts/smax_calc.py --cr 0.5 --wa 4.0 --bw 1000 --br 2000 --beff 2500
+python3 scripts/smax_calc.py --cr 0.5 --wa 8.0 --bw 1000 --br 2000 --beff 2500
+python3 scripts/smax_calc.py --cr 0.5 --wa 12.0 --bw 1000 --br 2000 --beff 2500</code></pre>
+
+                    <h3>7.2 실제 성능 측정</h3>
+                    <pre><code># 예측된 S_max 주변에서 실제 성능 측정
+# 0.9 × S_max, 1.0 × S_max, 1.1 × S_max에서 벤치마크 실행
+
+# 예: S_max = 200 MiB/s인 경우
+# 180 MiB/s, 200 MiB/s, 220 MiB/s에서 테스트</code></pre>
+                </section>
+
+                <section id="report-template">
+                    <h2>8. 결과 보고서 템플릿</h2>
+                    
+                    <h3>8.1 디바이스 캘리브레이션 결과</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>측정 항목</th>
+                                <th>값 (MiB/s)</th>
+                                <th>fio 파라미터</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>B_w (Write)</td>
+                                <td>1000</td>
+                                <td>bs=128k, iodepth=32</td>
+                            </tr>
+                            <tr>
+                                <td>B_r (Read)</td>
+                                <td>2000</td>
+                                <td>bs=128k, iodepth=32</td>
+                            </tr>
+                            <tr>
+                                <td>B_eff (Mixed)</td>
+                                <td>2500</td>
+                                <td>rwmixread=50</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>8.2 S_max 검증 결과</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>파라미터</th>
+                                <th>예측값</th>
+                                <th>측정값</th>
+                                <th>오류율</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>S_max</td>
+                                <td>200.0 MiB/s</td>
+                                <td>195.0 MiB/s</td>
+                                <td>2.5%</td>
+                            </tr>
+                            <tr>
+                                <td>Mass Balance</td>
+                                <td>1000 MB</td>
+                                <td>1020 MB</td>
+                                <td>2.0%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>8.3 Sensitivity 분석 결과</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CR</th>
+                                <th>WA</th>
+                                <th>S_max</th>
+                                <th>병목</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0.3</td>
+                                <td>8.0</td>
+                                <td>333.3</td>
+                                <td>write</td>
+                            </tr>
+                            <tr>
+                                <td>0.5</td>
+                                <td>8.0</td>
+                                <td>200.0</td>
+                                <td>write</td>
+                            </tr>
+                            <tr>
+                                <td>0.7</td>
+                                <td>8.0</td>
+                                <td>142.9</td>
+                                <td>write</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="precautions">
+                    <h2>9. 주의사항</h2>
+                    
+                    <h3>9.1 환경 요구사항</h3>
+                    <ul>
+                        <li><strong>전용 머신</strong>: 다른 프로세스의 I/O 간섭 방지</li>
+                        <li><strong>충분한 디스크 공간</strong>: 최소 10GB 이상 여유 공간</li>
+                        <li><strong>안정적인 전원</strong>: 장시간 실행 중 중단 방지</li>
+                    </ul>
+
+                    <h3>9.2 측정 정확도</h3>
+                    <ul>
+                        <li><strong>3회 이상 반복</strong>: 통계적 신뢰성 확보</li>
+                        <li><strong>충분한 실행 시간</strong>: 최소 60초 이상</li>
+                        <li><strong>시스템 안정화</strong>: 측정 전 5분 대기</li>
+                    </ul>
+
+                    <h3>9.3 로그 분석</h3>
+                    <ul>
+                        <li><strong>LOG 파일 위치</strong>: RocksDB 설정에 따라 다름</li>
+                        <li><strong>통계 활성화</strong>: <code>statistics=true</code> 설정 확인</li>
+                        <li><strong>충분한 데이터</strong>: 최소 1시간 이상의 로그 필요</li>
+                    </ul>
+                </section>
+
+                <section id="tips">
+                    <h2>10. 성공적인 검증을 위한 팁</h2>
+                    
+                    <ol>
+                        <li><strong>단계별 접근</strong>: 한 번에 모든 것을 검증하려 하지 말고 단계별로 진행</li>
+                        <li><strong>충분한 데이터</strong>: 작은 데이터셋으로는 정확한 측정 어려움</li>
+                        <li><strong>환경 통제</strong>: 가능한 한 일정한 환경에서 측정</li>
+                        <li><strong>문서화</strong>: 모든 설정과 결과를 기록하여 재현 가능하게 유지</li>
+                    </ol>
+                </section>
+
+                <section id="troubleshooting">
+                    <h2>11. 문제 해결</h2>
+                    
+                    <h3>11.1 자주 발생하는 문제</h3>
+                    
+                    <h4>LOG 파일을 찾을 수 없음</h4>
+                    <ul>
+                        <li>RocksDB 설정에서 <code>statistics=true</code> 확인</li>
+                        <li>LOG 파일 경로 확인</li>
+                    </ul>
+
+                    <h4>Mass balance 검증 실패</h4>
+                    <ul>
+                        <li>충분한 데이터 수집 시간 확보</li>
+                        <li>압축률(CR) 정확한 측정</li>
+                    </ul>
+
+                    <h4>S_max 계산 오류</h4>
+                    <ul>
+                        <li>디바이스 대역폭 측정 정확성 확인</li>
+                        <li>Write Amplification 값 검증</li>
+                    </ul>
+
+                    <h3>11.2 디버깅 명령어</h3>
+                    <pre><code># 로그 파일 확인
+find /data -name "LOG*" -type f
+
+# RocksDB 통계 확인
+grep -i "compaction" /data/rocksdb/LOG | tail -10
+
+# 디스크 사용량 확인
+df -h /data
+
+# 메모리 사용량 확인
+free -h</code></pre>
+                </section>
+            </main>
+        </div>
+
+        <footer>
+            <p>Generated from VALIDATION_GUIDE.md | RocksDB Validation Execution Guide</p>
+        </footer>
+    </div>
+</body>
+</html>

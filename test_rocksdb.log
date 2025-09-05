@@ -1,0 +1,8 @@
+2024/01/01 10:00:00.000000 7f1234567890 [INFO] [db/db_impl/db_impl.cc:1234] Compaction Stats
+2024/01/01 10:00:00.000001 7f1234567890 [INFO] [db/db_impl/db_impl.cc:1235] Level 0: 3 files, 2.5 MB
+2024/01/01 10:00:00.000002 7f1234567890 [INFO] [db/db_impl/db_impl.cc:1236] Level 1: 10 files, 25.0 MB
+2024/01/01 10:00:00.000003 7f1234567890 [INFO] [db/db_impl/db_impl.cc:1237] Level 2: 100 files, 250.0 MB
+2024/01/01 10:00:00.000004 7f1234567890 [INFO] [db/db_impl/db_impl.cc:1238] Level 3: 1000 files, 2500.0 MB
+2024/01/01 10:00:00.000005 7f1234567890 [INFO] [db/db_impl/db_impl.cc:1239] Level 4: 10000 files, 25000.0 MB
+2024/01/01 10:00:00.000006 7f1234567890 [INFO] [db/db_impl/db_impl.cc:1240] Level 5: 100000 files, 250000.0 MB
+2024/01/01 10:00:00.000007 7f1234567890 [INFO] [db/db_impl/db_impl.cc:1241] Level 6: 1000000 files, 2500000.0 MB

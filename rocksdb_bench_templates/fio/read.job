@@ -1,0 +1,16 @@
+# Replace 'filename=' with your device or a large file path.
+# Example for device: filename=/dev/nvme0n1
+# Example for file:   filename=/mnt/ssd/testfile
+
+[global]
+ioengine=libaio
+direct=1
+runtime=60
+time_based=1
+group_reporting=1
+bs=128k
+iodepth=32
+filename=/dev/nvme0n1
+
+[r]
+rw=read

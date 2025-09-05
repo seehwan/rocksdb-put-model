@@ -9,10 +9,14 @@ git clone https://github.com/facebook/rocksdb.git
 cd rocksdb
 make db_bench -j$(nproc)
 
+# 로그 디렉토리 준비 (심볼릭 링크 사용)
+mkdir -p ./log
+ln -sf /rocksdb/data/LOG ./log/LOG
+
 # 설정 파일 사용
 ./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
   --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
-  --db=/rocksdb/data --statistics=1
+  --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1
 ```
 
 ### 2. 측정 결과

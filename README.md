@@ -87,6 +87,7 @@ fio rocksdb_bench_templates/fio/mix50.job
 
 # 2. RocksDB benchmark - 템플릿 사용
 # 디렉토리 생성: sudo mkdir -p /rocksdb/data /rocksdb/wal
+# 로그 디렉토리 준비: mkdir -p ./log && ln -sf /rocksdb/data/LOG ./log/LOG
 ./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
   --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
   --db=/rocksdb/data --wal_dir=/rocksdb/wal

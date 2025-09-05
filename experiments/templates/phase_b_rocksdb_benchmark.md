@@ -19,15 +19,19 @@ ls -la db_bench
 
 ### 2. 벤치마크 실행
 ```bash
+# 로그 디렉토리 준비 (심볼릭 링크 사용)
+mkdir -p ./log
+ln -sf /rocksdb/data/LOG ./log/LOG
+
 # 기본 벤치마크
 ./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
   --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
-  --db=/rocksdb/data --statistics=1
+  --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1
 
 # 더 긴 실행 (정확한 측정을 위해)
 ./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
   --benchmarks=fillrandom --num=1000000000 --value_size=1024 --threads=16 \
-  --db=/rocksdb/data --statistics=1 --stats_dump_period_sec=60
+  --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1 --stats_dump_period_sec=60
 ```
 
 ### 3. 로그 파일 확인

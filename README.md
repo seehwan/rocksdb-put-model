@@ -1,6 +1,6 @@
 # RocksDB Put-Rate Model
 
-RocksDB의 쓰기 경로(put, flush, compaction)를 정량 모델로 기술하고, steady state에서 가능한 지속 put rate와 레벨별 I/O 대역폭을 계산하는 방법을 정리합니다.
+RocksDB의 쓰기 경로(put, flush, compaction)를 정량 모델로 기술하고, steady state에서 가능한 지속 put rate와 레벨별 I/O 대역폭을 계산하는 방법을 정리합니다. 이론적 모델을 실제 RocksDB 시스템에서 검증할 수 있는 체계적인 실험 계획도 포함합니다.
 
 ## Repo Layout
 
@@ -9,7 +9,9 @@ rocksdb-put-model/
 ├── README.md                    # 이 파일 (사용법, 요구사항, 빠른 시작)
 ├── PutModel.md                  # 전체 모델, 수식, 시뮬레이션 코드
 ├── PutModel.html                # HTML 버전 (MathJax 수식 렌더링)
+├── ValidationPlan.html          # 검증 계획 HTML 버전 (MathJax 수식 렌더링)
 ├── styles.css                   # HTML 스타일시트
+├── rocksdb_validation_plan.md   # 실제 시스템 검증 계획서
 ├── figs/                        # 생성된 그래프들
 │   ├── depth_summary.png        # 초기 버스트 vs Steady State
 │   ├── per_level_reads.png      # 레벨별 읽기 I/O
@@ -45,14 +47,40 @@ python3 scripts/transient_depth_analysis.py
 ```
 
 ### 2) View results
-- **HTML**: `PutModel.html`을 브라우저에서 열기
+- **HTML**: `PutModel.html`을 브라우저에서 열기 (이론 모델)
+- **HTML**: `ValidationPlan.html`을 브라우저에서 열기 (검증 계획)
 - **그래프**: `figs/` 폴더의 PNG 파일들
 - **수치**: 각 스크립트의 콘솔 출력
 
+### 3) Validate with real RocksDB
+```bash
+# 실제 RocksDB 시스템에서 모델 검증
+# 자세한 절차는 rocksdb_validation_plan.md 참조
+
+# 1. Device calibration (fio)
+fio --name=w --filename=/dev/nvme0n1 --rw=write --bs=128k --iodepth=32 \
+    --numjobs=1 --time_based=1 --runtime=60
+
+# 2. RocksDB benchmark
+./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
+  --compression_type=snappy --use_existing_db=0 --threads=8 \
+  --db=/data/rocksdb --statistics=1
+
+# 3. Model validation
+python3 scripts/smax_calc.py --cr 1.6 --wa 12.0 --bw 1200 --br 1800 --beff 1300
+```
+
 ## Requirements
 
+### For Model Analysis
 - Python 3.8+
 - matplotlib
+
+### For Real System Validation
+- RocksDB (recent release)
+- fio (for device calibration)
+- Linux (5.x+), ext4 or XFS
+- NVMe SSD (preferred)
 
 ## Installation
 
@@ -69,7 +97,28 @@ source .venv/bin/activate  # macOS/Linux
 pip install matplotlib
 ```
 
+## Model Validation
 
+이 프로젝트는 이론적 모델을 실제 RocksDB 시스템에서 검증할 수 있는 체계적인 계획을 제공합니다.
+
+### Validation Plan Overview
+
+**목표**: 모델의 예측값이 실제 시스템과 ±10-15% 이내로 일치하는지 검증
+
+**5단계 검증 프로세스**:
+1. **Device Calibration**: fio를 통한 B_w, B_r, B_eff 측정
+2. **Empty → Steady Transient**: 초기 버스트에서 steady state로의 수렴 과정
+3. **Per-Level WAF Mass Balance**: 레벨별 쓰기 앰플리피케이션 검증
+4. **Envelope Boundary S_max**: 최대 지속 가능한 put rate 검증
+5. **Sensitivity Analysis**: 파라미터 변화에 따른 성능 영향 분석
+
+### Success Criteria
+
+- **Envelope error**: |S_max^meas - S_max^pred| / S_max^pred ≤ **10%** (목표)
+- **Mass-balance error**: |∑Write_i - CR×WA×user_MB| / (CR×WA×user_MB) ≤ **10%**
+- **Stabilization**: pending_compaction_bytes의 장기 기울기 ≤ 0
+
+자세한 검증 절차는 [`rocksdb_validation_plan.md`](rocksdb_validation_plan.md) 또는 [`ValidationPlan.html`](ValidationPlan.html)을 참조하세요.
 
 ## Tuning Checklist
 

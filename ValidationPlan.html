@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocksDB Envelope Model — Validation & Experiment Plan</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RocksDB Envelope Model — Validation & Experiment Plan</h1>
+            <p><em>Last updated: 2025-09-05 (KST)</em></p>
+            <p>이 문서는 <strong>PutModel/Envelope</strong> for RocksDB의 실용적이고 재현 가능한 검증 계획을 설명합니다: 지속 가능한 ingest 상한 $S_{\max}$, 레벨별 WAF 분해, 빈 데이터베이스에서의 transient stabilization을 포함합니다.</p>
+            <blockquote>
+                <p>이론적 모델은 <code>PutModel.md</code>를, 이 문서는 <strong>실제 시스템에서의 검증 방법론</strong>에 초점을 둡니다.</p>
+            </blockquote>
+        </header>
+
+        <div class="content-wrapper">
+            <nav class="toc-sidebar">
+                <h3>목차</h3>
+                <ul>
+                    <li><a href="#objectives">0) 목표 및 가설</a></li>
+                    <li><a href="#metrics">1) 지표 및 성공 기준</a></li>
+                    <li><a href="#testbed">2) 테스트베드 및 소프트웨어</a></li>
+                    <li><a href="#device-calibration">3) 디바이스 캘리브레이션 (Phase-A)</a></li>
+                    <li><a href="#rocksdb-config">4) RocksDB 설정 (Leveled baseline)</a></li>
+                    <li><a href="#transient">5) Empty → Steady Transient (Phase-B)</a></li>
+                    <li><a href="#mass-balance">6) Per-Level WAF Mass Balance (Phase-C)</a></li>
+                    <li><a href="#envelope-boundary">7) Envelope Boundary S_max (Phase-D)</a></li>
+                    <li><a href="#sensitivity">8) Sensitivity / Ablations (Phase-E)</a></li>
+                    <li><a href="#data-collection">9) 데이터 수집 및 분석</a></li>
+                    <li><a href="#risks">10) 리스크 및 완화 방안</a></li>
+                    <li><a href="#report-template">11) 보고서 템플릿</a></li>
+                    <li><a href="#artifacts">12) 아티팩트</a></li>
+                    <li><a href="#appendix">부록 A. Quick Commands</a></li>
+                </ul>
+            </nav>
+            <main>
+                <section id="objectives">
+                    <h2>0) 목표 및 가설</h2>
+                    <p><strong>목표.</strong> 모델의 예측이 실제 RocksDB 시스템과 일치하는지 검증합니다.</p>
+                    
+                    <p><strong>가설.</strong></p>
+                    <ol>
+                        <li>시스템에서 관찰되는 <strong>ingest boundary</strong>가 모델의 $S_{\max}$와 ±10–15% 이내로 일치합니다.</li>
+                        <li><strong>Mass balance:</strong> $\sum_i \text{Write}_i \approx CR \cdot WA \cdot \text{user\_MB}$ (±5–10% 이내).</li>
+                        <li>노브 변경 $(T, \text{compression}, \text{intra-L0}, \text{partial compaction})$ 시 $S_{\max}$와 레벨별 WAF 변화의 <strong>방향/트렌드</strong>가 모델과 일치합니다.</li>
+                    </ol>
+                </section>
+
+                <section id="metrics">
+                    <h2>1) 지표 및 성공 기준</h2>
+                    <ul>
+                        <li><strong>Envelope error:</strong> $|S_{\max}^{meas} - S_{\max}^{pred}| / S_{\max}^{pred} \le \mathbf{10\%}$ (목표; ≤15% 허용).</li>
+                        <li><strong>Mass-balance error:</strong> $\big|\sum_i \text{Write}_i - CR \cdot WA \cdot \text{user\_MB}\big| / (CR \cdot WA \cdot \text{user\_MB}) \le \mathbf{10\%}$.</li>
+                        <li><strong>Stabilization:</strong> steady ingest에서 <code>pending_compaction_bytes</code> 장기 기울기 ≤ 0.</li>
+                        <li><strong>Stall time:</strong> boundary 아래/근처/위에서 예상되는 단조 패턴 (few ⇢ some ⇢ many).</li>
+                    </ul>
+                </section>
+
+                <section id="testbed">
+                    <h2>2) 테스트베드 및 소프트웨어</h2>
+                    <ul>
+                        <li><strong>하드웨어:</strong> 1× NVMe SSD (WAL을 동일 디바이스 또는 별도 두 번째 NVMe에). 전용 머신 권장.</li>
+                        <li><strong>OS/FS:</strong> Linux (5.x+), ext4 또는 XFS, <code>noatime</code> 권장.</li>
+                        <li><strong>RocksDB 빌드:</strong> 최신 릴리스; stats 활성화.</li>
+                        <li><strong>로깅:</strong> <code>stats_dump_period_sec=60</code>, <code>statistics=true</code>, <code>report_bg_io_stats=true</code>.</li>
+                    </ul>
+                    <blockquote>
+                        <p>팁: 재현성을 위해 <strong>options 파일</strong>을 버전 관리하세요.</p>
+                    </blockquote>
+                </section>
+
+                <section id="device-calibration">
+                    <h2>3) 디바이스 캘리브레이션 (Phase-A)</h2>
+                    <p><code>fio</code>를 사용하여 <strong>write, read, mixed</strong> 워크로드의 디바이스 한계를 측정합니다 (예: <code>bs=128k, iodepth=32</code>).</p>
+                    
+                    <pre><code># Write limit → B_w
+fio --name=w --filename=/dev/nvme0n1 --rw=write --bs=128k --iodepth=32 \
+    --numjobs=1 --time_based=1 --runtime=60
+
+# Read limit → B_r
+fio --name=r --filename=/dev/nvme0n1 --rw=read --bs=128k --iodepth=32 \
+    --time_based=1 --runtime=60
+
+# Mixed read:write = 50:50 → B_eff(@ρ=0.5)
+fio --name=rw --filename=/dev/nvme0n1 --rw=rw --rwmixread=50 --bs=128k \
+    --iodepth=32 --time_based=1 --runtime=60</code></pre>
+                    
+                    <ul>
+                        <li>write 실행에서 $B_w$ 선택, read 실행에서 $B_r$ 선택, mixed 실행에서 예상 혼합에 가장 가까운 $B_{\mathrm{eff}}$ 선택.</li>
+                        <li>결합 $\eta \in [0.3, 0.7]$ 설정 (기본값 0.5).</li>
+                    </ul>
+                </section>
+
+                <section id="rocksdb-config">
+                    <h2>4) RocksDB 설정 (Leveled baseline)</h2>
+                    <p>최소 leveled 프로파일 (예시; 하드웨어에 맞게 조정):</p>
+                    <pre><code># options-leveled.ini
+compaction_style=kCompactionStyleLevel
+compaction_pri=kMinOverlappingRatio
+
+# Compression
+compression=kSnappy
+bottommost_compression=kZSTD
+
+# Threads / jobs (CPU & SSD에 맞춤)
+max_background_jobs=12
+max_subcompactions=4
+
+# Logging & stats
+statistics=true
+report_bg_io_stats=true
+stats_dump_period_sec=60
+
+# (선택사항) 읽기 보호
+rate_limiter_bytes_per_sec=0   # 필요시 background IO 제한
+
+# L0 triggers (디바이스에 맞춤; 예시)
+level0_slowdown_writes_trigger=20
+level0_stop_writes_trigger=24</code></pre>
+                    <blockquote>
+                        <p><strong>Universal</strong> compaction의 경우 다른 overlap 모델 사용; envelope 형태는 여전히 적용됩니다.</p>
+                    </blockquote>
+                </section>
+
+                <section id="transient">
+                    <h2>5) Empty → Steady Transient (Phase-B)</h2>
+                    <ol>
+                        <li>빈 DB 생성. <strong>거의 일정한 ingest</strong> 타겟으로 <code>db_bench</code> 실행.</li>
+                    </ol>
+                    <pre><code>./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
+  --compression_type=snappy --use_existing_db=0 --threads=8 \
+  --db=/data/rocksdb --statistics=1</code></pre>
+                    <ol start="2">
+                        <li>모니터링: <code>pending_compaction_bytes</code>, L0 파일 개수, stall/slowdown 카운터.</li>
+                        <li><strong>Stabilization</strong> 달성: <code>pending_compaction_bytes</code>가 긴 윈도우에서 더 이상 증가하지 않을 때.</li>
+                    </ol>
+                </section>
+
+                <section id="mass-balance">
+                    <h2>6) Per-Level WAF Mass Balance (Phase-C)</h2>
+                    <p>LOG에서 <strong>Compaction Stats</strong>를 파싱하여 레벨별 바이트와 WAF 획득:</p>
+                    <pre><code>python scripts/waf_analyzer.py --log /path/to/LOG \
+  --user-mb &lt;MB_written_in_same_window&gt; --out-dir out --plot</code></pre>
+                    <ul>
+                        <li>확인: $\sum_i \text{Write}_i \approx CR \cdot WA \cdot \text{user\_MB}$ (±5–10%).</li>
+                    </ul>
+                </section>
+
+                <section id="envelope-boundary">
+                    <h2>7) Envelope Boundary S_max (Phase-D)</h2>
+                    <ol>
+                        <li>동일한 윈도우에서 <strong>CR</strong>과 <strong>WA</strong> 추정 (Compaction Stats 요약).</li>
+                        <li>예측된 boundary 계산:</li>
+                    </ol>
+                    <pre><code>python scripts/smax_calc.py --cr &lt;CR&gt; --wa &lt;WA&gt; \
+  --bw &lt;B_w&gt; --br &lt;B_r&gt; --beff &lt;B_eff&gt; --eta 0.5 --wwal 0</code></pre>
+                    <ol start="3">
+                        <li>예측 주변에서 ingest 스윕: $0.9\times$, $1.0\times$, $1.1\times S_{\max}^{pred}$.
+                            <ul>
+                                <li>아래: backlog 제한됨; 최소 slowdown.</li>
+                                <li>근처: 가끔 write controller 활성화.</li>
+                                <li>위: backlog 상승; slowdown/stall 빈번.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </section>
+
+                <section id="sensitivity">
+                    <h2>8) Sensitivity / Ablations (Phase-E)</h2>
+                    <p>한 번에 하나씩 노브를 변경하고 Phase C–D 반복:</p>
+                    <ul>
+                        <li><strong>Size ratio $T$</strong>: 8 ↔ 10</li>
+                        <li><strong>Compression profile</strong>: (mid=Snappy, bottom=ZSTD) ↔ (all Snappy)</li>
+                        <li><strong>Intra‑L0</strong>: on ↔ off</li>
+                        <li><strong>Partial compaction</strong>: on ↔ off</li>
+                        <li><strong>WAL placement</strong>: same device ↔ separate device (separate → $w_{wal}\to 0$)</li>
+                    </ul>
+                    
+                    <p><strong>예상 트렌드</strong> (예시):</p>
+                    <ul>
+                        <li>더 강한 bottommost compression → <strong>CR↓ (physical bytes)</strong> → <strong>WAF mass same</strong>, but <strong>device write burden per user byte↓</strong>, typically <strong>S_max↑</strong>.</li>
+                        <li>버스트 중 Intra‑L0 활성화 → <strong>WAF\_L0↑(≈+1)</strong> but faster L0 file reduction → <strong>stall risk↓</strong>.</li>
+                    </ul>
+                </section>
+
+                <section id="data-collection">
+                    <h2>9) 데이터 수집 및 분석</h2>
+                    <ul>
+                        <li>저장: LOG, <code>out/waf_per_level.csv</code>, <code>summary.json</code>, fio 결과, ingest 타겟/달성, stall 통계.</li>
+                        <li>오류 계산:
+                            <ul>
+                                <li>$e_{S_{\max}} = \frac{|S_{\max}^{meas}-S_{\max}^{pred}|}{S_{\max}^{pred}}$</li>
+                                <li>$e_{\text{mass}} = \frac{|\sum \text{Write}_i - CR\cdot WA \cdot user\_MB|}{CR\cdot WA \cdot user\_MB}$</li>
+                            </ul>
+                        </li>
+                        <li>트렌드 보고: $\Delta S_{\max}, \Delta \text{WAF}_i$ 부호 vs. 모델 예측.</li>
+                    </ul>
+                </section>
+
+                <section id="risks">
+                    <h2>10) 리스크 및 완화 방안</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>리스크</th>
+                                <th>증상</th>
+                                <th>완화 방안</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Background IO 노이즈</td>
+                                <td>불규칙한 boundary / 큰 분산</td>
+                                <td>디바이스 격리; 단일 테넌트 실행</td>
+                            </tr>
+                            <tr>
+                                <td>열 스로틀링</td>
+                                <td>시간에 따른 throughput 감소</td>
+                                <td>짧은 반복 실행; 온도 모니터링</td>
+                            </tr>
+                            <tr>
+                                <td>FS 캐시 효과</td>
+                                <td>과도하게 낙관적인 읽기 수치</td>
+                                <td>Data > RAM; 실행 간 drop_caches</td>
+                            </tr>
+                            <tr>
+                                <td>스케줄러 지터</td>
+                                <td>실행 간 높은 분산</td>
+                                <td>≥3회 반복; 중앙값 + IQR 보고</td>
+                            </tr>
+                            <tr>
+                                <td>잘못된 옵션 설정</td>
+                                <td>재현 불가능한 결과</td>
+                                <td>버전 관리된 options 파일</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="report-template">
+                    <h2>11) 보고서 템플릿</h2>
+                    <ul>
+                        <li><strong>Table 1</strong>: 디바이스 캘리브레이션 $B_w, B_r, B_{\mathrm{eff}}$ (fio 파라미터 포함)</li>
+                        <li><strong>Table 2</strong>: $S_{\max}$ 예측 vs. 측정 (평균±표준편차, 상대 오류)</li>
+                        <li><strong>Figure 1</strong>: 시간에 따른 <code>pending_compaction_bytes</code> (stabilization)</li>
+                        <li><strong>Figure 2</strong>: 레벨별 WAF 막대 그래프 + mass-balance 확인</li>
+                        <li><strong>Table 3</strong>: Sensitivity 매트릭스 (케이스 → 트렌드 일치 ✓/✗)</li>
+                    </ul>
+                </section>
+
+                <section id="artifacts">
+                    <h2>12) 아티팩트</h2>
+                    <ul>
+                        <li>검증 키트 (스크립트 + 빠른 README): <strong><code>rocksdb_validation_kit.zip</code></strong></li>
+                        <li>모델링 및 참조 팩 (BibTeX, stability box): <strong><code>rocksdb_putmodel_pack.zip</code></strong></li>
+                    </ul>
+                    <blockquote>
+                        <p><code>db_bench</code>와 <code>fio</code> jobfiles용 options 파일이 필요하면 요청하시면 여기에 추가하겠습니다.</p>
+                    </blockquote>
+                </section>
+
+                <section id="appendix">
+                    <h2>부록 A. Quick Commands</h2>
+                    <pre><code># LOG에서 Per-level WAF
+python scripts/waf_analyzer.py --log /path/to/LOG --user-mb 10240 --out-dir out --plot
+
+# S_max 예측
+python scripts/smax_calc.py --cr 1.6 --wa 12.0 --bw 1200 --br 1800 --beff 1300 --eta 0.5 --wwal 0</code></pre>
+                </section>
+            </main>
+        </div>
+
+        <footer>
+            <p>Generated from rocksdb_validation_plan.md | RocksDB Validation & Experiment Plan</p>
+        </footer>
+    </div>
+</body>
+</html>

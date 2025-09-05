@@ -60,15 +60,15 @@ pip list | grep matplotlib</code></pre>
 
                     <h3>2. 디바이스 캘리브레이션 (Phase-A)</h3>
                     <pre><code># Write 대역폭 측정
-fio --name=w --filename=/dev/nvme0n1 --rw=write --bs=128k --iodepth=32 \
+fio --name=w --filename=/dev/nvme1n1p1 --rw=write --bs=128k --iodepth=32 \
     --numjobs=1 --time_based=1 --runtime=60
 
 # Read 대역폭 측정  
-fio --name=r --filename=/dev/nvme0n1 --rw=read --bs=128k --iodepth=32 \
+fio --name=r --filename=/dev/nvme1n1p1 --rw=read --bs=128k --iodepth=32 \
     --time_based=1 --runtime=60
 
 # Mixed 대역폭 측정
-fio --name=rw --filename=/dev/nvme0n1 --rw=rw --rwmixread=50 --bs=128k \
+fio --name=rw --filename=/dev/nvme1n1p1 --rw=rw --rwmixread=50 --bs=128k \
     --iodepth=32 --time_based=1 --runtime=60</code></pre>
 
                     <h3>3. RocksDB 벤치마크 실행 (Phase-B)</h3>
@@ -141,17 +141,17 @@ brew install fio
 sudo yum install fio</code></pre>
 
                     <h3>2.2 Write 대역폭 측정</h3>
-                    <pre><code>fio --name=w --filename=/dev/nvme0n1 --rw=write --bs=128k --iodepth=32 \
+                    <pre><code>fio --name=w --filename=/dev/nvme1n1p1 --rw=write --bs=128k --iodepth=32 \
     --numjobs=1 --time_based=1 --runtime=60</code></pre>
                     <p><strong>결과 해석:</strong> <code>write: bw=1000MiB/s</code> → $B_w = 1000$ MiB/s</p>
 
                     <h3>2.3 Read 대역폭 측정</h3>
-                    <pre><code>fio --name=r --filename=/dev/nvme0n1 --rw=read --bs=128k --iodepth=32 \
+                    <pre><code>fio --name=r --filename=/dev/nvme1n1p1 --rw=read --bs=128k --iodepth=32 \
     --time_based=1 --runtime=60</code></pre>
                     <p><strong>결과 해석:</strong> <code>read: bw=2000MiB/s</code> → $B_r = 2000$ MiB/s</p>
 
                     <h3>2.4 Mixed 대역폭 측정</h3>
-                    <pre><code>fio --name=rw --filename=/dev/nvme0n1 --rw=rw --rwmixread=50 --bs=128k \
+                    <pre><code>fio --name=rw --filename=/dev/nvme1n1p1 --rw=rw --rwmixread=50 --bs=128k \
     --iodepth=32 --time_based=1 --runtime=60</code></pre>
                     <p><strong>결과 해석:</strong> <code>read: bw=1250MiB/s, write: bw=1250MiB/s</code> → $B_{eff} = 2500$ MiB/s</p>
                 </section>

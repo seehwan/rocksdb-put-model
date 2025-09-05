@@ -91,15 +91,15 @@
                     <p><code>fio</code>를 사용하여 <strong>write, read, mixed</strong> 워크로드의 디바이스 한계를 측정합니다 (예: <code>bs=128k, iodepth=32</code>).</p>
                     
                     <pre><code># Write limit → B_w
-fio --name=w --filename=/dev/nvme0n1 --rw=write --bs=128k --iodepth=32 \
+fio --name=w --filename=/dev/nvme1n1p1 --rw=write --bs=128k --iodepth=32 \
     --numjobs=1 --time_based=1 --runtime=60
 
 # Read limit → B_r
-fio --name=r --filename=/dev/nvme0n1 --rw=read --bs=128k --iodepth=32 \
+fio --name=r --filename=/dev/nvme1n1p1 --rw=read --bs=128k --iodepth=32 \
     --time_based=1 --runtime=60
 
 # Mixed read:write = 50:50 → B_eff(@ρ=0.5)
-fio --name=rw --filename=/dev/nvme0n1 --rw=rw --rwmixread=50 --bs=128k \
+fio --name=rw --filename=/dev/nvme1n1p1 --rw=rw --rwmixread=50 --bs=128k \
     --iodepth=32 --time_based=1 --runtime=60</code></pre>
                     
                     <ul>

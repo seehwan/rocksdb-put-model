@@ -146,7 +146,7 @@ level0_stop_writes_trigger=24</code></pre>
                     </ol>
                     <pre><code>./db_bench --benchmarks=fillrandom --num=200000000 --value_size=1024 \
   --compression_type=snappy --use_existing_db=0 --threads=8 \
-  --db=/data/rocksdb --statistics=1</code></pre>
+  --db=/rocksdb/data --statistics=1</code></pre>
                     <ol start="2">
                         <li>모니터링: <code>pending_compaction_bytes</code>, L0 파일 개수, stall/slowdown 카운터.</li>
                         <li><strong>Stabilization</strong> 달성: <code>pending_compaction_bytes</code>가 긴 윈도우에서 더 이상 증가하지 않을 때.</li>

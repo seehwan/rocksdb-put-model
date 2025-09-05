@@ -17,7 +17,7 @@ ln -sf ./log/LOG /rocksdb/data/LOG
 ulimit -n 65536
 
 # 설정 파일 사용 (레벨별 압축 설정 포함)
-./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
+./db_bench --options_file=options-leveled.ini \
   --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
   --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1
 ```

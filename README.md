@@ -89,7 +89,7 @@ fio rocksdb_bench_templates/fio/mix50.job
 # 디렉토리 생성: sudo mkdir -p /rocksdb/data /rocksdb/wal
 # 로그 디렉토리 준비: mkdir -p ./log && ln -sf ./log/LOG /rocksdb/data/LOG
 # 파일 디스크립터 제한 증가: ulimit -n 65536
-./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
+./db_bench --options_file=options-leveled.ini \
   --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
   --db=/rocksdb/data --wal_dir=/rocksdb/wal
 

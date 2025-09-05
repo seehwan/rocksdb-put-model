@@ -34,7 +34,7 @@ fio --name=rw --filename=/dev/nvme0n1 --rw=rw --rwmixread=50 --bs=128k \
 
 ```bash
 # RocksDB 벤치마크 실행
-./db_bench --options_file=rocksdb_bench_templates/db/options-leveled.ini \
+./db_bench --options_file=options-leveled.ini \
   --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
   --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1
 

@@ -4,7 +4,9 @@
     "environment": "GPU-01 server",
     "device": "/dev/nvme1n1p1",
     "experimenter": "yooseehwan",
-    "phase": "A - Device Calibration"
+    "phase": "D - Model Validation",
+    "status": "completed",
+    "total_duration_hours": 8
   },
   "device_calibration": {
     "write_test": {
@@ -42,6 +44,96 @@
     "write_performance_degradation_mixed": 0.25,
     "concurrency_interference": "significant"
   },
+  "phase_b_results": {
+    "actual_performance": {
+      "put_rate_mib_s": 187.1,
+      "ops_per_sec": 188617,
+      "execution_time_seconds": 16965.531,
+      "total_operations": 3200000000,
+      "average_latency_micros": 84.824
+    },
+    "compression_analysis": {
+      "compression_ratio": 0.5406,
+      "compression_ratio_percent": 54.06,
+      "compression_ratio_ratio": "1:1.85"
+    },
+    "write_amplification": {
+      "wa_statistics": 1.02,
+      "user_data_gb": 3051.76,
+      "actual_write_gb": 3115.90
+    },
+    "compaction_stats": {
+      "compaction_read_gb": 13439.09,
+      "compaction_write_gb": 11804.86,
+      "flush_write_gb": 1751.57,
+      "compaction_ratio": 0.878
+    },
+    "stall_analysis": {
+      "total_stall_seconds": 7687.69,
+      "stall_percentage": 45.31,
+      "average_stall_micros_per_op": 2.40
+    }
+  },
+  "phase_c_results": {
+    "level_wise_waf": {
+      "L0": {
+        "files": "15/9",
+        "size": "2.99 GB",
+        "write_gb": 1670.1,
+        "w_amp": 0.0
+      },
+      "L1": {
+        "files": "29/8",
+        "size": "6.69 GB",
+        "write_gb": 1036.0,
+        "w_amp": 0.0
+      },
+      "L2": {
+        "files": "117/19",
+        "size": "25.85 GB",
+        "write_gb": 3968.1,
+        "w_amp": 22.6
+      },
+      "L3": {
+        "files": "463/0",
+        "size": "88.72 GB",
+        "write_gb": 2096.4,
+        "w_amp": 0.9
+      }
+    },
+    "total_waf_log": 2.87,
+    "total_write_gb": 8770.6,
+    "wa_discrepancy": {
+      "statistics_wa": 1.02,
+      "log_wa": 2.87,
+      "difference_factor": 2.8
+    }
+  },
+  "phase_d_results": {
+    "model_validation": {
+      "input_parameters": {
+        "compression_ratio": 0.54,
+        "write_amplification": 2.87,
+        "write_bandwidth_mib_s": 1484,
+        "read_bandwidth_mib_s": 2368,
+        "mixed_bandwidth_mib_s": 2231
+      },
+      "predicted_results": {
+        "s_max_mib_s": 582.0,
+        "bottleneck": "write",
+        "predicted_ops_per_sec": 595975
+      },
+      "actual_results": {
+        "measured_put_rate_mib_s": 187.1,
+        "measured_ops_per_sec": 188617
+      },
+      "validation_errors": {
+        "s_max_error_percent": -67.8,
+        "wa_discrepancy_percent": 181.0,
+        "validation_status": "failed"
+      }
+    }
+  },
   "model_parameters": {
     "assumed_values": {
       "CR": 0.5,
@@ -51,70 +143,93 @@
     "measured_values": {
       "B_w": 1484,
       "B_r": 2368,
-      "B_eff": 2231
+      "B_eff": 2231,
+      "CR_actual": 0.54,
+      "WA_statistics": 1.02,
+      "WA_log": 2.87
     }
   },
-  "s_max_calculations": {
-    "raw_calculation": {
-      "S_w": 92.75,
-      "S_r": 169.1,
-      "S_m": 74.4,
-      "S_max": 74.4,
-      "bottleneck": "mixed_bound"
+  "key_findings": {
+    "wa_measurement_discrepancy": {
+      "description": "STATISTICS vs LOG WA values show 2.8x difference",
+      "statistics_wa": 1.02,
+      "log_wa": 2.87,
+      "impact": "Major source of model prediction error"
     },
-    "corrected_calculation": {
-      "filesystem_overhead_percent": 20,
-      "B_w_effective": 1187,
-      "B_r_effective": 1894,
-      "B_eff_effective": 1785,
-      "S_w_corrected": 74.2,
-      "S_r_corrected": 135.3,
-      "S_m_corrected": 59.5,
-      "S_max_corrected": 59.5
+    "model_overprediction": {
+      "description": "Model predicts 3.1x higher performance than actual",
+      "predicted": 582.0,
+      "actual": 187.1,
+      "error_percent": -67.8
     },
-    "safe_operation": {
-      "safety_margin_percent": 20,
-      "S_max_safe": 47.6,
-      "recommended_rate_limiter_bytes_per_sec": 50000000,
-      "estimated_ops_per_sec_1kb_kv": 48000
+    "l2_bottleneck": {
+      "description": "L2 level shows highest WA and write volume",
+      "write_percentage": 45.2,
+      "w_amp": 22.6,
+      "optimization_needed": true
     }
   },
   "recommendations": {
-    "rocksdb_settings": {
-      "rate_limiter_bytes_per_sec": 50000000,
-      "wal_dir": "/rocksdb/wal",
-      "max_background_jobs": 8,
-      "max_subcompactions": 4
-    },
-    "expected_performance": {
-      "max_sustainable_put_rate_mib_s": 47.6,
-      "estimated_ops_per_sec": 48000,
-      "bottleneck_type": "mixed_bound"
-    }
+    "immediate_actions": [
+      "Reconcile WA measurement methods (STATISTICS vs LOG)",
+      "Investigate L2 high WA causes",
+      "Improve model to account for real-world complexity"
+    ],
+    "long_term_improvements": [
+      "Develop unified WA measurement methodology",
+      "Enhance model with level-wise dynamics",
+      "Implement adaptive parameter adjustment"
+    ],
+    "rocksdb_optimization": [
+      "Optimize L2 compaction strategy",
+      "Consider size ratio (T) adjustment",
+      "Review compression settings per level"
+    ]
   },
-  "next_steps": {
+  "experiment_status": {
+    "phase_a": "completed",
+    "phase_b": "completed", 
+    "phase_c": "completed",
+    "phase_d": "completed",
+    "overall_status": "completed",
+    "success_criteria_met": false,
+    "error_rate_percent": 67.8,
+    "target_error_rate_percent": 10
+  },
+  "files_generated": {
+    "phase_a": [
+      "device_calibration_results.md"
+    ],
     "phase_b": [
-      "RocksDB build and configuration",
-      "fillrandom benchmark execution",
-      "Actual CR, WA measurement"
+      "benchmark_results.txt",
+      "summary.md"
     ],
     "phase_c": [
-      "LOG file analysis",
-      "Per-level I/O breakdown",
-      "Mass balance verification"
+      "waf_analysis.json",
+      "phase_c_summary.md"
     ],
     "phase_d": [
-      "Predicted vs measured value comparison",
-      "Error rate calculation",
-      "Success criteria verification"
+      "model_validation_results.json",
+      "phase_d_summary.md"
+    ],
+    "overall": [
+      "experiment_final_report.md",
+      "experiment_data.json"
     ]
   },
   "notes": {
     "environment": "Linux (GPU-01), NVMe SSD, Raw device measurement",
     "considerations": [
       "Raw device measurement excludes filesystem overhead",
-      "20% overhead should be considered for actual operation",
-      "Significant performance degradation confirmed in mixed workload"
+      "Significant performance degradation confirmed in mixed workload",
+      "WA measurement discrepancy needs resolution",
+      "Model requires improvement for real-world accuracy"
+    ],
+    "lessons_learned": [
+      "STATISTICS and LOG WA values can differ significantly",
+      "Model predictions may be overly optimistic",
+      "L2 level optimization is critical for performance",
+      "Real-world complexity affects model accuracy"
     ]
   }
 }

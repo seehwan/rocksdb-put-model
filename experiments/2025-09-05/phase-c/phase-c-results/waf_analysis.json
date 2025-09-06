@@ -1,0 +1,35 @@
+{
+  "level_data": {
+    "L0": {
+      "files": "15/9",
+      "size": "2.99 GB",
+      "read_gb": 1.5,
+      "write_gb": 1670.1,
+      "w_amp": 0.0
+    },
+    "L1": {
+      "files": "29/8",
+      "size": "6.69 GB",
+      "read_gb": 1.9,
+      "write_gb": 1036.0,
+      "w_amp": 0.0
+    },
+    "L2": {
+      "files": "117/19",
+      "size": "25.85 GB",
+      "read_gb": 0.9,
+      "write_gb": 3968.1,
+      "w_amp": 22.6
+    },
+    "L3": {
+      "files": "463/0",
+      "size": "88.72 GB",
+      "read_gb": 0.4,
+      "write_gb": 2096.4,
+      "w_amp": 0.9
+    }
+  },
+  "total_write_gb": 8770.6,
+  "user_data_gb": 3051.76,
+  "total_wa": 2.8739481479539672
+}

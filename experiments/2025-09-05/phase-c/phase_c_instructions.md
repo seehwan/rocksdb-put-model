@@ -13,15 +13,20 @@
 
 ### 1. LOG 파일 확인
 ```bash
-# LOG 파일 위치 확인
-ls -la ./log/LOG
+# LOG 파일 위치 확인 (실제 경로)
+ls -la /rocksdb/data/LOG
 
 # LOG 파일 크기 확인
-du -h ./log/LOG
+du -h /rocksdb/data/LOG
 
 # LOG 파일 내용 미리보기
-head -20 ./log/LOG
+head -20 /rocksdb/data/LOG
 ```
+
+**LOG 파일 정보:**
+- **위치**: `/rocksdb/data/LOG`
+- **크기**: 217,255,234 bytes (약 207 MB)
+- **생성일**: Sep 6 11:48
 
 ### 2. 필요한 스크립트 확인
 ```bash
@@ -36,32 +41,32 @@ chmod +x scripts/waf_analyzer.py
 
 ### 1. WAF 분석 실행
 ```bash
-# 기본 WAF 분석
-python3 scripts/waf_analyzer.py --log ./log/LOG \
-  --user-mb 1000 --out-dir phase-c-results --plot
+# 기본 WAF 분석 (실제 LOG 파일 경로 사용)
+python3 scripts/waf_analyzer.py --log /rocksdb/data/LOG \
+  --user-mb 1000 --out-dir experiments/2025-09-05/phase-c/phase-c-results --plot
 
 # 결과 확인
-ls -la phase-c-results/
-cat phase-c-results/summary.json
+ls -la experiments/2025-09-05/phase-c/phase-c-results/
+cat experiments/2025-09-05/phase-c/phase-c-results/summary.json
 ```
 
 ### 2. Per-Level Breakdown 실행
 ```bash
-# 레벨별 I/O 분해
-python3 scripts/per_level_breakdown.py --log ./log/LOG \
-  --output-dir phase-c-results
+# 레벨별 I/O 분해 (실제 LOG 파일 경로 사용)
+python3 scripts/per_level_breakdown.py --log /rocksdb/data/LOG \
+  --output-dir experiments/2025-09-05/phase-c/phase-c-results
 ```
 
 ### 3. 결과 분석
 ```bash
 # 생성된 파일들 확인
-ls -la phase-c-results/
+ls -la experiments/2025-09-05/phase-c/phase-c-results/
 
 # CSV 데이터 확인
-head -10 phase-c-results/waf_per_level.csv
+head -10 experiments/2025-09-05/phase-c/phase-c-results/waf_per_level.csv
 
 # 그래프 확인
-ls -la phase-c-results/*.png
+ls -la experiments/2025-09-05/phase-c/phase-c-results/*.png
 ```
 
 ## 📊 예상 결과

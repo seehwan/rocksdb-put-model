@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocksDB Put-Rate Model v4: Dynamic LSM Performance Modeling</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .version-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .model-evolution {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .v4-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .feature-card h3 {
+            color: #495057;
+            margin-top: 0;
+        }
+        .implementation-plan {
+            background: #e8f5e8;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .validation-design {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .math-formula {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+        }
+        .timeline {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .timeline-day {
+            background: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-right: 15px;
+            min-width: 60px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="version-badge">PutModel v4.0 - Dynamic LSM Performance Modeling</div>
+            <h1>RocksDB Put-Rate Model v4: Dynamic LSM Performance Modeling</h1>
+            <p class="subtitle">A Comprehensive Framework for Predicting Sustainable Write Throughput in LSM-Tree Storage Systems</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#v4-motivation">Why v4?</a></li>
+                <li><a href="#model-architecture">Model Architecture</a></li>
+                <li><a href="#implementation">Implementation Plan</a></li>
+                <li><a href="#validation">Validation Design</a></li>
+                <li><a href="#timeline">Development Timeline</a></li>
+                <li><a href="#related-work">Related Work</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section id="overview">
+                <h2>Overview</h2>
+                <p>PutModel v4 represents a significant evolution in LSM-tree performance modeling, addressing critical limitations in previous versions through dynamic modeling, accurate device characterization, and rigorous validation frameworks.</p>
+                
+                <div class="model-evolution">
+                    <h3>Model Evolution</h3>
+                    <ul>
+                        <li><strong>v1-v2.1:</strong> Basic closed-form models with harmonic mean assumptions</li>
+                        <li><strong>v3:</strong> Enhanced models with stall modeling and per-level constraints</li>
+                        <li><strong>v4:</strong> Dynamic modeling with device envelope characterization and closed ledger accounting</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="v4-motivation">
+                <h2>Why v4? Critical Issues in v3</h2>
+                
+                <div class="v4-features">
+                    <div class="feature-card">
+                        <h3>🔧 Mixed I/O Bandwidth Issues</h3>
+                        <p><strong>Problem:</strong> Harmonic mean assumption <code>Beff = 1/(ρr/Br + ρw/Bw)</code> ignores device interference effects from queue depth, parallelism, and block size.</p>
+                        <p><strong>Solution:</strong> Real device envelope modeling with fio grid sweep and linear interpolation.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>📊 Numerical Inconsistencies</h3>
+                        <p><strong>Problem:</strong> WA/RA/mixed ratios show inconsistencies between tables, text, and statistics. GB vs GiB, absolute vs normalized values mixed.</p>
+                        <p><strong>Solution:</strong> Standardized notation and closed ledger accounting for verification.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>🔄 Circular Validation</h3>
+                        <p><strong>Problem:</strong> Using LOG-based WA values as model input while claiming "0% error" (calibration ≠ validation).</p>
+                        <p><strong>Solution:</strong> Strict separation between calibration (Phase-A) and validation (Phase-D).</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>📈 Per-Level Metrics</h3>
+                        <p><strong>Problem:</strong> Insufficient definition of per-level indicators for Compaction In/Out/Read/Write operations.</p>
+                        <p><strong>Solution:</strong> Comprehensive per-level accounting with clear definitions and extraction formulas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="model-architecture">
+                <h2>v4 Model Architecture</h2>
+
+                <h3>Core Equations</h3>
+                <div class="math-formula">
+                    <strong>Level ℓ Instantaneous Processing Capacity:</strong><br>
+                    C_ℓ(t) = μ_ℓ · k_ℓ · η_ℓ(t) · Beff(t)
+                </div>
+
+                <div class="math-formula">
+                    <strong>Backlog Dynamics:</strong><br>
+                    Q_ℓ(t+Δ) = max{0, Q_ℓ(t) + I_ℓ(t) − C_ℓ(t)·Δ}
+                </div>
+
+                <div class="math-formula">
+                    <strong>Mixed I/O Bandwidth:</strong><br>
+                    Beff = Envelope(ρr, qd, numjobs, bs; Θ_device)
+                </div>
+
+                <h3>Key Components</h3>
+                <ul>
+                    <li><strong>Device Envelope Model:</strong> 4D grid (ρr × qd × jobs × bs) with linear interpolation</li>
+                    <li><strong>Closed Ledger Accounting:</strong> Physical verification of write/read balance</li>
+                    <li><strong>Dynamic Simulation:</strong> Time-varying system behavior modeling</li>
+                    <li><strong>Per-Level Analysis:</strong> Detailed breakdown of I/O operations by LSM level</li>
+                </ul>
+
+                <h3>WA/RA Definitions (Closed Ledger)</h3>
+                <div class="code-block">
+WA_stat = (WAL + Flush + Σ_ℓ CompWrite_ℓ) / UserWrite
+WA_device = DeviceWrite / UserWrite
+RA_comp = (Σ_ℓ CompRead_ℓ) / UserWrite
+                </div>
+                <p><strong>Verification Goal:</strong> Physical closure within ±10% for all terms in the same run.</p>
+            </section>
+
+            <section id="implementation">
+                <h2>Implementation Plan</h2>
+
+                <div class="implementation-plan">
+                    <h3>Module Structure</h3>
+                    
+                    <h4>Core Modules</h4>
+                    <div class="code-block">
+model/envelope.py
+├── class EnvelopeModel
+├── from_json_path() → EnvelopeModel
+└── query(rho_r, qd, numjobs, bs_k, Br=None, Bw=None) → float
+
+model/v4_simulator.py
+├── CLI: --envelope_json, --config_yaml, --out_csv
+├── State: Q[ℓ](GiB)
+├── Input: ρr(t) (heuristic initially)
+└── Output: C_ℓ(t), Beff(t)
+                    </div>
+
+                    <h4>Supporting Tools</h4>
+                    <div class="code-block">
+tools/device_envelope/
+├── run_envelope.sh (fio grid sweep)
+├── parse_envelope.py (JSON → CSV)
+└── fit_envelope.py (CSV → envelope_model.json)
+
+tools/wa_ra_accounting/
+├── parse_rocksdb_log.py (LOG → JSON)
+└── closed_ledger.py (JSON → ledger.csv)
+
+tools/validation/
+└── metrics.py (Truth vs Prediction → MAPE, NRMSE)
+                    </div>
+
+                    <h4>Core Simulation Loop</h4>
+                    <div class="code-block">
+for t in range(steps):
+    rho_r = rho_r_from_backlog(Q)           # heuristic initially
+    Beff = env.query(rho_r, qd, numjobs, bs_k, Br, Bw)
+    C = [ (mu*l.k*eta) * Beff for each level ]
+    update_backlog(Q, inflow, C, dt)
+    dump_csv(...)
+                    </div>
+                </div>
+
+                <h3>Development Sequence</h3>
+                <ol>
+                    <li><strong>Envelope Interpolator:</strong> Pure Python implementation with unit tests</li>
+                    <li><strong>v4 Simulator Skeleton:</strong> Basic framework with smoke tests</li>
+                    <li><strong>LOG Parser:</strong> Minimal functionality for WAL/Flush/Comp Read/Write extraction</li>
+                    <li><strong>Validation Scripts:</strong> Metrics calculation and end-to-end testing</li>
+                    <li><strong>ρr(t) Heuristic Improvement:</strong> LOG-based estimation for better accuracy</li>
+                </ol>
+            </section>
+
+            <section id="validation">
+                <h2>Validation Design</h2>
+
+                <div class="validation-design">
+                    <h3>Experimental Principles</h3>
+                    <ul>
+                        <li><strong>Closed Ledger Verification:</strong> Same-run accounting closure within ±10%</li>
+                        <li><strong>Calibration/Validation Separation:</strong> Phase-A for envelope and constants, Phase-D for holdout evaluation</li>
+                        <li><strong>Measurement Environment Stabilization:</strong> Fixed NVMe temperature/power profiles, kernel/FS mount options</li>
+                    </ul>
+
+                    <h3>Device Envelope Measurement (fio grid)</h3>
+                    <div class="code-block">
+Axes: ρr ∈ {0,25,50,75,100}%, iodepth ∈ {1,4,16,64}, 
+      numjobs ∈ {1,2,4}, bs ∈ {4,64,1024}KiB
+
+Runtime: ramp=10s, runtime=30s, ioengine=io_uring, 
+         direct=1, norandommap=1, randrepeat=0
+
+Output: device_envelope.csv → envelope_model.json (4D grid)
+                    </div>
+
+                    <h3>Accounting (Ledger) Verification</h3>
+                    <div class="code-block">
+Source: RocksDB LOG (+statistics), optionally iostat summary JSON
+Output: ledger.csv (columns: user_write_bytes, wal, flush, 
+        Σcomp_write, Σcomp_read, device_write, device_read, 
+        WA/RA derived values)
+Pass Criteria: WA_stat ≈ WA_device (±10%), no GiB/GB conflicts
+                    </div>
+
+                    <h3>v4 Prediction vs Measurement (Holdout)</h3>
+                    <div class="code-block">
+Truth: ground_truth.csv (time-throughput)
+Pred: sim_out.csv
+Metrics: MAPE, NRMSE, (optional) Bland–Altman bias check
+Acceptance: MAPE ≤ 10–15%
+                    </div>
+                </div>
+            </section>
+
+            <section id="timeline">
+                <h2>Development Timeline</h2>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-day">D+1</div>
+                        <div>fio grid measurement → envelope_model.json completion</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-day">D+2</div>
+                        <div>ledger.csv closure verification (parser enhancement if needed)</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-day">D+3</div>
+                        <div>v4 simulator integration and initial calibration (μ, k, η, clamp)</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-day">D+4</div>
+                        <div>Holdout validation (MAPE/NRMSE), documentation and figure updates</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-day">D+5</div>
+                        <div>Release packaging (Plan/Spec/HTML + data/options/scripts)</div>
+                    </div>
+                </div>
+
+                <h3>Acceptance Criteria</h3>
+                <ul>
+                    <li><strong>(A1) Same-run ledger closure:</strong> |WA_stat − WA_device| ≤ 10%</li>
+                    <li><strong>(A2) Holdout MAPE:</strong> ≤ 10–15% (internal benchmark)</li>
+                    <li><strong>(A3) Documentation consistency:</strong> 100% unit/symbol consistency</li>
+                    <li><strong>(A4) Reproducibility metadata:</strong> Options/commit/command-line appendix fixed</li>
+                </ul>
+            </section>
+
+            <section id="related-work">
+                <h2>Related Work</h2>
+                
+                <h3>Foundations & Surveys</h3>
+                <ul>
+                    <li><strong>LSM-tree (1996):</strong> O'Neil et al. - Introduces the LSM-tree paradigm with batched, out-of-place writes and periodic merges for write-optimized indexing.</li>
+                    <li><strong>LSM Survey (2020):</strong> Luo et al. - Comprehensive survey of LSM-based storage techniques, design choices, and trade-offs.</li>
+                    <li><strong>Optimized LSM Structures (2024):</strong> Liu et al. - Explores configuration space for optimal LSM structural designs automatically.</li>
+                </ul>
+
+                <h3>Compaction Theory & Tuning</h3>
+                <ul>
+                    <li><strong>bLSM (2012):</strong> Sears et al. - Merge scheduler and Bloom filter design for smooth LSM performance.</li>
+                    <li><strong>Monkey (2017):</strong> Dayan et al. - Optimal level-wise Bloom bits and merge policy for near-Pareto optimal read-write trade-offs.</li>
+                    <li><strong>Dostoevsky (2018):</strong> Dayan et al. - Adaptive removal of superfluous merging, bridging leveled and tiered compaction.</li>
+                    <li><strong>Compaction Design Space (2021):</strong> Sarkar et al. - Formalizes compaction design space with empirical evaluation.</li>
+                </ul>
+
+                <h3>Write Amplification & KV-Separation</h3>
+                <ul>
+                    <li><strong>WiscKey (2016):</strong> Lu et al. - Key-value separation to avoid rewriting large values during compaction.</li>
+                    <li><strong>PebblesDB (2017):</strong> Raju et al. - Fragmented LSM trees reduce data re-write during compaction.</li>
+                    <li><strong>HashKV (2018/2019):</strong> Chan et al. - Hash-based grouping for update-efficient KV-separation.</li>
+                    <li><strong>MatrixKV (2020):</strong> Yao et al. - NVM matrix container to absorb L0/L1 pressure, reducing write stalls.</li>
+                </ul>
+
+                <h3>Stability, Stall & Scheduling</h3>
+                <ul>
+                    <li><strong>TRIAD (2017):</strong> Balmau et al. - System co-design of memory, disk, and log to alleviate write amplification.</li>
+                    <li><strong>NoveLSM (2018):</strong> Kannan et al. - Redesigns LSM for NVM with persistent data structures and in-place commits.</li>
+                    <li><strong>Performance Stability (2019):</strong> Luo et al. - Studies performance stability and compaction scheduling choices.</li>
+                    <li><strong>SILK (2019):</strong> Balmau et al. - I/O scheduling for flush/compaction to prevent latency spikes.</li>
+                </ul>
+
+                <h3>Production Systems & Workload Modeling</h3>
+                <ul>
+                    <li><strong>X-Engine (2019):</strong> Huang et al. - Alibaba's tiered LSM with engineering optimizations for large-scale OLTP.</li>
+                    <li><strong>RocksDB Characterization (2020):</strong> Cao et al. - Characterizes real RocksDB workloads and proposes modeling methodology.</li>
+                    <li><strong>MyRocks (2020):</strong> Matsunobu et al. - Facebook's production-grade LSM engine in MySQL.</li>
+                    <li><strong>RocksDB Evolution (2021):</strong> Dong et al. - Engineering narrative of RocksDB evolution and priority shifts.</li>
+                </ul>
+            </section>
+
+            <section id="conclusion">
+                <h2>Conclusion</h2>
+                <p>PutModel v4 represents a comprehensive evolution in LSM-tree performance modeling, addressing critical limitations in previous versions through:</p>
+                <ul>
+                    <li><strong>Dynamic Modeling:</strong> Time-varying system behavior with accurate device characterization</li>
+                    <li><strong>Rigorous Validation:</strong> Closed ledger accounting and holdout evaluation</li>
+                    <li><strong>Practical Implementation:</strong> Modular design with clear development timeline</li>
+                    <li><strong>Production Readiness:</strong> Based on extensive related work and real-world validation</li>
+                </ul>
+                <p>The v4 model provides a solid foundation for predicting sustainable write throughput in LSM-tree storage systems, with clear implementation guidelines and validation criteria for production deployment.</p>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 RocksDB Put-Rate Model v4. All rights reserved.</p>
+            <p>Last updated: September 7, 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

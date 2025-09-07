@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocksDB Put-Rate Model v4: Implementation Guide</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .version-badge {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .implementation-section {
+            background: #e8f5e8;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .code-example {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .module-structure {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .timeline {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .timeline-day {
+            background: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-right: 15px;
+            min-width: 60px;
+            text-align: center;
+        }
+        .risk-box {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="version-badge">PutModel v4.0 - Implementation Guide</div>
+            <h1>RocksDB Put-Rate Model v4: 구현 가이드</h1>
+            <p>이 문서는 PutModel v4의 구체적인 구현 방법, 코드 구조, 개발 일정, 그리고 실제 사용법을 정리합니다. <strong>Device Envelope Modeling</strong>, <strong>Closed Ledger Accounting</strong>, <strong>Dynamic Simulation</strong>의 실제 구현을 다룹니다.</p>
+            <blockquote>
+                <p>이론적 배경은 <code>PutModel_v4_Theoretical.html</code>을, 실험 결과는 <code>PutModel_v4_Experimental.html</code>을 참조하세요.</p>
+            </blockquote>
+        </header>
+
+        <div class="content-wrapper">
+            <nav class="toc-sidebar">
+                <h3>목차</h3>
+                <ul>
+                    <li><a href="#overview">0) 구현 개요</a></li>
+                    <li><a href="#module-structure">1) 모듈 구조</a></li>
+                    <li><a href="#device-envelope">2) Device Envelope 구현</a></li>
+                    <li><a href="#closed-ledger">3) Closed Ledger 구현</a></li>
+                    <li><a href="#dynamic-simulation">4) Dynamic Simulation 구현</a></li>
+                    <li><a href="#validation-pipeline">5) Validation Pipeline</a></li>
+                    <li><a href="#development-timeline">6) 개발 일정</a></li>
+                    <li><a href="#usage-examples">7) 사용 예제</a></li>
+                    <li><a href="#testing">8) 테스트 전략</a></li>
+                    <li><a href="#troubleshooting">9) 문제 해결</a></li>
+                    <li><a href="#deployment">10) 배포 가이드</a></li>
+                </ul>
+            </nav>
+            <main>
+                <section id="overview">
+                    <h2>0) 구현 개요</h2>
+                    
+                    <div class="implementation-section">
+                        <h3>v4 구현의 핵심 원칙</h3>
+                        <ul>
+                            <li><strong>모듈화:</strong> 각 구성요소를 독립적으로 개발하고 테스트</li>
+                            <li><strong>재현성:</strong> 모든 실험과 결과를 재현 가능하게 구현</li>
+                            <li><strong>확장성:</strong> 새로운 장치나 워크로드에 쉽게 적응</li>
+                            <li><strong>검증성:</strong> 각 단계에서 엄격한 검증 수행</li>
+                        </ul>
+                    </div>
+
+                    <h3>전체 아키텍처</h3>
+                    <div class="code-example">
+model/
+├── envelope.py          # Device Envelope Modeling
+├── v4_simulator.py      # Dynamic Simulation
+└── closed_ledger.py     # Accounting System
+
+tools/
+├── device_envelope/     # fio 그리드 스윕 도구
+├── wa_ra_accounting/    # LOG 파싱 도구
+└── validation/          # 검증 도구
+
+experiments/
+├── phase_a/            # 장치 캘리브레이션
+├── phase_b/            # 전이 관찰
+├── phase_c/            # 레벨 분해
+├── phase_d/            # 경계 검증
+└── phase_e/            # 민감도 분석
+                    </div>
+                </section>
+
+                <section id="module-structure">
+                    <h2>1) 모듈 구조</h2>
+                    
+                    <div class="module-structure">
+                        <h3>핵심 모듈</h3>
+                        
+                        <h4>model/envelope.py</h4>
+                        <div class="code-example">
+class EnvelopeModel:
+    """4D 장치 엔벌롭 모델"""
+    
+    def __init__(self, grid_data: Dict):
+        self.rho_r_axis = grid_data['rho_r_axis']
+        self.iodepth_axis = grid_data['iodepth_axis'] 
+        self.numjobs_axis = grid_data['numjobs_axis']
+        self.bs_axis = grid_data['bs_axis']
+        self.bandwidth_grid = grid_data['bandwidth_grid']
+        
+    @classmethod
+    def from_json_path(cls, path: str) -> "EnvelopeModel":
+        """JSON 파일에서 엔벌롭 모델 로드"""
+        pass
+        
+    def query(self, rho_r: float, qd: int, numjobs: int, bs_k: int,
+              Br: float = None, Bw: float = None) -> float:
+        """4D 선형보간으로 Beff 계산"""
+        pass
+                        </div>
+
+                        <h4>model/v4_simulator.py</h4>
+                        <div class="code-example">
+class V4Simulator:
+    """v4 동적 시뮬레이터"""
+    
+    def __init__(self, envelope_model: EnvelopeModel, config: Dict):
+        self.envelope = envelope_model
+        self.config = config
+        self.levels = config['levels']
+        self.Q = {level: 0.0 for level in self.levels}
+        
+    def simulate(self, steps: int, dt: float = 1.0):
+        """동적 시뮬레이션 실행"""
+        pass
+        
+    def _estimate_rho_r(self) -> float:
+        """ρr 추정 (휴리스틱 → LOG 기반 학습)"""
+        pass
+                        </div>
+
+                        <h4>model/closed_ledger.py</h4>
+                        <div class="code-example">
+class ClosedLedger:
+    """회계 폐곡선 검증 시스템"""
+    
+    def __init__(self):
+        self.user_write_bytes = 0
+        self.wal_bytes = 0
+        self.flush_bytes = 0
+        self.comp_write_bytes = {}
+        self.comp_read_bytes = {}
+        
+    def calculate_wa_ra(self):
+        """WA/RA 계산"""
+        pass
+        
+    def verify_closure(self, tolerance=0.1):
+        """폐곡선 검증 (±10%)"""
+        pass
+                        </div>
+                    </div>
+                </section>
+
+                <section id="device-envelope">
+                    <h2>2) Device Envelope 구현</h2>
+                    
+                    <h3>2.1 fio 그리드 스윕</h3>
+                    <div class="code-example">
+#!/bin/bash
+# tools/device_envelope/run_envelope.sh
+
+DEVICE="/dev/nvme1n1p1"
+OUTPUT_DIR="device_envelope_results"
+
+# 그리드 스윕 실행
+for rho_r in 0 25 50 75 100; do
+    for iodepth in 1 4 16 64; do
+        for numjobs in 1 2 4; do
+            for bs_k in 4 64 1024; do
+                echo "Testing: rho_r=${rho_r}%, iodepth=${iodepth}, numjobs=${numjobs}, bs=${bs_k}K"
+                
+                fio --name=mixed_test \
+                    --filename=${DEVICE} \
+                    --ioengine=io_uring \
+                    --direct=1 \
+                    --rw=randrw \
+                    --rwmixread=${rho_r} \
+                    --iodepth=${iodepth} \
+                    --numjobs=${numjobs} \
+                    --bs=${bs_k}k \
+                    --runtime=30 \
+                    --ramp_time=10 \
+                    --norandommap=1 \
+                    --randrepeat=0 \
+                    --output-format=json \
+                    --output=${OUTPUT_DIR}/result_${rho_r}_${iodepth}_${numjobs}_${bs_k}.json
+            done
+        done
+    done
+done
+                    </div>
+
+                    <h3>2.2 결과 파싱 및 모델 생성</h3>
+                    <div class="code-example">
+# tools/device_envelope/parse_envelope.py
+
+import json
+import numpy as np
+from scipy.interpolate import RegularGridInterpolator
+
+def parse_fio_results(output_dir: str) -> Dict:
+    """fio 결과를 파싱하여 4D 그리드 생성"""
+    results = {}
+    
+    for rho_r in [0, 25, 50, 75, 100]:
+        for iodepth in [1, 4, 16, 64]:
+            for numjobs in [1, 2, 4]:
+                for bs_k in [4, 64, 1024]:
+                    filename = f"result_{rho_r}_{iodepth}_{numjobs}_{bs_k}.json"
+                    filepath = os.path.join(output_dir, filename)
+                    
+                    with open(filepath, 'r') as f:
+                        data = json.load(f)
+                        
+                    # 대역폭 추출
+                    bandwidth = data['jobs'][0]['write']['bw'] + data['jobs'][0]['read']['bw']
+                    results[(rho_r, iodepth, numjobs, bs_k)] = bandwidth
+    
+    return results
+
+def create_envelope_model(results: Dict) -> EnvelopeModel:
+    """4D 그리드에서 엔벌롭 모델 생성"""
+    # 축 정의
+    rho_r_axis = np.array([0, 25, 50, 75, 100])
+    iodepth_axis = np.array([1, 4, 16, 64])
+    numjobs_axis = np.array([1, 2, 4])
+    bs_axis = np.array([4, 64, 1024])
+    
+    # 4D 그리드 생성
+    bandwidth_grid = np.zeros((5, 4, 3, 3))
+    
+    for i, rho_r in enumerate(rho_r_axis):
+        for j, iodepth in enumerate(iodepth_axis):
+            for k, numjobs in enumerate(numjobs_axis):
+                for l, bs_k in enumerate(bs_axis):
+                    bandwidth_grid[i, j, k, l] = results[(rho_r, iodepth, numjobs, bs_k)]
+    
+    return EnvelopeModel({
+        'rho_r_axis': rho_r_axis,
+        'iodepth_axis': iodepth_axis,
+        'numjobs_axis': numjobs_axis,
+        'bs_axis': bs_axis,
+        'bandwidth_grid': bandwidth_grid
+    })
+                    </div>
+
+                    <h3>2.3 4D 선형보간 구현</h3>
+                    <div class="code-example">
+def _interpolate_4d(self, rho_r, qd, numjobs, bs_k):
+    """4D 선형보간 구현"""
+    from scipy.interpolate import RegularGridInterpolator
+    
+    # 보간기 생성
+    interpolator = RegularGridInterpolator(
+        (self.rho_r_axis, self.iodepth_axis, self.numjobs_axis, self.bs_axis),
+        self.bandwidth_grid,
+        method='linear',
+        bounds_error=False,
+        fill_value=None
+    )
+    
+    # 보간 실행
+    point = np.array([rho_r, qd, numjobs, bs_k])
+    beff = interpolator(point)
+    
+    return float(beff)
+                    </div>
+                </section>
+
+                <section id="closed-ledger">
+                    <h2>3) Closed Ledger 구현</h2>
+                    
+                    <h3>3.1 RocksDB LOG 파서</h3>
+                    <div class="code-example">
+# tools/wa_ra_accounting/parse_rocksdb_log.py
+
+import re
+import json
+from typing import Dict, List
+
+class RocksDBLogParser:
+    def __init__(self, log_file: str):
+        self.log_file = log_file
+        self.ledger = ClosedLedger()
+        
+    def parse_log(self):
+        """LOG 파일에서 I/O 통계 추출"""
+        with open(self.log_file, 'r') as f:
+            for line in f:
+                self._parse_line(line)
+    
+    def _parse_line(self, line: str):
+        """개별 로그 라인 파싱"""
+        # WAL 쓰기 패턴
+        if "WAL write" in line:
+            self.ledger.wal_bytes += self._extract_bytes(line)
+        
+        # Flush 패턴
+        elif "Flush" in line:
+            self.ledger.flush_bytes += self._extract_bytes(line)
+        
+        # Compaction 패턴
+        elif "Compaction" in line:
+            level, write_bytes, read_bytes = self._extract_compaction(line)
+            self.ledger.comp_write_bytes[level] = write_bytes
+            self.ledger.comp_read_bytes[level] = read_bytes
+    
+    def _extract_bytes(self, line: str) -> int:
+        """바이트 수 추출"""
+        pattern = r'(\d+)\s*bytes'
+        match = re.search(pattern, line)
+        return int(match.group(1)) if match else 0
+    
+    def _extract_compaction(self, line: str) -> tuple:
+        """Compaction 정보 추출"""
+        # Level 추출
+        level_match = re.search(r'Level-(\d+)', line)
+        level = level_match.group(1) if level_match else 'Unknown'
+        
+        # Write/Read 바이트 추출
+        write_match = re.search(r'(\d+)\s*write', line)
+        read_match = re.search(r'(\d+)\s*read', line)
+        
+        write_bytes = int(write_match.group(1)) if write_match else 0
+        read_bytes = int(read_match.group(1)) if read_match else 0
+        
+        return level, write_bytes, read_bytes
+                    </div>
+
+                    <h3>3.2 폐곡선 검증</h3>
+                    <div class="code-example">
+def calculate_wa_ra(self):
+    """WA/RA 계산"""
+    total_comp_write = sum(self.comp_write_bytes.values())
+    total_comp_read = sum(self.comp_read_bytes.values())
+    
+    # WA 계산
+    wa_stat = (self.wal_bytes + self.flush_bytes + total_comp_write) / self.user_write_bytes
+    wa_device = self.device_write_bytes / self.user_write_bytes
+    
+    # RA 계산  
+    ra_comp = total_comp_read / self.user_write_bytes
+    ra_runtime = self.device_read_bytes / self.user_write_bytes
+    
+    return {
+        'wa_stat': wa_stat,
+        'wa_device': wa_device,
+        'ra_comp': ra_comp,
+        'ra_runtime': ra_runtime,
+        'closure_error': abs(wa_stat - wa_device) / wa_stat
+    }
+
+def verify_closure(self, tolerance=0.1):
+    """폐곡선 검증 (±10%)"""
+    metrics = self.calculate_wa_ra()
+    return metrics['closure_error'] <= tolerance
+                    </div>
+                </section>
+
+                <section id="dynamic-simulation">
+                    <h2>4) Dynamic Simulation 구현</h2>
+                    
+                    <h3>4.1 핵심 시뮬레이션 루프</h3>
+                    <div class="code-example">
+def simulate(self, steps: int, dt: float = 1.0):
+    """동적 시뮬레이션 실행"""
+    results = []
+    
+    for t in range(steps):
+        # 1. 현재 상태에서 ρr 추정
+        rho_r = self._estimate_rho_r()
+        
+        # 2. 엔벌롭에서 Beff 조회
+        beff = self.envelope.query(
+            rho_r=rho_r,
+            qd=self.config['iodepth'],
+            numjobs=self.config['numjobs'],
+            bs_k=self.config['bs_k']
+        )
+        
+        # 3. 레벨별 처리용량 계산
+        C = {}
+        for level in self.levels:
+            eta = self._calculate_eta(level, t)
+            C[level] = self.mu[level] * self.k[level] * eta * beff
+        
+        # 4. Backlog 업데이트
+        self._update_backlog(C, dt)
+        
+        # 5. 결과 기록
+        results.append({
+            't': t * dt,
+            'rho_r': rho_r,
+            'beff': beff,
+            'Q': self.Q.copy(),
+            'C': C.copy()
+        })
+    
+    return results
+                    </div>
+
+                    <h3>4.2 ρr 추정 알고리즘</h3>
+                    <div class="code-example">
+def _estimate_rho_r(self) -> float:
+    """ρr 추정 (초기: 휴리스틱, 추후: LOG 기반 학습)"""
+    # 간단한 휴리스틱: L0 백로그 비율 기반
+    total_backlog = sum(self.Q.values())
+    if total_backlog == 0:
+        return 0.5  # 기본값
+    
+    l0_ratio = self.Q.get('L0', 0) / total_backlog
+    return min(1.0, l0_ratio * 2)  # L0 비율이 높을수록 읽기 증가
+
+def _calculate_eta(self, level: str, t: int) -> float:
+    """시간가변 효율 계산"""
+    import math
+    
+    # 기본 효율성
+    base_efficiency = 0.8
+    
+    # 경합 효과
+    contention = min(1.0, sum(self.Q.values()) / 100.0)  # 100GiB 기준
+    
+    # 시간 효과 (주기적 변동)
+    time_factor = 1.0 + 0.1 * math.sin(t * 0.1)
+    
+    return base_efficiency * (1.0 - contention) * time_factor
+                    </div>
+
+                    <h3>4.3 Backlog 동역학</h3>
+                    <div class="code-example">
+def _update_backlog(self, C: Dict, dt: float):
+    """Backlog 동역학 업데이트"""
+    for level in self.levels:
+        # 유입량 (상위 레벨에서)
+        inflow = self._calculate_inflow(level)
+        
+        # 처리량
+        outflow = C[level] * dt
+        
+        # Backlog 업데이트
+        self.Q[level] = max(0, self.Q[level] + inflow - outflow)
+
+def _calculate_inflow(self, level: str) -> float:
+    """레벨별 유입량 계산"""
+    if level == 'L0':
+        # L0은 사용자 입력에서 직접
+        return self.config.get('user_input_rate', 0.0)
+    else:
+        # 상위 레벨의 outflow가 하위 레벨의 inflow
+        upper_level = f"L{int(level[1:]) - 1}"
+        return self.Q.get(upper_level, 0.0) * 0.1  # 간단한 모델
+                    </div>
+                </section>
+
+                <section id="validation-pipeline">
+                    <h2>5) Validation Pipeline</h2>
+                    
+                    <h3>5.1 5단계 검증 파이프라인</h3>
+                    <div class="code-example">
+class V4ValidationPipeline:
+    def __init__(self, config_path: str):
+        self.config = self._load_config(config_path)
+        
+    def run_validation(self):
+        """전체 검증 파이프라인 실행"""
+        # Phase-A: 장치 캘리브레이션
+        envelope_model = self.phase_a_device_calibration()
+        
+        # Phase-B: 전이 관찰
+        transition_data = self.phase_b_transition_observation()
+        
+        # Phase-C: 레벨 분해
+        level_breakdown = self.phase_c_level_breakdown()
+        
+        # Phase-D: 경계 검증 (홀드아웃)
+        validation_results = self.phase_d_boundary_validation(envelope_model)
+        
+        # Phase-E: 민감도 분석
+        sensitivity_results = self.phase_e_sensitivity_analysis()
+        
+        return {
+            'envelope_model': envelope_model,
+            'transition_data': transition_data,
+            'level_breakdown': level_breakdown,
+            'validation_results': validation_results,
+            'sensitivity_results': sensitivity_results
+        }
+                    </div>
+
+                    <h3>5.2 검증 메트릭 계산</h3>
+                    <div class="code-example">
+def _calculate_validation_metrics(self, predicted, actual):
+    """검증 메트릭 계산"""
+    import numpy as np
+    
+    # MAPE (Mean Absolute Percentage Error)
+    mape = np.mean(np.abs((actual - predicted) / actual)) * 100
+    
+    # NRMSE (Normalized Root Mean Square Error)
+    nrmse = np.sqrt(np.mean((actual - predicted) ** 2)) / np.mean(actual)
+    
+    # Bland-Altman bias
+    bias = np.mean(predicted - actual)
+    
+    return {
+        'mape': mape,
+        'nrmse': nrmse,
+        'bias': bias,
+        'acceptance': mape <= 15.0  # 15% 이내 수용
+    }
+                    </div>
+                </section>
+
+                <section id="development-timeline">
+                    <h2>6) 개발 일정</h2>
+                    
+                    <div class="timeline">
+                        <h3>5일 개발 일정</h3>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-day">D+1</div>
+                            <div>
+                                <strong>fio 그리드 측정 → envelope_model.json 완성</strong><br>
+                                • 180개 fio 실행 완료<br>
+                                • 4D 보간 시스템 구축<br>
+                                • 엔벌롭 모델 검증
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-day">D+2</div>
+                            <div>
+                                <strong>ledger.csv 닫힘 검증</strong><br>
+                                • LOG 파서 구현<br>
+                                • 폐곡선 검증 (±10%)<br>
+                                • 회계 시스템 테스트
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-day">D+3</div>
+                            <div>
+                                <strong>v4 시뮬레이터 통합 및 캘리브레이션</strong><br>
+                                • 시뮬레이터 구현<br>
+                                • μ, k, η 계수 보정<br>
+                                • End-to-end 테스트
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-day">D+4</div>
+                            <div>
+                                <strong>홀드아웃 검증 (MAPE/NRMSE)</strong><br>
+                                • 검증 파이프라인 실행<br>
+                                • 성능 메트릭 계산<br>
+                                • 수용 기준 확인
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-day">D+5</div>
+                            <div>
+                                <strong>릴리스 패키징</strong><br>
+                                • 문서화 완료<br>
+                                • 패키지 빌드<br>
+                                • 배포 준비
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="usage-examples">
+                    <h2>7) 사용 예제</h2>
+                    
+                    <h3>7.1 기본 사용법</h3>
+                    <div class="code-example">
+# 1. Device Envelope 모델 로드
+envelope = EnvelopeModel.from_json_path('envelope_model.json')
+
+# 2. v4 시뮬레이터 설정
+config = {
+    'levels': ['L0', 'L1', 'L2', 'L3', 'L4'],
+    'iodepth': 16,
+    'numjobs': 4,
+    'bs_k': 64,
+    'mu': {'L0': 0.9, 'L1': 0.8, 'L2': 0.7, 'L3': 0.6, 'L4': 0.5},
+    'k': {'L0': 1.0, 'L1': 0.9, 'L2': 0.8, 'L3': 0.7, 'L4': 0.6}
+}
+
+# 3. 시뮬레이션 실행
+simulator = V4Simulator(envelope, config)
+results = simulator.simulate(steps=1000, dt=1.0)
+
+# 4. 결과 분석
+for result in results[-10:]:  # 마지막 10개 결과
+    print(f"t={result['t']:.1f}s, ρr={result['rho_r']:.2f}, Beff={result['beff']:.1f} MiB/s")
+                    </div>
+
+                    <h3>7.2 Closed Ledger 검증</h3>
+                    <div class="code-example">
+# 1. LOG 파일 파싱
+parser = RocksDBLogParser('rocksdb.log')
+parser.parse_log()
+
+# 2. 폐곡선 검증
+if parser.ledger.verify_closure(tolerance=0.1):
+    print("✓ 폐곡선 검증 통과 (±10%)")
+else:
+    print("✗ 폐곡선 검증 실패")
+    metrics = parser.ledger.calculate_wa_ra()
+    print(f"WA_stat: {metrics['wa_stat']:.2f}")
+    print(f"WA_device: {metrics['wa_device']:.2f}")
+    print(f"오차: {metrics['closure_error']:.1%}")
+                    </div>
+
+                    <h3>7.3 검증 파이프라인 실행</h3>
+                    <div class="code-example">
+# 전체 검증 파이프라인 실행
+pipeline = V4ValidationPipeline('config.yaml')
+results = pipeline.run_validation()
+
+# 결과 요약
+print("=== 검증 결과 요약 ===")
+print(f"Envelope 모델: {results['envelope_model'] is not None}")
+print(f"전이 데이터: {len(results['transition_data'])} 포인트")
+print(f"레벨 분해: {len(results['level_breakdown'])} 레벨")
+
+validation = results['validation_results']
+for i, result in enumerate(validation):
+    print(f"홀드아웃 {i+1}: MAPE={result['metrics']['mape']:.1f}%, 수용={result['metrics']['acceptance']}")
+                    </div>
+                </section>
+
+                <section id="testing">
+                    <h2>8) 테스트 전략</h2>
+                    
+                    <h3>8.1 단위 테스트</h3>
+                    <div class="code-example">
+# tests/test_envelope.py
+import unittest
+from model.envelope import EnvelopeModel
+
+class TestEnvelopeModel(unittest.TestCase):
+    def setUp(self):
+        self.envelope = EnvelopeModel.from_json_path('test_envelope.json')
+    
+    def test_query_within_bounds(self):
+        """격자 내 쿼리 테스트"""
+        beff = self.envelope.query(rho_r=50, qd=16, numjobs=4, bs_k=64)
+        self.assertGreater(beff, 0)
+        self.assertLessEqual(beff, 3000)  # 물리적 상한
+    
+    def test_query_outside_bounds(self):
+        """격자 외 쿼리 테스트 (외삽)"""
+        beff = self.envelope.query(rho_r=150, qd=100, numjobs=8, bs_k=2048)
+        # 외삽 경고가 발생해야 함
+        self.assertIsNotNone(beff)
+    
+    def test_clamp_physical_limits(self):
+        """물리적 상한 클램프 테스트"""
+        beff = self.envelope.query(rho_r=50, qd=16, numjobs=4, bs_k=64, Br=1000, Bw=2000)
+        self.assertLessEqual(beff, 1000)  # min(Br, Bw)
+                    </div>
+
+                    <h3>8.2 통합 테스트</h3>
+                    <div class="code-example">
+# tests/test_integration.py
+class TestV4Integration(unittest.TestCase):
+    def test_end_to_end_simulation(self):
+        """End-to-end 시뮬레이션 테스트"""
+        # 1. 엔벌롭 모델 로드
+        envelope = EnvelopeModel.from_json_path('test_envelope.json')
+        
+        # 2. 시뮬레이터 설정
+        config = self._get_test_config()
+        simulator = V4Simulator(envelope, config)
+        
+        # 3. 시뮬레이션 실행
+        results = simulator.simulate(steps=100, dt=1.0)
+        
+        # 4. 결과 검증
+        self.assertEqual(len(results), 100)
+        self.assertTrue(all('t' in r for r in results))
+        self.assertTrue(all('beff' in r for r in results))
+        
+        # 5. 수렴성 검증
+        final_backlog = sum(simulator.Q.values())
+        self.assertLess(final_backlog, 1000)  # 안정화 확인
+                    </div>
+
+                    <h3>8.3 성능 테스트</h3>
+                    <div class="code-example">
+# tests/test_performance.py
+class TestPerformance(unittest.TestCase):
+    def test_simulation_speed(self):
+        """시뮬레이션 속도 테스트"""
+        import time
+        
+        envelope = EnvelopeModel.from_json_path('test_envelope.json')
+        config = self._get_test_config()
+        simulator = V4Simulator(envelope, config)
+        
+        start_time = time.time()
+        results = simulator.simulate(steps=10000, dt=0.1)
+        end_time = time.time()
+        
+        duration = end_time - start_time
+        steps_per_second = 10000 / duration
+        
+        self.assertGreater(steps_per_second, 1000)  # 1000 steps/sec 이상
+        print(f"시뮬레이션 속도: {steps_per_second:.0f} steps/sec")
+                    </div>
+                </section>
+
+                <section id="troubleshooting">
+                    <h2>9) 문제 해결</h2>
+                    
+                    <div class="risk-box">
+                        <h3>주요 위험요소 및 대응방안</h3>
+                        
+                        <h4>1. LOG 포맷 차이</h4>
+                        <ul>
+                            <li><strong>문제:</strong> RocksDB 버전별 로그 포맷 차이</li>
+                            <li><strong>해결:</strong> 다중 버전 정규식 지원, 샘플 기반 유닛테스트</li>
+                        </ul>
+                        
+                        <h4>2. NVMe 스로틀/온도</h4>
+                        <ul>
+                            <li><strong>문제:</strong> 연속 실행 시 성능 저하</li>
+                            <li><strong>해결:</strong> 런 간 휴지, 전력모드 고정, 온도 로그 수집</li>
+                        </ul>
+                        
+                        <h4>3. 엔벌롭 외삽 위험</h4>
+                        <ul>
+                            <li><strong>문제:</strong> 격자 범위 초과 시 부정확한 결과</li>
+                            <li><strong>해결:</strong> 보간 격자 확장 또는 최근접 클램프, 경고 출력</li>
+                        </ul>
+                        
+                        <h4>4. 순환 검증 재발</h4>
+                        <ul>
+                            <li><strong>문제:</strong> 캘리브레이션과 검증 혼동</li>
+                            <li><strong>해결:</strong> Phase-A/Phase-D 폴더 분리, 교차사용 방지 체크</li>
+                        </ul>
+                    </div>
+
+                    <h3>일반적인 문제와 해결책</h3>
+                    <ul>
+                        <li><strong>메모리 부족:</strong> 배치 크기 조정, 스트리밍 처리</li>
+                        <li><strong>느린 시뮬레이션:</strong> 병렬화, 최적화된 알고리즘</li>
+                        <li><strong>부정확한 결과:</strong> 파라미터 검증, 단위 확인</li>
+                        <li><strong>재현성 문제:</strong> 시드 고정, 환경 일관성</li>
+                    </ul>
+                </section>
+
+                <section id="deployment">
+                    <h2>10) 배포 가이드</h2>
+                    
+                    <h3>10.1 패키지 구조</h3>
+                    <div class="code-example">
+putmodel_v4/
+├── model/
+│   ├── __init__.py
+│   ├── envelope.py
+│   ├── v4_simulator.py
+│   └── closed_ledger.py
+├── tools/
+│   ├── device_envelope/
+│   ├── wa_ra_accounting/
+│   └── validation/
+├── experiments/
+│   ├── phase_a/
+│   ├── phase_b/
+│   ├── phase_c/
+│   ├── phase_d/
+│   └── phase_e/
+├── tests/
+├── docs/
+├── requirements.txt
+├── setup.py
+└── README.md
+                    </div>
+
+                    <h3>10.2 설치 방법</h3>
+                    <div class="code-example">
+# 1. 저장소 클론
+git clone https://github.com/your-repo/putmodel-v4.git
+cd putmodel-v4
+
+# 2. 가상환경 생성
+python3 -m venv venv
+source venv/bin/activate  # Linux/Mac
+# venv\Scripts\activate  # Windows
+
+# 3. 의존성 설치
+pip install -r requirements.txt
+
+# 4. 개발 모드 설치
+pip install -e .
+
+# 5. 테스트 실행
+python -m pytest tests/
+                    </div>
+
+                    <h3>10.3 설정 파일</h3>
+                    <div class="code-example">
+# config.yaml
+device:
+  path: "/dev/nvme1n1p1"
+  envelope_model: "envelope_model.json"
+
+simulation:
+  levels: ["L0", "L1", "L2", "L3", "L4"]
+  steps: 1000
+  dt: 1.0
+  
+validation:
+  tolerance: 0.1
+  mape_threshold: 15.0
+  
+experiments:
+  phase_a:
+    fio_runs: 180
+    runtime: 30
+  phase_d:
+    holdout_configs: 10
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 RocksDB Put-Rate Model v4. All rights reserved.</p>
+            <p>Last updated: September 7, 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

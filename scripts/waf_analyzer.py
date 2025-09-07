@@ -11,15 +11,15 @@ import json
 from pathlib import Path
 import matplotlib.pyplot as plt
 
-# Set font size to 18pt for better readability
+# Set font size to 24pt for better readability (similar to LaTeX caption size)
 plt.rcParams.update({
-    'font.size': 18,
-    'axes.titlesize': 20,
-    'axes.labelsize': 18,
-    'xtick.labelsize': 16,
-    'ytick.labelsize': 16,
-    'legend.fontsize': 16,
-    'figure.titlesize': 22
+    'font.size': 24,
+    'axes.titlesize': 26,
+    'axes.labelsize': 24,
+    'xtick.labelsize': 22,
+    'ytick.labelsize': 22,
+    'legend.fontsize': 22,
+    'figure.titlesize': 28
 })
 
 def parse_compaction_stats(log_file):

@@ -624,7 +624,9 @@ We developed comprehensive visualization tools to analyze model behavior across 
 
 \textbf{Model v3 (Dynamic Model):} Our current model represents a significant advancement, incorporating dynamic parameters, harmonic mean mixed I/O constraints, per-level capacity limitations, and sophisticated stall modeling. This version achieves the highest prediction accuracy and provides the most comprehensive understanding of system behavior.
 
-Figure \ref{fig:model_comparison} shows the performance comparison between these different model versions, demonstrating the significant improvement in prediction accuracy from v1 to v3. The comparison reveals how each iteration addresses specific performance modeling challenges, with v3 achieving near-perfect accuracy (0.0\% error) compared to the substantial errors in earlier versions.
+Figure \ref{fig:simulation_vs_real} provides a comprehensive comparison between simulation data and actual Phase-B experiment results, revealing critical insights about model performance in real-world scenarios. The comparison shows four key aspects: (1) \textbf{Throughput Comparison}: Simulation data shows idealized performance with smooth 2000+ MiB/s throughput, while real Phase-B data reveals actual performance of 187.1 MiB/s with significant variability and periodic drops. (2) \textbf{Model Accuracy Gap}: Simulation shows high accuracy (65-99.5\%), while real experiment results show much lower accuracy (32.1-67.8\%), highlighting the gap between idealized and actual performance. (3) \textbf{WA Measurement Discrepancy}: Simulation assumes WA of 2.5, while Phase-B STATISTICS shows 1.02 and Phase-C LOG shows 2.87, indicating measurement method inconsistencies. (4) \textbf{Error Distribution}: Simulation errors follow a normal distribution around zero, while real experiment errors show a skewed distribution with 67.8\% average error, demonstrating the challenges of real-world modeling.
+
+Figure \ref{fig:model_evolution} illustrates the evolution of model accuracy from v1 to v3, comparing simulation results with real experiment data. The analysis reveals that while simulation shows continuous improvement (65\% → 78\% → 99.5\%), real experiment results show more modest gains (32.1\% → 45.2\% → 67.8\%). The error reduction trend demonstrates that real-world complexity significantly impacts model performance, with actual errors remaining 2-3 times higher than simulation predictions. The throughput prediction comparison shows that simulation models predict 1000-2000 MiB/s, while real models predict 200-582 MiB/s, with actual Phase-B performance at 187.1 MiB/s. The complexity vs accuracy analysis reveals that while simulation shows strong positive correlation between model complexity and accuracy, real experiment data shows diminishing returns, suggesting that additional complexity may not always translate to better real-world performance.
 
 \textbf{Detailed Analysis of Model Comparison:}
 \begin{itemize}
@@ -649,22 +651,24 @@ Figure \ref{fig:experiment_phases} illustrates the experimental phases and their
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\textwidth]{experiments/2025-09-05/model_comparison_visualization.png}
-\caption{Model Performance Comparison}
-\label{fig:model_comparison}
+\includegraphics[width=\textwidth]{experiments/2025-09-05/simulation_vs_real_comparison.png}
+\caption{Simulation vs Real Experiment Data}
+\label{fig:simulation_vs_real}
 \end{subfigure}
 \hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\textwidth]{experiments/2025-09-05/experiment_phases_visualization.png}
-\caption{Experiment Phases Analysis}
-\label{fig:experiment_phases}
+\includegraphics[width=\textwidth]{experiments/2025-09-05/model_evolution_comparison.png}
+\caption{Model Evolution Comparison}
+\label{fig:model_evolution}
 \end{subfigure}
 \caption{Model validation and experimental analysis visualizations}
 \end{figure}
 
 \subsubsection{Parameter Sensitivity Analysis}
 Comprehensive parameter sensitivity analysis revealed the most influential factors driving LSM-tree performance. Our analysis examined the impact of 12 key parameters across different workload conditions and system configurations.
+
+Figure \ref{fig:parameter_validation} provides a comprehensive comparison of parameter validation between simulation and real experiment data, revealing significant discrepancies in parameter values and their impact on model performance. The analysis shows four critical comparisons: (1) \textbf{Core Parameters Comparison}: Simulation assumes idealized values (CR=0.5, WA=2.5, $B_w$=2000, $B_r$=3000, Stall=0.1), while real Phase-B data shows actual values (CR=0.54, WA=1.02, $B_w$=1484, $B_r$=2368, Stall=0.453). The 4.5x higher stall ratio in real experiments is particularly significant. (2) \textbf{Performance Metrics}: Simulation shows normalized values close to 1.0, while real data shows much lower normalized performance, with efficiency dropping from 0.95 to 0.55. (3) \textbf{Level-wise Utilization}: Simulation shows gradual increase in utilization (30-80\%), while real data shows L2 as major bottleneck (95\%) with other levels underutilized. (4) \textbf{Model Accuracy by Scenario}: Simulation predicts high accuracy across all scenarios (70-95\%), while real experiment shows much lower accuracy (32.1-67.8\%), with worst-case scenarios performing particularly poorly.
 
 Figure \ref{fig:parameter_sensitivity} presents the detailed sensitivity analysis results, showing how different parameters affect model performance. The analysis reveals that write amplification (WA) and compression ratio (CR) are the most critical factors, with sensitivity scores exceeding 0.8. Device bandwidth parameters ($B_w$, $B_r$) also show significant influence, particularly under high-throughput conditions. The L2-level capacity factor ($k_{L2}$) demonstrates moderate sensitivity, reflecting its role as a performance bottleneck. Interestingly, the analysis shows that some parameters previously considered important, such as L0 file size, have relatively low sensitivity scores, suggesting that optimization efforts should focus on the most influential factors.
 
@@ -690,9 +694,9 @@ Figure \ref{fig:experimental_validation} demonstrates the experimental validatio
 \centering
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\textwidth]{experiments/2025-09-05/v3_parameter_sensitivity_analysis.png}
-\caption{Parameter Sensitivity Analysis}
-\label{fig:parameter_sensitivity}
+\includegraphics[width=\textwidth]{experiments/2025-09-05/parameter_validation_comparison.png}
+\caption{Parameter Validation: Simulation vs Real}
+\label{fig:parameter_validation}
 \end{subfigure}
 \hfill
 \begin{subfigure}{0.48\textwidth}
@@ -748,6 +752,8 @@ Figure \ref{fig:core_parameters} presents the core parameter analysis, highlight
 \subsubsection{Comprehensive Dashboard}
 An integrated dashboard provides a complete view of all analysis results, enabling comprehensive understanding of model performance and system behavior. The dashboard consolidates multiple analysis dimensions into a single, coherent visualization framework.
 
+Figure \ref{fig:comprehensive_comparison} presents a comprehensive comparison dashboard between simulation and real experiment data, providing a holistic view of model performance across multiple dimensions. The dashboard reveals six critical insights: (1) \textbf{Performance Summary}: Simulation shows normalized values near 100\% for throughput, accuracy, and efficiency, while real Phase-B data shows dramatically lower values (18.7\% throughput, 67.8\% accuracy, 1.02 WA, 45.3\% stall). (2) \textbf{Error Analysis}: Simulation errors are minimal (5-15\%), while real experiment errors are substantial (32.2-67.8\%), with throughput prediction errors being particularly high. (3) \textbf{Model Validation}: Simulation shows continuous improvement from v1 to v3 (65\% → 99.5\%), while real data shows more modest gains (32.1\% → 67.8\%), indicating that real-world complexity limits model effectiveness. (4) \textbf{Throughput Comparison}: Simulation shows smooth, idealized performance curves, while real data shows significant variability and periodic drops corresponding to actual system events. (5) \textbf{Resource Utilization}: Simulation shows balanced resource usage, while real data shows L2 as major bottleneck (95\%) with other resources underutilized. (6) \textbf{Key Findings}: The dashboard highlights that simulation shows idealized performance, real experiments reveal 67.8\% prediction error, WA measurement discrepancy (1.02 vs 2.87), L2 as major bottleneck, stall ratio much higher in reality (45.3\% vs 10\%), and the need for real-world model calibration.
+
 Figure \ref{fig:dashboard} presents the comprehensive analysis dashboard, integrating all experimental results, model predictions, and validation metrics into a single cohesive view. The dashboard is organized into four main sections: (1) \textbf{Performance Metrics}: Real-time display of key performance indicators including throughput, latency, and resource utilization. (2) \textbf{Model Validation}: Side-by-side comparison of predicted vs. measured values, with accuracy metrics and error analysis. (3) \textbf{Parameter Analysis}: Interactive visualization of parameter sensitivity and optimization opportunities. (4) \textbf{System Health}: Monitoring of system status, including stall events, compaction activity, and resource constraints.
 
 \textbf{Detailed Analysis of Comprehensive Dashboard:}
@@ -772,9 +778,9 @@ This dashboard enables researchers and practitioners to quickly understand the m
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{experiments/2025-09-05/comprehensive_dashboard.png}
-\caption{Comprehensive Analysis Dashboard}
-\label{fig:dashboard}
+\includegraphics[width=0.8\textwidth]{experiments/2025-09-05/comprehensive_simulation_vs_real_dashboard.png}
+\caption{Comprehensive Comparison: Simulation vs Real Experiment}
+\label{fig:comprehensive_comparison}
 \end{figure}
 
 \section{Key Findings and Analysis}

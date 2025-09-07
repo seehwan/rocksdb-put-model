@@ -9,15 +9,15 @@ import seaborn as sns
 from pathlib import Path
 import json
 
-# Set font size to 18pt for better readability
+# Set font size to 24pt for better readability (similar to LaTeX caption size)
 plt.rcParams.update({
-    'font.size': 18,
-    'axes.titlesize': 20,
-    'axes.labelsize': 18,
-    'xtick.labelsize': 16,
-    'ytick.labelsize': 16,
-    'legend.fontsize': 16,
-    'figure.titlesize': 22
+    'font.size': 24,
+    'axes.titlesize': 26,
+    'axes.labelsize': 24,
+    'xtick.labelsize': 22,
+    'ytick.labelsize': 22,
+    'legend.fontsize': 22,
+    'figure.titlesize': 28
 })
 
 def create_model_comparison_figure():
@@ -30,31 +30,31 @@ def create_model_comparison_figure():
     colors = ['red', 'orange', 'green']
     
     bars = ax1.bar(models, accuracy, color=colors, alpha=0.7)
-    ax1.set_ylabel('Prediction Accuracy (%)', fontsize=18)
-    ax1.set_xlabel('Model Version', fontsize=18)
-    ax1.set_title('Model Accuracy Comparison', fontsize=20)
+    ax1.set_ylabel('Prediction Accuracy (%)', fontsize=30)
+    ax1.set_xlabel('Model Version', fontsize=30)
+    ax1.set_title('Model Accuracy Comparison', fontsize=26)
     ax1.set_ylim(0, 100)
     ax1.grid(True, alpha=0.3)
     
     # Add value labels on bars
     for bar, acc in zip(bars, accuracy):
         ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
-                f'{acc}%', ha='center', va='bottom', fontsize=16)
+                f'{acc}%', ha='center', va='bottom', fontsize=26)
     
     # Error reduction trend
     x = np.arange(len(models))
     errors = [35, 22, 0.5]
     ax2.plot(x, errors, marker='o', linewidth=3, markersize=10, color='red')
-    ax2.set_ylabel('Prediction Error (%)', fontsize=18)
-    ax2.set_xlabel('Model Version', fontsize=18)
-    ax2.set_title('Error Reduction Trend', fontsize=20)
+    ax2.set_ylabel('Prediction Error (%)', fontsize=30)
+    ax2.set_xlabel('Model Version', fontsize=30)
+    ax2.set_title('Error Reduction Trend', fontsize=26)
     ax2.set_xticks(x)
     ax2.set_xticklabels(models)
     ax2.grid(True, alpha=0.3)
     
     # Add value labels on points
     for i, err in enumerate(errors):
-        ax2.text(i, err + 1, f'{err}%', ha='center', va='bottom', fontsize=16)
+        ax2.text(i, err + 1, f'{err}%', ha='center', va='bottom', fontsize=26)
     
     plt.tight_layout()
     plt.savefig('experiments/2025-09-05/model_comparison_visualization.png', 
@@ -76,15 +76,15 @@ def create_experiment_phases_figure():
     
     bars = ax.barh(y_pos, durations, color=colors, alpha=0.8)
     ax.set_yticks(y_pos)
-    ax.set_yticklabels(phases, fontsize=16)
-    ax.set_xlabel('Duration (hours)', fontsize=18)
-    ax.set_title('Experimental Phases Timeline', fontsize=20)
+    ax.set_yticklabels(phases, fontsize=28)
+    ax.set_xlabel('Duration (hours)', fontsize=30)
+    ax.set_title('Experimental Phases Timeline', fontsize=26)
     ax.grid(True, alpha=0.3, axis='x')
     
     # Add duration labels
     for i, (bar, duration) in enumerate(zip(bars, durations)):
         ax.text(bar.get_width() + 0.1, bar.get_y() + bar.get_height()/2,
-                f'{duration}h', ha='left', va='center', fontsize=16)
+                f'{duration}h', ha='left', va='center', fontsize=28)
     
     plt.tight_layout()
     plt.savefig('experiments/2025-09-05/experiment_phases_visualization.png', 
@@ -101,14 +101,14 @@ def create_parameter_sensitivity_figure():
     colors = ['red' if s > 0.8 else 'orange' if s > 0.5 else 'blue' for s in sensitivity]
     
     bars = ax1.barh(params, sensitivity, color=colors, alpha=0.7)
-    ax1.set_xlabel('Sensitivity Score', fontsize=18)
-    ax1.set_title('Parameter Sensitivity Ranking', fontsize=20)
+    ax1.set_xlabel('Sensitivity Score', fontsize=30)
+    ax1.set_title('Parameter Sensitivity Ranking', fontsize=26)
     ax1.grid(True, alpha=0.3, axis='x')
     
     # Add value labels
     for bar, sens in zip(bars, sensitivity):
         ax1.text(bar.get_width() + 0.01, bar.get_y() + bar.get_height()/2,
-                f'{sens:.2f}', ha='left', va='center', fontsize=14)
+                f'{sens:.2f}', ha='left', va='center', fontsize=26)
     
     # Validation accuracy scatter plot
     np.random.seed(42)
@@ -118,16 +118,16 @@ def create_parameter_sensitivity_figure():
     
     ax2.scatter(predicted, measured, alpha=0.6, s=60)
     ax2.plot([80, 120], [80, 120], 'r--', linewidth=2, label='Perfect Prediction')
-    ax2.set_xlabel('Predicted Values', fontsize=18)
-    ax2.set_ylabel('Measured Values', fontsize=18)
-    ax2.set_title('Model Validation Accuracy', fontsize=20)
-    ax2.legend(fontsize=16)
+    ax2.set_xlabel('Predicted Values', fontsize=30)
+    ax2.set_ylabel('Measured Values', fontsize=30)
+    ax2.set_title('Model Validation Accuracy', fontsize=26)
+    ax2.legend(fontsize=28)
     ax2.grid(True, alpha=0.3)
     
     # Add R² score
     r2 = 0.98
     ax2.text(0.05, 0.95, f'R² = {r2:.3f}', transform=ax2.transAxes, 
-             fontsize=16, bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+             fontsize=28, bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
     
     plt.tight_layout()
     plt.savefig('experiments/2025-09-05/v3_parameter_sensitivity_analysis.png', 
@@ -145,20 +145,20 @@ def create_experimental_validation_figure():
     
     ax1.plot(time, measured_throughput, 'b-', linewidth=2, label='Measured', alpha=0.8)
     ax1.plot(time, predicted_throughput, 'r--', linewidth=2, label='Predicted', alpha=0.8)
-    ax1.set_xlabel('Time (minutes)', fontsize=18)
-    ax1.set_ylabel('Throughput (GB/s)', fontsize=18)
-    ax1.set_title('Throughput Prediction vs Measurement', fontsize=20)
-    ax1.legend(fontsize=16)
+    ax1.set_xlabel('Time (minutes)', fontsize=30)
+    ax1.set_ylabel('Throughput (GB/s)', fontsize=30)
+    ax1.set_title('Throughput Prediction vs Measurement', fontsize=26)
+    ax1.legend(fontsize=28)
     ax1.grid(True, alpha=0.3)
     
     # Error distribution histogram
     errors = predicted_throughput - measured_throughput
     ax2.hist(errors, bins=20, alpha=0.7, color='green', edgecolor='black')
     ax2.axvline(np.mean(errors), color='red', linestyle='--', linewidth=2, label=f'Mean: {np.mean(errors):.3f}')
-    ax2.set_xlabel('Prediction Error (GB/s)', fontsize=18)
-    ax2.set_ylabel('Frequency', fontsize=18)
-    ax2.set_title('Prediction Error Distribution', fontsize=20)
-    ax2.legend(fontsize=16)
+    ax2.set_xlabel('Prediction Error (GB/s)', fontsize=30)
+    ax2.set_ylabel('Frequency', fontsize=30)
+    ax2.set_title('Prediction Error Distribution', fontsize=26)
+    ax2.legend(fontsize=28)
     ax2.grid(True, alpha=0.3)
     
     plt.tight_layout()
@@ -181,10 +181,10 @@ def create_model_simulation_figure():
     
     ax1.plot(time, throughput, 'b-', linewidth=2, alpha=0.8)
     ax1.axhline(y=base_throughput, color='red', linestyle='--', alpha=0.7, label='Baseline')
-    ax1.set_xlabel('Time (minutes)', fontsize=18)
-    ax1.set_ylabel('Throughput (GB/s)', fontsize=18)
-    ax1.set_title('Dynamic Model Simulation - Throughput', fontsize=20)
-    ax1.legend(fontsize=16)
+    ax1.set_xlabel('Time (minutes)', fontsize=30)
+    ax1.set_ylabel('Throughput (GB/s)', fontsize=30)
+    ax1.set_title('Dynamic Model Simulation - Throughput', fontsize=26)
+    ax1.legend(fontsize=28)
     ax1.grid(True, alpha=0.3)
     
     # Resource utilization
@@ -195,10 +195,10 @@ def create_model_simulation_figure():
     ax2.plot(time, cpu_util, 'r-', linewidth=2, label='CPU', alpha=0.8)
     ax2.plot(time, io_util, 'g-', linewidth=2, label='I/O', alpha=0.8)
     ax2.plot(time, memory_util, 'b-', linewidth=2, label='Memory', alpha=0.8)
-    ax2.set_xlabel('Time (minutes)', fontsize=18)
-    ax2.set_ylabel('Utilization (%)', fontsize=18)
-    ax2.set_title('Resource Utilization Over Time', fontsize=20)
-    ax2.legend(fontsize=16)
+    ax2.set_xlabel('Time (minutes)', fontsize=30)
+    ax2.set_ylabel('Utilization (%)', fontsize=30)
+    ax2.set_title('Resource Utilization Over Time', fontsize=26)
+    ax2.legend(fontsize=28)
     ax2.grid(True, alpha=0.3)
     ax2.set_ylim(0, 100)
     
@@ -217,13 +217,13 @@ def create_core_parameters_figure():
     colors = ['green' if u < 70 else 'orange' if u < 85 else 'red' for u in utilization]
     
     bars = ax1.bar(levels, utilization, color=colors, alpha=0.7)
-    ax1.set_ylabel('Utilization (%)', fontsize=18)
-    ax1.set_title('Level-wise Capacity Utilization', fontsize=20)
+    ax1.set_ylabel('Utilization (%)', fontsize=30)
+    ax1.set_title('Level-wise Capacity Utilization', fontsize=26)
     ax1.grid(True, alpha=0.3, axis='y')
     
     for bar, util in zip(bars, utilization):
         ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
-                f'{util}%', ha='center', va='bottom', fontsize=14)
+                f'{util}%', ha='center', va='bottom', fontsize=26)
     
     # Effective concurrency factor
     concurrency_levels = np.linspace(0, 10, 100)
@@ -231,10 +231,10 @@ def create_core_parameters_figure():
     
     ax2.plot(concurrency_levels, mu_eff, 'b-', linewidth=3)
     ax2.axhline(y=0.92, color='red', linestyle='--', alpha=0.7, label='Current: 0.92')
-    ax2.set_xlabel('Concurrency Level', fontsize=18)
-    ax2.set_ylabel('Effective Concurrency Factor', fontsize=18)
-    ax2.set_title('Concurrency Scaling Function', fontsize=20)
-    ax2.legend(fontsize=16)
+    ax2.set_xlabel('Concurrency Level', fontsize=30)
+    ax2.set_ylabel('Effective Concurrency Factor', fontsize=30)
+    ax2.set_title('Concurrency Scaling Function', fontsize=26)
+    ax2.legend(fontsize=28)
     ax2.grid(True, alpha=0.3)
     
     # Mixed I/O efficiency
@@ -244,10 +244,10 @@ def create_core_parameters_figure():
     
     ax3.plot(read_ratios, B_eff_normalized, 'g-', linewidth=3)
     ax3.axhline(y=0.78, color='red', linestyle='--', alpha=0.7, label='Current: 0.78')
-    ax3.set_xlabel('Read Ratio', fontsize=18)
-    ax3.set_ylabel('Normalized I/O Efficiency', fontsize=18)
-    ax3.set_title('Mixed I/O Efficiency', fontsize=20)
-    ax3.legend(fontsize=16)
+    ax3.set_xlabel('Read Ratio', fontsize=30)
+    ax3.set_ylabel('Normalized I/O Efficiency', fontsize=30)
+    ax3.set_title('Mixed I/O Efficiency', fontsize=26)
+    ax3.legend(fontsize=28)
     ax3.grid(True, alpha=0.3)
     
     # Stall probability
@@ -257,10 +257,10 @@ def create_core_parameters_figure():
     ax4.plot(l0_files, stall_prob, 'purple', linewidth=3)
     ax4.axvline(x=8, color='red', linestyle='--', alpha=0.7, label='Threshold: 8 files')
     ax4.axhline(y=0.12, color='orange', linestyle='--', alpha=0.7, label='Current: 0.12')
-    ax4.set_xlabel('L0 File Count', fontsize=18)
-    ax4.set_ylabel('Stall Probability', fontsize=18)
-    ax4.set_title('Stall Probability Function', fontsize=20)
-    ax4.legend(fontsize=16)
+    ax4.set_xlabel('L0 File Count', fontsize=30)
+    ax4.set_ylabel('Stall Probability', fontsize=30)
+    ax4.set_title('Stall Probability Function', fontsize=26)
+    ax4.legend(fontsize=28)
     ax4.grid(True, alpha=0.3)
     
     plt.tight_layout()
@@ -285,11 +285,11 @@ def create_comprehensive_dashboard():
     width = 0.35
     ax1.bar(x - width/2, values, width, label='Measured', alpha=0.8)
     ax1.bar(x + width/2, predicted, width, label='Predicted', alpha=0.8)
-    ax1.set_ylabel('Value', fontsize=16)
-    ax1.set_title('Performance Metrics', fontsize=18)
+    ax1.set_ylabel('Value', fontsize=28)
+    ax1.set_title('Performance Metrics', fontsize=30)
     ax1.set_xticks(x)
-    ax1.set_xticklabels(metrics, fontsize=14)
-    ax1.legend(fontsize=14)
+    ax1.set_xticklabels(metrics, fontsize=26)
+    ax1.legend(fontsize=26)
     ax1.grid(True, alpha=0.3)
     
     # Model validation scatter (top-center)
@@ -300,9 +300,9 @@ def create_comprehensive_dashboard():
     measured_vals = predicted_vals + np.random.normal(0, 2, n)
     ax2.scatter(predicted_vals, measured_vals, alpha=0.6, s=50)
     ax2.plot([80, 120], [80, 120], 'r--', linewidth=2)
-    ax2.set_xlabel('Predicted', fontsize=16)
-    ax2.set_ylabel('Measured', fontsize=16)
-    ax2.set_title('Model Validation', fontsize=18)
+    ax2.set_xlabel('Predicted', fontsize=28)
+    ax2.set_ylabel('Measured', fontsize=28)
+    ax2.set_title('Model Validation', fontsize=30)
     ax2.grid(True, alpha=0.3)
     
     # Parameter sensitivity (top-right)
@@ -311,8 +311,8 @@ def create_comprehensive_dashboard():
     sensitivity = [0.92, 0.89, 0.73, 0.71, 0.68]
     colors = ['red' if s > 0.8 else 'orange' for s in sensitivity]
     ax3.barh(params, sensitivity, color=colors, alpha=0.7)
-    ax3.set_xlabel('Sensitivity', fontsize=16)
-    ax3.set_title('Parameter Sensitivity', fontsize=18)
+    ax3.set_xlabel('Sensitivity', fontsize=28)
+    ax3.set_title('Parameter Sensitivity', fontsize=30)
     ax3.grid(True, alpha=0.3, axis='x')
     
     # System health status (middle-left)
@@ -321,8 +321,8 @@ def create_comprehensive_dashboard():
     values = [85, 12, 45, 95]
     colors = ['red' if v > 80 else 'orange' if v > 50 else 'green' for v in values]
     bars = ax4.bar(health_metrics, values, color=colors, alpha=0.7)
-    ax4.set_ylabel('Value (%)', fontsize=16)
-    ax4.set_title('System Health', fontsize=18)
+    ax4.set_ylabel('Value (%)', fontsize=28)
+    ax4.set_title('System Health', fontsize=30)
     ax4.tick_params(axis='x', rotation=45, labelsize=12)
     ax4.grid(True, alpha=0.3, axis='y')
     
@@ -331,9 +331,9 @@ def create_comprehensive_dashboard():
     time = np.linspace(0, 60, 100)
     throughput = 2.0 + 0.2 * np.sin(2 * np.pi * time / 15) + np.random.normal(0, 0.05, 100)
     ax5.plot(time, throughput, 'b-', linewidth=2)
-    ax5.set_xlabel('Time (min)', fontsize=16)
-    ax5.set_ylabel('Throughput (GB/s)', fontsize=16)
-    ax5.set_title('Real-time Performance', fontsize=18)
+    ax5.set_xlabel('Time (min)', fontsize=28)
+    ax5.set_ylabel('Throughput (GB/s)', fontsize=28)
+    ax5.set_title('Real-time Performance', fontsize=30)
     ax5.grid(True, alpha=0.3)
     
     # Optimization opportunities (bottom)
@@ -343,15 +343,15 @@ def create_comprehensive_dashboard():
     colors = ['red' if g > 6 else 'orange' if g > 3 else 'green' for g in potential_gains]
     
     bars = ax6.bar(opt_params, potential_gains, color=colors, alpha=0.7)
-    ax6.set_ylabel('Potential Gain (%)', fontsize=16)
-    ax6.set_title('Optimization Opportunities', fontsize=18)
+    ax6.set_ylabel('Potential Gain (%)', fontsize=28)
+    ax6.set_title('Optimization Opportunities', fontsize=30)
     ax6.grid(True, alpha=0.3, axis='y')
     
     for bar, gain in zip(bars, potential_gains):
         ax6.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.1,
-                f'{gain}%', ha='center', va='bottom', fontsize=14)
+                f'{gain}%', ha='center', va='bottom', fontsize=26)
     
-    plt.suptitle('Comprehensive Analysis Dashboard', fontsize=24, y=0.98)
+    plt.suptitle('Comprehensive Analysis Dashboard', fontsize=30, y=0.98)
     plt.savefig('experiments/2025-09-05/comprehensive_dashboard.png', 
                 dpi=300, bbox_inches='tight')
     plt.close()
@@ -366,8 +366,8 @@ def create_parameter_validation_dashboard():
     colors = ['red' if s > 0.8 else 'orange' if s > 0.5 else 'blue' for s in sensitivity]
     
     bars = ax1.barh(params, sensitivity, color=colors, alpha=0.7)
-    ax1.set_xlabel('Sensitivity Score', fontsize=18)
-    ax1.set_title('Parameter Sensitivity Ranking', fontsize=20)
+    ax1.set_xlabel('Sensitivity Score', fontsize=30)
+    ax1.set_title('Parameter Sensitivity Ranking', fontsize=26)
     ax1.grid(True, alpha=0.3, axis='x')
     
     # Validation accuracy heatmap
@@ -379,9 +379,9 @@ def create_parameter_validation_dashboard():
     param_matrix[4, 4] = 0.95  # k_L2
     
     im = ax2.imshow(param_matrix, cmap='RdYlGn', aspect='auto')
-    ax2.set_title('Validation Accuracy Heatmap', fontsize=20)
-    ax2.set_xlabel('Parameter Index', fontsize=18)
-    ax2.set_ylabel('Parameter Index', fontsize=18)
+    ax2.set_title('Validation Accuracy Heatmap', fontsize=26)
+    ax2.set_xlabel('Parameter Index', fontsize=30)
+    ax2.set_ylabel('Parameter Index', fontsize=30)
     plt.colorbar(im, ax=ax2, shrink=0.8)
     
     # Optimization potential matrix
@@ -393,15 +393,15 @@ def create_parameter_validation_dashboard():
     opt_matrix[4, 4] = 3  # k_L2
     
     im2 = ax3.imshow(opt_matrix, cmap='YlOrRd', aspect='auto')
-    ax3.set_title('Optimization Potential Matrix', fontsize=20)
-    ax3.set_xlabel('Parameter Index', fontsize=18)
-    ax3.set_ylabel('Parameter Index', fontsize=18)
+    ax3.set_title('Optimization Potential Matrix', fontsize=26)
+    ax3.set_xlabel('Parameter Index', fontsize=30)
+    ax3.set_ylabel('Parameter Index', fontsize=30)
     plt.colorbar(im2, ax=ax3, shrink=0.8)
     
     # Parameter interaction network
     ax4.set_xlim(0, 10)
     ax4.set_ylim(0, 10)
-    ax4.set_title('Parameter Interaction Network', fontsize=20)
+    ax4.set_title('Parameter Interaction Network', fontsize=26)
     
     # Draw nodes
     nodes = {
@@ -410,7 +410,7 @@ def create_parameter_validation_dashboard():
     
     for param, (x, y) in nodes.items():
         ax4.scatter(x, y, s=500, alpha=0.7, c='lightblue', edgecolors='black')
-        ax4.text(x, y, param, ha='center', va='center', fontsize=14, fontweight='bold')
+        ax4.text(x, y, param, ha='center', va='center', fontsize=26, fontweight='bold')
     
     # Draw connections
     connections = [('WA', 'CR'), ('B_w', 'B_r'), ('WA', 'k_L2'), ('CR', 'k_L2')]
@@ -422,7 +422,7 @@ def create_parameter_validation_dashboard():
     ax4.set_xticks([])
     ax4.set_yticks([])
     
-    plt.suptitle('Comprehensive Parameter Validation Dashboard', fontsize=24, y=0.98)
+    plt.suptitle('Comprehensive Parameter Validation Dashboard', fontsize=30, y=0.98)
     plt.savefig('experiments/2025-09-05/comprehensive_parameter_validation_dashboard.png', 
                 dpi=300, bbox_inches='tight')
     plt.close()

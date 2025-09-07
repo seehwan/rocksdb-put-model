@@ -1,0 +1,47 @@
+{
+  "experiment_info": {
+    "date": "2025-09-08",
+    "phase": "Phase-A",
+    "test_type": "Device Calibration",
+    "device": "/dev/nvme1n1p1",
+    "timestamp": "2025-09-07 16:51:27"
+  },
+  "device_calibration": {
+    "write_test": {
+      "bandwidth_mib_s": 1421.0234375,
+      "read_bandwidth_mib_s": 0.0,
+      "write_bandwidth_mib_s": 1421.0234375,
+      "read_iops": 0.0,
+      "write_iops": 11368.193863,
+      "read_latency_us": 0.0,
+      "write_latency_us": 42.563702354,
+      "utilization_percent": 97.028333
+    },
+    "read_test": {
+      "bandwidth_mib_s": 2320.2919921875,
+      "read_bandwidth_mib_s": 2320.2919921875,
+      "write_bandwidth_mib_s": 0.0,
+      "read_iops": 18562.340628,
+      "write_iops": 0.0,
+      "read_latency_us": 45.346644665,
+      "write_latency_us": 0.0,
+      "utilization_percent": 82.641667
+    },
+    "mixed_test": {
+      "bandwidth_mib_s": 2173.0419921875,
+      "read_bandwidth_mib_s": 1087.31640625,
+      "write_bandwidth_mib_s": 1085.7255859375,
+      "read_iops": 8698.538358,
+      "write_iops": 8685.805237,
+      "read_latency_us": 34.281617342,
+      "write_latency_us": 34.432179274,
+      "utilization_percent": 97.225
+    }
+  },
+  "performance_analysis": {
+    "read_vs_write_ratio": 1.6328316134388177,
+    "read_performance_degradation_mixed": 0.5313881141205372,
+    "write_performance_degradation_mixed": 0.2359551874474273,
+    "concurrency_interference": "significant"
+  }
+}

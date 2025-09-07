@@ -1,0 +1,31 @@
+{
+  "experiment_info": {
+    "date": "2025-09-08",
+    "phase": "Phase-C",
+    "test_type": "LOG WAF Analysis",
+    "log_file": "/rocksdb/data/LOG",
+    "timestamp": "2025-09-07 16:55:00"
+  },
+  "log_statistics": {
+    "compaction_read_bytes": 0,
+    "compaction_write_bytes": 0,
+    "flush_write_bytes": 0,
+    "bytes_written": 0,
+    "bytes_read": 0,
+    "user_bytes_written": 0,
+    "compaction_count": 0,
+    "flush_count": 0,
+    "stall_count": 0,
+    "stall_micros": 0,
+    "bytes_compressed_from": 0,
+    "bytes_compressed_to": 0
+  },
+  "waf_calculations": {
+    "method1_compaction_flush": 0,
+    "method2_total_write": 0,
+    "method3_compaction_only": 0
+  },
+  "read_amplification": 0,
+  "compression_ratio": 1.0,
+  "recommended_waf": 0
+}

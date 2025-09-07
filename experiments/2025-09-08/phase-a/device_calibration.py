@@ -34,7 +34,8 @@ class DeviceCalibrator:
             "--numjobs=1",
             "--time_based=1",
             "--runtime=60",
-            "--output-format=json"
+            "--output-format=json",
+            "--allow_mounted_write=1"
         ]
         
         if rwmixread is not None:
@@ -116,13 +117,13 @@ class DeviceCalibrator:
         print(f"  Mixed Bandwidth (B_eff): {mixed_bw:.1f} MiB/s")
         
         # 성능 분석
-        read_degradation = (read_bw - self.results['mixed_test']['read_bandwidth_mib_s']) / read_bw * 100
-        write_degradation = (write_bw - self.results['mixed_test']['write_bandwidth_mib_s']) / write_bw * 100
+        read_degradation = (read_bw - self.results['mixed_test']['read_bandwidth_mib_s']) / read_bw * 100 if read_bw > 0 else 0
+        write_degradation = (write_bw - self.results['mixed_test']['write_bandwidth_mib_s']) / write_bw * 100 if write_bw > 0 else 0
         
         print(f"\n📈 성능 분석:")
         print(f"  읽기 성능 저하: {read_degradation:.1f}%")
         print(f"  쓰기 성능 저하: {write_degradation:.1f}%")
-        print(f"  읽기/쓰기 비율: {read_bw/write_bw:.2f}")
+        print(f"  읽기/쓰기 비율: {read_bw/write_bw:.2f}" if write_bw > 0 else "  읽기/쓰기 비율: N/A (Write=0)")
         
         # 결과 저장
         self.save_results()

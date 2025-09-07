@@ -1,0 +1,12 @@
+{
+  "user_data_gb": 4.470348358154297,
+  "compaction_read_gb": 24705.130549104884,
+  "compaction_write_gb": 22232.72315120697,
+  "flush_write_gb": 2628.3645579367876,
+  "total_write_gb": 24861.087709143758,
+  "write_amplification": 5561.331179883333,
+  "read_amplification": 5526.444153740416,
+  "compression_ratio": 0.5345860075555496,
+  "mass_balance_error_percent": 1.463322461854188e-14,
+  "mass_balance_passed": true
+}

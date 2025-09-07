@@ -15,7 +15,7 @@ def analyze_phase_b_stats():
     print()
     
     # Phase-B에서 수집한 데이터 (2025-09-08)
-    user_bytes = 4800000000 * 1024  # 4.8B operations * 1KB
+    user_bytes = 4800000000  # 4.8B bytes = 4.8GB
     compact_read_bytes = 26526931937954
     compact_write_bytes = 23872204708864
     flush_write_bytes = 2822184954576

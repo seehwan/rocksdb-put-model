@@ -155,7 +155,7 @@ def create_v4_config_from_experiment(experiment_data: dict) -> dict:
             'l0_stall_steepness': 2.0,
             'l0_file_size_mib': 64.0,
             'initial_read_ratio': 0.1,  # 휴리스틱
-            'total_write_amplification': phase_c_data['total_waf_log'],
+            'total_write_amplification': phase_c_data['write_amplification'],
             'total_read_amplification': 2.5,  # 휴리스틱
             'concurrency_scaling_factor': 1.0
         }
@@ -356,7 +356,7 @@ def main():
     config = validation_results['config_used']
     print(f"  대상 Put Rate: {config['rocksdb_params']['global_params']['target_put_rate_mib_s']:.1f} MiB/s")
     print(f"  압축률: {experiment_data['phase_b_results']['compression_analysis']['compression_ratio']:.3f}")
-    print(f"  WA: {experiment_data['phase_c_results']['total_waf_log']:.3f}")
+    print(f"  WA: {experiment_data['phase_c_results']['write_amplification']:.3f}")
     print(f"  장치 대역폭: {config['rocksdb_params']['global_params']['device_write_bandwidth_mib_s']} MiB/s (W), {config['rocksdb_params']['global_params']['device_read_bandwidth_mib_s']} MiB/s (R)")
     
     print(f"\n📊 Envelope 모델 정보")

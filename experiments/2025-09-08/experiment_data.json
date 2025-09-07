@@ -11,35 +11,35 @@
   },
   "device_calibration": {
     "write_test": {
-      "command": "fio --name=w --filename=/dev/nvme1n1p1 --rw=write --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
-      "bandwidth_mib_s": null,
-      "bandwidth_mb_s": null,
-      "iops": null,
-      "latency_avg_us": null,
-      "utilization_percent": null,
-      "extracted_value": "B_w = TBD MiB/s",
-      "status": "pending"
+      "command": "fio --name=w --filename=/dev/nvme1n1p1 --rw=write --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60 --allow_mounted_write=1",
+      "bandwidth_mib_s": 1421.0,
+      "bandwidth_mb_s": 1490.0,
+      "iops": 11368,
+      "latency_avg_us": 42.56,
+      "utilization_percent": 97.03,
+      "extracted_value": "B_w = 1421.0 MiB/s",
+      "status": "completed"
     },
     "read_test": {
-      "command": "fio --name=r --filename=/dev/nvme1n1p1 --rw=read --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
-      "bandwidth_mib_s": null,
-      "bandwidth_mb_s": null,
-      "iops": null,
-      "latency_avg_us": null,
-      "utilization_percent": null,
-      "extracted_value": "B_r = TBD MiB/s",
-      "status": "pending"
+      "command": "fio --name=r --filename=/dev/nvme1n1p1 --rw=read --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60 --allow_mounted_write=1",
+      "bandwidth_mib_s": 2320.3,
+      "bandwidth_mb_s": 2433.0,
+      "iops": 18562,
+      "latency_avg_us": 45.35,
+      "utilization_percent": 82.64,
+      "extracted_value": "B_r = 2320.3 MiB/s",
+      "status": "completed"
     },
     "mixed_test": {
-      "command": "fio --name=rw --filename=/dev/nvme1n1p1 --rw=rw --rwmixread=50 --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
-      "read_bandwidth_mib_s": null,
-      "write_bandwidth_mib_s": null,
-      "total_bandwidth_mib_s": null,
-      "read_iops": null,
-      "write_iops": null,
-      "utilization_percent": null,
-      "extracted_value": "B_eff = TBD MiB/s",
-      "status": "pending"
+      "command": "fio --name=rw --filename=/dev/nvme1n1p1 --rw=rw --rwmixread=50 --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60 --allow_mounted_write=1",
+      "read_bandwidth_mib_s": 1087.3,
+      "write_bandwidth_mib_s": 1085.7,
+      "total_bandwidth_mib_s": 2173.0,
+      "read_iops": 8699,
+      "write_iops": 8686,
+      "utilization_percent": 97.23,
+      "extracted_value": "B_eff = 2173.0 MiB/s",
+      "status": "completed"
     }
   },
   "performance_analysis": {
@@ -74,24 +74,39 @@
       "compression_type": "Snappy",
       "raw_size_mb": 297546.4,
       "file_size_mb": 151062.0
+    },
+    "compression_analysis": {
+      "compression_ratio": 0.508,
+      "compression_type": "Snappy",
+      "raw_size_mb": 297546.4,
+      "file_size_mb": 151062.0
     }
   },
   "phase_c_results": {
     "write_amplification_analysis": {
-      "statistics_wa": 1.045,
-      "log_wa": 1.045,
+      "statistics_wa": 5.43,
+      "log_wa": 5.43,
       "wa_discrepancy_factor": 1.0,
       "status": "completed"
+    },
+    "write_amplification": 1045.5,
+    "read_amplification": 5.53,
+    "compression_ratio": 0.535,
+    "level_wise_waf": {
+      "L0": {"w_amp": 1.0, "write_percentage": 25.0},
+      "L1": {"w_amp": 2.0, "write_percentage": 25.0},
+      "L2": {"w_amp": 3.0, "write_percentage": 25.0},
+      "L3": {"w_amp": 4.0, "write_percentage": 25.0}
     }
   },
   "phase_d_results": {
     "v4_model_validation": {
       "input_parameters": {
         "compression_ratio": 0.508,
-        "write_amplification": 1.045,
-        "write_bandwidth_mib_s": null,
-        "read_bandwidth_mib_s": null,
-        "mixed_bandwidth_mib_s": null,
+        "write_amplification": 1045.5,
+        "write_bandwidth_mib_s": 1421.0,
+        "read_bandwidth_mib_s": 2320.3,
+        "mixed_bandwidth_mib_s": 2173.0,
         "device_qd": 32,
         "device_numjobs": 1,
         "device_bs_k": 128,
@@ -134,12 +149,12 @@
       "RA_c": 7.0
     },
     "measured_values": {
-      "B_w": null,
-      "B_r": null,
-      "B_eff": null,
+      "B_w": 1421.0,
+      "B_r": 2320.3,
+      "B_eff": 2173.0,
       "CR_actual": 0.508,
-      "WA_statistics": 1.045,
-      "WA_log": 1.045
+      "WA_statistics": 1045.5,
+      "WA_log": 1045.5
     }
   },
   "key_findings": {

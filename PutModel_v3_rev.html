@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PutModel v3 — Dynamic Compaction‑Aware Put‑Rate Model</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: -20px -20px 40px -20px;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: #007bff;
+            color: white;
+            padding: 20px;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+        
+        .section-content {
+            padding: 25px;
+        }
+        
+        .highlight-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            border-left: 4px solid #007bff;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .math-block {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .notation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .notation-table th,
+        .notation-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .notation-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .notation-table .symbol {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .pseudocode {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            border-left: 4px solid #6c757d;
+            overflow-x: auto;
+            margin: 15px 0;
+            white-space: pre-line;
+        }
+        
+        .json-block {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            border-left: 4px solid #17a2b8;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #6c757d;
+            margin: 20px 0;
+        }
+        
+        .toc h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .toc li {
+            padding: 5px 0;
+        }
+        
+        .toc a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .warning-box {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .warning-box h4 {
+            color: #721c24;
+            margin-bottom: 10px;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-box h4 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            background: #f8f9fa;
+            margin: 40px -20px -20px -20px;
+            border-radius: 20px 20px 0 0;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PutModel v3 — Dynamic Compaction‑Aware Put‑Rate Model</h1>
+            <div class="subtitle">
+                <em>(This document is fully self‑contained and does not rely on prior versions.)</em>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#scope">1. Scope & Objectives</a></li>
+                <li><a href="#entities">2. Entities & Notation</a></li>
+                <li><a href="#assumptions">3. Model Assumptions</a></li>
+                <li><a href="#stall-concurrency">4. Stall & Concurrency Functions</a></li>
+                <li><a href="#demand-construction">5. Demand Construction (Two Modes)</a></li>
+                <li><a href="#capacity-allocation">6. Capacity Allocation & Backlog Updates</a></li>
+                <li><a href="#outputs">7. Outputs & Derived Metrics</a></li>
+                <li><a href="#calibration">8. Calibration Pathways</a></li>
+                <li><a href="#simulation-loop">9. Simulation Loop (Pseudocode)</a></li>
+                <li><a href="#defaults">10. Practical Defaults & Tips</a></li>
+                <li><a href="#inspect">11. Outputs to Inspect</a></li>
+                <li><a href="#json-schema">12. JSON Parameter Schema (example)</a></li>
+                <li><a href="#quality-checks">13. Quality Checks (Sanity/Conservation)</a></li>
+                <li><a href="#captures-limits">14. What the Model Captures / Limits</a></li>
+                <li><a href="#reproduction">15. Minimal Reproduction Steps</a></li>
+                <li><a href="#extensions">16. Extensions (Optional)</a></li>
+            </ul>
+        </div>
+
+        <!-- 1. Scope & Objectives -->
+        <div class="section" id="scope">
+            <div class="section-header">1. Scope & Objectives</div>
+            <div class="section-content">
+                <p>PutModel v3 predicts <strong>time‑varying put throughput</strong> and <strong>device I/O usage</strong> for a RocksDB‑like LSM storage engine under <strong>leveled compaction</strong> on a single storage device. It captures:</p>
+                
+                <ul>
+                    <li>Mixed read/write bandwidth limits and their interaction with device capabilities.</li>
+                    <li>Level‑wise asynchronous compactions and their capacity constraints.</li>
+                    <li><strong>Stall dynamics</strong> driven by L0 file accumulation (slowdown/stop behavior).</li>
+                    <li><strong>Concurrency scaling</strong> effects (limited parallelism, scheduler overheads).</li>
+                    <li><strong>Backlog evolution</strong> during warm‑up and load transients.</li>
+                </ul>
+                
+                <p>The model is simulation‑based (discrete time), supports <strong>log‑driven calibration</strong>, and produces per‑level and aggregate time series (throughput, I/O shares, WA/RA, stall duty, L0 file count).</p>
+            </div>
+        </div>
+
+        <!-- 2. Entities & Notation -->
+        <div class="section" id="entities">
+            <div class="section-header">2. Entities & Notation</div>
+            <div class="section-content">
+                <table class="notation-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Symbol</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="3">Time</td>
+                            <td class="symbol">Δ</td>
+                            <td>Discrete time step size (seconds)</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">k</td>
+                            <td>Time index (t = k·Δ)</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">t</td>
+                            <td>Current time</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2">Levels</td>
+                            <td class="symbol">L0 … Ln</td>
+                            <td>LSM levels (L0 receives flushes)</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">ℓ</td>
+                            <td>Level index</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Workload</td>
+                            <td class="symbol">U(t)</td>
+                            <td>User data arrival rate (MiB/s) if no stall</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">S_put(t)</td>
+                            <td>Realized put rate after stall</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">ρ_r(t), ρ_w(t)</td>
+                            <td>Read/write fraction of device I/O mix</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="4">Device</td>
+                            <td class="symbol">B_r</td>
+                            <td>Max read bandwidth (MiB/s)</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">B_w</td>
+                            <td>Max write bandwidth (MiB/s)</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">B_eff(t)</td>
+                            <td>Mixed effective bandwidth (harmonic)</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">C_ℓ(t)</td>
+                            <td>Level capacity at time t</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Level Work</td>
+                            <td class="symbol">D^W_ℓ(t)</td>
+                            <td>Write demand of level ℓ (MiB/s)</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">D^R_ℓ(t)</td>
+                            <td>Read demand of level ℓ (MiB/s)</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">Q^W_ℓ(t), Q^R_ℓ(t)</td>
+                            <td>Backlogs (unserved I/O) in MiB</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2">Stall</td>
+                            <td class="symbol">N_L0(t)</td>
+                            <td>L0 file count</td>
+                        </tr>
+                        <tr>
+                            <td class="symbol">p_stall(t)</td>
+                            <td>Stall probability [0,1]</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="math-block">
+                    <p><strong>Mixed Effective Bandwidth (Harmonic Aggregation):</strong></p>
+                    $$B_{eff}(t) = \frac{1}{\frac{\rho_r(t)}{B_r} + \frac{\rho_w(t)}{B_w}}$$
+                </div>
+                
+                <div class="math-block">
+                    <p><strong>Level Capacity:</strong></p>
+                    $$C_\ell(t) = k_\ell \mu_\ell^{eff}(t) B_{eff}(t)$$
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Model Assumptions -->
+        <div class="section" id="assumptions">
+            <div class="section-header">3. Model Assumptions</div>
+            <div class="section-content">
+                <ol>
+                    <li><strong>Single storage device</strong>; device R/W limits summarized by $B_r, B_w$. Mixed usage follows the harmonic aggregation above.</li>
+                    <li>Compactions are <strong>asynchronous</strong> and run concurrently across levels but are bounded by per‑level capacity $C_\ell(t)$ and a <strong>global device envelope</strong> $B_{eff}(t)$.</li>
+                    <li>Put stalls are driven by L0 pressure: more L0 files → higher stall probability. We model this with a <strong>smooth logistic</strong> to reflect slowdown/stop thresholds.</li>
+                    <li>Level demands can be <strong>data‑driven</strong> (from logs) or <strong>geometry‑driven</strong> (from compaction rules). The simulator accepts either: you may supply per‑level W/R <strong>share functions</strong> or <strong>multipliers</strong>.</li>
+                    <li>Time discretization Δ is chosen so that state changes are small per step (e.g., 0.5–2 s typical). The simulator is explicit‑update with optional global rescaling to enforce device envelope.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 4. Stall & Concurrency Functions -->
+        <div class="section" id="stall-concurrency">
+            <div class="section-header">4. Stall & Concurrency Functions</div>
+            <div class="section-content">
+                <h3>4.1 Stall probability $p_{stall}(t)$</h3>
+                <p>Let $n_0$ be the L0 slowdown threshold and $n_1 > n_0$ the stop threshold. A smooth mapping keeps the simulator differentiable and robust:</p>
+                
+                <div class="math-block">
+                    $$p_{stall}(t) = \sigma\left(\beta [N_{L0}(t) - n_*]\right), \quad n_* \triangleq \frac{n_0 + n_1}{2}, \beta > 0$$
+                    <p>where $\sigma(x) = \frac{1}{1 + e^{-x}}$. Optionally clamp to $[0, p_{max}]$ if partial stalls are observed ($p_{max} \leq 1$).</p>
+                </div>
+                
+                <div class="math-block">
+                    <p><strong>Realized put:</strong></p>
+                    $$S_{put}(t) = (1 - p_{stall}(t)) U(t)$$
+                </div>
+                
+                <h3>4.2 Concurrency scaling $\mu_\ell^{eff}(t)$</h3>
+                <p>To capture diminishing returns with more threads/jobs (context switches, contention), use a logistic:</p>
+                
+                <div class="math-block">
+                    $$\mu_\ell^{eff}(t) = \mu_{min,\ell} + \frac{\mu_{max,\ell} - \mu_{min,\ell}}{1 + \exp\{-\gamma_\ell [k_s(t) - k_{0,\ell}]\}}$$
+                    <p>with total active jobs $k_s(t)$ (global or per‑level). Commonly $\mu_{min,\ell} \in [0.3, 0.6], \mu_{max,\ell} \leq 1$.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Demand Construction -->
+        <div class="section" id="demand-construction">
+            <div class="section-header">5. Demand Construction (Two Modes)</div>
+            <div class="section-content">
+                <h3>5.1 Log‑driven shares (recommended for validation)</h3>
+                <p>Let $\zeta^W_\ell(t)$ and $\zeta^R_\ell(t)$ be per‑level write/read <strong>share functions</strong> (either constants or time series), obtained from logs. Define total compaction write/read pressures proportional to user rate:</p>
+                
+                <div class="math-block">
+                    $$X^W(t) = WA^*(t) S_{put}(t), \quad X^R(t) = RA^*(t) S_{put}(t)$$
+                    <p>where $WA^*(t), RA^*(t)$ are <strong>external</strong> (log‑measured) write/read amplification factors. Then</p>
+                    $$D^W_\ell(t) = \zeta^W_\ell(t) X^W(t), \quad D^R_\ell(t) = \zeta^R_\ell(t) X^R(t), \quad \sum_\ell \zeta^{\{W,R\}}_\ell(t) = 1$$
+                </div>
+                
+                <h3>5.2 Geometry‑driven multipliers (analytical mode)</h3>
+                <p>Alternatively, specify per‑level multipliers $a_\ell, b_\ell$ (read/write MiB per user MiB) from compaction geometry (fan‑out, overlap, compression). Then</p>
+                
+                <div class="math-block">
+                    $$D^W_\ell(t) = b_\ell S_{put}(t), \quad D^R_\ell(t) = a_\ell S_{put}(t)$$
+                    $$WA^*(t) = \sum_\ell b_\ell, \quad RA^*(t) = \sum_\ell a_\ell$$
+                </div>
+                
+                <div class="info-box">
+                    <h4>Note</h4>
+                    <p>Both modes can be mixed (e.g., use logs for major levels, geometry for minors).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Capacity Allocation & Backlog Updates -->
+        <div class="section" id="capacity-allocation">
+            <div class="section-header">6. Capacity Allocation & Backlog Updates</div>
+            <div class="section-content">
+                <h3>6.1 Device envelope</h3>
+                <p>For a given $\rho_r(t)$, the <strong>device‑wide</strong> feasible I/O is $B_{eff}(t)$. Aggregate allocated read/write across all levels must satisfy:</p>
+                
+                <div class="math-block">
+                    $$\sum_\ell A^W_\ell(t) \leq \rho_w(t) B_{eff}(t), \quad \sum_\ell A^R_\ell(t) \leq \rho_r(t) B_{eff}(t)$$
+                </div>
+                
+                <h3>6.2 Level caps</h3>
+                <p>Each level is further limited by $C_\ell(t) = k_\ell \mu_\ell^{eff}(t) B_{eff}(t)$. We first compute <strong>tentative allocations</strong> using per‑level caps:</p>
+                
+                <div class="math-block">
+                    $$\tilde{A}^W_\ell(t) = \min\{D^W_\ell(t) + Q^W_\ell(t)/\Delta, \rho_w(t) C_\ell(t)\}$$
+                    $$\tilde{A}^R_\ell(t) = \min\{D^R_\ell(t) + Q^R_\ell(t)/\Delta, \rho_r(t) C_\ell(t)\}$$
+                </div>
+                
+                <p>If the sum of $\tilde{A}$ exceeds the device envelope, apply a <strong>global scaling</strong> factor $\eta^{\{W,R\}}(t) \in (0,1]$ to all levels so that constraints are tight.</p>
+                
+                <h3>6.3 Backlog integration</h3>
+                <p>With final allocations $A^{\{W,R\}}_\ell(t) = \eta^{\{W,R\}} \tilde{A}^{\{W,R\}}_\ell(t)$, update backlogs:</p>
+                
+                <div class="math-block">
+                    $$Q^W_\ell(t+\Delta) = \max\{0, Q^W_\ell(t) + (D^W_\ell(t) - A^W_\ell(t)) \Delta\}$$
+                    $$Q^R_\ell(t+\Delta) = \max\{0, Q^R_\ell(t) + (D^R_\ell(t) - A^R_\ell(t)) \Delta\}$$
+                </div>
+                
+                <h3>6.4 L0 file dynamics</h3>
+                <p>Let $f(t)$ be flush file creation rate (files/s), and let compaction L0→L1 remove files at rate $g(t)$ (files/s). Then</p>
+                
+                <div class="math-block">
+                    $$N_{L0}(t+\Delta) = \max\{0, N_{L0}(t) + (f(t) - g(t)) \Delta\}$$
+                </div>
+                
+                <p>A convenient link is to derive $f(t)$ from $S_{put}(t)$ and memtable/target size; similarly derive $g(t)$ from allocated L0 write $A^W_{L0}(t)$ and file size.</p>
+            </div>
+        </div>
+
+        <!-- 7. Outputs & Derived Metrics -->
+        <div class="section" id="outputs">
+            <div class="section-header">7. Outputs & Derived Metrics</div>
+            <div class="section-content">
+                <ul>
+                    <li><strong>Throughput</strong>: $S_{put}(t)$</li>
+                    <li><strong>Stall duty</strong>: time average of $p_{stall}(t)$ or fraction of steps with $p_{stall} > 0$</li>
+                    <li><strong>Per‑level I/O shares</strong>: $A^W_\ell(t), A^R_\ell(t)$ and aggregates</li>
+                    <li><strong>Amplifications</strong> (model‑side):
+                        <div class="math-block">
+                            $$WA(t) = \frac{\sum_\ell A^W_\ell(t)}{S_{put}(t)}, \quad RA(t) = \frac{\sum_\ell A^R_\ell(t)}{S_{put}(t)}$$
+                        </div>
+                    </li>
+                    <li><strong>Backlogs</strong>: $Q^W_\ell(t), Q^R_\ell(t)$ trajectories</li>
+                    <li><strong>L0 pressure</strong>: $N_{L0}(t)$ and its excursions beyond $n_0, n_1$</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 8. Calibration Pathways -->
+        <div class="section" id="calibration">
+            <div class="section-header">8. Calibration Pathways</div>
+            <div class="section-content">
+                <ol>
+                    <li><strong>Device</strong>: Measure $B_r, B_w$ via fio (read/write separately). Optionally profile mixed workloads to sanity‑check the harmonic aggregation.</li>
+                    <li><strong>Stall</strong>: From RocksDB logs, extract slowdown/stop thresholds and empirical stall fraction; fit $\beta, n_*$ (and $p_{max}$ if used).</li>
+                    <li><strong>Shares or multipliers</strong>:
+                        <ul>
+                            <li><strong>Log‑driven</strong>: compute per‑level $\zeta^{\{W,R\}}_\ell$ as time‑averaged shares of total W/R bytes. Optionally allow them to vary slowly over time.</li>
+                            <li><strong>Geometry‑driven</strong>: compute $a_\ell, b_\ell$ from compaction design (fan‑out, overlap, compression ratio, target file sizes).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Concurrency</strong>: From scheduling stats or experiments, fit $\mu_{min,\ell}, \mu_{max,\ell}, \gamma_\ell, k_{0,\ell}$. If unknown, start with $\mu_{min} = 0.6, \mu_{max} = 1$ and adjust.</li>
+                    <li><strong>Flush/L0 mapping</strong>: Identify memtable size and L0 target file size to convert MiB/s to files/s for $f(t), g(t)$.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 9. Simulation Loop -->
+        <div class="section" id="simulation-loop">
+            <div class="section-header">9. Simulation Loop (Pseudocode)</div>
+            <div class="section-content">
+                <div class="pseudocode">initialize state: Q^W_ℓ=Q^R_ℓ=0, N_L0=N_L0_init
+for t in [0, T) step Δ:
+  # 1) Workload & stall
+  U = U_target(t)
+  p = p_stall(N_L0)
+  S_put = (1 - p) * U
+
+  # 2) Mix & device envelope
+  ρ_r = rho_r(t); ρ_w = 1 - ρ_r
+  B_eff = 1 / (ρ_r/B_r + ρ_w/B_w)
+
+  # 3) Level demands (choose log- or geometry-driven)
+  if log_driven:
+    XW = WA_star(t) * S_put;  XR = RA_star(t) * S_put
+    D^W_ℓ = ζ^W_ℓ(t) * XW;   D^R_ℓ = ζ^R_ℓ(t) * XR
+  else:
+    D^W_ℓ = b_ℓ * S_put;     D^R_ℓ = a_ℓ * S_put
+
+  # 4) Tentative per-level caps
+  C_ℓ = k_ℓ * μ_ℓ^{eff}(k_s) * B_eff
+  W̃_ℓ = min(D^W_ℓ + Q^W_ℓ/Δ,  ρ_w * C_ℓ)
+  R̃_ℓ = min(D^R_ℓ + Q^R_ℓ/Δ,  ρ_r * C_ℓ)
+
+  # 5) Global rescale to respect device envelope
+  η_W = min(1, ρ_w*B_eff / Σℓ W̃_ℓ)
+  η_R = min(1, ρ_r*B_eff / Σℓ R̃_ℓ)
+  A^W_ℓ = η_W * W̃_ℓ
+  A^R_ℓ = η_R * R̃_ℓ
+
+  # 6) Backlog updates
+  Q^W_ℓ += (D^W_ℓ - A^W_ℓ) * Δ;  Q^W_ℓ = max(0, Q^W_ℓ)
+  Q^R_ℓ += (D^R_ℓ - A^R_ℓ) * Δ;  Q^R_ℓ = max(0, Q^R_ℓ)
+
+  # 7) L0 files (flush/compact)
+  f = S_put / L0_file_size   # files/s
+  g = A^W_{L0} / L0_file_size
+  N_L0 = max(0, N_L0 + (f - g) * Δ)
+end</div>
+            </div>
+        </div>
+
+        <!-- 10. Practical Defaults & Tips -->
+        <div class="section" id="defaults">
+            <div class="section-header">10. Practical Defaults & Tips</div>
+            <div class="section-content">
+                <ul>
+                    <li><strong>Δ</strong>: 1 s is a safe default. Reduce if oscillations alias.</li>
+                    <li><strong>ρ_r(t)</strong>: If unknown, start with a small constant (e.g., 1–5%) and fit from logs.</li>
+                    <li><strong>k_ℓ</strong>: Initialize proportional to observed shares; ensure $\sum_ℓ k_ℓ \leq 1$.</li>
+                    <li><strong>Stall</strong>: If your system stalls abruptly, increase β; if it shows gradual slowdown, reduce β.</li>
+                    <li><strong>Warm‑up</strong>: Set $Q_ℓ = 0, N_{L0} = 0$ for a cold start, or recover from snapshots to mimic mid‑run restarts.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 11. Outputs to Inspect -->
+        <div class="section" id="inspect">
+            <div class="section-header">11. Outputs to Inspect</div>
+            <div class="section-content">
+                <ol>
+                    <li><strong>S_put(t)</strong> vs observed put rate (MAPE/NRMSE).</li>
+                    <li><strong>Aggregate I/O</strong>: $\sum A^W_ℓ, \sum A^R_ℓ$ vs device counters.</li>
+                    <li><strong>Per‑level shares</strong>: $A^W_ℓ/\sum A^W, A^R_ℓ/\sum A^R$.</li>
+                    <li><strong>WA/RA</strong> time series.</li>
+                    <li><strong>Stall duty</strong> and <strong>L0 trajectories</strong> vs logs.</li>
+                    <li><strong>Backlog decay</strong> after load drop (should show exponential‑like relaxation when capacity > demand).</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 12. JSON Parameter Schema -->
+        <div class="section" id="json-schema">
+            <div class="section-header">12. JSON Parameter Schema (example)</div>
+            <div class="section-content">
+                <div class="json-block">{
+  "device": {"B_r": 2400, "B_w": 1500},
+  "sim": {"dt": 1.0, "T": 3600},
+  "workload": {
+    "U_target": {"kind": "piecewise", "points": [[0,180],[1200,220],[2400,180]]},
+    "rho_r": {"kind": "constant", "value": 0.02}
+  },
+  "stall": {"n0": 8, "n1": 20, "beta": 0.6, "pmax": 1.0},
+  "levels": [
+    {"name": "L0", "k": 0.18, "mu_min": 0.7, "mu_max": 1.0, "gamma": 0.3, "k0": 3},
+    {"name": "L1", "k": 0.22, "mu_min": 0.6, "mu_max": 1.0, "gamma": 0.25, "k0": 4},
+    {"name": "L2", "k": 0.30, "mu_min": 0.6, "mu_max": 1.0, "gamma": 0.25, "k0": 4},
+    {"name": "L3", "k": 0.30, "mu_min": 0.6, "mu_max": 1.0, "gamma": 0.25, "k0": 4}
+  ],
+  "shares": {
+    "mode": "log",
+    "WA_star": 2.8, "RA_star": 0.1,
+    "zeta_w": {"L0": 0.08, "L1": 0.25, "L2": 0.45, "L3": 0.22},
+    "zeta_r": {"L0": 0.05, "L1": 0.20, "L2": 0.55, "L3": 0.20}
+  },
+  "l0_files": {"file_size_mib": 64, "N0_init": 0}
+}</div>
+                
+                <p><em>Switch to <code>mode:"geom"</code> with per‑level multipliers if you prefer geometry‑driven operation:</em></p>
+                
+                <div class="json-block">"shares": {
+  "mode": "geom",
+  "a": {"L0": 0.02, "L1": 0.10, "L2": 0.60, "L3": 0.28},
+  "b": {"L0": 0.08, "L1": 0.25, "L2": 0.45, "L3": 0.22}
+}</div>
+            </div>
+        </div>
+
+        <!-- 13. Quality Checks -->
+        <div class="section" id="quality-checks">
+            <div class="section-header">13. Quality Checks (Sanity/Conservation)</div>
+            <div class="section-content">
+                <ul>
+                    <li><strong>Device envelope</strong>: $\sum_ℓ A^W_ℓ \leq \rho_w B_{eff}$ and $\sum_ℓ A^R_ℓ \leq \rho_r B_{eff}$ at every step (by construction after rescaling).</li>
+                    <li><strong>Share sums</strong>: $\sum_ℓ \zeta^{\{W,R\}}_ℓ = 1$ (log mode) or $WA^* = \sum b_ℓ, RA^* = \sum a_ℓ$ (geom mode).</li>
+                    <li><strong>Non‑negative states</strong>: Backlogs and $N_{L0}$ never negative.</li>
+                    <li><strong>Mass balance</strong>: Over long windows, modeled WA/RA should match observed totals within tolerance (e.g., ±10–15%).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 14. What the Model Captures / Limits -->
+        <div class="section" id="captures-limits">
+            <div class="section-header">14. What the Model Captures / Limits</div>
+            <div class="section-content">
+                <div class="highlight-box">
+                    <h4>Captures</h4>
+                    <p>transient stalls, level contention, read/write mix effects, concurrency saturation, warm‑up and relaxation.</p>
+                </div>
+                
+                <div class="warning-box">
+                    <h4>Not modeled explicitly</h4>
+                    <p>per‑SST file pickers, compaction priority heuristics, multi‑device striping, compression CPU bottlenecks, and background read‑cache interactions. These can be partially absorbed into $k_ℓ, \mu_ℓ^{eff}$, and share/multiplier choices.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 15. Minimal Reproduction Steps -->
+        <div class="section" id="reproduction">
+            <div class="section-header">15. Minimal Reproduction Steps</div>
+            <div class="section-content">
+                <ol>
+                    <li>Measure $B_r, B_w$.</li>
+                    <li>Extract stall thresholds and level shares (or multipliers) from logs.</li>
+                    <li>Prepare a JSON like §12; load it into the simulator.</li>
+                    <li>Run for a horizon covering warm‑up → steady → perturbation.</li>
+                    <li>Export CSV; compute MAPE for $S_{put}(t)$, WA/RA, level shares, and stall duty.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 16. Extensions -->
+        <div class="section" id="extensions">
+            <div class="section-header">16. Extensions (Optional)</div>
+            <div class="section-content">
+                <ul>
+                    <li>Multi‑device envelope (per‑device $B_r, B_w$ and routing matrix).</li>
+                    <li>CPU‑bounded compaction: add a second resource envelope and take the minimum.</li>
+                    <li>Priority scheduling: replace global rescale with weighted water‑filling.</li>
+                    <li>Adaptive $\rho_r(t)$ from cache hit/miss time series.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><em>End of self‑contained v3 specification.</em></p>
+            <p><strong>Generated:</strong> 2025-09-05 | <strong>Status:</strong> ✅ Complete</p>
+        </div>
+    </div>
+</body>
+</html>

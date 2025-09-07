@@ -97,6 +97,7 @@ python3 scripts/transient_depth_analysis.py
   - [experiments/2025-09-05/model_validation_comprehensive.html](experiments/2025-09-05/model_validation_comprehensive.html) - 모델 검증 종합 보고서
   - [experiments/2025-09-05/validation_report_with_log_data.html](experiments/2025-09-05/validation_report_with_log_data.html) - LOG 데이터 기반 검증 보고서
   - [experiments/2025-09-05/visualization_report.html](experiments/2025-09-05/visualization_report.html) - 시각화 보고서
+  - [experiments/2025-09-05/parameter_validation_visualization.html](experiments/2025-09-05/parameter_validation_visualization.html) - 파라미터 검증 시각화 보고서
 - **그래프**: `figs/` 폴더의 PNG 파일들
 - **수치**: 각 스크립트의 콘솔 출력
 

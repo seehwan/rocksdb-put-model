@@ -89,7 +89,7 @@ python3 scripts/transient_depth_analysis.py
   - [ValidationPlan.html](ValidationPlan.html) - 검증 계획 (이론적 방법론)
   - [ValidationGuide.html](ValidationGuide.html) - 검증 실행 가이드 (단계별 실행법)
 - **실험 보고서**:
-  - [experiments/2025-09-05/experiment_final_report.md](experiments/2025-09-05/experiment_final_report.md) - 최종 실험 보고서
+  - [experiments/2025-09-05/v3_report.md](experiments/2025-09-05/v3_report.md) - v3 모델 최종 보고서
   - [experiments/2025-09-05/model_validation_comprehensive.html](experiments/2025-09-05/model_validation_comprehensive.html) - 모델 검증 종합 보고서
   - [experiments/2025-09-05/validation_report_with_log_data.html](experiments/2025-09-05/validation_report_with_log_data.html) - LOG 데이터 기반 검증 보고서
 - **그래프**: `figs/` 폴더의 PNG 파일들

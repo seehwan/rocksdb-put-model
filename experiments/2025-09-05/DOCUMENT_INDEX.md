@@ -60,7 +60,7 @@
 ## 📈 종합 보고서
 
 ### 최종 실험 보고서
-- **[experiment_final_report.md](experiment_final_report.md)** - 최종 실험 보고서 (업데이트됨)
+- **[v3_report.md](v3_report.md)** - v3 모델 최종 보고서 (업데이트됨)
   - 6단계 검증 프로세스 완료
   - v1 → v2.1 → v3 모델 진화 과정
   - 211.1%p 전체 개선 달성

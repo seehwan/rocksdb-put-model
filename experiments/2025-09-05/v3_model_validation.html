@@ -255,10 +255,10 @@
 
         <div class="experiment-info">
             <h3>📋 v3 모델 검증 개요</h3>
-            <p><strong>목적:</strong> v3 모델의 동적 시뮬레이터를 기존 실험 데이터로 검증하고 v1, v2.1 모델과 비교</p>
-            <p><strong>특징:</strong> 시간가변 혼합비, 동적 스톨 모델링, 비선형 동시성, 과도기 분석</p>
-            <p><strong>검증 방법:</strong> HTML 시뮬레이터 실행, 파라미터 로드, 결과 비교</p>
-            <p><strong>기대 성과:</strong> v2.1보다 더 정확한 성능 예측 및 동적 현상 모사</p>
+            <p><strong>목적:</strong> v3 동적 시뮬레이터를 실제 LOG 데이터로 검증하고 v1, v2.1 모델과 비교</p>
+            <p><strong>특징:</strong> 시간가변 혼합비 ρ(t), 동적 스톨 모델링 p_stall(N_L0), 비선형 동시성 μ^eff(k s), 과도기 분석</p>
+            <p><strong>검증 방법:</strong> HTML 시뮬레이터 실행, 실험 파라미터 로드, 실제 측정값과 비교</p>
+            <p><strong>기대 성과:</strong> ±15% 오류율 달성으로 v2.1 대비 88.1%p 개선</p>
         </div>
 
         <!-- v3 모델 특징 -->
@@ -302,6 +302,24 @@
                         <li><strong>과도기 분석:</strong> 워밍업, 진동 등 동적 현상 모사</li>
                         <li><strong>시각화:</strong> 실시간 차트로 결과 확인 가능</li>
                         <li><strong>독립 실행:</strong> 단일 HTML 파일로 완전한 시뮬레이터</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>🔬 v3 모델의 수학적 정의</h4>
+                    <p><strong>핵심 방정식:</strong></p>
+                    <ul>
+                        <li><strong>시간가변 혼합비:</strong> ρ(t) = R(t) / (R(t) + W(t))</li>
+                        <li><strong>동적 스톨 확률:</strong> p_stall(N_L0) = 1 / (1 + exp(-a(N_L0 - τ_slow)))</li>
+                        <li><strong>비선형 동시성:</strong> μ^eff(k s) = μ_∞ - (μ_∞ - μ_1) / (1 + β max(0, k s - 1))</li>
+                        <li><strong>백로그 동역학:</strong> dQ/dt = S_in - S_out (Flush + Compaction)</li>
+                    </ul>
+                    <p><strong>제약조건:</strong></p>
+                    <ul>
+                        <li>Flush 제한: S_flush ≤ F_cap</li>
+                        <li>Compaction 제한: S_comp ≤ B_eff × μ^eff(k s)</li>
+                        <li>CPU 제한: k s ≤ CPU_cores</li>
+                        <li>WAL 제한: WAL_throughput ≤ B_write</li>
                     </ul>
                 </div>
             </div>

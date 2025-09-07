@@ -25,7 +25,7 @@
 \newcommand{\smax}{S_{\text{max}}}
 \newcommand{\wa}{WA}
 \newcommand{\ra}{RA}
-\newcommand{\cr}{CR}
+\newcommand{\compressionratio}{CR}
 \newcommand{\bw}{B_w}
 \newcommand{\br}{B_r}
 \newcommand{\beff}{B_{\text{eff}}}
@@ -382,53 +382,69 @@ The models and tools are available as open-source software, enabling the communi
 
 We thank the RocksDB community for their valuable feedback and the open-source ecosystem that made this work possible.
 
-\bibliographystyle{plain}
-\bibliography{references}
 
 \appendix
 
 \section{Model Implementation Details}
+
+% Add bibliography
+\begin{thebibliography}{9}
+\bibitem{dayan2017lsm}
+N. Dayan and M. Athanassoulis.
+\newblock Design tradeoffs of data access methods.
+\newblock In \emph{Proceedings of the 2017 ACM International Conference on Management of Data}, pages 219--234, 2017.
+
+\bibitem{luo2019wisc}
+C. Luo and M. J. Carey.
+\newblock LSM-based storage techniques: A survey.
+\newblock \emph{The VLDB Journal}, 29(1):393--418, 2020.
+
+\bibitem{luo2020monkey}
+C. Luo, S. Di, B. Ding, and M. J. Carey.
+\newblock Monkey: Optimal navigable key-value store.
+\newblock In \emph{Proceedings of the 2020 ACM SIGMOD International Conference on Management of Data}, pages 79--94, 2020.
+\end{thebibliography}
 
 \subsection{Simulation Algorithm}
 
 The v3 model simulation follows this algorithm:
 
 \begin{lstlisting}[language=Python]
-for t in [0, T) step Δ:
+for t in [0, T) step Delta:
     # 1) Workload & stall
     U = U_target(t)
     p = p_stall(N_L0)
     S_put = (1 - p) * U
     
     # 2) Mix & device envelope
-    ρ_r = rho_r(t); ρ_w = 1 - ρ_r
-    B_eff = 1 / (ρ_r/B_r + ρ_w/B_w)
+    $\rho_r$ = rho_r(t); $\rho_w$ = 1 - $\rho_r$
+    B_eff = 1 / ($\rho_r$/B_r + $\rho_w$/B_w)
     
     # 3) Level demands
     if log_driven:
         XW = WA_star(t) * S_put
         XR = RA_star(t) * S_put
-        D^W_ℓ = ζ^W_ℓ(t) * XW
-        D^R_ℓ = ζ^R_ℓ(t) * XR
+        D^W_$\ell$ = $\zeta$^W_$\ell$(t) * XW
+        D^R_$\ell$ = $\zeta$^R_$\ell$(t) * XR
     else:
-        D^W_ℓ = b_ℓ * S_put
-        D^R_ℓ = a_ℓ * S_put
+        D^W_$\ell$ = b_$\ell$ * S_put
+        D^R_$\ell$ = a_$\ell$ * S_put
     
     # 4) Capacity allocation
-    C_ℓ = k_ℓ * μ_ℓ^{eff}(k_s) * B_eff
-    A^W_ℓ = min(D^W_ℓ + Q^W_ℓ/Δ, ρ_w * C_ℓ)
-    A^R_ℓ = min(D^R_ℓ + Q^R_ℓ/Δ, ρ_r * C_ℓ)
+    C_$\ell$ = k_$\ell$ * $\mu$_{$\ell$}^{eff}(k_s) * B_eff
+    A^W_{$\ell$} = min(D^W_{$\ell$} + Q^W_{$\ell$}/$\Delta$, $\rho_w$ * C_{$\ell$})
+    A^R_{$\ell$} = min(D^R_{$\ell$} + Q^R_{$\ell$}/$\Delta$, $\rho_r$ * C_{$\ell$})
     
     # 5) Backlog updates
-    Q^W_ℓ += (D^W_ℓ - A^W_ℓ) * Δ
-    Q^R_ℓ += (D^R_ℓ - A^R_ℓ) * Δ
-    Q^W_ℓ = max(0, Q^W_ℓ)
-    Q^R_ℓ = max(0, Q^R_ℓ)
+    Q^W_{$\ell$} += (D^W_{$\ell$} - A^W_{$\ell$}) * $\Delta$
+    Q^R_{$\ell$} += (D^R_{$\ell$} - A^R_{$\ell$}) * $\Delta$
+    Q^W_{$\ell$} = max(0, Q^W_{$\ell$})
+    Q^R_{$\ell$} = max(0, Q^R_{$\ell$})
     
     # 6) L0 file dynamics
     f = S_put / L0_file_size
     g = A^W_{L0} / L0_file_size
-    N_L0 = max(0, N_L0 + (f - g) * Δ)
+    N_L0 = max(0, N_L0 + (f - g) * $\Delta$)
 \end{lstlisting}
 
 \subsection{Parameter Calibration}

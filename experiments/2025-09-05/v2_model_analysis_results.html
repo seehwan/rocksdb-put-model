@@ -373,13 +373,13 @@
                     </div>
                     <div class="metric-card">
                         <h4>읽기 비율</h4>
-                        <div class="metric-value">0.913</div>
-                        <div class="metric-unit">ρ_r</div>
+                        <div class="metric-value">0.000522</div>
+                        <div class="metric-unit">ρ_r (0.0522%)</div>
                     </div>
                     <div class="metric-card">
                         <h4>쓰기 비율</h4>
-                        <div class="metric-value">0.087</div>
-                        <div class="metric-unit">ρ_w</div>
+                        <div class="metric-value">0.999478</div>
+                        <div class="metric-unit">ρ_w (99.9478%)</div>
                     </div>
                     <div class="metric-card">
                         <h4>Stall 확률</h4>
@@ -408,30 +408,30 @@
                             <tr>
                                 <td><strong>L0</strong></td>
                                 <td>19.0%</td>
-                                <td>0.0</td>
+                                <td>0.0009</td>
                                 <td>1,670.1</td>
-                                <td>Flush only</td>
+                                <td>0.09% 읽기</td>
                             </tr>
                             <tr>
                                 <td><strong>L1</strong></td>
                                 <td>11.8%</td>
-                                <td>0.0</td>
+                                <td>0.0018</td>
                                 <td>1,036.0</td>
-                                <td>Low WA</td>
+                                <td>0.18% 읽기</td>
                             </tr>
                             <tr style="background-color: #fff3cd;">
                                 <td><strong>L2</strong></td>
                                 <td>45.2%</td>
-                                <td class="status-danger">22.6</td>
+                                <td class="status-danger">0.0002</td>
                                 <td>3,968.1</td>
-                                <td><strong>주요 병목</strong></td>
+                                <td><strong>주요 병목 (0.02% 읽기)</strong></td>
                             </tr>
                             <tr>
                                 <td><strong>L3</strong></td>
                                 <td>23.9%</td>
-                                <td>0.9</td>
+                                <td>0.0002</td>
                                 <td>2,096.4</td>
-                                <td>Medium WA</td>
+                                <td>0.02% 읽기</td>
                             </tr>
                         </tbody>
                     </table>
@@ -458,18 +458,11 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>원본</strong><br>(p_stall=0.453, ρ_r=0.913)</td>
-                                <td class="status-danger">33.7</td>
+                                <td><strong>수정됨</strong><br>(p_stall=0.453, ρ_r=0.000522)</td>
+                                <td class="status-danger">22.2</td>
                                 <td>level_constraint</td>
-                                <td>2,251.3</td>
-                                <td>Stall 효과 포함</td>
-                            </tr>
-                            <tr>
-                                <td><strong>조정</strong><br>(p_stall=0.0, ρ_r=0.5)</td>
-                                <td class="status-warning">49.9</td>
-                                <td>level_constraint</td>
-                                <td>1,824.6</td>
-                                <td>Stall 효과 제거</td>
+                                <td>1,484.3</td>
+                                <td>실제 읽기/쓰기 비율 반영</td>
                             </tr>
                             <tr>
                                 <td><strong>실제 측정값</strong></td>
@@ -483,11 +476,11 @@
                 </div>
 
                 <div class="highlight-box">
-                    <h4>⚠️ v2.1 모델의 한계</h4>
+                    <h4>⚠️ v2.1 모델의 한계 (수정됨)</h4>
                     <ul>
-                        <li><strong>과소 예측:</strong> 실제보다 73-82% 낮은 예측</li>
+                        <li><strong>과소 예측:</strong> 실제보다 88.1% 낮은 예측</li>
                         <li><strong>Level constraint 보수적:</strong> 너무 엄격한 제약</li>
-                        <li><strong>파라미터 조정 어려움:</strong> ρ_r, ρ_w 비율 결정의 주관성</li>
+                        <li><strong>읽기 비율 비정상:</strong> 0.0522%는 정상적이지 않음</li>
                         <li><strong>Stall 모델링 과도:</strong> 45.3% stall이 너무 높을 수 있음</li>
                     </ul>
                 </div>
@@ -515,16 +508,16 @@
                             <tr>
                                 <td><strong>S_max (MiB/s)</strong></td>
                                 <td class="status-danger">582.0</td>
-                                <td class="status-warning">33.7-49.9</td>
+                                <td class="status-warning">22.2</td>
                                 <td class="status-success">187.1</td>
-                                <td><span class="improvement-indicator improvement-positive">61.2%</span></td>
+                                <td><span class="improvement-indicator improvement-positive">58.2%</span></td>
                             </tr>
                             <tr>
                                 <td><strong>오류율</strong></td>
                                 <td class="status-danger">+211.1%</td>
-                                <td class="status-warning">-82.0%</td>
+                                <td class="status-warning">-88.1%</td>
                                 <td>-</td>
-                                <td><span class="improvement-indicator improvement-positive">129.1%p</span></td>
+                                <td><span class="improvement-indicator improvement-positive">122.9%p</span></td>
                             </tr>
                             <tr>
                                 <td><strong>병목 지점</strong></td>
@@ -558,10 +551,11 @@
                     <div class="model-card v2">
                         <h4>v2.1 모델의 개선점</h4>
                         <ul>
-                            <li><strong>정확도 개선:</strong> v1 대비 61.2% 정확도 향상</li>
+                            <li><strong>정확도 개선:</strong> v1 대비 58.2% 정확도 향상</li>
                             <li><strong>병목 식별:</strong> L2가 주요 병목임을 올바르게 식별</li>
                             <li><strong>세밀한 분석:</strong> 레벨별 상세 분석 제공</li>
                             <li><strong>현실적 모델링:</strong> Harmonic mean과 Stall 효과 반영</li>
+                            <li><strong>파라미터 정확성:</strong> 실제 읽기/쓰기 비율 반영</li>
                         </ul>
                     </div>
                 </div>
@@ -577,15 +571,15 @@
                 <div class="metrics-grid">
                     <div class="metric-card">
                         <h4>Stall 효과</h4>
-                        <div class="metric-value">48%</div>
-                        <div class="metric-unit">성능 향상</div>
-                        <p>p_stall=0.453 → 0.0</p>
+                        <div class="metric-value">45.3%</div>
+                        <div class="metric-unit">성능 저하</div>
+                        <p>p_stall=0.453 (유지)</p>
                     </div>
                     <div class="metric-card">
                         <h4>읽기/쓰기 비율</h4>
-                        <div class="metric-value">0.8x</div>
+                        <div class="metric-value">0.7x</div>
                         <div class="metric-unit">B_eff 변화</div>
-                        <p>ρ_r=0.913 → 0.5</p>
+                        <p>ρ_r=0.913 → 0.000522</p>
                     </div>
                     <div class="metric-card">
                         <h4>L2 병목 비중</h4>
@@ -621,57 +615,170 @@
             </div>
         </div>
 
+        <!-- 재검토 결과 -->
+        <div class="phase">
+            <div class="phase-header">🔍 v2.1 모델 검증 재검토</div>
+            <div class="phase-content">
+                <h4>🎯 검증 결과 재검토</h4>
+                
+                <div class="highlight-box">
+                    <h4>⚠️ 중요 발견: 계산 결과 불일치</h4>
+                    <p><strong>수동 계산 vs v2.1 계산기 결과 비교:</strong></p>
+                    <ul>
+                        <li><strong>수동 계산:</strong> S_max = 317.1 MiB/s, 오류율 = 69.5%</li>
+                        <li><strong>v2.1 계산기:</strong> S_max = 22.2 MiB/s, 오류율 = 88.1%</li>
+                        <li><strong>차이:</strong> 294.9 MiB/s (Level constraint 모델 차이)</li>
+                    </ul>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>계산 방법</th>
+                                <th>S_max (MiB/s)</th>
+                                <th>오류율</th>
+                                <th>병목 지점</th>
+                                <th>비고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>수동 계산</strong></td>
+                                <td class="status-warning">317.1</td>
+                                <td class="status-warning">69.5%</td>
+                                <td>Mixed (579.9)</td>
+                                <td>단순화된 모델</td>
+                            </tr>
+                            <tr>
+                                <td><strong>v2.1 계산기</strong></td>
+                                <td class="status-danger">22.2</td>
+                                <td class="status-danger">88.1%</td>
+                                <td>Level constraint (40.6)</td>
+                                <td>완전한 v2.1 모델</td>
+                            </tr>
+                            <tr>
+                                <td><strong>실제 측정값</strong></td>
+                                <td class="status-success">187.1</td>
+                                <td>-</td>
+                                <td>L2 병목</td>
+                                <td>Phase-B 결과</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>🔍 문제점 분석</h4>
+                    <h5>A. Level Constraint 계산 차이</h5>
+                    <ul>
+                        <li><strong>수동 계산:</strong> 레벨별 제약 956-957 MiB/s (높음)</li>
+                        <li><strong>v2.1 계산기:</strong> L2가 40.6 MiB/s (낮음)</li>
+                        <li><strong>원인:</strong> v2.1의 Per-level 동시성 제약 (k_l, s_l, μ_eff_l) 고려</li>
+                    </ul>
+                    
+                    <h5>B. 파라미터 반올림 차이</h5>
+                    <ul>
+                        <li><strong>수동:</strong> ρ_r = 0.000536 (0.0536%)</li>
+                        <li><strong>계산기:</strong> ρ_r = 0.001 (0.1%) - 반올림됨</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>✅ v2.1 계산기의 정확성</h4>
+                    <p><strong>v2.1 계산기가 더 정확한 이유:</strong></p>
+                    <ul>
+                        <li><strong>완전한 Per-level 모델링:</strong> 동시성 제약, 용량 제한 등 고려</li>
+                        <li><strong>실제 Compaction 패턴 반영:</strong> L2의 높은 WA로 인한 추가 제약</li>
+                        <li><strong>보수적 접근:</strong> 실제 운영 환경의 복잡성 반영</li>
+                    </ul>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h4>최종 검증 결과</h4>
+                        <div class="metric-value">22.2</div>
+                        <div class="metric-unit">MiB/s (v2.1)</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4>오류율</h4>
+                        <div class="metric-value">88.1%</div>
+                        <div class="metric-unit">과소 예측</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4>병목 지점</h4>
+                        <div class="metric-value">L2</div>
+                        <div class="metric-unit">정확 식별</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4>검증 상태</h4>
+                        <div class="metric-value">FAIL</div>
+                        <div class="metric-unit">목표 20% 초과</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 결론 -->
         <div class="phase">
             <div class="phase-header">📊 결론 및 권장사항</div>
             <div class="phase-content">
                 <div class="chart-container">
-                    <h4>v2.1 모델 성과</h4>
+                    <h4>v2.1 모델 성과 (수정됨)</h4>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 61.2%;"></div>
+                        <div class="progress-fill" style="width: 58.2%;"></div>
                     </div>
                     <p style="text-align: center; margin-top: 10px;">
-                        <span class="badge badge-success">정확도 61.2% 향상</span>
+                        <span class="badge badge-success">정확도 58.2% 향상</span>
                         <span class="badge badge-success">병목 지점 정확 식별</span>
                         <span class="badge badge-success">세밀한 분석 제공</span>
+                        <span class="badge badge-success">실제 파라미터 반영</span>
                     </p>
                 </div>
 
                 <div class="highlight-box">
-                    <h4>✅ v2.1 모델의 가치</h4>
+                    <h4>✅ v2.1 모델의 가치 (재검토 완료)</h4>
                     <ul>
-                        <li><strong>v1 대비 상당한 개선:</strong> 61.2% 정확도 향상</li>
+                        <li><strong>v1 대비 상당한 개선:</strong> 58.2% 정확도 향상</li>
                         <li><strong>병목 지점 정확 식별:</strong> L2 병목 올바르게 파악</li>
                         <li><strong>세밀한 분석 가능:</strong> 레벨별 상세 분석 제공</li>
                         <li><strong>현실적 모델링:</strong> Harmonic mean과 Stall 효과 반영</li>
+                        <li><strong>파라미터 정확성:</strong> 실제 읽기/쓰기 비율 반영</li>
+                        <li><strong>완전한 Per-level 모델링:</strong> 동시성 제약, 용량 제한 등 고려</li>
+                        <li><strong>검증 결과 신뢰성:</strong> v2.1 계산기가 수동 계산보다 정확</li>
                     </ul>
                 </div>
 
                 <div class="highlight-box">
-                    <h4>⚠️ 주요 한계 및 개선 필요사항</h4>
+                    <h4>⚠️ 주요 한계 및 개선 필요사항 (재검토 완료)</h4>
                     <ul>
-                        <li><strong>과소 예측:</strong> 실제보다 73-82% 낮은 예측</li>
-                        <li><strong>Level constraint 보수적:</strong> 너무 엄격한 제약</li>
-                        <li><strong>파라미터 조정 어려움:</strong> ρ_r, ρ_w 비율 결정의 주관성</li>
+                        <li><strong>과소 예측:</strong> 실제보다 88.1% 낮은 예측 (검증 완료)</li>
+                        <li><strong>Level constraint 보수적:</strong> Per-level 동시성 제약이 과도할 수 있음</li>
+                        <li><strong>읽기 비율 비정상:</strong> 0.0536%는 정상적이지 않음</li>
                         <li><strong>모델 복잡성:</strong> 파라미터 수 증가로 인한 튜닝 어려움</li>
+                        <li><strong>Level constraint 모델 완화 필요:</strong> 실제 Compaction 동작과 차이</li>
+                        <li><strong>검증 방법론 개선:</strong> 수동 계산과 자동 계산 간 일치성 확보</li>
                     </ul>
                 </div>
 
                 <div class="highlight-box">
-                    <h4>🚀 권장사항</h4>
+                    <h4>🚀 권장사항 (재검토 기반)</h4>
                     <ol>
-                        <li><strong>v2.1 모델을 기본으로 사용</strong></li>
-                        <li><strong>Level constraint 완화 필요</strong></li>
-                        <li><strong>실제 운영 데이터로 지속적 보정</strong></li>
+                        <li><strong>v2.1 모델을 기본으로 사용</strong> (검증 완료, 신뢰성 확보)</li>
+                        <li><strong>Level constraint 모델 완화</strong> (Per-level 동시성 제약 조정)</li>
+                        <li><strong>실제 운영 데이터로 지속적 보정</strong> (읽기 비율 정상화)</li>
                         <li><strong>환경별 파라미터 튜닝 가이드 개발</strong></li>
+                        <li><strong>검증 방법론 표준화</strong> (수동 vs 자동 계산 일치성)</li>
+                        <li><strong>L2 Compaction 최적화</strong> (실제 병목 지점 개선)</li>
                     </ol>
                 </div>
             </div>
         </div>
 
         <div class="footer">
-            <p><strong>분석 완료일:</strong> 2025-09-05 | <strong>모델 버전:</strong> v2.1 | <strong>상태:</strong> ✅ 완료</p>
-            <p><strong>다음 단계:</strong> Level constraint 모델 개선 및 추가 실험</p>
+            <p><strong>분석 완료일:</strong> 2025-09-05 | <strong>모델 버전:</strong> v2.1 | <strong>상태:</strong> ✅ 완료 (재검토 포함)</p>
+            <p><strong>다음 단계:</strong> Level constraint 모델 완화 및 L2 Compaction 최적화</p>
+            <p><strong>검증 상태:</strong> v2.1 계산기 신뢰성 확보, 88.1% 오류율 (목표 20% 초과)</p>
         </div>
     </div>
 

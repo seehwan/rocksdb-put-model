@@ -30,42 +30,9 @@
   doi={10.1145/3318464.3389741}
 }
 
-@inproceedings{lim2015silt,
-  title={SILT: A memory-efficient, high-performance key-value store},
-  author={Lim, Hyeontaek and Andersen, David G and Kaminsky, Michael},
-  booktitle={Proceedings of the 23rd ACM Symposium on Operating Systems Principles},
-  pages={1--13},
-  year={2015},
-  organization={ACM},
-  doi={10.1145/2815400.2815402}
-}
 
-@inproceedings{cao2018fast,
-  title={Fast and crash-consistent key-value stores},
-  author={Cao, Wenguang and Liu, Zhenjun and Wang, Peng and Chen, Shiqiang and Zhu, Tiancheng and Li, Songze and Yu, Yubin and Zhang, Qian and Li, Jinyang and Sun, Ning},
-  booktitle={Proceedings of the 2018 USENIX Annual Technical Conference},
-  pages={865--877},
-  year={2018},
-  doi={10.1145/3299869.3319881}
-}
 
-@inproceedings{wu2015lsm,
-  title={LSM-trie: An LSM-tree-based ultra-large key-value store for small data},
-  author={Wu, Xingbo and Xu, Yuehai and Shao, Zili and Jiang, Song},
-  booktitle={Proceedings of the 2015 USENIX Annual Technical Conference},
-  pages={71--82},
-  year={2015},
-  doi={10.1145/2815400.2815402}
-}
 
-@inproceedings{luo2016wisc,
-  title={WiscKey: Separating keys from values in SSD-conscious storage},
-  author={Luo, Chen and Carey, Michael J},
-  booktitle={Proceedings of the 2016 USENIX Annual Technical Conference},
-  pages={133--144},
-  year={2016},
-  doi={10.1145/2815400.2815402}
-}
 
 @article{ousterhout2013ramcloud,
   title={The case for RAMClouds: scalable high-performance storage entirely in DRAM},
@@ -79,17 +46,6 @@
   doi={10.1145/1713254.1713266}
 }
 
-@article{bloom1970space,
-  title={Space/time trade-offs in hash coding with allowable errors},
-  author={Bloom, Burton H},
-  journal={Communications of the ACM},
-  volume={13},
-  number={7},
-  pages={422--426},
-  year={1970},
-  publisher={ACM},
-  doi={10.1145/362686.362692}
-}
 
 @article{chang2008bigtable,
   title={Bigtable: A distributed storage system for structured data},
@@ -103,26 +59,7 @@
   doi={10.1145/1365815.1365816}
 }
 
-@inproceedings{lakshman2010cassandra,
-  title={Cassandra: a decentralized structured storage system},
-  author={Lakshman, Avinash and Malik, Prashant},
-  booktitle={ACM SIGOPS Operating Systems Review},
-  volume={44},
-  number={2},
-  pages={35--40},
-  year={2010},
-  organization={ACM},
-  doi={10.1145/1773912.1773922}
-}
 
-@inproceedings{ongaro2014search,
-  title={In search of an understandable consensus algorithm},
-  author={Ongaro, Diego and Ousterhout, John},
-  booktitle={Proceedings of the 2014 USENIX Annual Technical Conference},
-  pages={305--319},
-  year={2014},
-  doi={10.1145/2815400.2815402}
-}
 
 @inproceedings{ren2017analysis,
   title={Analysis and optimization of the parallel degree of compaction in LSM-tree},
@@ -136,14 +73,6 @@
   doi={10.14778/3055540.3055549}
 }
 
-@inproceedings{liu2018kvell,
-  title={KVell: The design and implementation of a fast persistent key-value store},
-  author={Liu, Stathis and Kaftan, Tal and Bronson, Nathan and Mace, Jonathan and Gribble, Steven D and Alizadeh, Mohammad},
-  booktitle={Proceedings of the 2019 USENIX Annual Technical Conference},
-  pages={447--461},
-  year={2019},
-  doi={10.1145/3318464.3389741}
-}
 
 @article{chen2019write,
   title={Write amplification analysis in cloud storage systems},
@@ -176,15 +105,364 @@
   pages={1567--1580},
   year={2021},
   publisher={IEEE},
-  doi={10.1109/TKDE.2019.2957754}
+  doi={10.1109/TKDE.2020.3017754}
 }
 
-@article{rajgarhia2010performance,
-  title={Performance evaluation of a main memory DBMS},
-  author={Rajgarhia, Aditya and Gehani, Ashish},
-  booktitle={Proceedings of the 2010 ACM SIGMOD International Conference on Management of Data},
-  pages={105--116},
-  year={2010},
-  organization={ACM},
-  doi={10.1145/1807167.1807182}
+@article{oneil1996lsmtree,
+  title={The log-structured merge-tree (LSM-tree)},
+  author={O'Neil, Patrick and Cheng, Edward and Gawlick, Dieter and O'Neil, Elizabeth},
+  journal={Acta Informatica},
+  volume={33},
+  number={4},
+  pages={351--385},
+  year={1996},
+  doi={10.1007/s002360050048}
+}
+
+@inproceedings{sears2012blsm,
+  title={bLSM: A General Purpose Log Structured Merge Tree},
+  author={Sears, Russell and Ramakrishnan, Raghu},
+  booktitle={Proceedings of the 2012 ACM SIGMOD International Conference on Management of Data},
+  pages={217--228},
+  year={2012},
+  doi={10.1145/2213836.2213862}
+}
+
+@inproceedings{lu2016wisckey,
+  title={WiscKey: Separating keys from values in SSD-conscious storage},
+  author={Lu, Lanyue and Pillai, Thanumalayan S. and Arpaci-Dusseau, Andrea C. and Arpaci-Dusseau, Remzi H.},
+  booktitle={14th USENIX Conference on File and Storage Technologies (FAST '16)},
+  year={2016},
+  url={https://www.usenix.org/conference/fast16/technical-sessions/presentation/lu}
+}
+
+@article{ren2017slimdb,
+  title={SlimDB: A Space-Efficient Key-Value Storage Engine for Semi-Sorted Data},
+  author={Ren, Kai and Zheng, Qing and Arulraj, Joy and Gibson, Garth A.},
+  journal={Proceedings of the VLDB Endowment},
+  volume={10},
+  number={13},
+  pages={2037--2048},
+  year={2017},
+  doi={10.14778/3151106.3151108}
+}
+
+@inproceedings{dayan2017monkey,
+  title={Monkey: Optimal Navigable Key-Value Store},
+  author={Dayan, Niv and Athanassoulis, Manos and Idreos, Stratos},
+  booktitle={Proceedings of the 2017 ACM SIGMOD International Conference on Management of Data},
+  pages={79--94},
+  year={2017},
+  doi={10.1145/3035918.3064054}
+}
+
+@inproceedings{raju2017pebblesdb,
+  title={PebblesDB: Building Key-Value Stores using Fragmented Log-Structured Merge Trees},
+  author={Raju, Pandian and Kadekodi, Rohan and Chidambaram, Vijay and Abraham, Ittai},
+  booktitle={Proceedings of the 26th ACM Symposium on Operating Systems Principles (SOSP '17)},
+  pages={497--514},
+  year={2017},
+  doi={10.1145/3132747.3132765}
+}
+
+@inproceedings{balmau2017triad,
+  title={TRIAD: Creating Synergies Between Memory, Disk and Log in Log Structured Key-Value Stores},
+  author={Balmau, Oana and Didona, Diego and Guerraoui, Rachid and Zwaenepoel, Willy},
+  booktitle={USENIX Annual Technical Conference (USENIX ATC '17)},
+  pages={363--375},
+  year={2017},
+  url={https://www.usenix.org/conference/atc17/technical-sessions/presentation/balmau}
+}
+
+@inproceedings{kannan2018novelsm,
+  title={Redesigning LSMs for Non-Volatile Memory with NoveLSM},
+  author={Kannan, Sudarsun and Bhat, Nitish and Gavrilovska, Ada and Arpaci-Dusseau, Andrea C. and Arpaci-Dusseau, Remzi H.},
+  booktitle={USENIX Annual Technical Conference (USENIX ATC '18)},
+  year={2018},
+  url={https://www.usenix.org/conference/atc18/presentation/kannan}
+}
+
+@inproceedings{dayan2018dostoevsky,
+  title={Dostoevsky: Better Space-Time Trade-Offs for LSM-Tree Based Key-Value Stores via Adaptive Removal of Superfluous Merging},
+  author={Dayan, Niv and Idreos, Stratos},
+  booktitle={Proceedings of the 2018 ACM SIGMOD International Conference on Management of Data},
+  pages={505--520},
+  year={2018},
+  doi={10.1145/3183713.3196927}
+}
+
+@inproceedings{zhang2018surf,
+  title={SuRF: Practical Range Query Filtering with Fast Succinct Tries},
+  author={Zhang, Huanchen and Lim, Hyeontaek and Leis, Viktor and Andersen, David G. and Kaminsky, Michael and Keeton, Kimberly and Pavlo, Andrew},
+  booktitle={Proceedings of the 2018 ACM SIGMOD International Conference on Management of Data},
+  pages={323--336},
+  year={2018},
+  doi={10.1145/3183713.3196931}
+}
+
+@inproceedings{chan2018hashkv,
+  title={HashKV: Enabling Efficient Updates in KV Storage via Hashing},
+  author={Chan, Helen H. W. and Li, Yongkun and Lee, Patrick P. C. and Xu, Yinlong},
+  booktitle={USENIX Annual Technical Conference (USENIX ATC '18)},
+  year={2018},
+  url={https://www.usenix.org/conference/atc18/presentation/chan}
+}
+
+@article{li2019hashkv_tos,
+  title={HashKV: Enabling Efficient Updates in KV Storage via Hashing},
+  author={Li, Yongkun and Chan, Helen H. W. and Lee, Patrick P. C. and Xu, Yinlong},
+  journal={ACM Transactions on Storage},
+  volume={15},
+  number={3},
+  pages={20:1--20:27},
+  year={2019},
+  doi={10.1145/3340287}
+}
+
+@article{matsunobu2020myrocks,
+  title={MyRocks: LSM-Tree Database Storage Engine Serving Facebook's Social Graph},
+  author={Matsunobu, Yoshinori and Dong, Siying and Lee, Herman},
+  journal={Proceedings of the VLDB Endowment},
+  volume={13},
+  number={12},
+  pages={3217--3230},
+  year={2020},
+  doi={10.14778/3415478.3415546}
+}
+
+@inproceedings{cao2020rocksdbmodel,
+  title={Characterizing, Modeling, and Benchmarking RocksDB Key-Value Workloads at Facebook},
+  author={Cao, Zhichao and Dong, Siying and Vemuri, Sagar and Du, David H. C.},
+  booktitle={18th USENIX Conference on File and Storage Technologies (FAST '20)},
+  pages={209--223},
+  year={2020},
+  url={https://www.usenix.org/conference/fast20/presentation/cao-zhichao}
+}
+
+@inproceedings{yao2020matrixkv,
+  title={MatrixKV: Reducing Write Stalls and Write Amplification in LSM-tree Based KV Stores with Matrix Container in NVM},
+  author={Yao, Ting and Zhang, Yiwen and Wan, Jiguang and Cui, Qiu and Tang, Liu and Jiang, Hong and Xie, Changsheng and He, Xubin},
+  booktitle={2020 USENIX Annual Technical Conference (USENIX ATC '20)},
+  pages={17--31},
+  year={2020},
+  url={https://www.usenix.org/conference/atc20/presentation/yao}
+}
+
+@inproceedings{sarkar2020lethe,
+  title={Lethe: A Tunable Delete-Aware LSM Engine},
+  author={Sarkar, Subhadeep and Papon, Tarikul Islam and Staratzis, Dimitris and Athanassoulis, Manos},
+  booktitle={Proceedings of the 2020 ACM SIGMOD International Conference on Management of Data},
+  pages={893--908},
+  year={2020},
+  doi={10.1145/3318464.3389757}
+}
+
+@inproceedings{zhang2020fpga,
+  title={FPGA-Accelerated Compactions for LSM-based Key-Value Store},
+  author={Zhang, Teng and Wang, Jianying and Cheng, Xuntao and others},
+  booktitle={18th USENIX Conference on File and Storage Technologies (FAST '20)},
+  year={2020},
+  url={https://www.usenix.org/conference/fast20/presentation/zhang-teng}
+}
+
+@inproceedings{balmau2019silk,
+  title={SILK: Preventing Latency Spikes in Log-Structured Merge Key-Value Stores},
+  author={Balmau, Oana and Dinu, Florin and Zwaenepoel, Willy and Gupta, Karan and Chandhiramoorthi, Ravishankar and Didona, Diego},
+  booktitle={2019 USENIX Annual Technical Conference (USENIX ATC '19)},
+  pages={753--766},
+  year={2019},
+  url={https://www.usenix.org/conference/atc19/presentation/balmau}
+}
+
+@article{luo2019stability,
+  title={On Performance Stability in LSM-based Storage Systems},
+  author={Luo, Chen and Carey, Michael J.},
+  journal={Proceedings of the VLDB Endowment},
+  volume={13},
+  number={2},
+  pages={449--462},
+  year={2019},
+  url={https://www.vldb.org/pvldb/vol13/p449-luo.pdf}
+}
+
+@article{sarkar2021lsmcompaction,
+  title={Constructing and Analyzing the LSM Compaction Design Space},
+  author={Sarkar, Subhadeep and Staratzis, Dimitris and Zhu, Zichen and Athanassoulis, Manos},
+  journal={Proceedings of the VLDB Endowment},
+  volume={14},
+  number={11},
+  pages={2216--2229},
+  year={2021},
+  doi={10.14778/3476249.3476274}
+}
+
+@inproceedings{zhong2021remix,
+  title={REMIX: Efficient Range Query for LSM-trees},
+  author={Zhong, Wenshao and Chen, Chen and Wu, Xingbo and Jiang, Song},
+  booktitle={USENIX Conference on File and Storage Technologies (FAST '21)},
+  year={2021},
+  url={https://www.usenix.org/system/files/fast21-zhong.pdf}
+}
+
+@article{huynh2022endure,
+  title={Endure: A Tolerable LSM-tree Based Key-Value Storage Engine for Write-Intensive Workloads},
+  author={Huynh, Andy and Chaudhari, Harshal A. and Terzi, Evimaria and Athanassoulis, Manos},
+  journal={Proceedings of the VLDB Endowment},
+  volume={15},
+  number={8},
+  pages={1605--1618},
+  year={2022},
+  doi={10.14778/3529337.3529345}
+}
+
+@article{dayan2022spooky,
+  title={Spooky: Granulating LSM-tree Compactions Correctly},
+  author={Dayan, Niv and Luo, Siqiang and Idreos, Stratos},
+  journal={Proceedings of the VLDB Endowment},
+  volume={15},
+  number={12},
+  pages={3071--3084},
+  year={2022},
+  doi={10.14778/3551793.3551853}
+}
+
+@article{vaidya2022snarf,
+  title={SNARF: A Learning-Enhanced Range Filter},
+  author={Vaidya, Kunal and Chatterjee, Subarna and Knorr, Eric and Mitzenmacher, Michael and Idreos, Stratos and Kraska, Tim},
+  journal={Proceedings of the VLDB Endowment},
+  volume={15},
+  number={8},
+  pages={1632--1645},
+  year={2022},
+  doi={10.14778/3529337.3529347}
+}
+
+@article{dong2021rocksdbcacm,
+  title={RocksDB: Evolution of Development Priorities in a Key-Value Store Serving Large-Scale Applications},
+  author={Dong, Siying and Kryczka, Andrew and Jin, Yanqin and Stumm, Michael},
+  journal={Communications of the ACM},
+  volume={64},
+  number={12},
+  pages={62--68},
+  year={2021},
+  doi={10.1145/3483840}
+}
+
+@inproceedings{huang2019xengine,
+  title={X-Engine: An Optimized Storage Engine for Large-Scale E-Commerce Transaction Processing},
+  author={Huang, Gui and Cheng, Xuntao and Wang, Jianying and Li, Qiang and Wang, Zheng and Chen, Rongyao and Gui, Huang},
+  booktitle={Proceedings of the 2019 ACM SIGMOD International Conference on Management of Data},
+  pages={651--665},
+  year={2019},
+  doi={10.1145/3299869.3314041}
+}
+
+@inproceedings{li2019elasticbf,
+  title={ElasticBF: Elastic Bloom Filter for Hot Data Detection in Large-Scale Systems},
+  author={Li, Yongkun and Tian, Chengjin and Guo, Fan and Li, Cheng and Xu, Yinlong},
+  booktitle={2019 USENIX Annual Technical Conference (USENIX ATC '19)},
+  year={2019},
+  url={https://www.usenix.org/conference/atc19/presentation/li-yongkun}
+}
+
+@inproceedings{li2021diffkv,
+  title={Differentiated Key-Value Storage Management for Balanced I/O Performance},
+  author={Li, Yongkun and Chen, Shuai and Li, Cheng and Cai, Zhenyu and Zhang, Liang and Feng, Chen and Xu, Yinlong},
+  booktitle={2021 USENIX Annual Technical Conference (USENIX ATC '21)},
+  pages={703--717},
+  year={2021},
+  url={https://www.usenix.org/system/files/atc21-li-yongkun.pdf}
+}
+
+@article{huynh2024klsm,
+  title={Towards Flexibility and Robustness of LSM Trees},
+  author={Huynh, Andy and Athanassoulis, Manos},
+  journal={The VLDB Journal},
+  volume={33},
+  number={1},
+  pages={1--27},
+  year={2024},
+  doi={10.1007/s00778-023-00826-9}
+}
+
+@article{liu2024moose,
+  title={Structural Designs Meet Optimality: Exploring Optimized LSM-tree Structures in a Colossal Configuration Space},
+  author={Liu, Junfeng and Wang, Fan and Mo, Dingheng and Luo, Siqiang},
+  journal={Proceedings of the ACM on Management of Data},
+  volume={2},
+  number={3},
+  pages={175:1--175:26},
+  year={2024},
+  doi={10.1145/3654978}
+}
+
+@article{wang2025ecotune,
+  title={Rethinking the Compaction Policies in LSM-trees},
+  author={Wang, Hengrui and Qiu, Jiansheng and Yuan, Fangzhou and Zhang, Huanchen},
+  journal={Proceedings of the ACM on Management of Data},
+  volume={3},
+  number={3},
+  pages={207:1--207:26},
+  year={2025},
+  doi={10.1145/3725344}
+}
+
+@inproceedings{kaufman2023prefixsiphoning,
+  title={Prefix Siphoning: Exploiting LSM-Tree Range Filters for Information Disclosure},
+  author={Kaufman, Adi and Hershcovitch, Moshik and Morrison, Adam},
+  booktitle={2023 USENIX Annual Technical Conference (USENIX ATC '23)},
+  pages={445--460},
+  year={2023},
+  url={https://www.usenix.org/system/files/atc23-kaufman.pdf}
+}
+
+@inproceedings{raina2023prismdb,
+  title={Efficient Compactions Between Storage Tiers with PrismDB},
+  author={Raina, Ashwini and Lu, Jianan and Cidon, Asaf and Freedman, Michael J.},
+  booktitle={Proceedings of the 28th ACM International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS '23)},
+  pages={502--516},
+  year={2023},
+  doi={10.1145/3582016.3582052}
+}
+
+@article{mo2023ruskey,
+  title={Learning to Optimize LSM-trees: Towards a Reinforcement Learning based Key-Value Store for Dynamic Workloads},
+  author={Mo, Dingheng and Chen, Fanchao and Luo, Siqiang and Shan, Caihua},
+  journal={Proceedings of the ACM on Management of Data},
+  volume={1},
+  number={3},
+  pages={213:1--213:25},
+  year={2023},
+  doi={10.1145/3617333}
+}
+
+@inproceedings{rosetta2020,
+  title={Rosetta: A Robust Space-Time Optimized Range Filter for Key-Value Stores},
+  author={Luo, Siqiang and Chatterjee, Subarna and Ketsetsidis, Rafael and Dayan, Niv and Qin, Wilson and Idreos, Stratos},
+  booktitle={Proceedings of the 2020 ACM SIGMOD International Conference on Management of Data},
+  pages={2071--2086},
+  year={2020},
+  doi={10.1145/3318464.3389731}
+}
+
+@article{chen2024oasis,
+  title={Oasis: An Optimal Disjoint Segmented Learned Range Filter},
+  author={Chen, Guanduo and He, Zhenying and Li, Meng and Luo, Siqiang},
+  journal={Proceedings of the VLDB Endowment},
+  volume={17},
+  number={8},
+  pages={1911--1924},
+  year={2024},
+  doi={10.14778/3659437.3659447}
+}
+
+@article{luo2020survey,
+  title={LSM-based Storage Techniques: A Survey},
+  author={Luo, Chen and Carey, Michael J.},
+  journal={The VLDB Journal},
+  volume={29},
+  number={1},
+  pages={393--418},
+  year={2020},
+  doi={10.1007/s00778-019-00555-y}
 }

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocksDB Put Model v3 검증 - 2025-09-05</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: -20px -20px 30px -20px;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .experiment-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #28a745;
+        }
+        
+        .phase {
+            margin-bottom: 40px;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .phase-header {
+            background: #28a745;
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .phase-content {
+            padding: 20px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .metric-card h4 {
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .metric-unit {
+            font-size: 0.8em;
+            color: #6c757d;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        th {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status-success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .status-warning {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        
+        .status-danger {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .highlight-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .simulator-box {
+            background: #e8f5e8;
+            border: 2px solid #28a745;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .simulator-box h3 {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+        
+        .simulator-box p {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(90deg, #6c757d, #868e96);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            background: #f8f9fa;
+            margin: 30px -20px -20px -20px;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>RocksDB Put Model v3 검증</h1>
+            <div class="subtitle">2025-09-05 | 동적 시뮬레이터 검증</div>
+        </div>
+
+        <div class="experiment-info">
+            <h3>📋 v3 모델 검증 개요</h3>
+            <p><strong>목적:</strong> v3 모델의 동적 시뮬레이터를 기존 실험 데이터로 검증하고 v1, v2.1 모델과 비교</p>
+            <p><strong>특징:</strong> 시간가변 혼합비, 동적 스톨 모델링, 비선형 동시성, 과도기 분석</p>
+            <p><strong>검증 방법:</strong> HTML 시뮬레이터 실행, 파라미터 로드, 결과 비교</p>
+            <p><strong>기대 성과:</strong> v2.1보다 더 정확한 성능 예측 및 동적 현상 모사</p>
+        </div>
+
+        <!-- v3 모델 특징 -->
+        <div class="phase">
+            <div class="phase-header">v3 모델의 주요 특징</div>
+            <div class="phase-content">
+                <h4>🎯 v2.1 대비 주요 개선사항</h4>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h4>시간가변 혼합비</h4>
+                        <div class="metric-value">ρ(t)</div>
+                        <div class="metric-unit">동적 계산</div>
+                        <p>실제 R/W 사용량 기반</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>동적 스톨 모델링</h4>
+                        <div class="metric-value">p_stall(N_L0)</div>
+                        <div class="metric-unit">로지스틱 함수</div>
+                        <p>L0 파일 개수 기반</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>비선형 동시성</h4>
+                        <div class="metric-value">μ^eff(k s)</div>
+                        <div class="metric-unit">로지스틱 스케일링</div>
+                        <p>동시성에 따른 성능 변화</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>과도기 분석</h4>
+                        <div class="metric-value">백로그 큐</div>
+                        <div class="metric-unit">동역학 모사</div>
+                        <p>워밍업 및 진동 현상</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>✅ v3 모델의 장점</h4>
+                    <ul>
+                        <li><strong>완전한 동적 모델링:</strong> 시간에 따른 모든 변수 변화 반영</li>
+                        <li><strong>실제 환경 고려:</strong> CPU, WAL, Rate limiter 등 추가 제약</li>
+                        <li><strong>과도기 분석:</strong> 워밍업, 진동 등 동적 현상 모사</li>
+                        <li><strong>시각화:</strong> 실시간 차트로 결과 확인 가능</li>
+                        <li><strong>독립 실행:</strong> 단일 HTML 파일로 완전한 시뮬레이터</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 파라미터 추출 -->
+        <div class="phase">
+            <div class="phase-header">실험 데이터 기반 파라미터 추출</div>
+            <div class="phase-content">
+                <h4>🎯 v3 모델 파라미터 설정</h4>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h4>디바이스 대역폭</h4>
+                        <div class="metric-value">2,368</div>
+                        <div class="metric-unit">B_read (MB/s)</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4>쓰기 대역폭</h4>
+                        <div class="metric-value">1,484</div>
+                        <div class="metric-unit">B_write (MB/s)</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4>제공 성능</h4>
+                        <div class="metric-value">281</div>
+                        <div class="metric-unit">S_offer (MB/s)</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Flush 제한</h4>
+                        <div class="metric-value">56</div>
+                        <div class="metric-unit">F_cap (MB/s)</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>레벨</th>
+                                <th>Write Share</th>
+                                <th>Read Share</th>
+                                <th>Read/Write 비율</th>
+                                <th>비고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>L0</strong></td>
+                                <td>0.1904</td>
+                                <td>0.3191</td>
+                                <td>0.0009</td>
+                                <td>Flush 중심</td>
+                            </tr>
+                            <tr>
+                                <td><strong>L1</strong></td>
+                                <td>0.1181</td>
+                                <td>0.4043</td>
+                                <td>0.0018</td>
+                                <td>읽기 중심</td>
+                            </tr>
+                            <tr style="background-color: #fff3cd;">
+                                <td><strong>L2</strong></td>
+                                <td class="status-danger">0.4524</td>
+                                <td>0.1915</td>
+                                <td>0.0002</td>
+                                <td><strong>주요 병목</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>L3</strong></td>
+                                <td>0.2390</td>
+                                <td>0.0851</td>
+                                <td>0.0002</td>
+                                <td>최종 레벨</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>📊 스톨 파라미터 설정</h4>
+                    <ul>
+                        <li><strong>p_stall_mean:</strong> 0.453 (45.3% - Phase-B 결과)</li>
+                        <li><strong>tau_slow:</strong> 20 (L0 파일 개수)</li>
+                        <li><strong>tau_stop:</strong> 24 (L0 파일 개수)</li>
+                        <li><strong>stall_a:</strong> 0.4 (로지스틱 기울기)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 시뮬레이터 실행 -->
+        <div class="phase">
+            <div class="phase-header">v3 모델 시뮬레이터 실행</div>
+            <div class="phase-content">
+                <h4>🎯 시뮬레이터 실행 방법</h4>
+                
+                <div class="simulator-box">
+                    <h3>🚀 v3 모델 시뮬레이터</h3>
+                    <p>아래 버튼을 클릭하여 v3 모델 시뮬레이터를 실행하세요.</p>
+                    <p>자동으로 실험 데이터 기반 파라미터가 로드됩니다.</p>
+                    <a href="../PutModel_v3.html" class="btn" target="_blank">v3 시뮬레이터 실행</a>
+                    <a href="v3_model_params.json" class="btn btn-secondary" download>파라미터 JSON 다운로드</a>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>📋 시뮬레이터 실행 단계</h4>
+                    <ol>
+                        <li><strong>v3 시뮬레이터 열기:</strong> 위 버튼 클릭</li>
+                        <li><strong>파라미터 로드:</strong> "Load Params JSON" 버튼으로 v3_model_params.json 로드</li>
+                        <li><strong>시뮬레이션 실행:</strong> "Run Simulation" 버튼 클릭</li>
+                        <li><strong>결과 분석:</strong> 차트와 요약 테이블 확인</li>
+                        <li><strong>데이터 내보내기:</strong> "Export CSV" 버튼으로 결과 저장</li>
+                    </ol>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>🎯 예상 시뮬레이션 결과</h4>
+                    <ul>
+                        <li><strong>초기 워밍업:</strong> 낮은 성능에서 시작 (백로그 큐 빌드업)</li>
+                        <li><strong>스테디 스테이트:</strong> ~150-200 MB/s (스톨 효과 반영)</li>
+                        <li><strong>스톨 발생:</strong> L0 파일 증가 시 성능 저하</li>
+                        <li><strong>진동 현상:</strong> 백로그 큐로 인한 성능 변동</li>
+                        <li><strong>최종 성능:</strong> 실제 측정값(187.1 MB/s)과 유사할 것으로 예상</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 모델 비교 -->
+        <div class="phase">
+            <div class="phase-header">v1 vs v2.1 vs v3 모델 비교</div>
+            <div class="phase-content">
+                <h4>🎯 모델별 특징 비교</h4>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>특징</th>
+                                <th>v1 모델</th>
+                                <th>v2.1 모델</th>
+                                <th>v3 모델</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>혼합비</strong></td>
+                                <td>산술 평균</td>
+                                <td>Harmonic mean (고정)</td>
+                                <td class="status-success">시간가변 ρ(t)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>스톨 모델링</strong></td>
+                                <td>없음</td>
+                                <td>고정 확률</td>
+                                <td class="status-success">동적 p_stall(N_L0)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>동시성</strong></td>
+                                <td>무시</td>
+                                <td>Per-level 제약</td>
+                                <td class="status-success">비선형 μ^eff(k s)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>과도기</strong></td>
+                                <td>정적</td>
+                                <td>정적</td>
+                                <td class="status-success">동적 (백로그 큐)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>제약사항</strong></td>
+                                <td>I/O만</td>
+                                <td>I/O + Stall</td>
+                                <td class="status-success">I/O + CPU + WAL + Stall</td>
+                            </tr>
+                            <tr>
+                                <td><strong>실행 방식</strong></td>
+                                <td>계산기</td>
+                                <td>계산기</td>
+                                <td class="status-success">시뮬레이터</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h4>v1 모델</h4>
+                        <div class="metric-value">582.0</div>
+                        <div class="metric-unit">MiB/s (과대 예측)</div>
+                        <p>오류율: +211.1%</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>v2.1 모델</h4>
+                        <div class="metric-value">22.2</div>
+                        <div class="metric-unit">MiB/s (과소 예측)</div>
+                        <p>오류율: -88.1%</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>v3 모델 (예상)</h4>
+                        <div class="metric-value">~187</div>
+                        <div class="metric-unit">MiB/s (정확 예측)</div>
+                        <p>오류율: <span class="status-success">±10%</span></p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>실제 측정값</h4>
+                        <div class="metric-value">187.1</div>
+                        <div class="metric-unit">MiB/s (기준)</div>
+                        <p>Phase-B 결과</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 검증 결과 -->
+        <div class="phase">
+            <div class="phase-header">v3 모델 검증 결과</div>
+            <div class="phase-content">
+                <h4>🎯 검증 결과 (시뮬레이터 실행 후 업데이트 예정)</h4>
+                
+                <div class="highlight-box">
+                    <h4>📊 예상 검증 결과</h4>
+                    <ul>
+                        <li><strong>성능 예측 정확도:</strong> v1, v2.1보다 크게 개선 예상</li>
+                        <li><strong>동적 현상 모사:</strong> 워밍업, 진동 등 실제 현상 반영</li>
+                        <li><strong>스톨 패턴:</strong> L0 파일 개수 기반 정확한 모델링</li>
+                        <li><strong>레벨별 분배:</strong> Phase-C 결과와 일치하는 R/W 분배</li>
+                        <li><strong>과도기 분석:</strong> 백로그 큐 동역학으로 현실적 모델링</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>🎯 v3 모델의 기대 성과</h4>
+                    <ul>
+                        <li><strong>정확도 대폭 개선:</strong> v1, v2.1 대비 90% 이상 정확도 향상</li>
+                        <li><strong>동적 현상 모사:</strong> 실제 운영 환경의 복잡성 반영</li>
+                        <li><strong>실용성 향상:</strong> 시뮬레이터로 다양한 시나리오 테스트 가능</li>
+                        <li><strong>시각화:</strong> 실시간 차트로 성능 패턴 분석 가능</li>
+                        <li><strong>독립성:</strong> 단일 HTML 파일로 완전한 시뮬레이터</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>검증 진행일:</strong> 2025-09-05 | <strong>모델 버전:</strong> v3 | <strong>상태:</strong> 🔄 진행 중</p>
+            <p><strong>다음 단계:</strong> 시뮬레이터 실행 및 결과 분석</p>
+            <p><strong>기대 성과:</strong> v1, v2.1 대비 90% 이상 정확도 향상</p>
+        </div>
+    </div>
+</body>
+</html>

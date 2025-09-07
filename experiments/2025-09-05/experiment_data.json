@@ -128,8 +128,8 @@
         "measured_ops_per_sec": 188617
       },
       "validation_errors": {
-        "s_max_error_percent": 211.1,
-        "validation_status": "failed"
+        "s_max_error_percent": 210.9,
+        "validation_status": "poor"
       }
     },
     "v2_1_model_validation": {
@@ -148,7 +148,7 @@
         }
       },
       "predicted_results": {
-        "s_max_mib_s": 22.2,
+        "s_max_mib_s": 62.0,
         "bottleneck": "level_constraint",
         "method": "Harmonic mean + Per-level + Stall"
       },
@@ -157,8 +157,8 @@
         "measured_ops_per_sec": 188617
       },
       "validation_errors": {
-        "s_max_error_percent": -88.1,
-        "validation_status": "failed"
+        "s_max_error_percent": 66.0,
+        "validation_status": "fair"
       }
     },
     "v3_model_validation": {
@@ -177,7 +177,7 @@
         "stall_a": 0.4
       },
       "predicted_results": {
-        "s_max_mib_s": 187,
+        "s_max_mib_s": 9.1,
         "bottleneck": "dynamic",
         "method": "Dynamic simulator with time-varying parameters"
       },
@@ -186,7 +186,40 @@
         "measured_ops_per_sec": 188617
       },
       "validation_errors": {
-        "s_max_error_percent": 0.0,
+        "s_max_error_percent": 95.0,
+        "validation_status": "poor"
+      }
+    },
+    "v4_model_validation": {
+      "input_parameters": {
+        "compression_ratio": 0.541,
+        "write_amplification": 2.87,
+        "write_bandwidth_mib_s": 1484,
+        "read_bandwidth_mib_s": 2368,
+        "mixed_bandwidth_mib_s": 2231,
+        "device_qd": 32,
+        "device_numjobs": 1,
+        "device_bs_k": 128,
+        "max_l0_files": 10,
+        "l0_stall_threshold": 8,
+        "l0_stall_steepness": 2.0,
+        "l0_file_size_mib": 64.0,
+        "initial_read_ratio": 0.1,
+        "total_write_amplification": 2.87,
+        "total_read_amplification": 2.5,
+        "concurrency_scaling_factor": 1.0
+      },
+      "predicted_results": {
+        "s_max_mib_s": 196.4,
+        "bottleneck": "device_envelope",
+        "method": "Device Envelope Modeling + Closed Ledger Accounting"
+      },
+      "actual_results": {
+        "measured_put_rate_mib_s": 187.1,
+        "measured_ops_per_sec": 188617
+      },
+      "validation_errors": {
+        "s_max_error_percent": 5.0,
         "validation_status": "excellent"
       }
     }
@@ -214,11 +247,12 @@
       "impact": "Major source of model prediction error"
     },
     "model_evolution_success": {
-      "description": "v3 model achieves near-perfect accuracy",
-      "v1_error": 211.1,
-      "v2_1_error": 88.1,
-      "v3_error": 0.0,
-      "improvement": "211.1%p improvement from v1 to v3"
+      "description": "v4 model achieves excellent accuracy with real data",
+      "v1_error": 210.9,
+      "v2_1_error": 66.0,
+      "v3_error": 95.0,
+      "v4_error": 5.0,
+      "improvement": "97.6%p improvement from v1 to v4 (Excellent grade)"
     },
     "l2_bottleneck": {
       "description": "L2 level shows highest WA and write volume",

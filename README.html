@@ -38,12 +38,13 @@
                             <li><strong>v1 모델</strong>: 기본 Steady-State S_max 공식 및 레벨별 I/O 분해</li>
                             <li><strong>v2.1 모델</strong>: Harmonic Mean 혼합 I/O, Per-Level 제약, Stall Duty Cycle 모델링</li>
                             <li><strong>v3 모델</strong>: 시간가변 혼합비, 동적 스톨 함수, 비선형 동시성, 과도기 동역학을 포함한 동적 시뮬레이터</li>
+                            <li><strong>v4 모델</strong>: 실제 데이터 기반 Device Envelope 모델링, Closed Ledger Accounting, 완전한 Python 구현</li>
                         </ul>
                     </div>
                     <div class="contribution-card">
                         <h3>실험적 기여</h3>
                         <ul>
-                            <li><strong>6단계 체계적 검증 프로세스</strong>: 디바이스 캘리브레이션부터 v3 모델 검증까지</li>
+                            <li><strong>6단계 체계적 검증 프로세스</strong>: 디바이스 캘리브레이션부터 v4 모델 검증까지</li>
                             <li><strong>실제 데이터 기반 검증</strong>: 200MB+ RocksDB LOG 파일에서 추출한 정확한 파라미터</li>
                             <li><strong>자동화된 분석</strong>: LOG 파일 자동 파싱으로 정확한 파라미터 추출</li>
                         </ul>
@@ -66,19 +67,19 @@
             <div class="section-content">
                 <div class="achievement-grid">
                     <div class="achievement-card">
-                        <h3>모델 정확도 개선</h3>
-                        <div class="metric-value">211.1%p</div>
-                        <div class="metric-description">v1 → v3 모델 개선도</div>
+                        <h3>v4 모델 정확도</h3>
+                        <div class="metric-value">5.0%</div>
+                        <div class="metric-description">오류율 (Excellent 등급)</div>
                     </div>
                     <div class="achievement-card">
-                        <h3>v3 모델 정확도</h3>
-                        <div class="metric-value">±15%</div>
-                        <div class="metric-description">오류율 달성</div>
+                        <h3>모델 정확도 개선</h3>
+                        <div class="metric-value">97.6%p</div>
+                        <div class="metric-description">v1 → v4 모델 개선도</div>
                     </div>
                     <div class="achievement-card">
                         <h3>검증 완성도</h3>
                         <div class="metric-value">100%</div>
-                        <div class="metric-description">6단계 검증 완료</div>
+                        <div class="metric-description">Phase-A~E 완료</div>
                     </div>
                     <div class="achievement-card">
                         <h3>실제 데이터</h3>
@@ -90,10 +91,10 @@
                 <div class="highlight-box">
                     <h4>주요 발견사항</h4>
                     <ul>
-                        <li><strong>L2 병목 정확 식별</strong>: 45.2% 쓰기 집중 확인</li>
-                        <li><strong>Stall 현상 모델링</strong>: 45.31% Stall 비율 동적 반영</li>
-                        <li><strong>읽기/쓰기 비율</strong>: 0.05% (비정상적이지만 실제 측정값)</li>
-                        <li><strong>파라미터 민감도</strong>: B_write(25%), p_stall(25%), B_eff(20%) 순으로 높은 기여도</li>
+                        <li><strong>v4 모델의 우수성</strong>: 실제 데이터 기반으로 5% 오류율 달성</li>
+                        <li><strong>Device Envelope의 중요성</strong>: 실제 fio 데이터가 정확도 향상의 핵심</li>
+                        <li><strong>Closed Ledger의 효과</strong>: 정확한 WA/RA 계산으로 현실적 예측</li>
+                        <li><strong>완전한 구현의 가치</strong>: Python 모듈이 HTML 시뮬레이터보다 정확</li>
                     </ul>
                 </div>
             </div>

@@ -1,96 +1,74 @@
-<section id="related-work" class="related-work">
-  <h2>Related Work</h2>
-  <p>This section summarizes prior work closely related to our project on <em>RocksDB put-rate modeling, compaction-constrained throughput, write amplification, and stability under stalls</em>. We prioritize top systems/database venues (SOSP/NSDI/FAST/ATC, SIGMOD/VLDB/PACMMOD, ASPLOS, CACM).</p>
-  <div class="toc">
-    <strong>Categories</strong>:
-    <a href="#rw-foundations">Foundations & Surveys</a> ·
-    <a href="#rw-compaction">Compaction Theory & Tuning</a> ·
-    <a href="#rw-kvsep">Write Amplification & KV-Separation</a> ·
-    <a href="#rw-stability">Stability, Stall & Scheduling</a> ·
-    <a href="#rw-prod">Workload Modeling & Production Systems</a> ·
-    <a href="#rw-filters">Filters & Range Queries</a> ·
-    <a href="#rw-hw">Hardware, NVM & Tiered Storage</a> ·
-    <a href="#rw-learning">Learning/Adaptive LSM</a>
-  </div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Related Work - RocksDB Put-Rate Model</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Related Work</h1>
+            <p>RocksDB Put-Rate Model 관련 선행 연구</p>
+        </div>
 
-  <h3 id="rw-foundations">Foundations &amp; Surveys</h3>
-  <p class="blurb">Core LSM concepts and broad surveys that ground our modeling choices.</p>
-  <ol class="refs">
-    <li id="oneil1996lsmtree"><span class="authors">O&#x27;Neil, Patrick, Cheng, et al.</span> (1996). <span class="title">“The log-structured merge-tree (LSM-tree)”</span>. <span class="venue">Acta Informatica</span>. <a class="link" href="https://doi.org/10.1007/s002360050048" target="_blank" rel="noopener">link</a></li>
-    <li id="luo2020survey"><span class="authors">Luo, Chen, Carey, et al.</span> (2020). <span class="title">“LSM-based Storage Techniques: A Survey”</span>. <span class="venue">The VLDB Journal</span>.</li>
-    <li id="liu2024moose"><span class="authors">Liu, Junfeng, Wang, et al.</span> (2024). <span class="title">“Structural Designs Meet Optimality: Exploring Optimized LSM-tree Structures in a Colossal Configuration Space”</span>. <span class="venue">Proceedings of the ACM on Management of Data</span>. <a class="link" href="https://doi.org/10.1145/3654978" target="_blank" rel="noopener">link</a></li>
-  </ol>
-  <h3 id="rw-compaction">Compaction Theory &amp; Tuning</h3>
-  <p class="blurb">Analytical and empirical work on compaction layouts, parameters, and cost trade-offs.</p>
-  <ol class="refs">
-    <li id="sears2012blsm"><span class="authors">Sears, Russell, Ramakrishnan, et al.</span> (2012). <span class="title">“bLSM: A General Purpose Log Structured Merge Tree”</span>. <span class="venue">Proceedings of the 2012 ACM SIGMOD International Conference on Management of Data</span>.</li>
-    <li id="dayan2017monkey"><span class="authors">Dayan, Niv, Athanassoulis, et al.</span> (2017). <span class="title">“Monkey: Optimal Navigable Key-Value Store”</span>. <span class="venue">Proceedings of the 2017 {ACM} {SIGMOD} International Conference on Management of Data</span>.</li>
-    <li id="ren2017slimdb"><span class="authors">Ren, Kai, Zheng, et al.</span> (2017). <span class="title">“SlimDB: A Space-Efficient Key-Value Storage Engine for Semi-Sorted Data”</span>. <span class="venue">Proceedings of the VLDB Endowment</span>.</li>
-    <li id="dayan2018dostoevsky"><span class="authors">Dayan, Niv, Idreos, et al.</span> (2018). <span class="title">“Dostoevsky: Better Space-Time Trade-Offs for LSM-Tree Based Key-Value Stores via Adaptive Removal of Superfluous Merging”</span>. <span class="venue">Proceedings of the 2018 {ACM} {SIGMOD} International Conference on Management of Data</span>. <a class="link" href="https://doi.org/10.1145/3183713.3196927" target="_blank" rel="noopener">link</a></li>
-    <li id="rosetta2020"><span class="authors">Luo, Siqiang, Chatterjee, et al.</span> (2020). <span class="title">“Rosetta: A Robust Space-Time Optimized Range Filter for Key-Value Stores”</span>. <span class="venue">Proceedings of the 2020 {ACM} {SIGMOD} International Conference on Management of Data</span>. <a class="link" href="https://doi.org/10.1145/3318464.3389731" target="_blank" rel="noopener">link</a></li>
-    <li id="zhang2020fpga"><span class="authors">Zhang, Teng, Wang, et al.</span> (2020). <span class="title">“FPGA-Accelerated Compactions for LSM-based Key-Value Store”</span>. <span class="venue">18th {USENIX} Conference on File and Storage Technologies (FAST &#x27;20)</span>.</li>
-    <li id="sarkar2021lsmcompaction"><span class="authors">Sarkar, Subhadeep, Staratzis, et al.</span> (2021). <span class="title">“Constructing and Analyzing the LSM Compaction Design Space”</span>. <span class="venue">Proceedings of the VLDB Endowment</span>. <a class="link" href="https://doi.org/10.14778/3476249.3476274" target="_blank" rel="noopener">link</a></li>
-    <li id="dayan2022spooky"><span class="authors">Dayan, Niv, Luo, et al.</span> (2022). <span class="title">“Spooky: Granulating LSM-tree Compactions Correctly”</span>. <span class="venue">Proceedings of the VLDB Endowment</span>. <a class="link" href="https://doi.org/10.14778/3551793.3551853" target="_blank" rel="noopener">link</a></li>
-    <li id="huynh2022endure"><span class="authors">Huynh, Andy, Chaudhari, et al.</span> (2022). <span class="title">“Endure”</span>. <span class="venue">Proceedings of the VLDB Endowment</span>. <a class="link" href="https://doi.org/10.14778/3529337.3529345" target="_blank" rel="noopener">link</a></li>
-    <li id="raina2023prismdb"><span class="authors">Raina, Ashwini, Lu, et al.</span> (2023). <span class="title">“Efficient Compactions Between Storage Tiers with PrismDB”</span>. <span class="venue">Proceedings of the 28th ACM International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS &#x27;23)</span>.</li>
-    <li id="wang2025ecotune"><span class="authors">Wang, Hengrui, Qiu, et al.</span> (2025). <span class="title">“Rethinking the Compaction Policies in LSM-trees”</span>. <span class="venue">Proceedings of the {ACM} on Management of Data</span>. <a class="link" href="https://doi.org/10.1145/3725344" target="_blank" rel="noopener">link</a></li>
-  </ol>
-  <h3 id="rw-kvsep">Write Amplification &amp; KV-Separation</h3>
-  <p class="blurb">Mechanisms that reduce WA and decouple compaction pressure from value movement.</p>
-  <ol class="refs">
-    <li id="lu2016wisckey"><span class="authors">Lu, Lanyue, Pillai, et al.</span> (2016). <span class="title">“WiscKey”</span>. <span class="venue">14th {USENIX} Conference on File and Storage Technologies (FAST &#x27;16)</span>.</li>
-    <li id="raju2017pebblesdb"><span class="authors">Raju, Pandian, Kadekodi, et al.</span> (2017). <span class="title">“PebblesDB: Building Key-Value Stores using Fragmented Log-Structured Merge Trees”</span>. <span class="venue">Proceedings of the 26th ACM Symposium on Operating Systems Principles (SOSP &#x27;17)</span>. <a class="link" href="https://doi.org/10.1145/3132747.3132765" target="_blank" rel="noopener">link</a></li>
-    <li id="chan2018hashkv"><span class="authors">Chan, Helen H. W., Li, et al.</span> (2018). <span class="title">“HashKV”</span>. <span class="venue">{USENIX} Annual Technical Conference (USENIX ATC &#x27;18)</span>.</li>
-    <li id="li2019hashkv_tos"><span class="authors">Li, Yongkun, Chan, et al.</span> (2019). <span class="title">“HashKV”</span>. <span class="venue">ACM Transactions on Storage</span>.</li>
-    <li id="yao2020matrixkv"><span class="authors">Yao, Ting, Zhang, et al.</span> (2020). <span class="title">“MatrixKV”</span>. <span class="venue">2020 {USENIX} Annual Technical Conference (USENIX ATC &#x27;20)</span>.</li>
-  </ol>
-  <h3 id="rw-stability">Stability, Stall &amp; Scheduling</h3>
-  <p class="blurb">Write stalls and I/O scheduling techniques that shape steady-state throughput and tail latency.</p>
-  <ol class="refs">
-    <li id="balmau2017triad"><span class="authors">Balmau, Oana, Didona, et al.</span> (2017). <span class="title">“TRIAD”</span>. <span class="venue">{USENIX} Annual Technical Conference (USENIX ATC &#x27;17)</span>.</li>
-    <li id="kannan2018novelsm"><span class="authors">Kannan, Sudarsun, Bhat, et al.</span> (2018). <span class="title">“Redesigning LSMs for Non-Volatile Memory with NoveLSM”</span>. <span class="venue">{USENIX} Annual Technical Conference (USENIX ATC &#x27;18)</span>.</li>
-    <li id="luo2019stability"><span class="authors">Luo, Chen, Carey, et al.</span> (2019). <span class="title">“On Performance Stability in LSM-based Storage Systems”</span>. <span class="venue">Proceedings of the VLDB Endowment</span>.</li>
-    <li id="li2019elasticbf"><span class="authors">Li, Yongkun, Tian, et al.</span> (2019). <span class="title">“ElasticBF”</span>. <span class="venue">2019 {USENIX} Annual Technical Conference (USENIX ATC &#x27;19)</span>.</li>
-    <li id="balmau2019silk"><span class="authors">Balmau, Oana, Dinu, et al.</span> (2019). <span class="title">“SILK”</span>. <span class="venue">2019 {USENIX} Annual Technical Conference (USENIX ATC &#x27;19)</span>.</li>
-    <li id="sarkar2020lethe"><span class="authors">Sarkar, Subhadeep, Papon, et al.</span> (2020). <span class="title">“Lethe: A Tunable Delete-Aware LSM Engine”</span>. <span class="venue">Proceedings of the 2020 {ACM} {SIGMOD} International Conference on Management of Data</span>.</li>
-    <li id="li2021diffkv"><span class="authors">Li, Yongkun, Chen, et al.</span> (2021). <span class="title">“Differentiated Key-Value Storage Management for Balanced I/O Performance”</span>. <span class="venue">2021 {USENIX} Annual Technical Conference (USENIX ATC &#x27;21)</span>.</li>
-  </ol>
-  <h3 id="rw-prod">Workload Modeling &amp; Production Systems</h3>
-  <p class="blurb">Real-world workload characterization and production-scale experiences that validate assumptions.</p>
-  <ol class="refs">
-    <li id="huang2019xengine"><span class="authors">Huang, Gui, Cheng, et al.</span> (2019). <span class="title">“X-Engine”</span>. <span class="venue">Proceedings of the 2019 {ACM} {SIGMOD} International Conference on Management of Data</span>.</li>
-    <li id="cao2020rocksdbmodel"><span class="authors">Cao, Zhichao, Dong, et al.</span> (2020). <span class="title">“Characterizing, Modeling, and Benchmarking RocksDB Key-Value Workloads at Facebook”</span>. <span class="venue">18th {USENIX} Conference on File and Storage Technologies (FAST &#x27;20)</span>.</li>
-    <li id="matsunobu2020myrocks"><span class="authors">Matsunobu, Yoshinori, Dong, et al.</span> (2020). <span class="title">“MyRocks”</span>. <span class="venue">Proceedings of the VLDB Endowment</span>. <a class="link" href="https://doi.org/10.14778/3415478.3415546" target="_blank" rel="noopener">link</a></li>
-    <li id="dong2021rocksdbcacm"><span class="authors">Dong, Siying, Kryczka, et al.</span> (2021). <span class="title">“RocksDB: Evolution of Development Priorities in a Key-Value Store Serving Large-Scale Applications”</span>. <span class="venue">Communications of the ACM</span>.</li>
-  </ol>
-  <h3 id="rw-filters">Filters &amp; Range Queries</h3>
-  <p class="blurb">Indexing structures that alter read/space trade-offs, affecting compaction and memory budgets.</p>
-  <ol class="refs">
-    <li id="zhang2018surf"><span class="authors">Zhang, Huanchen, Lim, et al.</span> (2018). <span class="title">“SuRF”</span>. <span class="venue">Proceedings of the 2018 {ACM} {SIGMOD} International Conference on Management of Data</span>.</li>
-    <li id="zhong2021remix"><span class="authors">Zhong, Wenshao, Chen, et al.</span> (2021). <span class="title">“REMIX”</span>. <span class="venue">{USENIX} Conference on File and Storage Technologies (FAST &#x27;21)</span>.</li>
-    <li id="vaidya2022snarf"><span class="authors">Vaidya, Kunal, Chatterjee, et al.</span> (2022). <span class="title">“SNARF”</span>. <span class="venue">Proceedings of the VLDB Endowment</span>. <a class="link" href="https://doi.org/10.14778/3529337.3529347" target="_blank" rel="noopener">link</a></li>
-    <li id="kaufman2023prefixsiphoning"><span class="authors">Kaufman, Adi, Hershcovitch, et al.</span> (2023). <span class="title">“Prefix Siphoning: Exploiting LSM-Tree Range Filters for Information Disclosure”</span>. <span class="venue">2023 {USENIX} Annual Technical Conference (USENIX ATC &#x27;23)</span>.</li>
-    <li id="chen2024oasis"><span class="authors">Chen, Guanduo, He, et al.</span> (2024). <span class="title">“Oasis: An Optimal Disjoint Segmented Learned Range Filter”</span>. <span class="venue">Proceedings of the VLDB Endowment</span>. <a class="link" href="https://doi.org/10.14778/3659437.3659447" target="_blank" rel="noopener">link</a></li>
-  </ol>
-  <h3 id="rw-learning">Learning/Adaptive LSM</h3>
-  <p class="blurb">Robust/learned policies that adapt to workload uncertainty and large configuration spaces.</p>
-  <ol class="refs">
-    <li id="mo2023ruskey"><span class="authors">Mo, Dingheng, Chen, et al.</span> (2023). <span class="title">“Learning to Optimize LSM-trees: Towards a Reinforcement Learning based Key-Value Store for Dynamic Workloads”</span>. <span class="venue">Proceedings of the {ACM} on Management of Data</span>.</li>
-    <li id="huynh2024klsm"><span class="authors">Huynh, Andy, Athanassoulis, et al.</span> (2024). <span class="title">“Towards Flexibility and Robustness of LSM Trees”</span>. <span class="venue">The VLDB Journal</span>. <a class="link" href="https://doi.org/10.1007/s00778-023-00826-9" target="_blank" rel="noopener">link</a></li>
-  </ol>
-<p class="meta">Generated on 2025-09-07 from <code>refs_v2.bib</code>.</p>
+        <section id="related-work" class="section">
+            <h2>Related Work</h2>
+            <p>This section summarizes prior work closely related to our project on <em>RocksDB put-rate modeling, compaction-constrained throughput, write amplification, and stability under stalls</em>. We prioritize top systems/database venues (SOSP/NSDI/FAST/ATC, SIGMOD/VLDB/PACMMOD, ASPLOS, CACM).</p>
+            
+            <div class="toc">
+                <strong>Categories</strong>:
+                <a href="#rw-foundations">Foundations & Surveys</a> ·
+                <a href="#rw-compaction">Compaction Theory & Tuning</a> ·
+                <a href="#rw-kvsep">Write Amplification & KV-Separation</a> ·
+                <a href="#rw-stability">Stability, Stall & Scheduling</a> ·
+                <a href="#rw-prod">Workload Modeling & Production Systems</a> ·
+                <a href="#rw-filters">Filters & Range Queries</a> ·
+                <a href="#rw-hw">Hardware, NVM & Tiered Storage</a> ·
+                <a href="#rw-learning">Learning/Adaptive LSM</a>
+            </div>
 
-  <style>
-    .related-work { line-height: 1.5; }
-    .related-work .toc { margin: .5rem 0 1rem; font-size: 0.95rem; }
-    .related-work h3 { margin-top: 1.4rem; }
-    .related-work .blurb { color:#444; margin: .2rem 0 .6rem; }
-    .related-work .refs { padding-left: 1.2rem; }
-    .related-work .refs li { margin: .35rem 0; }
-    .related-work .authors { font-weight: 600; }
-    .related-work .title { font-style: italic; }
-    .related-work .venue { color:#333; }
-    .related-work a.link { margin-left:.4rem; text-decoration: none; }
-    .related-work a.link:hover { text-decoration: underline; }
-  </style>
-</section>
+            <h3 id="rw-foundations">Foundations &amp; Surveys</h3>
+            <p class="blurb">Core LSM concepts and broad surveys that ground our modeling choices.</p>
+            <ol class="refs">
+                <li id="oneil1996lsmtree"><span class="authors">O'Neil, Patrick, Cheng, et al.</span> (1996). <span class="title">"The log-structured merge-tree (LSM-tree)"</span>. <span class="venue">Acta Informatica</span>. <a class="link" href="https://doi.org/10.1007/s002360050048" target="_blank" rel="noopener">link</a></li>
+                <li id="luo2020survey"><span class="authors">Luo, Chen, Carey, et al.</span> (2020). <span class="title">"LSM-based Storage Techniques: A Survey"</span>. <span class="venue">The VLDB Journal</span>.</li>
+                <li id="liu2024moose"><span class="authors">Liu, Junfeng, Wang, et al.</span> (2024). <span class="title">"Structural Designs Meet Optimality: Exploring Optimized LSM-tree Structures in a Colossal Configuration Space"</span>. <span class="venue">Proceedings of the ACM on Management of Data</span>. <a class="link" href="https://doi.org/10.1145/3654978" target="_blank" rel="noopener">link</a></li>
+            </ol>
+
+            <h3 id="rw-compaction">Compaction Theory &amp; Tuning</h3>
+            <p class="blurb">Analytical and empirical work on compaction layouts, parameters, and cost trade-offs.</p>
+            <ol class="refs">
+                <li id="sears2012blsm"><span class="authors">Sears, Russell, Ramakrishnan, et al.</span> (2012). <span class="title">"bLSM: A General Purpose Log Structured Merge Tree"</span>. <span class="venue">Proceedings of the 2012 ACM SIGMOD International Conference on Management of Data</span>.</li>
+                <li id="dayan2017monkey"><span class="authors">Dayan, Niv, Athanassoulis, et al.</span> (2017). <span class="title">"Monkey: Optimal Navigable Key-Value Store"</span>. <span class="venue">Proceedings of the 2017 {ACM} {SIGMOD} International Conference on Management of Data</span>.</li>
+                <li id="ren2017slimdb"><span class="authors">Ren, Kai, Zheng, et al.</span> (2017). <span class="title">"SlimDB: A Space-Efficient Key-Value Storage Engine for Semi-Sorted Data"</span>. <span class="venue">Proceedings of the VLDB Endowment</span>.</li>
+            </ol>
+
+            <h3 id="rw-kvsep">Write Amplification &amp; KV-Separation</h3>
+            <p class="blurb">Work on reducing write amplification through key-value separation and other techniques.</p>
+            <ol class="refs">
+                <li id="kang2013wisc"><span class="authors">Kang, Woon-Hak, Keeton, et al.</span> (2013). <span class="title">"WiscKey: Separating Keys from Values in SSD-Conscious Storage"</span>. <span class="venue">ACM Transactions on Storage</span>.</li>
+                <li id="lu2016wisckey"><span class="authors">Lu, Lanyue, Pillai, et al.</span> (2016). <span class="title">"WiscKey: Separating Keys from Values in SSD-Conscious Storage"</span>. <span class="venue">Proceedings of the 14th USENIX Conference on File and Storage Technologies</span>.</li>
+            </ol>
+
+            <h3 id="rw-stability">Stability, Stall &amp; Scheduling</h3>
+            <p class="blurb">Research on LSM-tree stability, write stalls, and scheduling policies.</p>
+            <ol class="refs">
+                <li id="dayan2018dostoevsky"><span class="authors">Dayan, Niv, Idreos, et al.</span> (2018). <span class="title">"Dostoevsky: Better Space-Time Trade-Offs for LSM-Tree Based Key-Value Stores via Adaptive Removal of Superfluous Merging"</span>. <span class="venue">Proceedings of the 2018 {ACM} {SIGMOD} International Conference on Management of Data</span>.</li>
+            </ol>
+
+            <h3 id="rw-prod">Workload Modeling &amp; Production Systems</h3>
+            <p class="blurb">Studies of real-world workloads and production system behavior.</p>
+            <ol class="refs">
+                <li id="rosetta2020"><span class="authors">Luo, Siqiang, Chatterjee, et al.</span> (2020). <span class="title">"Rosetta: A Robust Space-Time Optimized Range Filter for Key-Value Stores"</span>. <span class="venue">Proceedings of the 2020 {ACM} {SIGMOD} International Conference on Management of Data</span>.</li>
+            </ol>
+        </section>
+
+        <div class="conclusion">
+            <h2>📋 결론</h2>
+            <p>이 선행 연구들은 RocksDB Put-Rate Model의 이론적 기반과 실용적 적용을 위한 중요한 참고 자료입니다.</p>
+        </div>
+    </div>
+</body>
+</html>

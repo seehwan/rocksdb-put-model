@@ -1,0 +1,38 @@
+{
+  "model": "v1",
+  "predicted_smax": 581.6136407994913,
+  "actual_put_rate": 187.1,
+  "error_percent": 210.85710358070088,
+  "error_abs": 210.85710358070088,
+  "validation_status": "Poor",
+  "bottleneck": "Write bound",
+  "parameters": {
+    "B_w": 1484,
+    "B_r": 2368,
+    "B_eff": 2231,
+    "CR": 0.5406,
+    "WA": 2.87,
+    "w_wal": 1.0,
+    "eta": 0.5,
+    "w_req": 2.5515220000000003,
+    "r_req": 1.010922
+  },
+  "detailed_calculations": {
+    "S_max": 581.6136407994913,
+    "S_write": 581.6136407994913,
+    "S_read": 2342.4161310170316,
+    "S_mix": 729.804516413732,
+    "bottleneck": "Write bound",
+    "parameters": {
+      "B_w": 1484,
+      "B_r": 2368,
+      "B_eff": 2231,
+      "CR": 0.5406,
+      "WA": 2.87,
+      "w_wal": 1.0,
+      "eta": 0.5,
+      "w_req": 2.5515220000000003,
+      "r_req": 1.010922
+    }
+  }
+}

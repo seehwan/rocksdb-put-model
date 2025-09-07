@@ -1,0 +1,300 @@
+{
+  "validation_results": {
+    "v1": {
+      "model": "v1",
+      "predicted_smax": 581.6136407994913,
+      "actual_put_rate": 187.1,
+      "error_percent": 210.85710358070088,
+      "error_abs": 210.85710358070088,
+      "validation_status": "Poor",
+      "bottleneck": "Write bound",
+      "parameters": {
+        "B_w": 1484,
+        "B_r": 2368,
+        "B_eff": 2231,
+        "CR": 0.5406,
+        "WA": 2.87,
+        "w_wal": 1.0,
+        "eta": 0.5,
+        "w_req": 2.5515220000000003,
+        "r_req": 1.010922
+      },
+      "detailed_calculations": {
+        "S_max": 581.6136407994913,
+        "S_write": 581.6136407994913,
+        "S_read": 2342.4161310170316,
+        "S_mix": 729.804516413732,
+        "bottleneck": "Write bound",
+        "parameters": {
+          "B_w": 1484,
+          "B_r": 2368,
+          "B_eff": 2231,
+          "CR": 0.5406,
+          "WA": 2.87,
+          "w_wal": 1.0,
+          "eta": 0.5,
+          "w_req": 2.5515220000000003,
+          "r_req": 1.010922
+        }
+      }
+    },
+    "v2_1": {
+      "model": "v2.1",
+      "predicted_smax": 63.62164921070275,
+      "actual_put_rate": 187.1,
+      "error_percent": -65.99591169925027,
+      "error_abs": 65.99591169925027,
+      "validation_status": "Poor",
+      "bottleneck_level": "L3",
+      "stall_factor": 0.5468999999999999,
+      "level_capacities": {
+        "L0": 1484.4983128603649,
+        "L1": 1069.1971662506382,
+        "L2": 623.3265296005129,
+        "L3": 296.8221569526252
+      },
+      "parameters": {
+        "B_w": 1484,
+        "B_r": 2368,
+        "B_eff": 2231,
+        "CR": 0.5406,
+        "WA": 2.87,
+        "w_wal": 1.0,
+        "rho_r": 0.1,
+        "w_req": 2.5515220000000003,
+        "r_req": 1.010922,
+        "stall_percentage": 0.4531
+      },
+      "detailed_calculations": {
+        "S_max": 63.62164921070275,
+        "stall_factor": 0.5468999999999999,
+        "min_capacity": 296.8221569526252,
+        "bottleneck_level": "L3",
+        "level_capacities": {
+          "L0": 1484.4983128603649,
+          "L1": 1069.1971662506382,
+          "L2": 623.3265296005129,
+          "L3": 296.8221569526252
+        },
+        "level_wa": {
+          "L0": 0.0,
+          "L1": 0.0,
+          "L2": 22.6,
+          "L3": 0.9
+        },
+        "level_read_write_ratios": {
+          "L0": 0.0009,
+          "L1": 0.0018,
+          "L2": 0.0002,
+          "L3": 0.0002
+        },
+        "B_eff_harmonic": 1541.547639936831,
+        "parameters": {
+          "B_w": 1484,
+          "B_r": 2368,
+          "B_eff": 2231,
+          "CR": 0.5406,
+          "WA": 2.87,
+          "w_wal": 1.0,
+          "rho_r": 0.1,
+          "w_req": 2.5515220000000003,
+          "r_req": 1.010922,
+          "stall_percentage": 0.4531
+        }
+      }
+    },
+    "v4": {
+      "model": "v4_full",
+      "predicted_smax": 196.4027580075817,
+      "actual_put_rate": 187.1,
+      "error_percent": 4.972078037189578,
+      "error_abs": 4.972078037189578,
+      "validation_status": "Excellent",
+      "simulation_results": {
+        "steps": 1000,
+        "steady_state_metrics": {
+          "avg_put_rate": 196.4027580075817,
+          "avg_stall_prob": 0.017986209962091555,
+          "avg_read_ratio": 0.0,
+          "avg_l0_files": 0.0,
+          "level_backlogs": {
+            "L0": 0.0,
+            "L1": 0.0,
+            "L2": 0.0,
+            "L3": 0.0
+          }
+        },
+        "bottleneck_level": "Unknown",
+        "max_backlog": 0
+      },
+      "envelope_model_info": {
+        "grid_shape": [
+          5,
+          5,
+          3,
+          4
+        ],
+        "total_points": 300,
+        "metadata": {
+          "created_by": "Phase-D v4 full validation",
+          "version": "1.0",
+          "description": "Real fio data-based envelope model for v4 validation",
+          "source_data": {
+            "B_w": 1484,
+            "B_r": 2368,
+            "B_eff_mixed": 2231,
+            "test_config": {
+              "iodepth": 32,
+              "numjobs": 1,
+              "bs_k": 128
+            }
+          }
+        }
+      },
+      "config_used": {
+        "simulation_dt_s": 1.0,
+        "simulation_steps": 500,
+        "rocksdb_params": {
+          "levels": [
+            "L0",
+            "L1",
+            "L2",
+            "L3"
+          ],
+          "level_config": {
+            "L0": {
+              "write_share": 0.2,
+              "read_share": 0.05,
+              "mu_min": 0.5,
+              "mu_max": 1.2,
+              "gamma": 0.7,
+              "k0": 0.7,
+              "k_l": 1.0,
+              "eta_l": 1.0
+            },
+            "L1": {
+              "write_share": 0.1,
+              "read_share": 0.1,
+              "mu_min": 0.5,
+              "mu_max": 1.2,
+              "gamma": 0.7,
+              "k0": 0.7,
+              "k_l": 1.0,
+              "eta_l": 1.0
+            },
+            "L2": {
+              "write_share": 0.4,
+              "read_share": 0.6,
+              "mu_min": 0.1,
+              "mu_max": 0.5,
+              "gamma": 0.5,
+              "k0": 0.5,
+              "k_l": 0.4,
+              "eta_l": 0.8
+            },
+            "L3": {
+              "write_share": 0.1,
+              "read_share": 0.1,
+              "mu_min": 0.5,
+              "mu_max": 1.2,
+              "gamma": 0.7,
+              "k0": 0.7,
+              "k_l": 1.0,
+              "eta_l": 1.0
+            }
+          },
+          "global_params": {
+            "target_put_rate_mib_s": 187.1,
+            "device_read_bandwidth_mib_s": 2368,
+            "device_write_bandwidth_mib_s": 1484,
+            "device_qd": 32,
+            "device_numjobs": 1,
+            "device_bs_k": 128,
+            "max_l0_files": 10,
+            "l0_stall_threshold": 8,
+            "l0_stall_steepness": 2.0,
+            "l0_file_size_mib": 64.0,
+            "initial_read_ratio": 0.1,
+            "total_write_amplification": 2.87,
+            "total_read_amplification": 2.5,
+            "concurrency_scaling_factor": 1.0
+          }
+        }
+      }
+    }
+  },
+  "analysis": {
+    "model_ranking": [
+      {
+        "model": "v4",
+        "error": 4.972078037189578
+      },
+      {
+        "model": "v2_1",
+        "error": 65.99591169925027
+      },
+      {
+        "model": "v1",
+        "error": 210.85710358070088
+      }
+    ],
+    "error_analysis": {
+      "min_error": 4.972078037189578,
+      "max_error": 210.85710358070088,
+      "avg_error": 93.94169777238024,
+      "std_error": 86.34383265061817,
+      "best_model": "v4",
+      "worst_model": "v1"
+    },
+    "bottleneck_analysis": {
+      "Write bound": 1,
+      "L3": 1,
+      "Unknown": 1
+    },
+    "improvement_trend": {
+      "total_improvement": 205.8850255435113,
+      "improvement_percent": 97.6419679713154,
+      "trend_direction": "improving"
+    },
+    "recommendations": [
+      "Best performing model: v4",
+      "Worst performing model: v1",
+      "All models show high error rates (>50%), indicating need for further refinement",
+      "Common bottleneck: Write bound",
+      "Recommendations:",
+      "1. Improve stall modeling accuracy",
+      "2. Better per-level capacity estimation",
+      "3. More accurate device envelope modeling",
+      "4. Consider additional system factors (CPU, memory, etc.)"
+    ]
+  },
+  "comparison_table": [
+    {
+      "Model": "v1",
+      "Predicted (MiB/s)": 581.6136407994913,
+      "Actual (MiB/s)": 187.1,
+      "Error (%)": 210.85710358070088,
+      "Error Abs (%)": 210.85710358070088,
+      "Status": "Poor",
+      "Bottleneck": "Write bound"
+    },
+    {
+      "Model": "v2_1",
+      "Predicted (MiB/s)": 63.62164921070275,
+      "Actual (MiB/s)": 187.1,
+      "Error (%)": -65.99591169925027,
+      "Error Abs (%)": 65.99591169925027,
+      "Status": "Poor",
+      "Bottleneck": "L3"
+    },
+    {
+      "Model": "v4",
+      "Predicted (MiB/s)": 196.4027580075817,
+      "Actual (MiB/s)": 187.1,
+      "Error (%)": 4.972078037189578,
+      "Error Abs (%)": 4.972078037189578,
+      "Status": "Excellent",
+      "Bottleneck": "N/A"
+    }
+  ]
+}

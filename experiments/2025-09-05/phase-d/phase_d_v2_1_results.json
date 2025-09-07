@@ -1,0 +1,65 @@
+{
+  "model": "v2.1",
+  "predicted_smax": 63.62164921070275,
+  "actual_put_rate": 187.1,
+  "error_percent": -65.99591169925027,
+  "error_abs": 65.99591169925027,
+  "validation_status": "Poor",
+  "bottleneck_level": "L3",
+  "stall_factor": 0.5468999999999999,
+  "level_capacities": {
+    "L0": 1484.4983128603649,
+    "L1": 1069.1971662506382,
+    "L2": 623.3265296005129,
+    "L3": 296.8221569526252
+  },
+  "parameters": {
+    "B_w": 1484,
+    "B_r": 2368,
+    "B_eff": 2231,
+    "CR": 0.5406,
+    "WA": 2.87,
+    "w_wal": 1.0,
+    "rho_r": 0.1,
+    "w_req": 2.5515220000000003,
+    "r_req": 1.010922,
+    "stall_percentage": 0.4531
+  },
+  "detailed_calculations": {
+    "S_max": 63.62164921070275,
+    "stall_factor": 0.5468999999999999,
+    "min_capacity": 296.8221569526252,
+    "bottleneck_level": "L3",
+    "level_capacities": {
+      "L0": 1484.4983128603649,
+      "L1": 1069.1971662506382,
+      "L2": 623.3265296005129,
+      "L3": 296.8221569526252
+    },
+    "level_wa": {
+      "L0": 0.0,
+      "L1": 0.0,
+      "L2": 22.6,
+      "L3": 0.9
+    },
+    "level_read_write_ratios": {
+      "L0": 0.0009,
+      "L1": 0.0018,
+      "L2": 0.0002,
+      "L3": 0.0002
+    },
+    "B_eff_harmonic": 1541.547639936831,
+    "parameters": {
+      "B_w": 1484,
+      "B_r": 2368,
+      "B_eff": 2231,
+      "CR": 0.5406,
+      "WA": 2.87,
+      "w_wal": 1.0,
+      "rho_r": 0.1,
+      "w_req": 2.5515220000000003,
+      "r_req": 1.010922,
+      "stall_percentage": 0.4531
+    }
+  }
+}

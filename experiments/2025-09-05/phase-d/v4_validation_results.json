@@ -1,0 +1,119 @@
+{
+  "model": "v4_full",
+  "predicted_smax": 196.4027580075817,
+  "actual_put_rate": 187.1,
+  "error_percent": 4.972078037189578,
+  "error_abs": 4.972078037189578,
+  "validation_status": "Excellent",
+  "simulation_results": {
+    "steps": 1000,
+    "steady_state_metrics": {
+      "avg_put_rate": 196.4027580075817,
+      "avg_stall_prob": 0.017986209962091555,
+      "avg_read_ratio": 0.0,
+      "avg_l0_files": 0.0,
+      "level_backlogs": {
+        "L0": 0.0,
+        "L1": 0.0,
+        "L2": 0.0,
+        "L3": 0.0
+      }
+    },
+    "bottleneck_level": "Unknown",
+    "max_backlog": 0
+  },
+  "envelope_model_info": {
+    "grid_shape": [
+      5,
+      5,
+      3,
+      4
+    ],
+    "total_points": 300,
+    "metadata": {
+      "created_by": "Phase-D v4 full validation",
+      "version": "1.0",
+      "description": "Real fio data-based envelope model for v4 validation",
+      "source_data": {
+        "B_w": 1484,
+        "B_r": 2368,
+        "B_eff_mixed": 2231,
+        "test_config": {
+          "iodepth": 32,
+          "numjobs": 1,
+          "bs_k": 128
+        }
+      }
+    }
+  },
+  "config_used": {
+    "simulation_dt_s": 1.0,
+    "simulation_steps": 500,
+    "rocksdb_params": {
+      "levels": [
+        "L0",
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "level_config": {
+        "L0": {
+          "write_share": 0.2,
+          "read_share": 0.05,
+          "mu_min": 0.5,
+          "mu_max": 1.2,
+          "gamma": 0.7,
+          "k0": 0.7,
+          "k_l": 1.0,
+          "eta_l": 1.0
+        },
+        "L1": {
+          "write_share": 0.1,
+          "read_share": 0.1,
+          "mu_min": 0.5,
+          "mu_max": 1.2,
+          "gamma": 0.7,
+          "k0": 0.7,
+          "k_l": 1.0,
+          "eta_l": 1.0
+        },
+        "L2": {
+          "write_share": 0.4,
+          "read_share": 0.6,
+          "mu_min": 0.1,
+          "mu_max": 0.5,
+          "gamma": 0.5,
+          "k0": 0.5,
+          "k_l": 0.4,
+          "eta_l": 0.8
+        },
+        "L3": {
+          "write_share": 0.1,
+          "read_share": 0.1,
+          "mu_min": 0.5,
+          "mu_max": 1.2,
+          "gamma": 0.7,
+          "k0": 0.7,
+          "k_l": 1.0,
+          "eta_l": 1.0
+        }
+      },
+      "global_params": {
+        "target_put_rate_mib_s": 187.1,
+        "device_read_bandwidth_mib_s": 2368,
+        "device_write_bandwidth_mib_s": 1484,
+        "device_qd": 32,
+        "device_numjobs": 1,
+        "device_bs_k": 128,
+        "max_l0_files": 10,
+        "l0_stall_threshold": 8,
+        "l0_stall_steepness": 2.0,
+        "l0_file_size_mib": 64.0,
+        "initial_read_ratio": 0.1,
+        "total_write_amplification": 2.87,
+        "total_read_amplification": 2.5,
+        "concurrency_scaling_factor": 1.0
+      }
+    }
+  }
+}

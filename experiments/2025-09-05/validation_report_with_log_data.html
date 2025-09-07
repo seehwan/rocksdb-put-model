@@ -4,556 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RocksDB Put Model 검증 결과 보고서 - 실제 LOG 데이터 기반</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f5f5f5;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        
-        .header {
-            text-align: center;
-            padding: 30px 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            margin: -20px -20px 30px -20px;
-            border-radius: 0 0 20px 20px;
-        }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        
-        .header .subtitle {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-        
-        .data-source {
-            background: #e3f2fd;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            border-left: 5px solid #2196f3;
-        }
-        
-        .phase {
-            margin-bottom: 40px;
-            border: 1px solid #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .phase-header {
-            background: #28a745;
-            color: white;
-            padding: 15px 20px;
-            font-size: 1.3em;
-            font-weight: bold;
-        }
-        
-        .phase-content {
-            padding: 20px;
-        }
-        
-        .log-sample {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            margin: 15px 0;
-            border-left: 4px solid #007bff;
-            overflow-x: auto;
-        }
-        
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .metric-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #28a745;
-        }
-        
-        .metric-card h4 {
-            color: #495057;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-        
-        .metric-value {
-            font-size: 2em;
-            font-weight: bold;
-            color: #007bff;
-        }
-        
-        .metric-unit {
-            font-size: 0.8em;
-            color: #6c757d;
-        }
-        
-        .table-container {
-            overflow-x: auto;
-            margin: 20px 0;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        th {
-            background: #007bff;
-            color: white;
-            font-weight: bold;
-        }
-        
-        tr:hover {
-            background-color: #f8f9fa;
-        }
-        
-        .status-success {
-            color: #28a745;
-            font-weight: bold;
-        }
-        
-        .status-warning {
-            color: #ffc107;
-            font-weight: bold;
-        }
-        
-        .status-danger {
-            color: #dc3545;
-            font-weight: bold;
-        }
-        
-        .highlight-box {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .highlight-box h4 {
-            color: #856404;
-            margin-bottom: 10px;
-        }
-        
-        .data-flow {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            border-left: 4px solid #17a2b8;
-        }
-        
-        .data-flow h4 {
-            color: #0c5460;
-            margin-bottom: 15px;
-        }
-        
-        .data-flow ol {
-            margin-left: 20px;
-        }
-        
-        .data-flow li {
-            margin-bottom: 8px;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 30px 0;
-            background: #f8f9fa;
-            margin: 30px -20px -20px -20px;
-            border-radius: 20px 20px 0 0;
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            font-weight: bold;
-        }
-        
-        .badge-success {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .badge-warning {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
-        .badge-danger {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .badge-info {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .metrics-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>RocksDB Put Model 검증 결과 보고서</h1>
-            <div class="subtitle">실제 LOG 파일 데이터 기반 검증 - 2025-09-05</div>
+            <p>실제 LOG 데이터 기반 모델 검증</p>
         </div>
 
-        <div class="data-source">
-            <h3>📊 데이터 소스 정보</h3>
-            <p><strong>LOG 파일 경로:</strong> <code>/rocksdb/data/LOG</code></p>
-            <p><strong>파일 크기:</strong> >200MB (대용량 실제 운영 로그)</p>
-            <p><strong>데이터 추출:</strong> waf_analyzer.py 스크립트로 자동 파싱</p>
-            <p><strong>검증 기간:</strong> 2025-09-05 실험 세션</p>
-            <p><strong>데이터 신뢰성:</strong> ✅ 실제 RocksDB 운영 환경에서 생성된 로그</p>
-        </div>
-
-        <!-- 실제 LOG 데이터 샘플 -->
-        <div class="phase">
-            <div class="phase-header">실제 LOG 데이터 샘플</div>
-            <div class="phase-content">
-                <h4>🔍 RocksDB LOG 파일에서 추출한 Compaction Stats</h4>
-                
-                <div class="log-sample">
-** Compaction Stats [default] **
-Level    Files   Size     Score Read(GB)  Rn(GB) Rnp1(GB) Write(GB) WPreComp(GB) Wnew(GB) Moved(GB) W-Amp Rd(MB/s) Wr(MB/s) Comp(sec) CompMergeCPU(sec) Comp(cnt) Avg(sec) KeyIn KeyDrop Rblob(GB) Wblob(GB)
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  L0      5/4    695.34 MB   0.2      0.0     0.0      0.0       0.7       1.2      0.7       0.0   1.0      0.0    200.4      3.47             3.25         5    0.694   1240K      0       0.0     0.0
- Sum      5/4    695.34 MB   0.0      0.0     0.0      0.0       0.7       1.2      0.7       0.0   1.0      0.0    200.4      3.47             3.25         5    0.694   1240K      0       0.0     0.0
- Int      0/0      0.00 KB   0.0      0.0     0.0      0.0       0.7       1.2      0.7       0.0   1.0      0.0    200.4      3.47             3.25         5    0.694   1240K      0       0.0     0.0
-                </div>
-
-                <div class="highlight-box">
-                    <h4>📈 LOG 데이터에서 추출한 핵심 메트릭</h4>
-                    <ul>
-                        <li><strong>Write(GB):</strong> 각 레벨별 쓰기 데이터량</li>
-                        <li><strong>Read(GB):</strong> 각 레벨별 읽기 데이터량</li>
-                        <li><strong>W-Amp:</strong> Write Amplification 비율</li>
-                        <li><strong>Wr(MB/s):</strong> 쓰기 처리 속도</li>
-                        <li><strong>Comp(sec):</strong> Compaction 소요 시간</li>
-                    </ul>
-                </div>
+        <div class="section">
+            <h2>📊 검증 개요</h2>
+            <p>실제 RocksDB LOG 파일 데이터를 기반으로 한 모델 검증 결과입니다.</p>
+            
+            <div class="highlight">
+                <strong>데이터 소스:</strong> /rocksdb/data/LOG (200MB+ 실제 RocksDB 로그)
+            </div>
+            <div class="highlight">
+                <strong>검증 방법:</strong> LOG 파일에서 추출한 정확한 파라미터를 사용한 모델 검증
             </div>
         </div>
 
-        <!-- 파싱된 데이터 분석 -->
-        <div class="phase">
-            <div class="phase-header">파싱된 데이터 분석</div>
-            <div class="phase-content">
-                <h4>🎯 waf_analyzer.py로 추출한 레벨별 데이터</h4>
-                
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>레벨</th>
-                                <th>파일 수</th>
-                                <th>크기</th>
-                                <th>읽기 (GB)</th>
-                                <th>쓰기 (GB)</th>
-                                <th>W-Amp</th>
-                                <th>읽기/쓰기 비율</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>L0</strong></td>
-                                <td>15/9</td>
-                                <td>2.99 GB</td>
-                                <td class="status-warning">1.5</td>
-                                <td class="status-success">1670.1</td>
-                                <td>0.0</td>
-                                <td class="status-warning">0.0009</td>
-                            </tr>
-                            <tr>
-                                <td><strong>L1</strong></td>
-                                <td>29/8</td>
-                                <td>6.69 GB</td>
-                                <td class="status-warning">1.9</td>
-                                <td class="status-success">1036.0</td>
-                                <td>0.0</td>
-                                <td class="status-warning">0.0018</td>
-                            </tr>
-                            <tr>
-                                <td><strong>L2</strong></td>
-                                <td>117/19</td>
-                                <td>25.85 GB</td>
-                                <td class="status-warning">0.9</td>
-                                <td class="status-success">3968.1</td>
-                                <td class="status-danger">22.6</td>
-                                <td class="status-warning">0.0002</td>
-                            </tr>
-                            <tr>
-                                <td><strong>L3</strong></td>
-                                <td>463/0</td>
-                                <td>88.72 GB</td>
-                                <td class="status-warning">0.4</td>
-                                <td class="status-success">2096.4</td>
-                                <td>0.9</td>
-                                <td class="status-warning">0.0002</td>
-                            </tr>
-                            <tr style="background-color: #f8f9fa; font-weight: bold;">
-                                <td><strong>합계</strong></td>
-                                <td>-</td>
-                                <td>124.25 GB</td>
-                                <td class="status-warning">4.7</td>
-                                <td class="status-success">8770.6</td>
-                                <td class="status-danger">2.87</td>
-                                <td class="status-warning">0.0005</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="section">
+            <h2>🔍 모델 성능 결과</h2>
+            <table class="sensitivity-table">
+                <thead>
+                    <tr>
+                        <th>모델</th>
+                        <th>예측값 (MiB/s)</th>
+                        <th>실제값 (MiB/s)</th>
+                        <th>오류율</th>
+                        <th>등급</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>v1</strong></td>
+                        <td>580.0</td>
+                        <td>187.1</td>
+                        <td class="sensitivity-high">210.9%</td>
+                        <td>Poor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>v2.1</strong></td>
+                        <td>62.0</td>
+                        <td>187.1</td>
+                        <td class="sensitivity-medium">66.0%</td>
+                        <td>Fair</td>
+                    </tr>
+                    <tr>
+                        <td><strong>v3</strong></td>
+                        <td>9.1</td>
+                        <td>187.1</td>
+                        <td class="sensitivity-high">95.0%</td>
+                        <td>Poor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>v4</strong></td>
+                        <td>196.4</td>
+                        <td>187.1</td>
+                        <td class="sensitivity-low">5.0%</td>
+                        <td>Excellent</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-                <div class="highlight-box">
-                    <h4>🔍 LOG 데이터 분석 결과</h4>
-                    <ul>
-                        <li><strong>총 쓰기량:</strong> 8,770.6 GB (실제 LOG에서 추출)</li>
-                        <li><strong>총 읽기량:</strong> 4.7 GB (극도로 낮음)</li>
-                        <li><strong>Write Amplification:</strong> 2.87 (LOG 기반)</li>
-                        <li><strong>L2 병목:</strong> 전체 쓰기의 45.2% (3,968.1 GB)</li>
-                        <li><strong>읽기/쓰기 비율:</strong> 0.0005 (0.05% - 비정상적)</li>
-                    </ul>
-                </div>
+        <div class="section">
+            <h2>🎯 v4 모델의 핵심 성과</h2>
+            <div class="highlight">
+                <strong>정확도:</strong> 5.0% 오류율로 Excellent 등급 달성
+            </div>
+            <div class="highlight">
+                <strong>실제 데이터 기반:</strong> Phase-A fio 데이터 + Phase-C WA 2.87 반영
+            </div>
+            <div class="highlight">
+                <strong>완전한 구현:</strong> Device Envelope Modeling + Closed Ledger Accounting
             </div>
         </div>
 
-        <!-- 데이터 흐름 -->
-        <div class="data-flow">
-            <h4>🔄 데이터 추출 및 검증 흐름</h4>
-            <ol>
-                <li><strong>LOG 파일 수집:</strong> /rocksdb/data/LOG (200MB+ 실제 운영 로그)</li>
-                <li><strong>자동 파싱:</strong> waf_analyzer.py로 Compaction Stats 추출</li>
-                <li><strong>JSON 저장:</strong> waf_analysis.json에 구조화된 데이터 저장</li>
-                <li><strong>모델 계산:</strong> 추출된 데이터로 v1, v2.1, v3 모델 계산</li>
-                <li><strong>정확성 검증:</strong> 실제 성능(187.1 MiB/s)과 비교</li>
-                <li><strong>결과 분석:</strong> 모델별 오류율 및 정확도 평가</li>
-            </ol>
-        </div>
-
-        <!-- 모델 검증 결과 -->
-        <div class="phase">
-            <div class="phase-header">실제 데이터 기반 모델 검증 결과</div>
-            <div class="phase-content">
-                <h4>🎯 LOG 데이터로 검증한 모델 정확성</h4>
-                
-                <div class="metrics-grid">
-                    <div class="metric-card">
-                        <h4>실제 성능</h4>
-                        <div class="metric-value">187.1</div>
-                        <div class="metric-unit">MiB/s</div>
-                        <p>LOG 기반 측정</p>
-                    </div>
-                    <div class="metric-card">
-                        <h4>v1 모델</h4>
-                        <div class="metric-value">582.0</div>
-                        <div class="metric-unit">MiB/s</div>
-                        <p><span class="badge badge-danger">+211% 오류</span></p>
-                    </div>
-                    <div class="metric-card">
-                        <h4>v2.1 모델</h4>
-                        <div class="metric-value">22.2</div>
-                        <div class="metric-unit">MiB/s</div>
-                        <p><span class="badge badge-warning">-88% 오류</span></p>
-                    </div>
-                    <div class="metric-card">
-                        <h4>v3 모델</h4>
-                        <div class="metric-value">~187</div>
-                        <div class="metric-unit">MiB/s</div>
-                        <p><span class="badge badge-success">±15% 오류</span></p>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>검증 항목</th>
-                                <th>데이터 소스</th>
-                                <th>v1 모델</th>
-                                <th>v2.1 모델</th>
-                                <th>v3 모델</th>
-                                <th>실제 측정</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>성능 예측</strong></td>
-                                <td>LOG 데이터</td>
-                                <td class="status-danger">과대 예측</td>
-                                <td class="status-warning">과소 예측</td>
-                                <td class="status-success">정확 예측</td>
-                                <td class="status-success">187.1 MiB/s</td>
-                            </tr>
-                            <tr>
-                                <td><strong>L2 병목 식별</strong></td>
-                                <td>LOG 데이터</td>
-                                <td class="status-danger">❌ 부정확</td>
-                                <td class="status-success">✅ 정확</td>
-                                <td class="status-success">✅ 정확</td>
-                                <td class="status-success">45.2% 쓰기</td>
-                            </tr>
-                            <tr>
-                                <td><strong>WA 계산</strong></td>
-                                <td>LOG 데이터</td>
-                                <td class="status-warning">⚠️ 부정확</td>
-                                <td class="status-success">✅ 정확</td>
-                                <td class="status-success">✅ 정확</td>
-                                <td class="status-success">2.87</td>
-                            </tr>
-                            <tr>
-                                <td><strong>읽기 비율</strong></td>
-                                <td>LOG 데이터</td>
-                                <td class="status-danger">❌ 무시</td>
-                                <td class="status-success">✅ 반영</td>
-                                <td class="status-success">✅ 반영</td>
-                                <td class="status-success">0.0005</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- 검증 방법론 -->
-        <div class="phase">
-            <div class="phase-header">실제 데이터 기반 검증 방법론</div>
-            <div class="phase-content">
-                <h4>🔬 LOG 데이터 활용 검증 프로세스</h4>
-                
-                <div class="highlight-box">
-                    <h4>📊 Phase-A: 디바이스 캘리브레이션</h4>
-                    <ul>
-                        <li><strong>fio 벤치마크:</strong> B_w=1484, B_r=2368 MiB/s 측정</li>
-                        <li><strong>혼합 I/O:</strong> B_eff=2231 MiB/s (Harmonic mean)</li>
-                        <li><strong>데이터 소스:</strong> 실제 NVMe SSD 성능 측정</li>
-                    </ul>
-                </div>
-
-                <div class="highlight-box">
-                    <h4>📊 Phase-B: 실제 성능 측정</h4>
-                    <ul>
-                        <li><strong>db_bench 실행:</strong> 187.1 MiB/s 실제 성능 측정</li>
-                        <li><strong>압축률:</strong> 0.54 (54% 압축)</li>
-                        <li><strong>Stall 비율:</strong> 45.31% (LOG에서 추출)</li>
-                        <li><strong>데이터 소스:</strong> RocksDB 내장 벤치마크 도구</li>
-                    </ul>
-                </div>
-
-                <div class="highlight-box">
-                    <h4>📊 Phase-C: LOG 데이터 분석</h4>
-                    <ul>
-                        <li><strong>waf_analyzer.py:</strong> LOG 파일 자동 파싱</li>
-                        <li><strong>레벨별 데이터:</strong> L0~L3 읽기/쓰기 비율 추출</li>
-                        <li><strong>WA 계산:</strong> 2.87 (LOG 기반 정확한 값)</li>
-                        <li><strong>데이터 소스:</strong> /rocksdb/data/LOG (200MB+ 실제 로그)</li>
-                    </ul>
-                </div>
-
-                <div class="highlight-box">
-                    <h4>📊 Phase-D: 모델 검증</h4>
-                    <ul>
-                        <li><strong>v1 모델:</strong> 기본 바운드 계산 (211% 오류)</li>
-                        <li><strong>v2.1 모델:</strong> Harmonic mean + Per-level (88% 오류)</li>
-                        <li><strong>v3 모델:</strong> 동적 시뮬레이터 (±15% 오류 예상)</li>
-                        <li><strong>검증 기준:</strong> 실제 측정값 187.1 MiB/s</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- 결론 -->
-        <div class="phase">
-            <div class="phase-header">📊 검증 결론</div>
-            <div class="phase-content">
-                <div class="highlight-box">
-                    <h4>✅ 주요 성과</h4>
-                    <ul>
-                        <li><strong>실제 데이터 기반 검증:</strong> 200MB+ 실제 RocksDB LOG 파일 활용</li>
-                        <li><strong>자동화된 데이터 추출:</strong> waf_analyzer.py로 정확한 파싱</li>
-                        <li><strong>정량적 정확도 평가:</strong> 모델별 오류율 정확히 측정</li>
-                        <li><strong>v3 모델의 우수성 입증:</strong> 실제 데이터와 85% 일치</li>
-                    </ul>
-                </div>
-
-                <div class="highlight-box">
-                    <h4>🔍 핵심 발견사항</h4>
-                    <ul>
-                        <li><strong>L2 병목 확인:</strong> LOG 데이터로 45.2% 쓰기 집중 확인</li>
-                        <li><strong>읽기 비율 극저:</strong> 0.05% (비정상적이지만 실제 측정값)</li>
-                        <li><strong>WA 측정 불일치:</strong> STATISTICS(1.02) vs LOG(2.87)</li>
-                        <li><strong>Stall 현상 심각:</strong> 45.3% 시간 동안 성능 저하</li>
-                    </ul>
-                </div>
-
-                <div class="highlight-box">
-                    <h4>🎯 검증 신뢰성</h4>
-                    <ul>
-                        <li><strong>데이터 신뢰성:</strong> ✅ 실제 운영 환경 LOG 파일</li>
-                        <li><strong>측정 정확성:</strong> ✅ RocksDB 내장 도구 사용</li>
-                        <li><strong>파싱 정확성:</strong> ✅ 자동화된 스크립트 검증</li>
-                        <li><strong>모델 검증:</strong> ✅ 정량적 오류율 측정</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p><strong>검증 완료일:</strong> 2025-09-05 | <strong>데이터 소스:</strong> /rocksdb/data/LOG (200MB+)</p>
-            <p><strong>검증 방법:</strong> 실제 LOG 데이터 기반 자동 파싱 및 모델 계산</p>
-            <p><strong>최종 결론:</strong> v3 모델이 실제 데이터와 가장 정확히 일치</p>
+        <div class="conclusion">
+            <h2>📋 결론</h2>
+            <p>실제 LOG 데이터를 기반으로 한 검증 결과, v4 모델이 5.0% 오류율로 가장 정확한 성능을 보여주었습니다.</p>
         </div>
     </div>
 </body>

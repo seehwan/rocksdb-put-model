@@ -9,6 +9,7 @@
 ### 🎯 핵심 모델 문서
 - **[PutModel.md](../PutModel.md)** - v1 이론 모델 (수식 및 설명)
 - **[PutModel.html](../PutModel.html)** - v1 모델 HTML 버전 (MathJax 렌더링)
+- **[PutModel_v2_1.html](../PutModel_v2_1.html)** - v2.1 모델 (개선된 모델)
 - **[PutModel_v3.html](PutModel_v3.html)** - v3 동적 시뮬레이터 (최신)
 
 ### 🔬 검증 계획 및 가이드
@@ -42,6 +43,7 @@
 ### Phase-D: v1 모델 검증
 - **[phase_d_summary.md](phase-d/phase_d_summary.md)** - Phase-D 요약
 - **[model_validation_results.json](phase-d/model_validation_results.json)** - v1 모델 검증 결과
+- **[experiment_results.html](experiment_results.html)** - v1 모델 실험 결과 보고서
   - v1 모델: 211.1% 오류 (과대 예측)
 
 ### Phase-E: v2.1 모델 검증

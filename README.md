@@ -84,12 +84,16 @@ python3 scripts/transient_depth_analysis.py
 
 ### 2) View results
 - **HTML**: 
-  - [PutModel.html](PutModel.html) - 이론 모델 (MathJax 수식 렌더링)
+  - [PutModel.html](PutModel.html) - v1 이론 모델 (MathJax 수식 렌더링)
+  - [PutModel_v2_1.html](PutModel_v2_1.html) - v2.1 모델 (개선된 모델)
   - [PutModel_v3.html](PutModel_v3.html) - v3 동적 시뮬레이터
   - [ValidationPlan.html](ValidationPlan.html) - 검증 계획 (이론적 방법론)
   - [ValidationGuide.html](ValidationGuide.html) - 검증 실행 가이드 (단계별 실행법)
 - **실험 보고서**:
   - [experiments/2025-09-05/v3_report.md](experiments/2025-09-05/v3_report.md) - v3 모델 최종 보고서
+  - [experiments/2025-09-05/experiment_results.html](experiments/2025-09-05/experiment_results.html) - v1 모델 실험 결과 보고서
+  - [experiments/2025-09-05/v2_model_analysis_results.html](experiments/2025-09-05/v2_model_analysis_results.html) - v2.1 모델 분석 결과
+  - [experiments/2025-09-05/v3_model_validation.html](experiments/2025-09-05/v3_model_validation.html) - v3 모델 검증 가이드
   - [experiments/2025-09-05/model_validation_comprehensive.html](experiments/2025-09-05/model_validation_comprehensive.html) - 모델 검증 종합 보고서
   - [experiments/2025-09-05/validation_report_with_log_data.html](experiments/2025-09-05/validation_report_with_log_data.html) - LOG 데이터 기반 검증 보고서
 - **그래프**: `figs/` 폴더의 PNG 파일들

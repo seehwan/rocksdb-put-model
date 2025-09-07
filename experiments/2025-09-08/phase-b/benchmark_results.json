@@ -1,0 +1,142 @@
+{
+  "experiment_info": {
+    "date": "2025-09-08",
+    "phase": "Phase-B",
+    "test_type": "RocksDB fillrandom benchmark",
+    "timestamp": "2025-09-07 02:57:19",
+    "duration_seconds": 31697.384
+  },
+  "benchmark_configuration": {
+    "command": "./db_bench --options_file=options-leveled.ini --benchmarks=fillrandom --num=300000000 --value_size=1024 --threads=16 --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1 --stats_dump_period_sec=60",
+    "options_file": "options-leveled.ini",
+    "benchmark": "fillrandom",
+    "num_operations": 300000000,
+    "value_size_bytes": 1024,
+    "key_size_bytes": 16,
+    "threads": 16,
+    "db_path": "/rocksdb/data",
+    "wal_dir": "/rocksdb/wal",
+    "statistics_enabled": true,
+    "stats_dump_period_sec": 60
+  },
+  "rocksdb_configuration": {
+    "version": "10.7.0",
+    "cpu_info": "48 * Intel(R) Xeon(R) Silver 4310 CPU @ 2.10GHz",
+    "cpu_cache": "18432 KB",
+    "compression": "Snappy",
+    "compression_sampling_rate": 0,
+    "memtable_rep": "SkipListFactory",
+    "perf_level": 1
+  },
+  "performance_results": {
+    "throughput": {
+      "operations_per_second": 151432,
+      "microseconds_per_operation": 105.652,
+      "total_operations": 4800000000,
+      "put_rate_mib_s": 150.2,
+      "put_rate_mb_s": 157.5
+    },
+    "data_volume": {
+      "raw_size_mb": 297546.4,
+      "file_size_mb": 151062.0,
+      "compression_ratio": 0.508,
+      "total_bytes_written": 5018512255644,
+      "total_bytes_read": 0
+    },
+    "write_amplification": {
+      "bytes_written_total": 5018512255644,
+      "bytes_written_user": 4800000000,
+      "write_amplification": 1.045,
+      "compaction_read_bytes": 26526931937954,
+      "compaction_write_bytes": 23872204708864,
+      "flush_write_bytes": 2822184954576
+    },
+    "stall_analysis": {
+      "stall_microseconds": 17127491411,
+      "stall_count": 9719092,
+      "average_stall_micros": 1763.2,
+      "stall_percentage": 54.0
+    },
+    "compaction_stats": {
+      "compaction_count": 24427,
+      "compaction_time_micros": 260414411104,
+      "compaction_cpu_micros": 233534586083,
+      "compaction_efficiency": 0.896
+    }
+  },
+  "detailed_statistics": {
+    "block_cache": {
+      "miss_count": 764142642,
+      "hit_count": 117016,
+      "add_count": 124388,
+      "bytes_read": 18030544384,
+      "bytes_written": 19127957552
+    },
+    "compaction": {
+      "key_drop_new": 4436934700,
+      "key_drop_obsolete": 0,
+      "range_del_drop": 0,
+      "user_drop": 0,
+      "cancelled": 0
+    },
+    "file_operations": {
+      "files_opened": 123577,
+      "file_errors": 0,
+      "files_deleted_immediately": 132453,
+      "files_marked_trash": 0
+    },
+    "compression": {
+      "blocks_compressed": 769842677,
+      "blocks_decompressed": 764139225,
+      "bytes_compressed_from": 49927201977073,
+      "bytes_compressed_to": 26690383573343,
+      "compression_ratio": 0.535
+    }
+  },
+  "latency_metrics": {
+    "db_write_micros": {
+      "p50": 40.838857,
+      "p95": 101.167750,
+      "p99": 2419.203676,
+      "p100": 2320491.0,
+      "count": 4800000000,
+      "sum": 502379545056
+    },
+    "compaction_times_micros": {
+      "p50": 10522217.289979,
+      "p95": 20254472.984942,
+      "p99": 21985349.867139,
+      "p100": 41552583.0,
+      "count": 24427,
+      "sum": 260414411104
+    },
+    "db_write_stall": {
+      "p50": 2107.960081,
+      "p95": 2821.081136,
+      "p99": 2884.469675,
+      "p100": 2318927.0,
+      "count": 9719092,
+      "sum": 17127491411
+    }
+  },
+  "analysis_summary": {
+    "performance_grade": "Good",
+    "bottleneck_identified": "Write Stall",
+    "stall_impact": "High (54% stall time)",
+    "compression_efficiency": "Good (0.508 ratio)",
+    "write_amplification": "Low (1.045)",
+    "throughput_consistency": "Stable"
+  },
+  "recommendations": {
+    "immediate": [
+      "Write stall 비율이 높음 (54%) - L0 파일 수 조정 필요",
+      "Compaction 효율성 개선 필요",
+      "메모리 설정 최적화 검토"
+    ],
+    "optimization": [
+      "max_write_buffer_number 증가",
+      "level0_file_num_compaction_trigger 조정",
+      "compaction_style 최적화"
+    ]
+  }
+}

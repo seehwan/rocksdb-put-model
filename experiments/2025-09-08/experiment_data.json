@@ -1,0 +1,174 @@
+{
+  "experiment_info": {
+    "date": "2025-09-08",
+    "environment": "GPU-01 server",
+    "device": "/dev/nvme1n1p1",
+    "experimenter": "yooseehwan",
+    "phase": "A - Device Calibration",
+    "status": "in_progress",
+    "total_duration_hours": 0,
+    "description": "RocksDB Put Model v4 추가 검증 및 성능 분석 실험"
+  },
+  "device_calibration": {
+    "write_test": {
+      "command": "fio --name=w --filename=/dev/nvme1n1p1 --rw=write --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
+      "bandwidth_mib_s": null,
+      "bandwidth_mb_s": null,
+      "iops": null,
+      "latency_avg_us": null,
+      "utilization_percent": null,
+      "extracted_value": "B_w = TBD MiB/s",
+      "status": "pending"
+    },
+    "read_test": {
+      "command": "fio --name=r --filename=/dev/nvme1n1p1 --rw=read --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
+      "bandwidth_mib_s": null,
+      "bandwidth_mb_s": null,
+      "iops": null,
+      "latency_avg_us": null,
+      "utilization_percent": null,
+      "extracted_value": "B_r = TBD MiB/s",
+      "status": "pending"
+    },
+    "mixed_test": {
+      "command": "fio --name=rw --filename=/dev/nvme1n1p1 --rw=rw --rwmixread=50 --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
+      "read_bandwidth_mib_s": null,
+      "write_bandwidth_mib_s": null,
+      "total_bandwidth_mib_s": null,
+      "read_iops": null,
+      "write_iops": null,
+      "utilization_percent": null,
+      "extracted_value": "B_eff = TBD MiB/s",
+      "status": "pending"
+    }
+  },
+  "performance_analysis": {
+    "read_vs_write_ratio": null,
+    "read_performance_degradation_mixed": null,
+    "write_performance_degradation_mixed": null,
+    "concurrency_interference": null
+  },
+  "phase_b_results": {
+    "actual_performance": {
+      "put_rate_mib_s": 150.2,
+      "ops_per_sec": 151432,
+      "total_operations": 4800000000,
+      "duration_seconds": 31697.384,
+      "status": "completed"
+    },
+    "write_amplification": {
+      "wa_measured": 1.045,
+      "bytes_written_total": 5018512255644,
+      "bytes_written_user": 4800000000,
+      "compaction_read_bytes": 26526931937954,
+      "compaction_write_bytes": 23872204708864
+    },
+    "stall_analysis": {
+      "stall_microseconds": 17127491411,
+      "stall_count": 9719092,
+      "stall_percentage": 54.0,
+      "average_stall_micros": 1763.2
+    },
+    "compression": {
+      "compression_ratio": 0.508,
+      "compression_type": "Snappy",
+      "raw_size_mb": 297546.4,
+      "file_size_mb": 151062.0
+    }
+  },
+  "phase_c_results": {
+    "write_amplification_analysis": {
+      "statistics_wa": 1.045,
+      "log_wa": 1.045,
+      "wa_discrepancy_factor": 1.0,
+      "status": "completed"
+    }
+  },
+  "phase_d_results": {
+    "v4_model_validation": {
+      "input_parameters": {
+        "compression_ratio": 0.508,
+        "write_amplification": 1.045,
+        "write_bandwidth_mib_s": null,
+        "read_bandwidth_mib_s": null,
+        "mixed_bandwidth_mib_s": null,
+        "device_qd": 32,
+        "device_numjobs": 1,
+        "device_bs_k": 128,
+        "max_l0_files": 10,
+        "l0_stall_threshold": 8,
+        "l0_stall_steepness": 2.0,
+        "l0_file_size_mib": 64.0,
+        "initial_read_ratio": 0.1,
+        "total_write_amplification": null,
+        "total_read_amplification": null,
+        "concurrency_scaling_factor": 1.0
+      },
+      "predicted_results": {
+        "s_max_mib_s": null,
+        "bottleneck": null,
+        "method": "Device Envelope Modeling + Closed Ledger Accounting"
+      },
+      "actual_results": {
+        "measured_put_rate_mib_s": 150.2,
+        "measured_ops_per_sec": 151432
+      },
+      "validation_errors": {
+        "s_max_error_percent": null,
+        "validation_status": "pending"
+      }
+    }
+  },
+  "phase_e_results": {
+    "sensitivity_analysis": {
+      "parameter_sensitivity": {},
+      "correlation_analysis": {},
+      "impact_ranking": {},
+      "status": "pending"
+    }
+  },
+  "model_parameters": {
+    "assumed_values": {
+      "CR": 0.5,
+      "WA": 8.0,
+      "RA_c": 7.0
+    },
+    "measured_values": {
+      "B_w": null,
+      "B_r": null,
+      "B_eff": null,
+      "CR_actual": 0.508,
+      "WA_statistics": 1.045,
+      "WA_log": 1.045
+    }
+  },
+  "key_findings": {
+    "experiment_status": "Phase-B 완료 - 2025-09-08",
+    "phase_b_results": {
+      "put_rate": "150.2 MiB/s",
+      "stall_percentage": "54% (높음)",
+      "write_amplification": "1.045 (낮음)",
+      "compression_ratio": "0.508 (Snappy)",
+      "performance_grade": "Good"
+    },
+    "planned_analysis": [
+      "Phase-A 디바이스 캘리브레이션",
+      "v4 모델 검증 (Phase-D)",
+      "민감도 분석 (Phase-E)"
+    ]
+  },
+  "recommendations": {
+    "immediate_actions": [
+      "Phase-A 디바이스 캘리브레이션 실행",
+      "Phase-B 실제 성능 측정",
+      "Phase-C WA 분석 수행",
+      "Phase-D v4 모델 검증",
+      "Phase-E 민감도 분석"
+    ],
+    "future_work": [
+      "다양한 디바이스에서의 검증",
+      "실제 운영 환경 테스트",
+      "모델 자동화 도구 개발"
+    ]
+  }
+}

@@ -1,8 +1,8 @@
-PutModel.aux
-PutModel.fdb_latexmk
-PutModel.fls
-PutModel.log
-PutModel.out
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
 .DS_Store
 
 # Python virtual environment
@@ -25,10 +25,10 @@ __pycache__/
 
 # OS files
 Thumbs.db
-rocksdb_put_model_paper.aux
+*.aux
 .gitignore
-rocksdb_put_model_paper.fdb_latexmk
-rocksdb_put_model_paper.fls
-rocksdb_put_model_paper.log
-rocksdb_put_model_paper.out
-rocksdb_put_model_paper.synctex.gz
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz

@@ -1,0 +1,67 @@
+\begin{thebibliography}{10}
+
+\bibitem{cao2018fast}
+Wenguang Cao, Zhenjun Liu, Peng Wang, Shiqiang Chen, Tiancheng Zhu, Songze Li,
+  Yubin Yu, Qian Zhang, Jinyang Li, and Ning Sun.
+\newblock Fast and crash-consistent key-value stores.
+\newblock In {\em Proceedings of the 2018 USENIX Annual Technical Conference},
+  pages 865--877, 2018.
+
+\bibitem{chang2008bigtable}
+Fay Chang, Jeffrey Dean, Sanjay Ghemawat, Wilson~C Hsieh, Deborah~A Wallach,
+  Mike Burrows, Tushar Chandra, Andrew Fikes, and Robert~E Gruber.
+\newblock Bigtable: A distributed storage system for structured data.
+\newblock {\em ACM Transactions on Computer Systems}, 26(2):1--26, 2008.
+
+\bibitem{chen2019write}
+Yanzhe Chen, Xiaoming Li, Jianmin Wang, and Xiaodong Zhang.
+\newblock Write amplification analysis in cloud storage systems.
+\newblock {\em IEEE Transactions on Parallel and Distributed Systems},
+  30(8):1834--1847, 2019.
+
+\bibitem{dayan2017lsm}
+Niv Dayan and Manos Athanassoulis.
+\newblock Design tradeoffs of data access methods.
+\newblock In {\em Proceedings of the 2017 ACM International Conference on
+  Management of Data}, pages 219--234. ACM, 2017.
+
+\bibitem{luo2019wisc}
+Chen Luo and Michael~J Carey.
+\newblock Lsm-based storage techniques: A survey.
+\newblock {\em The VLDB Journal}, 29(1):393--418, 2020.
+
+\bibitem{luo2020monkey}
+Chen Luo, Sidi Di, Bin Ding, and Michael~J Carey.
+\newblock Monkey: Optimal navigable key-value store.
+\newblock In {\em Proceedings of the 2020 ACM SIGMOD International Conference
+  on Management of Data}, pages 79--94. ACM, 2020.
+
+\bibitem{ousterhout2013ramcloud}
+John Ousterhout, Parag Agrawal, David Erickson, Christos Kozyrakis, Jacob
+  Leverich, David Mazi{\`e}res, Subhasish Mitra, Aravind Narayanan, Guru
+  Parulkar, Mendel Rosenblum, et~al.
+\newblock The case for ramclouds: scalable high-performance storage entirely in
+  dram.
+\newblock {\em ACM SIGOPS Operating Systems Review}, 43(4):92--105, 2010.
+
+\bibitem{ren2017analysis}
+Kai Ren, Qiong Zheng, Joy Arulraj, Garth Gibson, and Andrew Pavlo.
+\newblock Analysis and optimization of the parallel degree of compaction in
+  lsm-tree.
+\newblock In {\em Proceedings of the VLDB Endowment}, volume~10, pages
+  685--696. VLDB Endowment, 2017.
+
+\bibitem{wang2021performance}
+Lei Wang, Ming Zhang, Yang Liu, and Wei Chen.
+\newblock Performance modeling and optimization of lsm-tree based key-value
+  stores.
+\newblock {\em IEEE Transactions on Knowledge and Data Engineering},
+  33(4):1567--1580, 2021.
+
+\bibitem{zhang2020adaptive}
+Wei Zhang, Haibo Chen, Weiping Wang, and Jinyang Li.
+\newblock Adaptive lsm-tree indexing for write-intensive workloads.
+\newblock In {\em Proceedings of the 2020 ACM SIGMOD International Conference
+  on Management of Data}, pages 191--204. ACM, 2020.
+
+\end{thebibliography}

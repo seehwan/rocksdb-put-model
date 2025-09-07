@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RocksDB Put Model v3 — self‑contained simulator</title>
+<style>
+  :root{--bg:#0b0f14;--fg:#e8f0ff;--muted:#9bb1d6;--accent:#87d7ff;--grid:#263349;--warn:#ffb86c;--bad:#ff6b6b;--good:#6bffb7}
+  html,body{background:var(--bg);color:var(--fg);font-family: ui-sans-serif,system-ui,Segoe UI,Roboto,Apple Color Emoji,Noto Color Emoji,Arial;}
+  h1,h2,h3{margin:12px 0}
+  .wrap{max-width:1100px;margin:24px auto;padding:0 12px}
+  .card{background:#0e1420;border:1px solid #162236;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .col{flex:1;min-width:260px}
+  label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+  input[type="number"],input[type="text"]{width:100%;padding:8px 10px;border-radius:12px;border:1px solid #203048;background:#0b1220;color:var(--fg)}
+  input[type="checkbox"]{transform:scale(1.2);margin-right:8px}
+  button{background:linear-gradient(90deg,#1f5cff,#14b8ff);border:none;color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600}
+  button.ghost{background:#172334;color:var(--fg);border:1px solid #24344d}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+  .span-6{grid-column:span 6}
+  .span-12{grid-column:span 12}
+  .muted{color:var(--muted)}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#13243a;border:1px solid #24344d;color:var(--accent);font-size:12px}
+  .chart{width:100%;height:280px;background:#0a111d;border-radius:12px;border:1px solid #1b2940;position:relative;overflow:hidden}
+  svg{width:100%;height:100%}
+  .list{font-size:14px;line-height:1.5}
+  .kbd{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;background:#0b1220;border:1px solid #203048;padding:2px 6px;border-radius:6px}
+  table{width:100%;border-collapse:collapse}
+  th,td{border-top:1px solid #1b2940;padding:6px 8px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>RocksDB Put Model <span class="pill">v3 (dynamic)</span></h1>
+  <p class="muted">v2.1를 확장해 시간가변 혼합비 <span class="kbd">\u03c1(t)</span>, 스톨 함수화 <span class="kbd">p<sub>stall</sub>(N<sub>L0</sub>)</span>, 레벨별 비선형 동시성 <span class="kbd">\u03bc<sup>eff</sup>(k s)</span>, CPU/WAL 제약, 과도기 큐(backlog) 동역학을 포함한 단일 HTML 시뮬레이터.</p>
+
+  <div class="card">
+    <h2>개요</h2>
+    <ul class="list">
+      <li><b>혼합 R/W 제약</b>: 각 시점에 실제 읽기/쓰기 사용량으로부터 <span class="kbd">B<sub>read</sub>, B<sub>write</sub></span> 제약을 동시에 적용.</li>
+      <li><b>스톨</b>: <span class="kbd">p<sub>stall</sub> = min(1, max(0, \u03c3(a\*(N<sub>L0</sub>-\u03c4<sub>slow</sub>))))</span>, <span class="kbd">N<sub>L0</sub> \u2265 \u03c4<sub>stop</sub></span>이면 완전 정지.</li>
+      <li><b>동시성</b>: 레벨별 유효성능 <span class="kbd">\u03bc<sup>eff</sup><sub>l</sub>(k s)=\u03bc_\u221e-(\u03bc_\u221e-\u03bc_1)/(1+\u03b2(k s-1))</span>.</li>
+      <li><b>과도기</b>: flush backlog와 level backlog(읽기/쓰기) 큐를 적분해 워밍업 및 진동을 모사.</li>
+      <li><b>보정</b>: <em>Load Params JSON</em>으로 LOG 기반 추정치(\u27a4 <span class="kbd">rocksdb_log_to_model_params.py</span>)를 불러 즉시 재보정.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>입력 파라미터</h2>
+    <div class="row">
+      <div class="col">
+        <label>시뮬레이션 기간 T (sec)</label>
+        <input id="T" type="number" step="1" value="300" />
+      </div>
+      <div class="col">
+        <label>타임스텝 dt (sec)</label>
+        <input id="dt" type="number" step="0.01" value="1" />
+      </div>
+      <div class="col">
+        <label>제공 put (offered) S<sub>offer</sub> (MiB/s)</label>
+        <input id="S_offer" type="number" step="1" value="800" />
+      </div>
+      <div class="col">
+        <label>CPU 상한 S<sub>cpu</sub> (MB/s, 0=무한)</label>
+        <input id="S_cpu" type="number" step="1" value="0" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>디바이스 B<sub>read</sub> (MB/s)</label>
+        <input id="B_read" type="number" step="1" value="2000" />
+      </div>
+      <div class="col">
+        <label>디바이스 B<sub>write</sub> (MB/s)</label>
+        <input id="B_write" type="number" step="1" value="1500" />
+      </div>
+      <div class="col">
+        <label>Rate limiter (MB/s, 0=off)</label>
+        <input id="B_rl" type="number" step="1" value="0" />
+      </div>
+      <div class="col">
+        <label>Flush cap F<sub>cap</sub> (MB/s)</label>
+        <input id="F_cap" type="number" step="1" value="400" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label><input id="wal_sep" type="checkbox" /> WAL 분리 디스크 사용</label>
+        <label>WAL cap B<sub>wal</sub> (MB/s, 분리 시)</label>
+        <input id="B_wal" type="number" step="1" value="1000" />
+      </div>
+      <div class="col">
+        <label>WAL per user-byte (MB/MB)</label>
+        <input id="wal_pp" type="number" step="0.01" value="1.0" />
+      </div>
+      <div class="col">
+        <label>SST 파일 평균 크기 (MB)</label>
+        <input id="sst_mb" type="number" step="1" value="128" />
+      </div>
+      <div class="col">
+        <label>레벨 수 (0..N-1)</label>
+        <input id="L" type="number" step="1" value="5" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>stall slow τ<sub>slow</sub> (L0 파일 개수)</label>
+        <input id="tau_slow" type="number" step="1" value="20" />
+      </div>
+      <div class="col">
+        <label>stall stop τ<sub>stop</sub> (L0 파일 개수)</label>
+        <input id="tau_stop" type="number" step="1" value="24" />
+      </div>
+      <div class="col">
+        <label>스톨 로지스틱 기울기 a</label>
+        <input id="stall_a" type="number" step="0.1" value="0.4" />
+      </div>
+      <div class="col">
+        <label>레벨 동시성 \u03bc<sub>1</sub>, \u03bc<sub>\u221e</sub>, \u03b2</label>
+        <input id="mu1" type="number" step="0.05" value="0.60" />
+        <input id="muinf" type="number" step="0.05" value="0.90" />
+        <input id="beta" type="number" step="0.1" value="0.6" />
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>레벨별 설정 (L0..L6)</h3>
+      <p class="muted">JSON을 불러오면 <span class="kbd">read_share, write_share</span>가 채워집니다. 없으면 기본값을 사용합니다.</p>
+      <div id="levels"></div>
+    </div>
+
+    <div class="row" style="align-items:center;gap:8px">
+      <input id="paramfile" type="file" accept="application/json" />
+      <button class="ghost" onclick="loadParamsJson()">Load Params JSON</button>
+      <button onclick="runSim()">Run Simulation</button>
+      <button class="ghost" onclick="exportCSV()">Export CSV</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card span-12">
+      <h2>Throughput & Usage</h2>
+      <div id="chart1" class="chart"></div>
+    </div>
+    <div class="card span-6">
+      <h2>L0 & Stall</h2>
+      <div id="chart2" class="chart"></div>
+    </div>
+    <div class="card span-6">
+      <h2>Device R/W Utilization</h2>
+      <div id="chart3" class="chart"></div>
+    </div>
+    <div class="card span-12">
+      <h2>요약</h2>
+      <table id="summary"></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>모델 핵심 방정식 (간략)</h2>
+    <div class="list">
+      <p><b>동시성 스케일</b>: \u03bc<sup>eff</sup><sub>l</sub>(k s) = \u03bc_\u221e - (\u03bc_\u221e - \u03bc_1) / (1 + \u03b2 (k s - 1))</p>
+      <p><b>스톨</b>: p<sub>stall</sub>(t) = min(1, max(0, \u03c3( a ( N<sub>L0</sub>(t) - \u03c4<sub>slow</sub> ) ))), 또 N<sub>L0</sub> \u2265 \u03c4<sub>stop</sub>이면 1</p>
+      <p><b>백로그 적분</b>:
+      <br/>flush_backlog(t+dt) = flush_backlog(t) + S<sub>in</sub> dt - f dt
+      <br/>comp_backlog<sup>W</sup><sub>l</sub>(t+dt) = comp_backlog<sup>W</sup><sub>l</sub>(t) + wshare<sub>l</sub> f dt - W<sub>l</sub> dt
+      <br/>comp_backlog<sup>R</sup><sub>l</sub>(t+dt) = comp_backlog<sup>R</sup><sub>l</sub>(t) + rshare<sub>l</sub> f dt - R<sub>l</sub> dt</p>
+      <p><b>예산 배분(요지)</b>:<br/>
+        - 쓰기: flush는 F<sub>cap</sub> 우선, 나머지 쓰기 예산을 레벨별 백로그와 동시성 한계로 가중 배분<br/>
+        - 읽기: 각 레벨 쓰기량에 필요한 읽기량을 요구, B<sub>read</sub> 초과 시 전 레벨 동일 비율 축소<br/>
+        - CPU 상한: flush를 제외한 compaction R+W의 합을 S<sub>cpu</sub> \u2212 flush로 한 번 더 축소
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const logistic=(x)=>1/(1+Math.exp(-x));
+
+function ensureLevels(n){
+  const host=document.getElementById('levels');
+  if(host.dataset.count==n) return;
+  host.dataset.count=n;
+  host.innerHTML='';
+  for(let i=0;i<n;i++){
+    const row=document.createElement('div');
+    row.className='row';
+    row.innerHTML=`
+      <div class="col"><label>L${i} ks(=k*s)</label><input id="ks_${i}" type="number" step="1" value="1"/></div>
+      <div class="col"><label>L${i} read_share</label><input id="rshare_${i}" type="number" step="0.001" value="${(1/n).toFixed(3)}"/></div>
+      <div class="col"><label>L${i} write_share</label><input id="wshare_${i}" type="number" step="0.001" value="${(1/n).toFixed(3)}"/></div>
+    `;
+    host.appendChild(row);
+  }
+}
+
+function getNum(id){return parseFloat(document.getElementById(id).value||'0')||0}
+
+function loadParamsJson(){
+  const f=document.getElementById('paramfile').files[0];
+  if(!f){alert('Choose a JSON file first.');return}
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const j=JSON.parse(r.result);
+      if(j.B_read_MBps) document.getElementById('B_read').value=j.B_read_MBps;
+      if(j.B_write_MBps) document.getElementById('B_write').value=j.B_write_MBps;
+      if(j.rate_limiter_MBps) document.getElementById('B_rl').value=j.rate_limiter_MBps;
+      if(j.p_stall_mean) {/* optional: could prefill */}
+      if(j.read_share && j.write_share){
+        // Determine number of levels from keys
+        const keys=[...new Set([...Object.keys(j.read_share),...Object.keys(j.write_share)])];
+        const idxs=keys.map(k=>parseInt(k.replace(/[^0-9]/g,''))).filter(x=>!isNaN(x));
+        const maxL=Math.max(...idxs,4)+1;
+        document.getElementById('L').value=maxL;
+        ensureLevels(maxL);
+        for(let i=0;i<maxL;i++){
+          const rs=j.read_share['L'+i];
+          const ws=j.write_share['L'+i];
+          if(rs!==undefined) document.getElementById('rshare_'+i).value=rs.toFixed(4);
+          if(ws!==undefined) document.getElementById('wshare_'+i).value=ws.toFixed(4);
+        }
+      }
+      alert('Loaded parameters from JSON.');
+    }catch(e){alert('Invalid JSON: '+e)}
+  };
+  r.readAsText(f);
+}
+
+function drawLineChart(containerId, series, opts={}){
+  const el=document.getElementById(containerId);
+  el.innerHTML='';
+  const w=el.clientWidth, h=el.clientHeight;
+  const svgNS='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(svgNS,'svg');
+  const pad=32;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+  el.appendChild(svg);
+  // grid
+  const grid=document.createElementNS(svgNS,'g');
+  const gx=10, gy=5;
+  svg.appendChild(grid);
+  for(let i=0;i<=gx;i++){
+    const x=pad+(w-2*pad)*i/gx; const line=document.createElementNS(svgNS,'line');
+    line.setAttribute('x1',x);line.setAttribute('x2',x);line.setAttribute('y1',pad);line.setAttribute('y2',h-pad);
+    line.setAttribute('stroke','var(--grid)');line.setAttribute('stroke-width','1'); grid.appendChild(line);
+  }
+  for(let i=0;i<=gy;i++){
+    const y=pad+(h-2*pad)*i/gy; const line=document.createElementNS(svgNS,'line');
+    line.setAttribute('x1',pad);line.setAttribute('x2',w-pad);line.setAttribute('y1',y);line.setAttribute('y2',y);
+    line.setAttribute('stroke','var(--grid)');line.setAttribute('stroke-width','1'); grid.appendChild(line);
+  }
+  const allY=[].concat(...series.map(s=>s.data));
+  const minY=opts.ymin!==undefined?opts.ymin:0;
+  const maxY=opts.ymax!==undefined?opts.ymax:Math.max(1, ...allY)*1.05;
+  function X(i){return pad+(w-2*pad)*i/Math.max(1, series[0].data.length-1)}
+  function Y(v){return h-pad-(h-2*pad)*(v-minY)/(maxY-minY)}
+  series.forEach((s,idx)=>{
+    const p=document.createElementNS(svgNS,'path');
+    let d='';
+    s.data.forEach((v,i)=>{ d+= (i?'L':'M')+X(i)+','+Y(v)+' '; });
+    p.setAttribute('d',d);
+    p.setAttribute('fill','none');
+    p.setAttribute('stroke', s.color||['#5ad','#7f5','#fa5','#ddd','#f6f','#6df'][idx%6]);
+    p.setAttribute('stroke-width','2');
+    svg.appendChild(p);
+  });
+}
+
+function runSim(){
+  const T=getNum('T'), dt=getNum('dt');
+  const steps=Math.max(1,Math.floor(T/dt));
+  const S_offer=getNum('S_offer');
+  const S_cpu=getNum('S_cpu');
+  const B_read=getNum('B_read');
+  const B_write=getNum('B_write');
+  const B_rl=getNum('B_rl');
+  const F_cap=getNum('F_cap');
+  const wal_sep=document.getElementById('wal_sep').checked;
+  const B_wal=getNum('B_wal');
+  const wal_pp=getNum('wal_pp');
+  const sst_mb=getNum('sst_mb');
+  const L=Math.max(1,Math.min(7,parseInt(getNum('L'))||5));
+  const tau_slow=getNum('tau_slow');
+  const tau_stop=getNum('tau_stop');
+  const stall_a=getNum('stall_a');
+  const mu1=getNum('mu1'), muinf=getNum('muinf'), beta=getNum('beta');
+
+  const ks=[], rshare=[], wshare=[];
+  let sumR=0, sumW=0;
+  ensureLevels(L);
+  for(let i=0;i<L;i++){
+    ks[i]=Math.max(0, getNum('ks_'+i));
+    rshare[i]=Math.max(0, getNum('rshare_'+i)); sumR+=rshare[i];
+    wshare[i]=Math.max(0, getNum('wshare_'+i)); sumW+=wshare[i];
+  }
+  if(sumR<=0) {for(let i=0;i<L;i++){rshare[i]=1/L;} sumR=1}
+  if(sumW<=0) {for(let i=0;i<L;i++){wshare[i]=1/L;} sumW=1}
+  for(let i=0;i<L;i++){rshare[i]/=sumR; wshare[i]/=sumW}
+
+  function muEff(ksv){
+    return muinf - (muinf-mu1)/(1+beta*Math.max(0,ksv-1));
+  }
+
+  // State
+  let flush_backlog=0; // MB
+  let L0_bytes=0;      // MB (approx)
+  const compW=new Array(L).fill(0); // backlog write MB
+  const compR=new Array(L).fill(0); // backlog read MB
+
+  const tArr=[], S_inArr=[], FlushArr=[], CompWArr=[], CompRArr=[], ReadUseArr=[], WriteUseArr=[], StallArr=[], NL0Arr=[], BeffArr=[];
+
+  for(let step=0; step<steps; step++){
+    const t=step*dt;
+
+    // Stall based on current L0 files
+    let NL0=L0_bytes/Math.max(1e-9,sst_mb);
+    let pstall = NL0>=tau_stop ? 1 : clamp( logistic(stall_a*(NL0 - tau_slow)), 0, 1 );
+
+    let S_in = S_offer * (1 - pstall);
+
+    // WAL device gate
+    if(wal_sep && wal_pp>0){
+      const feasibleWal = B_wal / wal_pp; // MB/s of user bytes sustainable by WAL device
+      if(feasibleWal>0) S_in = Math.min(S_in, feasibleWal);
+    }
+
+    // Rate limiter on main writes (will apply later when computing actual writes)
+
+    // Accumulate flush backlog by user input (memtable fill)
+    flush_backlog += S_in * dt;
+
+    // Available write/read budgets this tick
+    let writeBudget = B_write; // MB/s on main device
+    let readBudget  = B_read;  // MB/s
+    if(B_rl>0) writeBudget = Math.min(writeBudget, B_rl);
+
+    // First allocate flush
+    let flushRate = Math.min(F_cap, flush_backlog/dt, writeBudget);
+    writeBudget -= flushRate;
+
+    // Now allocate compaction across levels (writes primary, reads derived)
+    // Weights by backlog and concurrency
+    const weights = new Array(L).fill(0);
+    let wSum=0; const muArr=new Array(L);
+    for(let i=0;i<L;i++){
+      muArr[i]=muEff(ks[i])*ks[i];
+      const w = muArr[i] * (compW[i]/dt + 1e-6); // favor levels with backlog + capacity
+      weights[i]=w; wSum+=w;
+    }
+    let compWrate=new Array(L).fill(0), compRrate=new Array(L).fill(0);
+    if(wSum>0 && writeBudget>0){
+      // initial proposal by weights
+      for(let i=0;i<L;i++){
+        compWrate[i] = writeBudget * (weights[i]/wSum);
+        // cap by backlog availability
+        const cap = compW[i]/dt; if(compWrate[i]>cap) compWrate[i]=cap;
+      }
+      // derive required reads
+      let reqRead=0; const rr=new Array(L);
+      for(let i=0;i<L;i++){
+        const ratio = wshare[i]>1e-9 ? (rshare[i]/wshare[i]) : 0; // MB read per MB write at level i
+        rr[i]=ratio; reqRead += compWrate[i]*ratio;
+      }
+      // scale to read budget if needed
+      if(reqRead>readBudget && reqRead>0){
+        const g = readBudget/reqRead;
+        for(let i=0;i<L;i++) compWrate[i]*=g;
+        reqRead = readBudget;
+      }
+      for(let i=0;i<L;i++) compRrate[i] = compWrate[i]*rr[i];
+
+      // CPU cap (apply to compaction only)
+      if(S_cpu>0){
+        const compCPU = compWrate.reduce((a,b)=>a+b,0) + compRrate.reduce((a,b)=>a+b,0);
+        const allow = Math.max(0, S_cpu - flushRate);
+        if(compCPU>allow && compCPU>0){
+          const s=allow/compCPU;
+          for(let i=0;i<L;i++){ compWrate[i]*=s; compRrate[i]*=s; }
+        }
+      }
+
+      // Final: ensure write budget still okay (numerical safety)
+      const usedWrite = flushRate + compWrate.reduce((a,b)=>a+b,0);
+      if(usedWrite > (B_rl>0?B_rl:B_write)){ // scale down compaction if we exceeded
+        const excess = usedWrite - (B_rl>0?B_rl:B_write);
+        const sumC = compWrate.reduce((a,b)=>a+b,0);
+        if(sumC>1e-9){
+          const s = (sumC-excess)/sumC;
+          for(let i=0;i<L;i++){ compWrate[i]*=Math.max(0,s); compRrate[i]*=Math.max(0,s); }
+        }
+      }
+    }
+
+    // Apply deltas
+    const compWsum = compWrate.reduce((a,b)=>a+b,0);
+    const compRsum = compRrate.reduce((a,b)=>a+b,0);
+
+    // Update backlogs
+    flush_backlog = Math.max(0, flush_backlog - flushRate*dt);
+    for(let i=0;i<L;i++){
+      // When flushing f MB, enqueue compaction work according to shares
+      const enqueueW = wshare[i] * (flushRate*dt);
+      const enqueueR = rshare[i] * (flushRate*dt);
+      compW[i] = Math.max(0, compW[i] + enqueueW - compWrate[i]*dt);
+      compR[i] = Math.max(0, compR[i] + enqueueR - compRrate[i]*dt);
+    }
+
+    // L0 bytes: add flushed bytes, subtract L0 compaction writes processed
+    L0_bytes = Math.max(0, L0_bytes + flushRate*dt - (L>0? compWrate[0]*dt : 0));
+
+    // Metrics
+    NL0 = L0_bytes/Math.max(1e-9,sst_mb);
+    const totalWriteUse = flushRate + compWsum;
+    const totalReadUse  = compRsum;
+    const rho_r = (totalReadUse)/(totalReadUse+totalWriteUse+1e-9);
+    const rho_w = 1 - rho_r;
+    const denom = (rho_r/(B_read||1e-9)) + (rho_w/(B_write||1e-9));
+    const Beff = denom>0 ? 1/denom : 0;
+
+    tArr.push(t);
+    S_inArr.push(S_in);
+    FlushArr.push(flushRate);
+    CompWArr.push(compWsum);
+    CompRArr.push(compRsum);
+    ReadUseArr.push(totalReadUse);
+    WriteUseArr.push(totalWriteUse);
+    StallArr.push(pstall);
+    NL0Arr.push(NL0);
+    BeffArr.push(Beff);
+  }
+
+  // Draw charts
+  drawLineChart('chart1', [
+    {name:'S_offer', data:new Array(steps).fill(S_offer)},
+    {name:'S_in', data:S_inArr},
+    {name:'flush_write', data:FlushArr},
+    {name:'comp_write', data:CompWArr}
+  ]);
+  drawLineChart('chart2', [
+    {name:'N_L0', data:NL0Arr},
+    {name:'p_stall', data:StallArr.map(x=>x*10)} // scaled for visibility
+  ]);
+  drawLineChart('chart3', [
+    {name:'read_use', data:ReadUseArr},
+    {name:'write_use', data:WriteUseArr},
+    {name:'B_eff', data:BeffArr}
+  ]);
+
+  // Summary table
+  const last=(arr)=>arr[arr.length-1];
+  const sumTable=document.getElementById('summary');
+  sumTable.innerHTML = `
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Final S_in (MiB/s)</td><td>${last(S_inArr).toFixed(2)}</td></tr>
+    <tr><td>Final Flush W (MiB/s)</td><td>${last(FlushArr).toFixed(2)}</td></tr>
+    <tr><td>Final Compaction W (MiB/s)</td><td>${last(CompWArr).toFixed(2)}</td></tr>
+    <tr><td>Final Compaction R (MiB/s)</td><td>${last(CompRArr).toFixed(2)}</td></tr>
+    <tr><td>Final N_L0 (files)</td><td>${last(NL0Arr).toFixed(2)}</td></tr>
+    <tr><td>Avg p_stall</td><td>${(StallArr.reduce((a,b)=>a+b,0)/StallArr.length).toFixed(3)}</td></tr>
+  `;
+
+  // export state for CSV
+  window.__v3 = { t:tArr, S_in:S_inArr, flush:FlushArr, compW:CompWArr, compR:CompRArr, NL0:NL0Arr, stall:StallArr, readUse:ReadUseArr, writeUse:WriteUseArr, Beff:BeffArr };
+}
+
+function exportCSV(){
+  const st=window.__v3; if(!st){alert('Run the simulation first.');return}
+  const rows=['t,S_in,flush,compW,compR,NL0,stall,readUse,writeUse,Beff'];
+  for(let i=0;i<st.t.length;i++){
+    rows.push([st.t[i],st.S_in[i],st.flush[i],st.compW[i],st.compR[i],st.NL0[i],st.stall[i],st.readUse[i],st.writeUse[i],st.Beff[i]].map(x=>typeof x==='number'?x.toFixed(6):x).join(','));
+  }
+  const blob=new Blob([rows.join('\n')],{type:'text/csv'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='putmodel_v3_timeseries.csv'; a.click();
+}
+
+// init
+ensureLevels(parseInt(document.getElementById('L').value||'5'));
+</script>
+</body>
+</html>

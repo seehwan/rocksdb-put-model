@@ -3,6 +3,17 @@ import os, argparse
 from math import inf
 import matplotlib.pyplot as plt
 
+# Set font size to 18pt for better readability
+plt.rcParams.update({
+    'font.size': 18,
+    'axes.titlesize': 20,
+    'axes.labelsize': 18,
+    'xtick.labelsize': 16,
+    'ytick.labelsize': 16,
+    'legend.fontsize': 16,
+    'figure.titlesize': 22
+})
+
 B_w, B_r, B_eff, eta = 1000.0, 2000.0, 2500.0, 1.0
 wal_factor, avg_kv_bytes = 1.0, 1024.0
 CR_curve = [1.0, 0.7, 0.5, 0.33]

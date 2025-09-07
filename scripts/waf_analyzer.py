@@ -11,6 +11,17 @@ import json
 from pathlib import Path
 import matplotlib.pyplot as plt
 
+# Set font size to 18pt for better readability
+plt.rcParams.update({
+    'font.size': 18,
+    'axes.titlesize': 20,
+    'axes.labelsize': 18,
+    'xtick.labelsize': 16,
+    'ytick.labelsize': 16,
+    'legend.fontsize': 16,
+    'figure.titlesize': 22
+})
+
 def parse_compaction_stats(log_file):
     """RocksDB LOG에서 compaction stats를 파싱합니다."""
     stats = []

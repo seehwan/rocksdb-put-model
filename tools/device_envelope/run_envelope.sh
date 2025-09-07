@@ -1,93 +1,119 @@
 #!/bin/bash
-# PutModel v4 Device Envelope fio Grid Sweep
-# 180개 포인트 그리드 스윕 실행
 
+# PutModel v4: Device Envelope Grid Sweep
+# This script runs fio grid sweeps to measure device characteristics for mixed I/O workloads
+
+set -e
+
+# Configuration
 DEVICE="/dev/nvme1n1p1"
 OUTPUT_DIR="device_envelope_results"
-FIO_RUNTIME=30
-FIO_RAMP_TIME=10
+RUNTIME=30
+RAMP_TIME=10
+IOENGINE="io_uring"
+DIRECT=1
 
-echo "=== PutModel v4 Device Envelope fio Grid Sweep ==="
+# Grid parameters
+RHO_R_VALUES=(0 25 50 75 100)  # Read ratios in %
+IODEPTH_VALUES=(1 4 16 64)      # Queue depths
+NUMJOBS_VALUES=(1 2 4)          # Parallel jobs
+BS_VALUES=(4 64 1024)           # Block sizes in KiB
+
+# Create output directory
+mkdir -p "$OUTPUT_DIR"
+
+echo "Starting Device Envelope Grid Sweep"
 echo "Device: $DEVICE"
-echo "Output Directory: $OUTPUT_DIR"
-echo "Runtime: ${FIO_RUNTIME}s + ${FIO_RAMP_TIME}s ramp"
-echo "Total Points: 180 (5×4×3×3)"
+echo "Output directory: $OUTPUT_DIR"
+echo "Runtime: ${RUNTIME}s, Ramp: ${RAMP_TIME}s"
 echo ""
 
-# 출력 디렉토리 생성
-mkdir -p $OUTPUT_DIR
+# Count total combinations
+TOTAL_COMBINATIONS=$((${#RHO_R_VALUES[@]} * ${#IODEPTH_VALUES[@]} * ${#NUMJOBS_VALUES[@]} * ${#BS_VALUES[@]}))
+CURRENT=0
 
-# 진행 상황 추적
-total_points=180
-current_point=0
+echo "Total combinations: $TOTAL_COMBINATIONS"
+echo ""
 
-# 그리드 스윕 실행
-for rho_r in 0 25 50 75 100; do
-    for iodepth in 1 4 16 64; do
-        for numjobs in 1 2 4; do
-            for bs_k in 4 64 1024; do
-                current_point=$((current_point + 1))
-                echo "[$current_point/$total_points] Testing: rho_r=${rho_r}%, iodepth=${iodepth}, numjobs=${numjobs}, bs=${bs_k}K"
-                
-                # fio 명령 실행
-                fio --name=mixed_test \
-                    --filename=${DEVICE} \
-                    --ioengine=io_uring \
-                    --direct=1 \
-                    --rw=randrw \
-                    --rwmixread=${rho_r} \
-                    --iodepth=${iodepth} \
-                    --numjobs=${numjobs} \
-                    --bs=${bs_k}k \
-                    --runtime=${FIO_RUNTIME} \
-                    --ramp_time=${FIO_RAMP_TIME} \
-                    --norandommap=1 \
-                    --randrepeat=0 \
-                    --output-format=json \
-                    --output=${OUTPUT_DIR}/result_${rho_r}_${iodepth}_${numjobs}_${bs_k}.json \
-                    --quiet
-                
-                # 진행률 표시
-                progress=$((current_point * 100 / total_points))
-                echo "Progress: ${progress}%"
-                echo ""
+# Function to run a single fio test
+run_fio_test() {
+    local rho_r=$1
+    local iodepth=$2
+    local numjobs=$3
+    local bs_k=$4
+    
+    CURRENT=$((CURRENT + 1))
+    echo "[$CURRENT/$TOTAL_COMBINATIONS] Testing: ρr=${rho_r}%, qd=$iodepth, jobs=$numjobs, bs=${bs_k}KiB"
+    
+    # Calculate read and write percentages
+    local read_pct=$rho_r
+    local write_pct=$((100 - rho_r))
+    
+    # Create fio job file
+    local job_file="${OUTPUT_DIR}/job_${rho_r}_${iodepth}_${numjobs}_${bs_k}.fio"
+    
+    cat > "$job_file" << EOF
+[global]
+ioengine=$IOENGINE
+filename=$DEVICE
+direct=$DIRECT
+runtime=${RUNTIME}s
+ramp_time=${RAMP_TIME}s
+iodepth=$iodepth
+numjobs=$numjobs
+bs=${bs_k}k
+rw=randrw
+rwmixread=$read_pct
+rwmixwrite=$write_pct
+norandommap=1
+randrepeat=0
+group_reporting=1
+log_avg_msec=1000
+write_bw_log=0
+write_iops_log=0
+write_lat_log=0
+
+[read]
+name=read_test
+
+[write]
+name=write_test
+EOF
+
+    # Run fio test
+    local output_file="${OUTPUT_DIR}/result_${rho_r}_${iodepth}_${numjobs}_${bs_k}.json"
+    
+    if fio --output-format=json "$job_file" > "$output_file" 2>/dev/null; then
+        echo "  ✓ Completed successfully"
+    else
+        echo "  ✗ Failed"
+        return 1
+    fi
+    
+    # Clean up job file
+    rm "$job_file"
+}
+
+# Run all combinations
+for rho_r in "${RHO_R_VALUES[@]}"; do
+    for iodepth in "${IODEPTH_VALUES[@]}"; do
+        for numjobs in "${NUMJOBS_VALUES[@]}"; do
+            for bs_k in "${BS_VALUES[@]}"; do
+                run_fio_test "$rho_r" "$iodepth" "$numjobs" "$bs_k"
             done
         done
     done
 done
 
-echo "=== fio Grid Sweep Complete ==="
-echo "Results saved to: $OUTPUT_DIR"
-echo "Total files: $(ls -1 $OUTPUT_DIR/*.json | wc -l)"
-
-# 결과 요약
 echo ""
-echo "=== Quick Summary ==="
-echo "Checking for successful runs..."
-successful_runs=0
-failed_runs=0
+echo "Grid sweep completed!"
+echo "Results saved in: $OUTPUT_DIR"
+echo ""
 
-for file in $OUTPUT_DIR/*.json; do
-    if [ -f "$file" ] && [ -s "$file" ]; then
-        # JSON 파일이 유효한지 확인
-        if python3 -c "import json; json.load(open('$file'))" 2>/dev/null; then
-            successful_runs=$((successful_runs + 1))
-        else
-            failed_runs=$((failed_runs + 1))
-            echo "Invalid JSON: $file"
-        fi
-    else
-        failed_runs=$((failed_runs + 1))
-        echo "Missing or empty: $file"
-    fi
-done
-
-echo "Successful runs: $successful_runs"
-echo "Failed runs: $failed_runs"
-echo "Success rate: $((successful_runs * 100 / total_points))%"
-
-if [ $successful_runs -eq $total_points ]; then
-    echo "✅ All runs completed successfully!"
+# Run parsing script
+echo "Parsing results..."
+if [ -f "parse_envelope.py" ]; then
+    python3 parse_envelope.py "$OUTPUT_DIR"
 else
-    echo "⚠️  Some runs failed. Check the output above."
+    echo "Warning: parse_envelope.py not found. Please run it manually."
 fi

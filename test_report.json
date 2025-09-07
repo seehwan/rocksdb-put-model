@@ -1,0 +1,47 @@
+{
+  "test_summary": {
+    "total_tests": 4,
+    "passed_tests": 4,
+    "failed_tests": 0,
+    "test_status": "PASSED"
+  },
+  "component_tests": {
+    "device_envelope": {
+      "status": "PASSED",
+      "grid_points": 180,
+      "interpolation_working": true
+    },
+    "closed_ledger": {
+      "status": "PASSED",
+      "accounting_working": true,
+      "verification_working": true
+    },
+    "dynamic_simulation": {
+      "status": "PASSED",
+      "simulation_steps": 200,
+      "analysis_working": true
+    },
+    "integration": {
+      "status": "PASSED",
+      "all_components_integrated": true
+    }
+  },
+  "performance_metrics": {
+    "throughput_efficiency": 0.9820137900379085,
+    "stall_percentage": 1.798620996209156,
+    "read_write_ratio": 0.0,
+    "l0_file_stability": 0
+  },
+  "steady_state_metrics": {
+    "avg_put_rate": 196.4027580075817,
+    "avg_stall_prob": 0.01798620996209156,
+    "avg_read_ratio": 0.0,
+    "avg_l0_files": 0.0,
+    "avg_backlog": {
+      "L0": 0.0,
+      "L1": 0.0,
+      "L2": 0.0,
+      "L3": 0.0
+    }
+  }
+}

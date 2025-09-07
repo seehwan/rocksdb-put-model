@@ -1,221 +1,200 @@
 #!/usr/bin/env python3
 """
-PutModel v4 Device Envelope Parser
-fio 그리드 스윕 결과를 파싱하여 4D 엔벌롭 모델 생성
+PutModel v4: Device Envelope Parser
+
+This script parses fio JSON results and creates the envelope model data.
+It processes the grid sweep results and generates the 4D interpolation grid.
 """
 
 import json
-import numpy as np
 import os
 import sys
-from scipy.interpolate import RegularGridInterpolator
-from typing import Dict, List, Tuple, Optional
+import numpy as np
+from pathlib import Path
+from typing import Dict, List, Tuple
 import argparse
 
-def parse_fio_results(output_dir: str) -> Dict[Tuple[int, int, int, int], float]:
-    """
-    fio 결과를 파싱하여 4D 그리드 생성
-    
-    Args:
-        output_dir: fio 결과 JSON 파일들이 있는 디렉토리
-        
-    Returns:
-        {(rho_r, iodepth, numjobs, bs_k): bandwidth} 딕셔너리
-    """
-    results = {}
-    successful_parses = 0
-    failed_parses = 0
-    
-    print(f"Parsing fio results from: {output_dir}")
-    
-    for rho_r in [0, 25, 50, 75, 100]:
-        for iodepth in [1, 4, 16, 64]:
-            for numjobs in [1, 2, 4]:
-                for bs_k in [4, 64, 1024]:
-                    filename = f"result_{rho_r}_{iodepth}_{numjobs}_{bs_k}.json"
-                    filepath = os.path.join(output_dir, filename)
-                    
-                    if os.path.exists(filepath):
-                        try:
-                            with open(filepath, 'r') as f:
-                                data = json.load(f)
-                            
-                            # fio JSON 구조에서 대역폭 추출
-                            if 'jobs' in data and len(data['jobs']) > 0:
-                                job = data['jobs'][0]
-                                
-                                # 쓰기 대역폭 (KiB/s)
-                                write_bw_kibs = job.get('write', {}).get('bw', 0)
-                                # 읽기 대역폭 (KiB/s)  
-                                read_bw_kibs = job.get('read', {}).get('bw', 0)
-                                
-                                # MiB/s로 변환
-                                write_bw_mibs = write_bw_kibs / 1024
-                                read_bw_mibs = read_bw_kibs / 1024
-                                total_bw_mibs = write_bw_mibs + read_bw_mibs
-                                
-                                results[(rho_r, iodepth, numjobs, bs_k)] = total_bw_mibs
-                                successful_parses += 1
-                                
-                            else:
-                                print(f"Warning: Invalid JSON structure in {filename}")
-                                failed_parses += 1
-                                
-                        except (json.JSONDecodeError, KeyError, TypeError) as e:
-                            print(f"Error parsing {filename}: {e}")
-                            failed_parses += 1
-                    else:
-                        print(f"Warning: File not found: {filename}")
-                        failed_parses += 1
-    
-    print(f"Parsing complete: {successful_parses} successful, {failed_parses} failed")
-    return results
 
-def create_envelope_model(results: Dict[Tuple[int, int, int, int], float]) -> Dict:
+def parse_fio_json(file_path: str) -> Dict:
     """
-    4D 그리드에서 엔벌롭 모델 생성
+    Parse a single fio JSON result file.
     
     Args:
-        results: 파싱된 fio 결과
+        file_path: Path to fio JSON result file
         
     Returns:
-        엔벌롭 모델 딕셔너리
+        Dictionary with parsed results
     """
-    print("Creating 4D envelope model...")
+    with open(file_path, 'r') as f:
+        data = json.load(f)
     
-    # 축 정의
-    rho_r_axis = np.array([0, 25, 50, 75, 100])
-    iodepth_axis = np.array([1, 4, 16, 64])
-    numjobs_axis = np.array([1, 2, 4])
-    bs_axis = np.array([4, 64, 1024])
+    # Extract bandwidth information
+    jobs = data.get('jobs', [])
+    if not jobs:
+        raise ValueError(f"No jobs found in {file_path}")
     
-    # 4D 그리드 생성
-    bandwidth_grid = np.zeros((5, 4, 3, 3))
-    missing_points = []
+    # Calculate total bandwidth (read + write)
+    total_read_bw = 0
+    total_write_bw = 0
     
-    for i, rho_r in enumerate(rho_r_axis):
-        for j, iodepth in enumerate(iodepth_axis):
-            for k, numjobs in enumerate(numjobs_axis):
-                for l, bs_k in enumerate(bs_axis):
-                    key = (rho_r, iodepth, numjobs, bs_k)
-                    if key in results:
-                        bandwidth_grid[i, j, k, l] = results[key]
-                    else:
-                        missing_points.append(key)
+    for job in jobs:
+        read_bw = job.get('read', {}).get('bw', 0)  # KiB/s
+        write_bw = job.get('write', {}).get('bw', 0)  # KiB/s
+        total_read_bw += read_bw
+        total_write_bw += write_bw
     
-    if missing_points:
-        print(f"Warning: {len(missing_points)} missing data points:")
-        for point in missing_points[:10]:  # 처음 10개만 출력
-            print(f"  {point}")
-        if len(missing_points) > 10:
-            print(f"  ... and {len(missing_points) - 10} more")
-    
-    # 통계 정보
-    valid_data = bandwidth_grid[bandwidth_grid > 0]
-    print(f"Valid data points: {len(valid_data)}")
-    print(f"Bandwidth range: {valid_data.min():.1f} - {valid_data.max():.1f} MiB/s")
-    print(f"Mean bandwidth: {valid_data.mean():.1f} MiB/s")
+    # Convert to MiB/s
+    total_bw_mibs = (total_read_bw + total_write_bw) / 1024
     
     return {
-        'metadata': {
-            'version': 'v4.0',
-            'description': 'PutModel v4 Device Envelope Model',
-            'created': np.datetime64('now').astype(str),
-            'total_points': len(results),
-            'missing_points': len(missing_points),
-            'bandwidth_range': [float(valid_data.min()), float(valid_data.max())],
-            'mean_bandwidth': float(valid_data.mean())
-        },
-        'axes': {
-            'rho_r_axis': rho_r_axis.tolist(),
-            'iodepth_axis': iodepth_axis.tolist(),
-            'numjobs_axis': numjobs_axis.tolist(),
-            'bs_axis': bs_axis.tolist()
-        },
-        'bandwidth_grid': bandwidth_grid.tolist(),
-        'missing_points': missing_points
+        'read_bw_mibs': total_read_bw / 1024,
+        'write_bw_mibs': total_write_bw / 1024,
+        'total_bw_mibs': total_bw_mibs,
+        'read_ratio': total_read_bw / (total_read_bw + total_write_bw) if (total_read_bw + total_write_bw) > 0 else 0
     }
 
-def test_interpolation(model_data: Dict, test_points: List[Tuple[int, int, int, int]]) -> None:
+
+def parse_grid_sweep_results(results_dir: str) -> Dict:
     """
-    보간 정확도 테스트
+    Parse all fio results from a grid sweep.
     
     Args:
-        model_data: 엔벌롭 모델 데이터
-        test_points: 테스트할 포인트들
+        results_dir: Directory containing fio JSON result files
+        
+    Returns:
+        Dictionary with grid data for envelope model
     """
-    print("\n=== Interpolation Test ===")
+    results_dir = Path(results_dir)
     
-    # 보간기 생성
-    rho_r_axis = np.array(model_data['axes']['rho_r_axis'])
-    iodepth_axis = np.array(model_data['axes']['iodepth_axis'])
-    numjobs_axis = np.array(model_data['axes']['numjobs_axis'])
-    bs_axis = np.array(model_data['axes']['bs_axis'])
-    bandwidth_grid = np.array(model_data['bandwidth_grid'])
+    # Define grid axes
+    rho_r_values = [0, 25, 50, 75, 100]
+    iodepth_values = [1, 4, 16, 64]
+    numjobs_values = [1, 2, 4]
+    bs_values = [4, 64, 1024]
     
-    interpolator = RegularGridInterpolator(
-        (rho_r_axis, iodepth_axis, numjobs_axis, bs_axis),
-        bandwidth_grid,
-        method='linear',
-        bounds_error=False,
-        fill_value=None
-    )
+    # Initialize grid
+    grid_shape = (len(rho_r_values), len(iodepth_values), len(numjobs_values), len(bs_values))
+    bandwidth_grid = np.zeros(grid_shape)
     
-    print("Testing interpolation at sample points:")
-    for i, point in enumerate(test_points[:5]):  # 처음 5개만 테스트
-        rho_r, iodepth, numjobs, bs_k = point
-        predicted = interpolator(np.array([rho_r, iodepth, numjobs, bs_k]))
-        print(f"  Point {i+1}: {point} -> {predicted:.1f} MiB/s")
+    # Parse all result files
+    parsed_count = 0
+    failed_count = 0
     
-    # 경계 테스트
-    print("\nBoundary tests:")
-    boundary_tests = [
-        (0, 1, 1, 4),      # 최소값
-        (100, 64, 4, 1024), # 최대값
-        (50, 16, 2, 64),    # 중간값
-    ]
+    for i, rho_r in enumerate(rho_r_values):
+        for j, iodepth in enumerate(iodepth_values):
+            for k, numjobs in enumerate(numjobs_values):
+                for l, bs_k in enumerate(bs_values):
+                    result_file = results_dir / f"result_{rho_r}_{iodepth}_{numjobs}_{bs_k}.json"
+                    
+                    if result_file.exists():
+                        try:
+                            result = parse_fio_json(str(result_file))
+                            bandwidth_grid[i, j, k, l] = result['total_bw_mibs']
+                            parsed_count += 1
+                        except Exception as e:
+                            print(f"Warning: Failed to parse {result_file}: {e}")
+                            failed_count += 1
+                    else:
+                        print(f"Warning: Result file not found: {result_file}")
+                        failed_count += 1
     
-    for point in boundary_tests:
-        rho_r, iodepth, numjobs, bs_k = point
-        predicted = interpolator(np.array([rho_r, iodepth, numjobs, bs_k]))
-        print(f"  {point} -> {predicted:.1f} MiB/s")
+    print(f"Parsed {parsed_count} results, {failed_count} failed")
+    
+    # Create grid data
+    grid_data = {
+        'rho_r_axis': rho_r_values,
+        'iodepth_axis': iodepth_values,
+        'numjobs_axis': numjobs_values,
+        'bs_axis': bs_values,
+        'bandwidth_grid': bandwidth_grid.tolist(),
+        'metadata': {
+            'created_by': 'PutModel v4',
+            'version': '1.0',
+            'description': 'Device envelope model from fio grid sweep',
+            'device': '/dev/nvme1n1p1',
+            'parsed_count': parsed_count,
+            'failed_count': failed_count,
+            'grid_shape': grid_shape
+        }
+    }
+    
+    return grid_data
+
+
+def save_envelope_model(grid_data: Dict, output_path: str):
+    """
+    Save envelope model data to JSON file.
+    
+    Args:
+        grid_data: Grid data dictionary
+        output_path: Output JSON file path
+    """
+    with open(output_path, 'w') as f:
+        json.dump(grid_data, f, indent=2)
+    
+    print(f"Envelope model saved to: {output_path}")
+
+
+def create_csv_summary(grid_data: Dict, output_path: str):
+    """
+    Create a CSV summary of the envelope model data.
+    
+    Args:
+        grid_data: Grid data dictionary
+        output_path: Output CSV file path
+    """
+    import csv
+    
+    with open(output_path, 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(['rho_r', 'iodepth', 'numjobs', 'bs_k', 'bandwidth_mibs'])
+        
+        rho_r_axis = grid_data['rho_r_axis']
+        iodepth_axis = grid_data['iodepth_axis']
+        numjobs_axis = grid_data['numjobs_axis']
+        bs_axis = grid_data['bs_axis']
+        bandwidth_grid = np.array(grid_data['bandwidth_grid'])
+        
+        for i, rho_r in enumerate(rho_r_axis):
+            for j, iodepth in enumerate(iodepth_axis):
+                for k, numjobs in enumerate(numjobs_axis):
+                    for l, bs_k in enumerate(bs_axis):
+                        bandwidth = bandwidth_grid[i, j, k, l]
+                        writer.writerow([rho_r, iodepth, numjobs, bs_k, bandwidth])
+    
+    print(f"CSV summary saved to: {output_path}")
+
 
 def main():
-    parser = argparse.ArgumentParser(description='Parse fio grid sweep results and create envelope model')
-    parser.add_argument('--input-dir', default='device_envelope_results',
-                       help='Directory containing fio JSON results')
-    parser.add_argument('--output-file', default='envelope_model.json',
-                       help='Output envelope model JSON file')
-    parser.add_argument('--test-interpolation', action='store_true',
-                       help='Test interpolation accuracy')
+    parser = argparse.ArgumentParser(description='Parse fio grid sweep results')
+    parser.add_argument('results_dir', help='Directory containing fio JSON result files')
+    parser.add_argument('--output', '-o', default='envelope_model.json', 
+                       help='Output JSON file path')
+    parser.add_argument('--csv', '-c', default='device_envelope.csv',
+                       help='Output CSV file path')
     
     args = parser.parse_args()
     
-    # 입력 디렉토리 확인
-    if not os.path.exists(args.input_dir):
-        print(f"Error: Input directory '{args.input_dir}' does not exist")
-        sys.exit(1)
+    print(f"Parsing fio results from: {args.results_dir}")
     
-    # fio 결과 파싱
-    results = parse_fio_results(args.input_dir)
+    # Parse grid sweep results
+    grid_data = parse_grid_sweep_results(args.results_dir)
     
-    if not results:
-        print("Error: No valid fio results found")
-        sys.exit(1)
+    # Save envelope model
+    save_envelope_model(grid_data, args.output)
     
-    # 엔벌롭 모델 생성
-    envelope_model = create_envelope_model(results)
+    # Create CSV summary
+    create_csv_summary(grid_data, args.csv)
     
-    # JSON 파일로 저장
-    with open(args.output_file, 'w') as f:
-        json.dump(envelope_model, f, indent=2)
-    
-    print(f"\n✅ Envelope model saved to: {args.output_file}")
-    
-    # 보간 테스트 (선택적)
-    if args.test_interpolation:
-        test_points = list(results.keys())[:10]  # 처음 10개 포인트로 테스트
-        test_interpolation(envelope_model, test_points)
+    # Print summary statistics
+    bandwidth_grid = np.array(grid_data['bandwidth_grid'])
+    print(f"\nSummary statistics:")
+    print(f"  Grid shape: {bandwidth_grid.shape}")
+    print(f"  Min bandwidth: {bandwidth_grid.min():.1f} MiB/s")
+    print(f"  Max bandwidth: {bandwidth_grid.max():.1f} MiB/s")
+    print(f"  Mean bandwidth: {bandwidth_grid.mean():.1f} MiB/s")
+    print(f"  Std bandwidth: {bandwidth_grid.std():.1f} MiB/s")
+
 
 if __name__ == "__main__":
     main()

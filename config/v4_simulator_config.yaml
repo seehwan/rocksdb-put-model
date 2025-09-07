@@ -1,0 +1,64 @@
+# PutModel v4: Dynamic Simulator Configuration
+
+# Simulation parameters
+dt: 1.0                    # Time step in seconds
+max_steps: 1000           # Maximum simulation steps
+target_put_rate: 200      # Target put rate in MiB/s
+
+# LSM levels
+levels: [0, 1, 2, 3]
+
+# Device configuration
+device:
+  iodepth: 16             # Queue depth
+  numjobs: 2              # Number of parallel jobs
+  bs_k: 64                # Block size in KiB
+  Br: 1500                # Read bandwidth in MiB/s
+  Bw: 2000                # Write bandwidth in MiB/s
+
+# Database configuration
+database:
+  compression_ratio: 0.54  # Compression ratio
+  wal_factor: 1.0         # WAL overhead factor
+  l0_file_size_mb: 64     # L0 file size in MB
+
+# Stall configuration
+stall_threshold: 8        # L0 file count threshold for stalls
+stall_steepness: 0.5      # Steepness of stall transition
+
+# Per-level parameters
+level_params:
+  0:  # L0 (flush)
+    mu: 1.0               # Scheduler efficiency
+    k: 1.0                # Codec/block size factor
+    eta: 1.0              # Time-varying efficiency
+    capacity_factor: 1.0  # Capacity scaling factor
+  
+  1:  # L1 (L0->L1 compaction)
+    mu: 0.8
+    k: 0.9
+    eta: 0.95
+    capacity_factor: 0.8
+  
+  2:  # L2 (L1->L2 compaction)
+    mu: 0.6
+    k: 0.8
+    eta: 0.9
+    capacity_factor: 0.6
+  
+  3:  # L3 (L2->L3 compaction)
+    mu: 0.4
+    k: 0.7
+    eta: 0.85
+    capacity_factor: 0.4
+
+# Workload configuration
+workload:
+  value_size: 1024        # Value size in bytes
+  key_size: 16            # Key size in bytes
+  write_pattern: "random" # Write pattern (random, sequential)
+  
+# Analysis configuration
+analysis:
+  steady_state_window: 0.2  # Fraction of simulation for steady-state analysis
+  bottleneck_threshold: 0.8 # Utilization threshold for bottleneck detection

@@ -165,8 +165,14 @@ def create_waf_visualization(analysis_data, output_dir):
     plt.close()
 
 def main():
-    log_file = '../phase-b/phase_b_results/rocksdb.log'
-    output_dir = 'phase_c_results'
+    import argparse
+    parser = argparse.ArgumentParser(description='Phase-C: LOG 분석 for v4 Model')
+    parser.add_argument('--log_file', default='../phase-b/phase_b_final_results/rocksdb.log', help='RocksDB LOG 파일 경로')
+    parser.add_argument('--output_dir', default='phase_c_results', help='출력 디렉토리')
+    args = parser.parse_args()
+    
+    log_file = args.log_file
+    output_dir = args.output_dir
     
     print("=== Phase-C: LOG 분석 for v4 Model ===")
     print(f"LOG 파일: {log_file}")

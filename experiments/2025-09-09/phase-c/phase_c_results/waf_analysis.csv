@@ -1,0 +1,5 @@
+Benchmark,WAF,Flush_GB,User_Data_GB,DB_Write_Count,Compaction_Time_Sec
+fillrandom,2.39,2280.32,953.67,4000000000,357523.449769
+readrandomwriterandom,0.03,26.27,953.67,46131296,2322.48197
+overwrite,0.08,76.98,953.67,135079996,4953.131315
+mixgraph,0.00,0.00,953.67,0,0.0

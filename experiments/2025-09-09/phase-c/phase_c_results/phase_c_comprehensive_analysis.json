@@ -1,0 +1,70 @@
+{
+  "experiment_info": {
+    "user_data_bytes": 1024000000000,
+    "user_data_gb": 953.67431640625,
+    "key_count": 1000000000,
+    "value_size": 1024
+  },
+  "benchmark_results": {
+    "fillrandom": {
+      "waf": 2.391092408459961,
+      "flush_bytes": 2448478626263,
+      "flush_gb": 2280.323418102227,
+      "stats": {
+        "flush_write_bytes": 2448478626263,
+        "compaction_time_cpu_micros": 357523449769,
+        "db_write_count": 4000000000,
+        "db_write_sum_micros": 522398212976,
+        "block_cache_miss": 17312905941,
+        "block_cache_hit": 0,
+        "compaction_key_drop_new": 2553954716,
+        "sst_read_count": 17315671257
+      }
+    },
+    "readrandomwriterandom": {
+      "waf": 0.027550686692382812,
+      "flush_bytes": 28211903173,
+      "flush_gb": 26.274382297880948,
+      "stats": {
+        "flush_write_bytes": 28211903173,
+        "compaction_time_cpu_micros": 2322481970,
+        "db_write_count": 46131296,
+        "db_write_sum_micros": 290690930,
+        "block_cache_miss": 1881804700,
+        "block_cache_hit": 64574606,
+        "compaction_key_drop_new": 847300,
+        "sst_read_count": 1881822040
+      }
+    },
+    "overwrite": {
+      "waf": 0.08071506632324218,
+      "flush_bytes": 82652227915,
+      "flush_gb": 76.97588569950312,
+      "stats": {
+        "flush_write_bytes": 82652227915,
+        "compaction_time_cpu_micros": 4953131315,
+        "db_write_count": 135079996,
+        "db_write_sum_micros": 7106823248,
+        "block_cache_miss": 238570128,
+        "block_cache_hit": 0,
+        "compaction_key_drop_new": 5612711,
+        "sst_read_count": 238610144
+      }
+    },
+    "mixgraph": {
+      "waf": 0.0,
+      "flush_bytes": 0,
+      "flush_gb": 0.0,
+      "stats": {
+        "flush_write_bytes": 0,
+        "compaction_time_cpu_micros": 0,
+        "db_write_count": 0,
+        "db_write_sum_micros": 0,
+        "block_cache_miss": 0,
+        "block_cache_hit": 0,
+        "compaction_key_drop_new": 0,
+        "sst_read_count": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+=== Phase-B v4 수정된 실험 완료 ===
+완료 시간: Thu Sep 11 05:02:56 PM EDT 2025
+키 개수: 1,000,000,000 (10억)
+예상 데이터 크기: 1000 GB
+완료된 워크로드: 4개
+
+주요 개선사항:
+  ✅ 데이터 크기 10배 증가 (10억 키)
+  ✅ 자동 디스크 정리 및 초기화
+  ✅ 각 벤치마크 사이 Compaction 대기 시간 추가
+  ✅ 백그라운드 작업 수 최적화 (8→4)
+  ✅ Compaction 상태 모니터링
+
+생성된 결과 파일들:
+total 13708
+drwxrwxr-x 2 sslab sslab     4096 Sep 11 17:02 .
+drwxrwxr-x 5 sslab sslab     4096 Sep 11 17:02 ..
+-rw-rw-r-- 1 sslab sslab      320 Sep 11 14:27 experiment.log
+-rw-rw-r-- 1 sslab sslab  2198974 Sep 11 12:23 fillrandom_results.txt
+-rw-rw-r-- 1 sslab sslab      479 Sep 11 17:02 final_summary.txt
+-rw-rw-r-- 1 sslab sslab 11618115 Sep 11 14:27 mixgraph_results.txt
+-rw-rw-r-- 1 sslab sslab   101317 Sep 11 13:56 overwrite_results.txt
+-rw-rw-r-- 1 sslab sslab     1252 Sep 11 14:27 progress.txt
+-rw-rw-r-- 1 sslab sslab    77696 Sep 11 13:25 readrandomwriterandom_results.txt

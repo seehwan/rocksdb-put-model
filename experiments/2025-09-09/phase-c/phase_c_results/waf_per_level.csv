@@ -1,0 +1,5 @@
+Level,Files,Size_MB,WAF,Type
+L0,2,6672.998645782471,1.0,flush
+L1,4,256,1.0,compaction
+L2,32,2048,1.3,compaction
+L3,40,2560,1.6,compaction

@@ -7,10 +7,10 @@ QD=${3:-32}
 RUNTIME=${4:-60}
 echo "mix_read,MBps,IOPS,lat_mean_usec"
 for MIX in 0 25 50 75 100; do
-  fio --name=rw --filename=$DEV --rw=rw --rwmixread=$MIX --bs=$BS --iodepth=$QD --runtime=$RUNTIME --time_based=1 --ioengine=libaio --direct=1 --group_reporting=1 --output-format=json > /tmp/fio.json
-  MBPS=$(python - <<'PY'
+  sudo fio --name=rw --filename=$DEV --rw=rw --rwmixread=$MIX --bs=$BS --iodepth=$QD --runtime=$RUNTIME --time_based=1 --ioengine=libaio --direct=1 --group_reporting=1 --output-format=json > fio_temp_${MIX}.json
+  MBPS=$(python3 - <<PY
 import json,sys
-j=json.load(open('/tmp/fio.json'))
+j=json.load(open('fio_temp_${MIX}.json'))
 # sum jobs
 bw=sum(job['bw'] for job in j['jobs']) # KB/s
 iops=sum(job['iops'] for job in j['jobs'])

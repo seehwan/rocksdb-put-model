@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-09-12 실험 실행 가이드</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #2980b9;
+            margin-top: 25px;
+        }
+        .hero-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .hero-box h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+            font-size: 2em;
+        }
+        .research-questions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .question-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .question-card h4 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .phase-section {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #3498db;
+        }
+        .phase-a { border-left-color: #e74c3c; }
+        .phase-b { border-left-color: #f39c12; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .highlight-box {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .highlight-box h4 {
+            color: #27ae60;
+            margin-top: 0;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .warning-box h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .error-box {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .error-box h4 {
+            color: #721c24;
+            margin-top: 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #3498db;
+            color: #7f8c8d;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .stat-highlight {
+            background: #3498db;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success-badge {
+            background: #27ae60;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .warning-badge {
+            background: #ffc107;
+            color: #212529;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .step-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .step-box h4 {
+            color: #2c3e50;
+            margin-top: 0;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .execution-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .flow-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 4px solid #3498db;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .flow-card h4 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .flow-card .step-number {
+            background: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 2025-09-12 실험 실행 가이드</h1>
+
+        <div class="hero-box">
+            <h2>🎯 실험 개요</h2>
+            <p><strong>SSD 장치 상태 변화와 시간대별 컴팩션 동작을 관찰하여 RocksDB 안정화 가능성 및 안정적 Put 속도 구하기</strong></p>
+        </div>
+
+        <h2>🔍 핵심 연구 질문</h2>
+        <div class="research-questions">
+            <div class="question-card">
+                <h4>1. 초기화된 SSD에서 시작한 RocksDB가 안정화될 수 있는가?</h4>
+            </div>
+            <div class="question-card">
+                <h4>2. 안정화된다면 안정적으로 처리할 수 있는 Put 속도는?</h4>
+            </div>
+            <div class="question-card">
+                <h4>3. 시간에 따른 컴팩션 동작과 레벨별 성능 변화는 어떻게 나타나는가?</h4>
+            </div>
+            <div class="question-card">
+                <h4>4. 장치 열화가 FillRandom 성능에 미치는 영향은?</h4>
+            </div>
+        </div>
+
+        <h2>📋 실험 실행 순서</h2>
+        
+        <div class="execution-flow">
+            <div class="flow-card">
+                <div class="step-number">1</div>
+                <h4>Phase-A</h4>
+                <p>Device Envelope 모델 구축</p>
+                <small>초기 상태 측정</small>
+            </div>
+            <div class="flow-card">
+                <div class="step-number">2</div>
+                <h4>Phase-B</h4>
+                <p>FillRandom 실험</p>
+                <small>성능 분석 및 로그 수집</small>
+            </div>
+            <div class="flow-card">
+                <div class="step-number">3</div>
+                <h4>Phase-A</h4>
+                <p>열화 상태 측정</p>
+                <small>Device Envelope 완성</small>
+            </div>
+            <div class="flow-card">
+                <div class="step-number">4</div>
+                <h4>분석</h4>
+                <p>결과 분석</p>
+                <small>보고서 생성</small>
+            </div>
+        </div>
+
+        <div class="phase-section phase-a">
+            <h3>Phase-A: Device Envelope 모델 구축</h3>
+            
+            <h4>목적</h4>
+            <p>초기상태 장치 성능과 Phase-B 이후 열화된 상태에서의 장치 성능을 측정하여 Device Envelope 모델 구축</p>
+            
+            <h4>실행 방법</h4>
+            <div class="code-block">
+cd /home/sslab/rocksdb-put-model/experiments/2025-09-12
+python3 scripts/run_phase_a.py
+            </div>
+            
+            <h4>실행 과정</h4>
+            <div class="step-box">
+                <h4>1. SSD 완전 초기화</h4>
+                <p><code>umount</code>, <code>blkdiscard</code>, <code>mkfs.f2fs</code></p>
+            </div>
+            <div class="step-box">
+                <h4>2. 초기 상태 장치 성능 측정</h4>
+                <p>fio 그리드 벤치마크 (364개 측정점)</p>
+            </div>
+            <div class="step-box">
+                <h4>3. Phase-B 실험 진행 안내</h4>
+                <p>FillRandom 실험 실행 요청</p>
+            </div>
+            <div class="step-box">
+                <h4>4. 열화 상태 장치 성능 측정</h4>
+                <p>Phase-B 완료 후 동일한 fio 벤치마크</p>
+            </div>
+            <div class="step-box">
+                <h4>5. Device Envelope 모델 구축</h4>
+                <p>4D Grid Interpolation + 시간 의존성</p>
+            </div>
+            
+            <h4>예상 소요 시간</h4>
+            <ul>
+                <li><strong>초기 상태 측정</strong>: 약 2-3시간</li>
+                <li><strong>열화 상태 측정</strong>: 약 2-3시간</li>
+                <li><strong>총 소요 시간</strong>: 약 4-6시간</li>
+            </ul>
+        </div>
+
+        <div class="phase-section phase-b">
+            <h3>Phase-B: FillRandom 성능 분석 및 컴팩션 모니터링</h3>
+            
+            <h4>목적</h4>
+            <p>LOG 파일을 저장하고, 시간에 따라 FillRandom 성능과 레벨별 컴팩션량을 분석할 수 있도록 충분한 로그를 사용하고, 시각화를 포함</p>
+            
+            <h4>실행 방법</h4>
+            <div class="code-block">
+python3 scripts/run_phase_b.py
+            </div>
+            
+            <h4>실행 과정</h4>
+            <div class="step-box">
+                <h4>1. RocksDB 로깅 설정</h4>
+                <p>상세한 로그 설정</p>
+            </div>
+            <div class="step-box">
+                <h4>2. Uniform Random FillRandom 실험</h4>
+                <p>균등 분포로 FillRandom 실행</p>
+            </div>
+            <div class="step-box">
+                <h4>3. Zipfian Random FillRandom 실험</h4>
+                <p>지프 분포로 FillRandom 실행</p>
+            </div>
+            <div class="step-box">
+                <h4>4. LOG 파일 복사</h4>
+                <p>모든 로그 파일을 실험 디렉토리로 복사</p>
+            </div>
+            <div class="step-box">
+                <h4>5. 성능 트렌드 분석</h4>
+                <p>시간별 성능 변화 분석</p>
+            </div>
+            <div class="step-box">
+                <h4>6. 컴팩션 통계 분석</h4>
+                <p>레벨별 컴팩션 패턴 분석</p>
+            </div>
+            <div class="step-box">
+                <h4>7. 시각화 생성</h4>
+                <p>성능, 컴팩션, 안정화 분석 차트</p>
+            </div>
+            
+            <h4>예상 소요 시간</h4>
+            <ul>
+                <li><strong>Uniform 분포 실험</strong>: 약 24-48시간</li>
+                <li><strong>Zipfian 분포 실험</strong>: 약 24-48시간</li>
+                <li><strong>분석 및 시각화</strong>: 약 1-2시간</li>
+                <li><strong>총 소요 시간</strong>: 약 48-96시간 (2-4일)</li>
+            </ul>
+        </div>
+
+        <h2>🔧 사전 준비사항</h2>
+        
+        <h3>1. 시스템 요구사항</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>구성 요소</th>
+                    <th>사양</th>
+                    <th>비고</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CPU</td>
+                    <td>Intel i9-12900K (16 cores, 24 threads)</td>
+                    <td>고성능 멀티코어</td>
+                </tr>
+                <tr>
+                    <td>Memory</td>
+                    <td>64GB DDR4-3200</td>
+                    <td>대용량 메모리</td>
+                </tr>
+                <tr>
+                    <td>Storage</td>
+                    <td>Samsung 980 PRO 2TB NVMe SSD</td>
+                    <td>고성능 NVMe</td>
+                </tr>
+                <tr>
+                    <td>OS</td>
+                    <td>Ubuntu 22.04 LTS</td>
+                    <td>안정적 리눅스</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2. 소프트웨어 요구사항</h3>
+        <div class="code-block">
+# Python 패키지 설치
+pip3 install numpy pandas matplotlib seaborn scipy jinja2
+
+# RocksDB 빌드 (이미 완료되어 있다고 가정)
+# db_bench 실행 파일이 현재 디렉토리에 있어야 함
+
+# fio 설치 (이미 설치되어 있다고 가정)
+# sudo apt install fio
+        </div>
+
+        <h3>3. 권한 설정</h3>
+        <div class="code-block">
+# sudo 권한이 필요 (SSD 초기화용)
+sudo visudo  # 필요한 경우 사용자 추가
+
+# RocksDB 데이터 디렉토리 권한
+sudo chown -R $USER:$USER /rocksdb
+        </div>
+
+        <h3>4. 디스크 공간 확인</h3>
+        <div class="code-block">
+# 최소 500GB 여유 공간 필요
+df -h /rocksdb
+        </div>
+
+        <h2>📊 실험 설정</h2>
+        
+        <h3>Phase-A 설정</h3>
+        <ul>
+            <li><strong>fio 벤치마크</strong>: 4K~1M 블록 크기, 1~64 큐 깊이</li>
+            <li><strong>측정점</strong>: 364개 (9×7×5×5 = 1575개 중 중복 제거)</li>
+            <li><strong>테스트 시간</strong>: 각 측정점당 5분 + 1분 워밍업</li>
+        </ul>
+
+        <h3>Phase-B 설정</h3>
+        <ul>
+            <li><strong>데이터 크기</strong>: 10억 키 (약 1TB)</li>
+            <li><strong>값 크기</strong>: 1024 bytes (1KB)</li>
+            <li><strong>동시성</strong>: 16 threads</li>
+            <li><strong>분포</strong>: Uniform Random, Zipfian Random (α=0.99)</li>
+            <li><strong>로깅</strong>: 1분 간격 성능 통계, 상세한 컴팩션 로그</li>
+        </ul>
+
+        <h2>📁 출력 파일 구조</h2>
+        
+        <h3>Phase-A 출력</h3>
+        <div class="code-block">
+phase-a/
+├── data/
+│   ├── fio_grid_initial_results.csv      # 초기 상태 fio 결과
+│   └── fio_grid_degraded_results.csv     # 열화 상태 fio 결과
+├── results/
+│   ├── device_envelope_model.json        # Device Envelope 모델
+│   └── phase_a_summary_report.json       # 요약 보고서
+└── phase_a_YYYYMMDD_HHMMSS.log          # 실행 로그
+        </div>
+
+        <h3>Phase-B 출력</h3>
+        <div class="code-block">
+phase-b/
+├── data/
+│   ├── fillrandom_uniform_output.log     # Uniform 분포 실험 출력
+│   └── fillrandom_zipfian_output.log     # Zipfian 분포 실험 출력
+├── results/
+│   ├── phase_b_results.json              # 실험 결과 데이터
+│   ├── phase_b_summary_report.json       # 요약 보고서
+│   ├── performance_trends.png            # 성능 트렌드 차트
+│   ├── compaction_patterns.png           # 컴팩션 패턴 차트
+│   └── stabilization_analysis.png        # 안정화 분석 차트
+└── phase_b_YYYYMMDD_HHMMSS.log          # 실행 로그
+        </div>
+
+        <h3>공통 출력</h3>
+        <div class="code-block">
+logs/
+├── LOG_YYYYMMDD_HHMMSS                   # RocksDB 메인 로그
+├── LOG.old.1_YYYYMMDD_HHMMSS            # 롤링된 로그들
+└── ...
+        </div>
+
+        <h2>⚠️ 주의사항</h2>
+        
+        <div class="warning-box">
+            <h4>1. 실험 순서</h4>
+            <ul>
+                <li><strong>Phase-A를 먼저 실행</strong>하여 초기 상태 측정</li>
+                <li><strong>Phase-B 실험 진행</strong> (FillRandom 실험)</li>
+                <li><strong>Phase-A 재실행</strong>하여 열화 상태 측정</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <h4>2. 데이터 백업</h4>
+            <div class="code-block">
+# 중요한 데이터는 백업
+cp -r /rocksdb/data /rocksdb/data.backup
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <h4>3. 시스템 모니터링</h4>
+            <div class="code-block">
+# 실험 중 시스템 상태 모니터링
+htop                    # CPU, 메모리 사용률
+iotop                   # I/O 사용률
+nvidia-smi              # GPU 사용률 (있는 경우)
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <h4>4. 로그 관리</h4>
+            <div class="code-block">
+# 로그 파일 크기 확인
+du -sh logs/
+du -sh /rocksdb/data/LOG*
+            </div>
+        </div>
+
+        <h2>🚀 실행 예시</h2>
+        
+        <h3>전체 실험 실행</h3>
+        <div class="code-block">
+# 1. Phase-A 시작 (초기 상태 측정)
+python3 scripts/run_phase_a.py
+
+# 2. Phase-B 실행 (FillRandom 실험)
+python3 scripts/run_phase_b.py
+
+# 3. Phase-A 재실행 (열화 상태 측정)
+python3 scripts/run_phase_a.py
+
+# 4. 결과 분석
+python3 scripts/analyze_logs.py
+python3 scripts/generate_report.py
+        </div>
+
+        <h3>개별 실험 실행</h3>
+        <div class="code-block">
+# Phase-A만 실행
+python3 scripts/run_phase_a.py
+
+# Phase-B만 실행
+python3 scripts/run_phase_b.py
+
+# 로그 분석만 실행
+python3 scripts/analyze_logs.py
+
+# 보고서 생성만 실행
+python3 scripts/generate_report.py
+        </div>
+
+        <h2>📈 예상 결과</h2>
+        
+        <div class="experiment-grid">
+            <div class="experiment-card">
+                <h4>Phase-A 결과</h4>
+                <ul>
+                    <li><strong>Device Envelope 모델</strong>: 4D Grid Interpolation + 시간 의존성</li>
+                    <li><strong>성능 열화 분석</strong>: 초기 대비 성능 저하율</li>
+                    <li><strong>예상 열화율</strong>: 쓰기 성능 15-20% 저하</li>
+                </ul>
+            </div>
+            <div class="experiment-card">
+                <h4>Phase-B 결과</h4>
+                <ul>
+                    <li><strong>성능 트렌드</strong>: 시간별 처리량, 지연시간 변화</li>
+                    <li><strong>컴팩션 패턴</strong>: 레벨별 컴팩션 빈도, 크기</li>
+                    <li><strong>안정화 분석</strong>: 안정화 가능성, 안정화 시점, 안정적 Put 속도</li>
+                    <li><strong>예상 안정적 Put 속도</strong>: 25,000-35,000 ops/sec</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>🆘 문제 해결</h2>
+        
+        <div class="error-box">
+            <h4>일반적인 문제</h4>
+            <ul>
+                <li><strong>권한 오류</strong>: <code>sudo</code> 권한 확인</li>
+                <li><strong>디스크 공간 부족</strong>: 여유 공간 확인</li>
+                <li><strong>RocksDB 빌드 오류</strong>: db_bench 실행 파일 확인</li>
+                <li><strong>fio 설치 오류</strong>: <code>sudo apt install fio</code></li>
+            </ul>
+        </div>
+
+        <h3>로그 확인</h3>
+        <div class="code-block">
+# 실험 로그 확인
+tail -f phase-a/phase_a_*.log
+tail -f phase-b/phase_b_*.log
+
+# RocksDB 로그 확인
+tail -f /rocksdb/data/LOG
+        </div>
+
+        <h3>실험 중단 및 재시작</h3>
+        <div class="code-block">
+# 프로세스 확인
+ps aux | grep db_bench
+ps aux | grep fio
+
+# 프로세스 종료
+kill -9 &lt;PID&gt;
+
+# 실험 재시작
+python3 scripts/run_phase_a.py  # 또는 run_phase_b.py
+        </div>
+
+        <div class="footer">
+            <p><strong>실험 시작 전 이 가이드를 숙지하고, 각 단계를 차근차근 진행하세요.</strong></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -3,506 +3,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phase-B: FillRandom 성능 분석 및 컴팩션 모니터링</title>
-    <link rel="stylesheet" href="../styles.css">
+    <title>Phase-B: RocksDB FillRandom 실험 계획</title>
     <style>
-        .achievement-card, .contribution-card {
-            border-left-color: #f39c12 !important;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
         }
-        .header {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%) !important;
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+        
         h1 {
-            color: #f39c12 !important;
-            border-bottom-color: #f39c12 !important;
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
         }
+        
         h2 {
-            border-left-color: #f39c12 !important;
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
         }
-        .link-card {
-            border-left-color: #f39c12 !important;
+        
+        h3 {
+            color: #2980b9;
+            margin-top: 25px;
         }
-        .section-header {
-            background: #f39c12 !important;
+        
+        .goal-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
         }
+        
+        .goal-box h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        
+        .goal-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .goal-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .goal-list li:before {
+            content: "🎯 ";
+            margin-right: 10px;
+        }
+        
+        .procedure-box {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .procedure-step {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 3px solid #27ae60;
+        }
+        
+        .procedure-step h4 {
+            color: #27ae60;
+            margin: 0 0 10px 0;
+        }
+        
+        code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            display: block;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-inline {
+            background: #e74c3c;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .expected-results {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .expected-results h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .result-card {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .result-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .output-files {
+            background: #34495e;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .output-files h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .file-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .file-list li:before {
+            content: "📄 ";
+            margin-right: 10px;
+        }
+        
+        .warning-box {
+            background: #f39c12;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #e67e22;
+        }
+        
+        .warning-box:before {
+            content: "⚠️ ";
+            font-size: 1.2em;
+        }
+        
+        .success-box {
+            background: #27ae60;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #229954;
+        }
+        
+        .success-box:before {
+            content: "✅ ";
+            font-size: 1.2em;
+        }
+        
+        .analysis-features {
+            background: #9b59b6;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .analysis-features h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .feature-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .feature-item h4 {
+            margin: 0 0 10px 0;
+        }
+        
         .footer {
-            border-top-color: #f39c12 !important;
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .results-grid, .feature-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📊 Phase-B: FillRandom 성능 분석 및 컴팩션 모니터링</h1>
-            <div class="subtitle">
-                LOG 파일을 저장하고, 시간에 따라 FillRandom 성능과 레벨별 컴팩션량을 분석할 수 있도록 충분한 로그를 사용하고, 시각화를 포함
-            </div>
-        </div>
-
-        <h2>📊 실험 설계</h2>
+        <h1>Phase-B: RocksDB FillRandom 실험 계획</h1>
         
-        <div class="contribution-grid">
-            <div class="contribution-card">
-                <h3>1. FillRandom 워크로드 실험</h3>
-                <h5>1.1 Uniform Random 분포 실험</h5>
-                <ul>
-                    <li><strong>키 분포</strong>: 균등 분포 (모든 키가 동일한 확률)</li>
-                    <li><strong>데이터 크기</strong>: 100GB (충분한 데이터로 장기간 실험)</li>
-                    <li><strong>값 크기</strong>: 1024 bytes (1KB)</li>
-                    <li><strong>동시성</strong>: 16 threads</li>
-                </ul>
-                <h5>1.2 Zipfian Random 분포 실험</h5>
-                <ul>
-                    <li><strong>키 분포</strong>: 지프 분포 (α=0.99, 최근 키가 높은 확률)</li>
-                    <li><strong>데이터 크기</strong>: 100GB</li>
-                    <li><strong>값 크기</strong>: 1024 bytes (1KB)</li>
-                    <li><strong>동시성</strong>: 16 threads</li>
-                </ul>
-            </div>
-            <div class="contribution-card">
-                <h3>2. 상세 로깅 설정</h3>
-                <h5>2.1 RocksDB 로깅 설정</h5>
-                <ul>
-                    <li><strong>LOG 파일</strong>: <code>/rocksdb/data/LOG</code> 실시간 기록</li>
-                    <li><strong>로그 레벨</strong>: INFO (상세한 컴팩션 정보 포함)</li>
-                    <li><strong>로그 롤링</strong>: 1시간마다 또는 10MB마다</li>
-                    <li><strong>통계 로깅</strong>: 1분 간격 성능 통계</li>
-                </ul>
-                <h5>2.2 컴팩션 로깅 강화</h5>
-                <ul>
-                    <li><strong>컴팩션 시작/완료</strong>: 모든 레벨별 컴팩션 이벤트</li>
-                    <li><strong>파일 수 변화</strong>: 레벨별 파일 수 변화 추적</li>
-                    <li><strong>크기 변화</strong>: 레벨별 크기 변화 추적</li>
-                    <li><strong>WAF 계산</strong>: Write Amplification Factor 계산</li>
-                </ul>
-                <h5>2.3 성능 메트릭 로깅</h5>
-                <ul>
-                    <li><strong>처리량</strong>: ops/sec, MiB/s 실시간 기록</li>
-                    <li><strong>지연시간</strong>: 평균, 95%, 99% 지연시간</li>
-                    <li><strong>큐 길이</strong>: 쓰기 큐 길이, 컴팩션 큐 길이</li>
-                    <li><strong>리소스 사용량</strong>: CPU, 메모리, I/O 사용률</li>
-                </ul>
-            </div>
-            <div class="contribution-card">
-                <h3>3. 시간별 분석 및 시각화</h3>
-                <h5>3.1 시간별 성능 분석</h5>
-                <ul>
-                    <li><strong>1시간 간격</strong>: 성능 지표 집계</li>
-                    <li><strong>컴팩션 주기</strong>: 컴팩션 발생 주기 분석</li>
-                    <li><strong>성능 안정성</strong>: 시간에 따른 성능 변동 분석</li>
-                    <li><strong>안정화 지점</strong>: 성능이 안정화되는 시점 탐지</li>
-                </ul>
-                <h5>3.2 레벨별 컴팩션 분석</h5>
-                <ul>
-                    <li><strong>L0 컴팩션</strong>: MemTable flush 및 L0→L1 컴팩션</li>
-                    <li><strong>L1 컴팩션</strong>: L1→L2 컴팩션 (주요 병목)</li>
-                    <li><strong>L2+ 컴팩션</strong>: L2 이상 레벨의 컴팩션</li>
-                    <li><strong>컴팩션 오버헤드</strong>: 각 레벨별 컴팩션 비용</li>
-                </ul>
-                <h5>3.3 시각화 생성</h5>
-                <ul>
-                    <li><strong>성능 트렌드</strong>: 시간별 처리량, 지연시간 차트</li>
-                    <li><strong>컴팩션 패턴</strong>: 레벨별 컴팩션 빈도, 크기 차트</li>
-                    <li><strong>레벨 분포</strong>: 시간에 따른 레벨별 데이터 분포</li>
-                    <li><strong>안정화 분석</strong>: 성능 안정화 과정 시각화</li>
-                </ul>
-            </div>
-        </div>
-
-        <h2>🔧 실험 환경</h2>
-        
-        <h3>하드웨어 환경</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>구성 요소</th>
-                    <th>사양</th>
-                    <th>비고</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>CPU</td>
-                    <td>Intel i9-12900K (16 cores, 24 threads)</td>
-                    <td>고성능 멀티코어</td>
-                </tr>
-                <tr>
-                    <td>Memory</td>
-                    <td>64GB DDR4-3200</td>
-                    <td>대용량 메모리</td>
-                </tr>
-                <tr>
-                    <td>Storage</td>
-                    <td>Samsung 980 PRO 2TB NVMe SSD</td>
-                    <td>고성능 NVMe</td>
-                </tr>
-                <tr>
-                    <td>OS</td>
-                    <td>Ubuntu 22.04 LTS</td>
-                    <td>안정적 리눅스</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h3>RocksDB 설정</h3>
-        <div class="code-block">
---db=/rocksdb/data
---num=1000000000  # 10억 키
---value_size=1024
---key_size=16
---threads=16
-
-# 컴팩션 설정
---level0_file_num_compaction_trigger=4
---max_bytes_for_level_base=268435456  # 256MB
---max_bytes_for_level_multiplier=10
---max_background_compactions=4
---max_background_flushes=2
-
-# 로깅 설정
---log_file_time_to_roll=3600  # 1시간마다 로그 롤링
---max_log_file_size=10485760  # 10MB
+        <div class="goal-box">
+            <h2>🎯 실험 목표</h2>
+            <ul class="goal-list">
+                <li><strong>FillRandom 워크로드 실행</strong>: 시간별 성능 변화 측정</li>
+                <li><strong>LOG 파일 수집</strong>: 상세한 RocksDB 내부 동작 로그</li>
+                <li><strong>Compaction 분석</strong>: 시간별 Compaction 패턴 및 성능 영향</li>
+                <li><strong>안정화 여부 확인</strong>: RocksDB가 안정적인 Put 속도에 도달하는지 검증</li>
+            </ul>
         </div>
 
         <h2>📋 실험 절차</h2>
         
-        <div class="link-grid">
-            <div class="link-card">
-                <div class="step-number">1</div>
-                <h3>로깅 설정</h3>
-                <p>상세한 로그 설정</p>
+        <div class="procedure-box">
+            <h3>1. 장치 파티셔닝 및 마운트</h3>
+            
+            <div class="procedure-step">
+                <h4>기존 파티션 정리</h4>
+                <code># 기존 파티션 언마운트
+sudo umount /dev/nvme1n1p1 2>/dev/null || true
+sudo umount /dev/nvme1n1p2 2>/dev/null || true
+sudo umount /dev/nvme1n1 2>/dev/null || true</code>
             </div>
-            <div class="link-card">
-                <div class="step-number">2</div>
-                <h3>Uniform 실험</h3>
-                <p>균등 분포 FillRandom</p>
+            
+            <div class="procedure-step">
+                <h4>파티션 테이블 생성</h4>
+                <code># GPT 파티션 테이블 생성
+sudo parted /dev/nvme1n1 mklabel gpt
+
+# WAL 파티션 생성 (1MB-10GB)
+sudo parted /dev/nvme1n1 mkpart primary 1MB 10GB
+
+# Data 파티션 생성 (10GB-100%)
+sudo parted /dev/nvme1n1 mkpart primary 10GB 100%</code>
             </div>
-            <div class="link-card">
-                <div class="step-number">3</div>
-                <h3>Zipfian 실험</h3>
-                <p>지프 분포 FillRandom</p>
+            
+            <div class="procedure-step">
+                <h4>파일시스템 생성</h4>
+                <code># WAL용 F2FS 파일시스템
+sudo mkfs.f2fs /dev/nvme1n1p1
+
+# Data용 F2FS 파일시스템
+sudo mkfs.f2fs /dev/nvme1n1p2</code>
             </div>
-            <div class="link-card">
-                <div class="step-number">4</div>
-                <h3>로그 복사</h3>
-                <p>LOG 파일 저장</p>
-            </div>
-            <div class="link-card">
-                <div class="step-number">5</div>
-                <h3>성능 분석</h3>
-                <p>시간별 성능 분석</p>
-            </div>
-            <div class="link-card">
-                <div class="step-number">6</div>
-                <h3>컴팩션 분석</h3>
-                <p>레벨별 컴팩션 분석</p>
-            </div>
-            <div class="link-card">
-                <div class="step-number">7</div>
-                <h3>시각화</h3>
-                <p>분석 결과 시각화</p>
+            
+            <div class="procedure-step">
+                <h4>마운트 및 권한 설정</h4>
+                <code># 마운트 포인트 생성
+sudo mkdir -p /rocksdb/wal /rocksdb/data
+
+# 파티션 마운트
+sudo mount /dev/nvme1n1p1 /rocksdb/wal
+sudo mount /dev/nvme1n1p2 /rocksdb/data
+
+# 권한 설정
+sudo chown -R sslab:sslab /rocksdb</code>
             </div>
         </div>
 
-        <h3>상세 절차</h3>
-        
-        <div class="highlight-box">
-            <h3>1. RocksDB 로깅 설정</h3>
-            <div class="code-block">
-# 로그 디렉토리 정리
-log_path = Path("/rocksdb/data")
-if log_path.exists():
-    # 기존 LOG 파일 백업
-    for log_file in log_path.glob("LOG*"):
-        backup_name = f"{log_file.name}.backup_{timestamp}"
-        shutil.copy2(log_file, logs_dir / backup_name)
-            </div>
-        </div>
-
-        <div class="highlight-box">
-            <h3>2. Uniform Random FillRandom 실험</h3>
-            <div class="code-block">
-./db_bench --benchmarks=fillrandom \
+        <div class="procedure-box">
+            <h3>2. RocksDB 설정 및 FillRandom 실행</h3>
+            
+            <div class="procedure-step">
+                <h4>FillRandom 워크로드 실행</h4>
+                <code>./db_bench --benchmarks=fillrandom \
   --db=/rocksdb/data \
+  --wal_dir=/rocksdb/wal \
   --num=1000000000 \
   --value_size=1024 \
   --key_size=16 \
   --threads=16 \
-  --distribution=uniform \
   --stats_interval=1000000 \
-  --stats_interval_seconds=60 \
-  --report_interval_seconds=60 \
-  --log_file_time_to_roll=3600 \
-  --max_log_file_size=10485760 \
-  --log_level=INFO
+  --stats_dump_period_sec=10 \
+  --log_file=/rocksdb/data/LOG \
+  --log_level=INFO \
+  --max_log_file_size=1073741824 \
+  --keep_log_file_num=10</code>
             </div>
-        </div>
-
-        <div class="highlight-box">
-            <h3>3. Zipfian Random FillRandom 실험</h3>
-            <div class="code-block">
-./db_bench --benchmarks=fillrandom \
-  --db=/rocksdb/data \
-  --num=1000000000 \
-  --value_size=1024 \
-  --key_size=16 \
-  --threads=16 \
-  --distribution=zipfian \
-  --zipfian_alpha=0.99 \
-  --stats_interval=1000000 \
-  --stats_interval_seconds=60 \
-  --report_interval_seconds=60 \
-  --log_file_time_to_roll=3600 \
-  --max_log_file_size=10485760 \
-  --log_level=INFO
-            </div>
-        </div>
-
-        <div class="highlight-box">
-            <h3>4. LOG 파일 복사</h3>
-            <div class="code-block">
-# 메인 LOG 파일 복사
-main_log = db_path / "LOG"
-if main_log.exists():
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    dest_file = logs_dir / f"LOG_{timestamp}"
-    shutil.copy2(main_log, dest_file)
-
-# 롤링된 LOG 파일들 복사
-log_files = list(db_path.glob("LOG.old.*"))
-for log_file in log_files:
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    dest_file = logs_dir / f"{log_file.name}_{timestamp}"
-    shutil.copy2(log_file, dest_file)
-            </div>
-        </div>
-
-        <div class="highlight-box">
-            <h3>5. 성능 트렌드 분석</h3>
-            <div class="code-block">
-# db_bench 출력 파일 분석
-uniform_file = data_dir / "fillrandom_uniform_output.log"
-zipfian_file = data_dir / "fillrandom_zipfian_output.log"
-
-uniform_data = parse_db_bench_output(uniform_file, "uniform")
-zipfian_data = parse_db_bench_output(zipfian_file, "zipfian")
-
-# 성능 트렌드 분석
-analyze_performance_stability(uniform_data, "uniform")
-analyze_performance_stability(zipfian_data, "zipfian")
-            </div>
-        </div>
-
-        <div class="highlight-box">
-            <h3>6. 컴팩션 통계 분석</h3>
-            <div class="code-block">
-# LOG 파일들 분석
-log_files = list(logs_dir.glob("LOG*"))
-
-compaction_data = []
-level_stats = {}
-
-for log_file in log_files:
-    with open(log_file, 'r') as f:
-        for line in f:
-            line = line.strip()
             
-            # 컴팩션 로그 파싱
-            if "Compaction" in line:
-                compaction_info = parse_compaction_line(line)
-                if compaction_info:
-                    compaction_data.append(compaction_info)
+            <div class="procedure-step">
+                <h4>워크로드 파라미터</h4>
+                <ul>
+                    <li><strong>레코드 수</strong>: 10억 개 (1,000,000,000)</li>
+                    <li><strong>Value 크기</strong>: 1KB (1024 bytes)</li>
+                    <li><strong>Key 크기</strong>: 16 bytes</li>
+                    <li><strong>스레드 수</strong>: 16개</li>
+                    <li><strong>총 데이터 크기</strong>: ~1TB</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="procedure-box">
+            <h3>3. 모니터링 및 데이터 수집</h3>
             
-            # 레벨 통계 파싱
-            if "Level" in line and ("files" in line or "size" in line):
-                level_info = parse_level_line(line)
-                if level_info:
-                    level_key = f"level_{level_info['level']}"
-                    if level_key not in level_stats:
-                        level_stats[level_key] = []
-                    level_stats[level_key].append(level_info)
-            </div>
-        </div>
-
-        <div class="highlight-box">
-            <h3>7. 시각화 생성</h3>
-            <div class="code-block">
-# 성능 트렌드 시각화
-plot_performance_trends()
-
-# 컴팩션 패턴 시각화
-plot_compaction_patterns()
-
-# 안정화 분석 시각화
-plot_stabilization_analysis()
-            </div>
-        </div>
-
-        <h2>📊 로깅 설정</h2>
-        
-        <div class="info-box">
-            <h3>RocksDB 로깅 설정</h3>
-            <ul>
-                <li><strong>LOG 파일</strong>: <code>/rocksdb/data/LOG</code> 실시간 기록</li>
-                <li><strong>로그 레벨</strong>: INFO (상세한 컴팩션 정보 포함)</li>
-                <li><strong>로그 롤링</strong>: 1시간마다 또는 10MB마다</li>
-                <li><strong>통계 로깅</strong>: 1분 간격 성능 통계</li>
-            </ul>
-        </div>
-
-        <div class="info-box">
-            <h3>컴팩션 로깅 강화</h3>
-            <ul>
-                <li><strong>컴팩션 시작/완료</strong>: 모든 레벨별 컴팩션 이벤트</li>
-                <li><strong>파일 수 변화</strong>: 레벨별 파일 수 변화 추적</li>
-                <li><strong>크기 변화</strong>: 레벨별 크기 변화 추적</li>
-                <li><strong>WAF 계산</strong>: Write Amplification Factor 계산</li>
-            </ul>
-        </div>
-
-        <div class="info-box">
-            <h3>성능 메트릭 로깅</h3>
-            <ul>
-                <li><strong>처리량</strong>: ops/sec, MiB/s 실시간 기록</li>
-                <li><strong>지연시간</strong>: 평균, 95%, 99% 지연시간</li>
-                <li><strong>큐 길이</strong>: 쓰기 큐 길이, 컴팩션 큐 길이</li>
-                <li><strong>리소스 사용량</strong>: CPU, 메모리, I/O 사용률</li>
-            </ul>
-        </div>
-
-        <h2>📈 예상 결과</h2>
-        
-        <div class="contribution-grid">
-            <div class="contribution-card">
-                <h3>1. 성능 트렌드</h3>
+            <div class="procedure-step">
+                <h4>수집 데이터</h4>
                 <ul>
-                    <li><strong>처리량 변화</strong>: 시간별 ops/sec, MiB/s 변화</li>
-                    <li><strong>지연시간 변화</strong>: 평균, 95%, 99% 지연시간 변화</li>
-                    <li><strong>성능 안정성</strong>: 시간에 따른 성능 변동</li>
-                    <li><strong>안정화 지점</strong>: 성능이 안정화되는 시점</li>
-                </ul>
-            </div>
-            <div class="contribution-card">
-                <h3>2. 컴팩션 패턴</h3>
-                <ul>
-                    <li><strong>레벨별 컴팩션</strong>: L0, L1, L2, L3+ 컴팩션 패턴</li>
-                    <li><strong>컴팩션 빈도</strong>: 각 레벨별 컴팩션 발생 빈도</li>
-                    <li><strong>컴팩션 크기</strong>: 각 레벨별 컴팩션 크기</li>
-                    <li><strong>컴팩션 오버헤드</strong>: 컴팩션으로 인한 성능 영향</li>
-                </ul>
-            </div>
-            <div class="contribution-card">
-                <h3>3. 안정화 분석</h3>
-                <ul>
-                    <li><strong>안정화 가능성</strong>: 안정화 달성 여부</li>
-                    <li><strong>안정화 시점</strong>: 안정화까지 소요 시간</li>
-                    <li><strong>안정적 Put 속도</strong>: 안정화된 상태에서의 처리 속도</li>
-                    <li><strong>성능 예측</strong>: 다양한 조건에서의 성능 예측</li>
+                    <li><strong>성능 지표</strong>: 초당 Put 수, 처리량, 지연시간</li>
+                    <li><strong>LOG 분석</strong>: Compaction 이벤트, 메모리 사용량, 레벨별 상태</li>
+                    <li><strong>시간별 변화</strong>: 안정화 구간, 성능 저하 구간 식별</li>
                 </ul>
             </div>
         </div>
 
-        <h3>예상 성능 지표</h3>
-        <ul>
-            <li><strong>초기 처리량</strong>: 30,000-40,000 ops/sec</li>
-            <li><strong>안정적 처리량</strong>: 25,000-35,000 ops/sec</li>
-            <li><strong>안정화 시간</strong>: 24-48시간</li>
-            <li><strong>L2 컴팩션 비율</strong>: 40% 이상</li>
-        </ul>
-
-        <h2>📁 출력 파일</h2>
-        
-        <div class="code-block">
-phase-b/
-├── data/
-│   ├── fillrandom_uniform_output.log     # Uniform 분포 실험 출력
-│   └── fillrandom_zipfian_output.log     # Zipfian 분포 실험 출력
-├── results/
-│   ├── phase_b_results.json              # 실험 결과 데이터
-│   ├── phase_b_summary_report.json       # 요약 보고서
-│   ├── performance_trends.png            # 성능 트렌드 차트
-│   ├── compaction_patterns.png           # 컴팩션 패턴 차트
-│   └── stabilization_analysis.png        # 안정화 분석 차트
-└── phase_b_YYYYMMDD_HHMMSS.log          # 실행 로그
-
-logs/
-├── LOG_YYYYMMDD_HHMMSS                   # RocksDB 메인 로그
-├── LOG.old.1_YYYYMMDD_HHMMSS            # 롤링된 로그들
-└── ...
-        </div>
-
-        <h2>⚠️ 주의사항</h2>
-        
-        <div class="warning-box">
-            <h3>실험 시간</h3>
-            <ul>
-                <li><strong>Uniform 분포 실험</strong>: 약 24-48시간</li>
-                <li><strong>Zipfian 분포 실험</strong>: 약 24-48시간</li>
-                <li><strong>총 소요 시간</strong>: 약 48-96시간 (2-4일)</li>
-                <li>장기간 실행되므로 안정적인 환경 필요</li>
-            </ul>
-        </div>
-
-        <div class="warning-box">
-            <h3>로그 관리</h3>
-            <ul>
-                <li>로그 파일 크기가 매우 클 수 있음</li>
-                <li>주기적으로 로그 파일 크기 확인</li>
-                <li>필요시 로그 파일 압축 또는 정리</li>
-                <li>중요한 로그는 별도 백업</li>
-            </ul>
-        </div>
-
-        <div class="warning-box">
-            <h3>시스템 모니터링</h3>
-            <ul>
-                <li>실험 중 시스템 상태 지속 모니터링</li>
-                <li>CPU, 메모리, I/O 사용률 확인</li>
-                <li>디스크 공간 부족 시 실험 중단</li>
-                <li>전원 안정성 확인</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <div class="section-header">📁 관련 파일 및 링크</div>
-            <div class="section-content">
-                <div class="link-grid">
-                    <a href="../README.html" class="link-card">
-                        <h4>📖 실험 개요</h4>
-                        <p>전체 실험 개요 및 목표</p>
-                    </a>
-                    <a href="../ENHANCED_EXPERIMENT_PLAN.html" class="link-card">
-                        <h4>🚀 향상된 실험 계획서</h4>
-                        <p>상세한 실험 설계 및 계획서</p>
-                    </a>
-                    <a href="../EXECUTION_GUIDE.html" class="link-card">
-                        <h4>📋 실행 가이드</h4>
-                        <p>단계별 실험 실행 방법</p>
-                    </a>
-                    <a href="../phase-a/PHASE_A_PLAN.html" class="link-card">
-                        <h4>🔧 Phase-A</h4>
-                        <p>Device Envelope 모델 구축</p>
-                    </a>
-                    <a href="../phase-c/PHASE_c_PLAN.html" class="link-card">
-                        <h4>🔍 Phase-C</h4>
-                        <p>컴팩션 분석</p>
-                    </a>
-                    <a href="../scripts/run_phase_a.py" class="link-card">
-                        <h4>🔧 Phase-A 실행</h4>
-                        <p>Device Envelope 모델 구축 스크립트</p>
-                    </a>
-                    <a href="../scripts/run_phase_b.py" class="link-card">
-                        <h4>📊 Phase-B 실행</h4>
-                        <p>FillRandom 성능 분석 스크립트</p>
-                    </a>
+        <div class="expected-results">
+            <h2>📊 예상 결과</h2>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>초기 성능</h4>
+                    <p>높은 Put 속도<br>(초기 상태)</p>
+                </div>
+                
+                <div class="result-card">
+                    <h4>성능 저하</h4>
+                    <p>Compaction 시작 후<br>성능 감소</p>
+                </div>
+                
+                <div class="result-card">
+                    <h4>안정화</h4>
+                    <p>일정 시간 후<br>안정적인 성능 구간</p>
+                </div>
+                
+                <div class="result-card">
+                    <h4>최종 성능</h4>
+                    <p>장기간 안정화된<br>Put 속도</p>
                 </div>
             </div>
         </div>
 
+        <div class="analysis-features">
+            <h2>🔍 분석 기능</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>📈 성능 트렌드</h4>
+                    <p>시간별 Put Rate 변화 분석</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>🔄 Compaction 패턴</h4>
+                    <p>레벨별 Compaction 빈도 분석</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>📊 안정화 검증</h4>
+                    <p>변동계수를 통한 안정성 측정</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>📉 성능 저하 구간</h4>
+                    <p>성능 저하 시점 및 원인 분석</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>📋 종합 보고서</h4>
+                    <p>JSON 형태의 상세 분석 결과</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>📊 시각화</h4>
+                    <p>성능 변화 그래프 및 차트</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="output-files">
+            <h2>📁 출력 파일</h2>
+            
+            <ul class="file-list">
+                <li><strong>LOG</strong>: RocksDB 상세 로그</li>
+                <li><strong>fillrandom_results.json</strong>: 성능 측정 결과</li>
+                <li><strong>compaction_analysis.json</strong>: Compaction 패턴 분석</li>
+                <li><strong>phase_b_analysis.png</strong>: 시간별 성능 변화 시각화</li>
+                <li><strong>phase_b_summary.json</strong>: 종합 요약 보고서</li>
+                <li><strong>phase_b.log</strong>: 실험 실행 로그</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <strong>주의사항</strong>: 이 실험은 장시간 (몇 시간) 소요되며 대용량 데이터를 생성합니다. 
+            충분한 디스크 공간과 시간을 확보한 후 실행하세요.
+        </div>
+
+        <div class="success-box">
+            <strong>실행 방법</strong>: <code class="code-inline">./run_phase_b.sh</code> 명령어로 자동화된 실험을 실행할 수 있습니다.
+        </div>
+
         <div class="footer">
-            <p><strong>Phase-B</strong>: FillRandom 성능 분석 및 컴팩션 모니터링</p>
-            <p><strong>예상 소요 시간</strong>: 48-96시간 (2-4일)</p>
-            <p><strong>주요 목표</strong>: LOG 파일 저장 및 시간별 FillRandom 성능/레벨별 컴팩션 분석</p>
+            <p><strong>Phase-B: RocksDB FillRandom 실험</strong></p>
+            <p>정교한 Device Envelope 모델을 위한 시간별 성능 분석</p>
+            <p>생성일: 2025-09-12</p>
         </div>
     </div>
 </body>

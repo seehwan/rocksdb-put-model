@@ -1,198 +1,67 @@
-# Phase-B: FillRandom 성능 분석 및 컴팩션 모니터링
+# Phase-B: RocksDB FillRandom 실험 계획
 
 ## 🎯 목표
-LOG 파일을 저장하고, 시간에 따라 FillRandom 성능과 레벨별 컴팩션량을 분석할 수 있도록 충분한 로그를 사용하고, 시각화를 포함
-
-## 📊 실험 설계
-
-### 1. FillRandom 워크로드 실험
-
-#### 1.1 Uniform Random 분포 실험
-- **키 분포**: 균등 분포 (모든 키가 동일한 확률)
-- **데이터 크기**: 100GB (충분한 데이터로 장기간 실험)
-- **값 크기**: 1024 bytes (1KB)
-- **동시성**: 16 threads
-
-#### 1.2 Zipfian Random 분포 실험
-- **키 분포**: 지프 분포 (α=0.99, 최근 키가 높은 확률)
-- **데이터 크기**: 100GB
-- **값 크기**: 1024 bytes (1KB)
-- **동시성**: 16 threads
-
-### 2. 상세 로깅 설정
-
-#### 2.1 RocksDB 로깅 설정
-- **LOG 파일**: `/rocksdb/data/LOG` 실시간 기록
-- **로그 레벨**: INFO (상세한 컴팩션 정보 포함)
-- **로그 롤링**: 1시간마다 또는 10MB마다
-- **통계 로깅**: 1분 간격 성능 통계
-
-#### 2.2 컴팩션 로깅 강화
-- **컴팩션 시작/완료**: 모든 레벨별 컴팩션 이벤트
-- **파일 수 변화**: 레벨별 파일 수 변화 추적
-- **크기 변화**: 레벨별 크기 변화 추적
-- **WAF 계산**: Write Amplification Factor 계산
-
-#### 2.3 성능 메트릭 로깅
-- **처리량**: ops/sec, MiB/s 실시간 기록
-- **지연시간**: 평균, 95%, 99% 지연시간
-- **큐 길이**: 쓰기 큐 길이, 컴팩션 큐 길이
-- **리소스 사용량**: CPU, 메모리, I/O 사용률
-
-### 3. 시간별 분석 및 시각화
-
-#### 3.1 시간별 성능 분석
-- **1시간 간격**: 성능 지표 집계
-- **컴팩션 주기**: 컴팩션 발생 주기 분석
-- **성능 안정성**: 시간에 따른 성능 변동 분석
-- **안정화 지점**: 성능이 안정화되는 시점 탐지
-
-#### 3.2 레벨별 컴팩션 분석
-- **L0 컴팩션**: MemTable flush 및 L0→L1 컴팩션
-- **L1 컴팩션**: L1→L2 컴팩션 (주요 병목)
-- **L2+ 컴팩션**: L2 이상 레벨의 컴팩션
-- **컴팩션 오버헤드**: 각 레벨별 컴팩션 비용
-
-#### 3.3 시각화 생성
-- **성능 트렌드**: 시간별 처리량, 지연시간 차트
-- **컴팩션 패턴**: 레벨별 컴팩션 빈도, 크기 차트
-- **레벨 분포**: 시간에 따른 레벨별 데이터 분포
-- **안정화 분석**: 성능 안정화 과정 시각화
-
-## 🔧 실험 환경
-
-### 하드웨어 환경
-- **CPU**: Intel i9-12900K (16 cores, 24 threads)
-- **Memory**: 64GB DDR4-3200
-- **Storage**: 다양한 SSD 모델
-- **OS**: Ubuntu 22.04 LTS
-
-### 소프트웨어 환경
-- **RocksDB**: Version 8.0.0
-- **Python**: 3.10+
-- **모니터링**: Prometheus + Grafana
-- **벤치마크**: db_bench
+- **FillRandom 워크로드 실행**: 시간별 성능 변화 측정
+- **LOG 파일 수집**: 상세한 RocksDB 내부 동작 로그
+- **Compaction 분석**: 시간별 Compaction 패턴 및 성능 영향
+- **안정화 여부 확인**: RocksDB가 안정적인 Put 속도에 도달하는지 검증
 
 ## 📋 실험 절차
 
-### Day 1: SSD 모델별 실험
-1. **SATA SSD 실험**
-   - 기본 성능 측정
-   - FillRandom 성능 측정
-   - 컴팩션 성능 측정
+### 1. 장치 파티셔닝 및 마운트
+```bash
+# 1. 기존 파티션 정리
+sudo umount /dev/nvme1n1p1 2>/dev/null || true
+sudo umount /dev/nvme1n1p2 2>/dev/null || true
+sudo umount /dev/nvme1n1 2>/dev/null || true
 
-2. **NVMe SSD 실험**
-   - 기본 성능 측정
-   - FillRandom 성능 측정
-   - 컴팩션 성능 측정
+# 2. 파티션 테이블 생성
+sudo parted /dev/nvme1n1 mklabel gpt
+sudo parted /dev/nvme1n1 mkpart primary 1MB 10GB    # WAL 파티션
+sudo parted /dev/nvme1n1 mkpart primary 10GB 100%   # Data 파티션
 
-3. **QLC SSD 실험**
-   - 기본 성능 측정
-   - FillRandom 성능 측정
-   - 컴팩션 성능 측정
+# 3. 파일시스템 생성
+sudo mkfs.f2fs /dev/nvme1n1p1  # WAL용
+sudo mkfs.f2fs /dev/nvme1n1p2  # Data용
 
-### Day 2: 시스템 구성별 실험
-1. **CPU 구성별 실험**
-   - i5-12600K 실험
-   - i7-12700K 실험
-   - i9-12900K 실험
+# 4. 마운트
+sudo mkdir -p /rocksdb/wal /rocksdb/data
+sudo mount /dev/nvme1n1p1 /rocksdb/wal
+sudo mount /dev/nvme1n1p2 /rocksdb/data
+sudo chown -R sslab:sslab /rocksdb
+```
 
-2. **메모리 구성별 실험**
-   - 16GB 메모리 실험
-   - 32GB 메모리 실험
-   - 64GB 메모리 실험
+### 2. RocksDB 설정 및 FillRandom 실행
+```bash
+# FillRandom 실행 (LOG 파일 저장)
+./db_bench --benchmarks=fillrandom \
+  --db=/rocksdb/data \
+  --wal_dir=/rocksdb/wal \
+  --num=1000000000 \
+  --value_size=1024 \
+  --key_size=16 \
+  --threads=32 \
+  --stats_interval=1000000 \
+  --stats_dump_period_sec=10 \
+  --log_file=/rocksdb/data/LOG \
+  --log_level=INFO \
+  --max_log_file_size=1073741824 \
+  --keep_log_file_num=10
+```
 
-3. **OS 구성별 실험**
-   - Ubuntu 20.04 실험
-   - Ubuntu 22.04 실험
-
-### Day 3: RocksDB 설정별 실험
-1. **기본 설정 실험**
-   - 기본 설정으로 성능 측정
-   - 다양한 워크로드 테스트
-   - 리소스 사용량 측정
-
-2. **고성능 설정 실험**
-   - 고성능 설정으로 성능 측정
-   - 다양한 워크로드 테스트
-   - 리소스 사용량 측정
-
-3. **메모리 최적화 설정 실험**
-   - 메모리 최적화 설정으로 성능 측정
-   - 다양한 워크로드 테스트
-   - 리소스 사용량 측정
-
-### Day 4: 종합 분석
-1. **환경별 성능 비교**
-   - SSD 모델별 성능 비교
-   - 시스템 구성별 성능 비교
-   - RocksDB 설정별 성능 비교
-
-2. **모델 일반화 성능 평가**
-   - Phase-A 모델의 환경별 성능
-   - 일반화 성능 지표 계산
-   - 환경별 최적화 방안 도출
-
-### Day 5: 결과 정리 및 보고서 작성
-1. **데이터 분석**
-   - 수집된 데이터 종합 분석
-   - 성능 패턴 분석
-   - 환경별 특성 분석
-
-2. **보고서 작성**
-   - 실험 결과 정리
-   - 모델 일반화 성능 평가
-   - 환경별 최적 설정 가이드
+### 3. 모니터링 및 데이터 수집
+- **성능 지표**: 초당 Put 수, 처리량, 지연시간
+- **LOG 분석**: Compaction 이벤트, 메모리 사용량, 레벨별 상태
+- **시간별 변화**: 안정화 구간, 성능 저하 구간 식별
 
 ## 📊 예상 결과
-
-### 1. 환경별 성능 특성
-- **SSD 모델별 특성**: 각 SSD의 성능 특성 파악
-- **시스템 구성별 특성**: CPU, 메모리 영향 분석
-- **RocksDB 설정별 특성**: 설정에 따른 성능 변화
-
-### 2. 모델 일반화 성능
-- **환경별 정확도**: 각 환경에서의 모델 정확도
-- **일반화 지표**: 전체 환경에서의 일반화 성능
-- **환경별 최적화**: 환경별 모델 파라미터 튜닝
-
-### 3. 환경별 최적 설정
-- **SSD별 최적 설정**: 각 SSD에 최적화된 설정
-- **시스템별 최적 설정**: 시스템 구성에 따른 최적 설정
-- **워크로드별 최적 설정**: 워크로드에 따른 최적 설정
-
-## 🎯 성공 지표
-
-### 정량적 지표
-- **환경별 모델 정확도**: 90% 이상
-- **일반화 성능**: 85% 이상
-- **환경별 최적화 효과**: 10% 이상 성능 향상
-
-### 정성적 지표
-- **모델 안정성**: 다양한 환경에서 일관된 성능
-- **모델 해석가능성**: 환경별 특성 명확성
-- **실용성**: 실제 운영 환경 적용 가능성
+- **초기 성능**: 높은 Put 속도 (초기 상태)
+- **성능 저하**: Compaction 시작 후 성능 감소
+- **안정화**: 일정 시간 후 안정적인 성능 구간 도달
+- **최종 성능**: 장기간 안정화된 Put 속도
 
 ## 📁 출력 파일
-
-### 실험 데이터
-- `ssd_model_performance.json`: SSD 모델별 성능 데이터
-- `system_config_performance.json`: 시스템 구성별 성능 데이터
-- `rocksdb_config_performance.json`: RocksDB 설정별 성능 데이터
-
-### 모델 파일
-- `environment_specific_models.json`: 환경별 특화 모델
-- `generalized_model.json`: 일반화 모델
-- `optimization_guide.json`: 환경별 최적화 가이드
-
-### 보고서
-- `phase_b_report.md`: Phase-B 실험 보고서
-- `phase_b_report.html`: Phase-B 실험 보고서 (HTML)
-- `phase_b_visualizations/`: 시각화 파일들
-
----
-
-**Phase 시작일**: 2025-09-19  
-**예상 완료일**: 2025-09-23  
-**총 기간**: 5일  
-**주요 목표**: 다중 환경 검증 및 일반화 성능 평가
+- `LOG`: RocksDB 상세 로그
+- `fillrandom_results.json`: 성능 측정 결과
+- `compaction_analysis.json`: Compaction 패턴 분석
+- `time_series_plots.png`: 시간별 성능 변화 시각화

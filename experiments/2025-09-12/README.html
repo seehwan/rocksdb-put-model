@@ -20,13 +20,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>🚀 2025-09-12 실험 디렉토리</h1>
-
         <div class="header">
-            <h2>🎯 실험 개요</h2>
-            <p><strong>SSD 장치 상태 변화와 시간대별 컴팩션 동작을 관찰하여 RocksDB 안정화 가능성 및 안정적 Put 속도 구하기</strong></p>
-            <p>이 실험은 SSD 장치의 초기화 상태에서 시작하여 열화 상태로 변화하는 과정에서의 장치 성능 변화를 모니터링하고, 시간대별 컴팩션 동작과 레벨별 FillRandom 성능 변화를 관찰하여 RocksDB가 안정화될 수 있는지, 그리고 안정화된다면 안정적으로 처리할 수 있는 Put 속도를 구하는 것이 목적입니다.</p>
+            <h1>🚀 2025-09-12 실험 디렉토리</h1>
+            <div class="subtitle">
+                SSD 장치 상태 변화와 시간대별 컴팩션 동작을 관찰하여 RocksDB 안정화 가능성 및 안정적 Put 속도 구하기
+            </div>
         </div>
+
 
         <h2>🔍 핵심 연구 질문</h2>
         <div class="achievement-grid">
@@ -428,6 +428,62 @@ cp /rocksdb/data/LOG.old.* /home/sslab/rocksdb-put-model/experiments/2025-09-12/
             <li><strong>컴팩션 상태</strong>: 레벨별 컴팩션 상태</li>
             <li><strong>성능 지표</strong>: WAF, RA, I/O 분포</li>
         </ul>
+
+        <div class="section">
+            <div class="section-header">📁 관련 파일 및 링크</div>
+            <div class="section-content">
+                <div class="link-grid">
+                    <a href="ENHANCED_EXPERIMENT_PLAN.html" class="link-card">
+                        <h4>🚀 향상된 실험 계획서</h4>
+                        <p>상세한 실험 설계 및 계획서</p>
+                    </a>
+                    <a href="EXECUTION_GUIDE.html" class="link-card">
+                        <h4>📋 실행 가이드</h4>
+                        <p>단계별 실험 실행 방법</p>
+                    </a>
+                    <a href="phase-a/PHASE_A_PLAN.html" class="link-card">
+                        <h4>🔧 Phase-A</h4>
+                        <p>Device Envelope 모델 구축</p>
+                    </a>
+                    <a href="phase-b/PHASE_B_PLAN.html" class="link-card">
+                        <h4>📊 Phase-B</h4>
+                        <p>FillRandom 성능 분석</p>
+                    </a>
+                    <a href="phase-c/PHASE_c_PLAN.html" class="link-card">
+                        <h4>🔍 Phase-C</h4>
+                        <p>컴팩션 분석</p>
+                    </a>
+                    <a href="phase-d/PHASE_d_PLAN.html" class="link-card">
+                        <h4>✅ Phase-D</h4>
+                        <p>모델 검증</p>
+                    </a>
+                    <a href="phase-e/PHASE_e_PLAN.html" class="link-card">
+                        <h4>📈 Phase-E</h4>
+                        <p>결과 종합</p>
+                    </a>
+                    <a href="phase-f/PHASE_f_PLAN.html" class="link-card">
+                        <h4>📄 Phase-F</h4>
+                        <p>보고서 생성</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">🛠️ 실행 스크립트</div>
+            <div class="section-content">
+                <div class="link-grid">
+                    <a href="scripts/run_phase_a.py" class="link-card">
+                        <h4>🔧 Phase-A 실행</h4>
+                        <p>Device Envelope 모델 구축 스크립트</p>
+                    </a>
+                    <a href="scripts/run_phase_b.py" class="link-card">
+                        <h4>📊 Phase-B 실행</h4>
+                        <p>FillRandom 성능 분석 스크립트</p>
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <div class="footer">
             <p><strong>실험 시작일</strong>: 2025-09-12</p>

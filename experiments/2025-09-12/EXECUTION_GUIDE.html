@@ -26,11 +26,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>🚀 2025-09-12 실험 실행 가이드</h1>
-
         <div class="header">
-            <h2>🎯 실험 개요</h2>
-            <p><strong>SSD 장치 상태 변화와 시간대별 컴팩션 동작을 관찰하여 RocksDB 안정화 가능성 및 안정적 Put 속도 구하기</strong></p>
+            <h1>🚀 2025-09-12 실험 실행 가이드</h1>
+            <div class="subtitle">
+                SSD 장치 상태 변화와 시간대별 컴팩션 동작을 관찰하여 RocksDB 안정화 가능성 및 안정적 Put 속도 구하기
+            </div>
         </div>
 
         <h2>🔍 핵심 연구 질문</h2>
@@ -413,6 +413,38 @@ kill -9 &lt;PID&gt;
 
 # 실험 재시작
 python3 scripts/run_phase_a.py  # 또는 run_phase_b.py
+        </div>
+
+        <div class="section">
+            <div class="section-header">📁 관련 파일 및 링크</div>
+            <div class="section-content">
+                <div class="link-grid">
+                    <a href="README.html" class="link-card">
+                        <h4>📖 실험 개요</h4>
+                        <p>전체 실험 개요 및 목표</p>
+                    </a>
+                    <a href="ENHANCED_EXPERIMENT_PLAN.html" class="link-card">
+                        <h4>🚀 향상된 실험 계획서</h4>
+                        <p>상세한 실험 설계 및 계획서</p>
+                    </a>
+                    <a href="phase-a/PHASE_A_PLAN.html" class="link-card">
+                        <h4>🔧 Phase-A</h4>
+                        <p>Device Envelope 모델 구축</p>
+                    </a>
+                    <a href="phase-b/PHASE_B_PLAN.html" class="link-card">
+                        <h4>📊 Phase-B</h4>
+                        <p>FillRandom 성능 분석</p>
+                    </a>
+                    <a href="scripts/run_phase_a.py" class="link-card">
+                        <h4>🔧 Phase-A 실행</h4>
+                        <p>Device Envelope 모델 구축 스크립트</p>
+                    </a>
+                    <a href="scripts/run_phase_b.py" class="link-card">
+                        <h4>📊 Phase-B 실행</h4>
+                        <p>FillRandom 성능 분석 스크립트</p>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="footer">

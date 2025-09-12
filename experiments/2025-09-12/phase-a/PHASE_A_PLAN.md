@@ -8,10 +8,23 @@
 ### 1. 초기상태 장치 성능 측정
 
 #### 1.1 SSD 완전 초기화
-- **언마운트**: `sudo umount /dev/nvme0n1p1`
-- **블록 디스카드**: `sudo blkdiscard /dev/nvme0n1p1`
-- **파일시스템 재생성**: `sudo mkfs.f2fs /dev/nvme0n1p1`
-- **마운트**: `sudo mount /dev/nvme0n1p1 /rocksdb`
+
+**목적**: 기존 파티션 구조를 완전히 제거하고 전체 장치를 하나의 파티션으로 사용하여 정확한 성능 측정을 수행합니다.
+
+**기존 파티션 구조**:
+- `nvme1n1p1`: WAL (Write-Ahead Log) 전용 파티션
+- `nvme1n1p2`: Data 전용 파티션
+
+**새로운 구조**: 
+- `nvme1n1`: 전체 장치를 하나의 파티션으로 사용
+- **기존 파티션 언마운트**: 
+  - `sudo umount /dev/nvme1n1p1` (WAL 파티션)
+  - `sudo umount /dev/nvme1n1p2` (Data 파티션)
+  - `sudo umount /dev/nvme1n1` (전체 장치)
+- **파티션 테이블 삭제**: `sudo parted /dev/nvme1n1 mklabel gpt`
+- **블록 디스카드**: `sudo blkdiscard /dev/nvme1n1`
+- **파일시스템 재생성**: `sudo mkfs.f2fs /dev/nvme1n1`
+- **마운트**: `sudo mount /dev/nvme1n1 /rocksdb`
 
 #### 1.2 초기 장치 성능 측정
 - **fio 벤치마크**: 4K 블록 크기, 16개 작업

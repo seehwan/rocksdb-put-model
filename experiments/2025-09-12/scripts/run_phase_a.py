@@ -32,7 +32,7 @@ class PhaseARunner:
         
         # 실험 설정
         self.experiment_config = {
-            "device_path": "/dev/nvme0n1p1",
+            "device_path": "/dev/nvme1n1",
             "mount_point": "/rocksdb",
             "fio_parameters": {
                 "block_sizes": ["4k", "8k", "16k", "32k", "64k", "128k", "256k", "512k", "1m"],

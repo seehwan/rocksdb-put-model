@@ -99,21 +99,27 @@ class EnhancedExperimentRunner:
         """SSD 완전 초기화"""
         self.logger.info("=== SSD 완전 초기화 시작 ===")
         
-        # 1. 언마운트
-        self.logger.info("SSD 언마운트 중...")
-        self.run_command("sudo umount /dev/nvme0n1p1")
+        # 1. 기존 파티션 언마운트
+        self.logger.info("기존 파티션 언마운트 중...")
+        self.run_command("sudo umount /dev/nvme1n1p1")
+        self.run_command("sudo umount /dev/nvme1n1p2")
+        self.run_command("sudo umount /dev/nvme1n1")
         
-        # 2. 블록 디스카드 (완전 초기화)
+        # 2. 파티션 테이블 삭제
+        self.logger.info("파티션 테이블 삭제 중...")
+        self.run_command("sudo parted /dev/nvme1n1 mklabel gpt")
+        
+        # 3. 블록 디스카드 (완전 초기화)
         self.logger.info("SSD 블록 디스카드 중...")
-        self.run_command("sudo blkdiscard /dev/nvme0n1p1")
+        self.run_command("sudo blkdiscard /dev/nvme1n1")
         
-        # 3. 파일시스템 재생성
+        # 4. 파일시스템 재생성
         self.logger.info("F2FS 파일시스템 재생성 중...")
-        self.run_command("sudo mkfs.f2fs /dev/nvme0n1p1")
+        self.run_command("sudo mkfs.f2fs /dev/nvme1n1")
         
-        # 4. 마운트
+        # 5. 마운트
         self.logger.info("SSD 마운트 중...")
-        self.run_command("sudo mount /dev/nvme0n1p1 /rocksdb")
+        self.run_command("sudo mount /dev/nvme1n1 /rocksdb")
         
         self.logger.info("=== SSD 초기화 완료 ===")
     

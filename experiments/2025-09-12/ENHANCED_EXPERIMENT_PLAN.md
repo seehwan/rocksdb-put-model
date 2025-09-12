@@ -104,17 +104,22 @@
 
 #### 1.1 SSD 완전 초기화
 ```bash
-# 1. 언마운트
-sudo umount /dev/nvme0n1p1
+# 1. 기존 파티션 언마운트
+sudo umount /dev/nvme1n1p1  # WAL 파티션
+sudo umount /dev/nvme1n1p2  # Data 파티션
+sudo umount /dev/nvme1n1    # 전체 장치
 
-# 2. 블록 디스카드 (완전 초기화)
-sudo blkdiscard /dev/nvme0n1p1
+# 2. 파티션 테이블 삭제
+sudo parted /dev/nvme1n1 mklabel gpt
 
-# 3. 파일시스템 재생성
-sudo mkfs.f2fs /dev/nvme0n1p1
+# 3. 블록 디스카드 (완전 초기화)
+sudo blkdiscard /dev/nvme1n1
 
-# 4. 마운트
-sudo mount /dev/nvme0n1p1 /rocksdb
+# 4. 파일시스템 재생성
+sudo mkfs.f2fs /dev/nvme1n1
+
+# 5. 마운트
+sudo mount /dev/nvme1n1 /rocksdb
 ```
 
 #### 1.2 초기 장치 성능 측정

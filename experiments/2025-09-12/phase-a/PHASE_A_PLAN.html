@@ -45,11 +45,25 @@
             <div class="contribution-card">
                 <h3>1. 초기상태 장치 성능 측정</h3>
                 <h5>1.1 SSD 완전 초기화</h5>
+                <p><strong>목적</strong>: 기존 파티션 구조를 완전히 제거하고 전체 장치를 하나의 파티션으로 사용하여 정확한 성능 측정을 수행합니다.</p>
+                <p><strong>기존 파티션 구조</strong>:</p>
                 <ul>
-                    <li><strong>언마운트</strong>: <code>sudo umount /dev/nvme0n1p1</code></li>
-                    <li><strong>블록 디스카드</strong>: <code>sudo blkdiscard /dev/nvme0n1p1</code></li>
-                    <li><strong>파일시스템 재생성</strong>: <code>sudo mkfs.f2fs /dev/nvme0n1p1</code></li>
-                    <li><strong>마운트</strong>: <code>sudo mount /dev/nvme0n1p1 /rocksdb</code></li>
+                    <li><code>nvme1n1p1</code>: WAL (Write-Ahead Log) 전용 파티션</li>
+                    <li><code>nvme1n1p2</code>: Data 전용 파티션</li>
+                </ul>
+                <p><strong>새로운 구조</strong>: <code>nvme1n1</code>: 전체 장치를 하나의 파티션으로 사용</p>
+                <ul>
+                    <li><strong>기존 파티션 언마운트</strong>: 
+                        <ul>
+                            <li><code>sudo umount /dev/nvme1n1p1</code> (WAL 파티션)</li>
+                            <li><code>sudo umount /dev/nvme1n1p2</code> (Data 파티션)</li>
+                            <li><code>sudo umount /dev/nvme1n1</code> (전체 장치)</li>
+                        </ul>
+                    </li>
+                    <li><strong>파티션 테이블 삭제</strong>: <code>sudo parted /dev/nvme1n1 mklabel gpt</code></li>
+                    <li><strong>블록 디스카드</strong>: <code>sudo blkdiscard /dev/nvme1n1</code></li>
+                    <li><strong>파일시스템 재생성</strong>: <code>sudo mkfs.f2fs /dev/nvme1n1</code></li>
+                    <li><strong>마운트</strong>: <code>sudo mount /dev/nvme1n1 /rocksdb</code></li>
                 </ul>
                 <h5>1.2 초기 장치 성능 측정</h5>
                 <ul>
@@ -174,19 +188,24 @@
         <div class="highlight-box">
             <h3>1. SSD 완전 초기화</h3>
             <div class="code-block">
-# 1. 언마운트
-sudo umount /dev/nvme0n1p1
+# 1. 기존 파티션 언마운트
+sudo umount /dev/nvme1n1p1  # WAL 파티션
+sudo umount /dev/nvme1n1p2  # Data 파티션
+sudo umount /dev/nvme1n1    # 전체 장치
 
-# 2. 블록 디스카드 (완전 초기화)
-sudo blkdiscard /dev/nvme0n1p1
+# 2. 파티션 테이블 삭제
+sudo parted /dev/nvme1n1 mklabel gpt
 
-# 3. 파일시스템 재생성
-sudo mkfs.f2fs /dev/nvme0n1p1
+# 3. 블록 디스카드 (완전 초기화)
+sudo blkdiscard /dev/nvme1n1
 
-# 4. 마운트
-sudo mount /dev/nvme0n1p1 /rocksdb
+# 4. 파일시스템 재생성
+sudo mkfs.f2fs /dev/nvme1n1
 
-# 5. 권한 설정
+# 5. 마운트
+sudo mount /dev/nvme1n1 /rocksdb
+
+# 6. 권한 설정
 sudo chown -R $USER:$USER /rocksdb
             </div>
         </div>

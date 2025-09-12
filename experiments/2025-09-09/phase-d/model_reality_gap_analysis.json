@@ -1,0 +1,210 @@
+{
+  "analysis_info": {
+    "title": "Model-Reality Gap Analysis",
+    "date": "2025-09-09",
+    "purpose": "이론적 모델과 실제 성능 사이의 차이 원인 분석"
+  },
+  "actual_data": {
+    "current_experiment": {
+      "throughput": 30.1,
+      "device_bandwidth": 3005.8,
+      "efficiency": 0.010013972985561248,
+      "environment": "2025-09-09",
+      "workload": "fillrandom",
+      "data_size": "4B operations",
+      "duration": "36.5 hours"
+    },
+    "historical_experiments": {
+      "2025-09-05": {
+        "throughput": 196.2,
+        "device_bandwidth": 1556.0,
+        "efficiency": 0.12609254498714653,
+        "environment": "GPU-01 server",
+        "device": "/dev/nvme1n1p1"
+      },
+      "2025-09-08": {
+        "throughput": 157.5,
+        "device_bandwidth": 1490.0,
+        "efficiency": 0.10570469798657718,
+        "environment": "GPU-01 server",
+        "device": "/dev/nvme1n1p1"
+      },
+      "current": {
+        "throughput": 30.1,
+        "device_bandwidth": 3005.8,
+        "efficiency": 0.010013972985561248,
+        "environment": "2025-09-09",
+        "workload": "fillrandom",
+        "data_size": "4B operations",
+        "duration": "36.5 hours"
+      }
+    }
+  },
+  "model_predictions": {
+    "v5_original": 18.58,
+    "v5_refined": 41.62,
+    "log_based": 8.56,
+    "compaction_based": 0.76,
+    "realistic_improved": 1.76
+  },
+  "gap_analysis": {
+    "current_experiment": {
+      "actual": 30.1,
+      "predicted_range": [
+        0.76,
+        41.62
+      ],
+      "gap_ratio": "17-216x",
+      "error_rate": "37.8-96.2%"
+    },
+    "historical_experiments": {
+      "actual_range": [
+        157.5,
+        196.2
+      ],
+      "predicted_range": [
+        0.87,
+        1.76
+      ],
+      "gap_ratio": "89-216x",
+      "error_rate": "94.2-99.5%"
+    }
+  },
+  "root_causes": {
+    "modeling_philosophy": {
+      "description": "모델링 철학의 문제",
+      "details": [
+        "이론적 최적화 vs 실제 운영 환경",
+        "절대적 실패 vs 상대적 영향",
+        "복잡한 모델 vs 단순한 현실"
+      ],
+      "impact": "High"
+    },
+    "bottleneck_interpretation": {
+      "description": "병목 현상 해석 오류",
+      "details": [
+        "100% Cache Miss → 1% 효율성 (잘못된 해석)",
+        "81.8% Write Stall → 18.2% 효율성 (잘못된 해석)",
+        "271.7% Compaction CPU → 20% 효율성 (잘못된 해석)",
+        "실제로는 RocksDB가 이런 병목에도 동작"
+      ],
+      "impact": "Critical"
+    },
+    "environmental_complexity": {
+      "description": "환경적 복잡성 무시",
+      "details": [
+        "장치별, 설정별, 데이터별 차이",
+        "시간에 따른 성능 변화",
+        "시스템 상태의 영향",
+        "RocksDB 내부 최적화"
+      ],
+      "impact": "High"
+    },
+    "measurement_vs_prediction": {
+      "description": "측정 vs 예측의 차이",
+      "details": [
+        "실제 측정: 30.1 MB/s (1% 효율성)",
+        "모델 예측: 0.76-41.62 MB/s",
+        "측정값이 예측값보다 17-216배 높음",
+        "이론적 모델의 한계"
+      ],
+      "impact": "Critical"
+    },
+    "rocksdb_internal_optimizations": {
+      "description": "RocksDB 내부 최적화 무시",
+      "details": [
+        "Write Batching",
+        "Asynchronous I/O",
+        "Memory Management",
+        "Background Threads",
+        "Internal Caching"
+      ],
+      "impact": "Medium"
+    }
+  },
+  "proposed_solutions": {
+    "data_driven_approach": {
+      "title": "데이터 기반 접근법",
+      "description": "이론보다는 실제 측정 데이터에 의존",
+      "methods": [
+        "실제 측정값을 기준으로 역산",
+        "환경별 효율성 매핑 테이블",
+        "실험 데이터 기반 보정 계수",
+        "통계적 학습 모델"
+      ],
+      "pros": [
+        "실제 성능 반영",
+        "환경별 차이 고려",
+        "검증된 데이터 기반"
+      ],
+      "cons": [
+        "이론적 이해 부족",
+        "일반화 어려움",
+        "데이터 의존성"
+      ]
+    },
+    "simplified_modeling": {
+      "title": "단순화된 모델링",
+      "description": "복잡한 계산 대신 간단한 규칙 기반",
+      "methods": [
+        "환경별 기본 효율성 사용",
+        "단순한 보정 계수 적용",
+        "실제 성능 패턴 기반 예측",
+        "경험적 규칙 활용"
+      ],
+      "pros": [
+        "이해하기 쉬움",
+        "계산 간단",
+        "오차 누적 적음"
+      ],
+      "cons": [
+        "이론적 기반 부족",
+        "새로운 환경 적용 어려움"
+      ]
+    },
+    "hybrid_approach": {
+      "title": "하이브리드 접근법",
+      "description": "이론적 기반 + 실제 데이터 보정",
+      "methods": [
+        "이론적 모델을 기본으로 사용",
+        "실제 데이터로 보정 계수 도출",
+        "환경별 적응적 파라미터",
+        "실시간 학습 메커니즘"
+      ],
+      "pros": [
+        "이론적 이해 + 실용성",
+        "점진적 개선",
+        "일반화 가능"
+      ],
+      "cons": [
+        "복잡성 증가",
+        "초기 설정 어려움"
+      ]
+    },
+    "bottleneck_reinterpretation": {
+      "title": "병목 현상 재해석",
+      "description": "절대적 실패 → 상대적 영향으로 재해석",
+      "methods": [
+        "병목을 성능 저하 요인으로 해석",
+        "절대적 실패가 아닌 상대적 영향",
+        "RocksDB의 실제 동작 방식 반영",
+        "병목 간 상호작용 고려"
+      ],
+      "pros": [
+        "현실적 해석",
+        "정확한 모델링",
+        "실제 동작 반영"
+      ],
+      "cons": [
+        "기존 모델 전면 수정 필요"
+      ]
+    }
+  },
+  "key_insights": [
+    "모든 모델이 과도하게 보수적 예측",
+    "이론적 모델과 실제 RocksDB 동작의 차이",
+    "병목 현상을 절대적 실패로 잘못 해석",
+    "환경별 복잡한 차이를 단순화",
+    "실제 측정값이 예측값보다 17-216배 높음"
+  ]
+}

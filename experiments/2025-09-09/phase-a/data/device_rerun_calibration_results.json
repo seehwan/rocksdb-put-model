@@ -1,0 +1,16 @@
+{
+  "device": "/dev/nvme1n1p2",
+  "test_date": "2025-09-09",
+  "test_type": "rerun_after_device_initialization",
+  "environment": "fresh_partition_new_environment",
+  "seq_write_test": null,
+  "rand_write_test": null,
+  "mixed_rw_test": null,
+  "summary": {
+    "seq_write_bandwidth_mib_s": 0,
+    "rand_write_bandwidth_mib_s": 0,
+    "mixed_rw_bandwidth_mib_s": 0,
+    "avg_write_bandwidth_mib_s": 0,
+    "environmental_factor": "fresh_partition"
+  }
+}

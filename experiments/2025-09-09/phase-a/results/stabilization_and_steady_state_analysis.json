@@ -1,0 +1,381 @@
+{
+  "timestamp": "2025-09-12T04:24:59.124734",
+  "stabilization_analysis": {
+    "stabilization_conditions": {
+      "theoretical_requirements": {
+        "steady_state_condition": "\u03bb \u2264 S_max",
+        "description": "\uc720\uc785\ub960\uc774 \ucd5c\ub300 \ucc98\ub9ac\uc728 \uc774\ud558\uc5ec\uc57c \ud568",
+        "backlog_convergence": "\uc720\ud55c \ubc31\ub85c\uadf8\ub85c \uc218\ub834",
+        "compaction_balance": "\ucef4\ud329\uc158 \uc18d\ub3c4 \u2265 \uc720\uc785 \uc18d\ub3c4"
+      },
+      "practical_constraints": {
+        "device_bandwidth": {
+          "write_bandwidth": "1581.4 MiB/s (Device Envelope)",
+          "read_bandwidth": "2368 MiB/s",
+          "effective_bandwidth": "2231 MiB/s",
+          "bottleneck": "Write bandwidth\uac00 \uc81c\ud55c \uc694\uc778"
+        },
+        "compaction_overhead": {
+          "L2_compaction_cost": "8.73x I/O \uc99d\ud3ed",
+          "WAF_impact": "22.6 (L2)",
+          "compaction_efficiency": "0.05 (L2)",
+          "overhead_percentage": "95% (\ucef4\ud329\uc158 \uc624\ubc84\ud5e4\ub4dc)"
+        },
+        "system_resources": {
+          "cpu_limitation": "\ucef4\ud329\uc158 CPU \uc0ac\uc6a9\ub960",
+          "memory_limitation": "MemTable \ud06c\uae30 \uc81c\ud55c",
+          "io_limitation": "\ub3d9\uc2dc I/O \uc791\uc5c5 \uc218",
+          "concurrency_limitation": "\ub3d9\uc2dc \ucef4\ud329\uc158 \uc218"
+        }
+      }
+    },
+    "stabilization_scenarios": {
+      "scenario_1_light_load": {
+        "description": "\uac00\ubcbc\uc6b4 \ubd80\ud558 (\u03bb << S_max)",
+        "conditions": {
+          "ingress_rate": "10 MiB/s",
+          "max_throughput": "30 MiB/s",
+          "utilization": "33%"
+        },
+        "stabilization": {
+          "possible": true,
+          "time_to_stabilize": "\ube60\ub984 (\uc218\ubd84 \ub0b4)",
+          "backlog_size": "\uc791\uc74c",
+          "compaction_frequency": "\ub0ae\uc74c"
+        },
+        "performance": {
+          "put_performance": "10 MiB/s (\uc720\uc785\ub960\uacfc \ub3d9\uc77c)",
+          "latency": "\ub0ae\uc74c",
+          "consistency": "\ub192\uc74c"
+        }
+      },
+      "scenario_2_moderate_load": {
+        "description": "\uc911\uac04 \ubd80\ud558 (\u03bb \u2248 0.5 \u00d7 S_max)",
+        "conditions": {
+          "ingress_rate": "15 MiB/s",
+          "max_throughput": "30 MiB/s",
+          "utilization": "50%"
+        },
+        "stabilization": {
+          "possible": true,
+          "time_to_stabilize": "\ubcf4\ud1b5 (10-30\ubd84)",
+          "backlog_size": "\uc911\uac04",
+          "compaction_frequency": "\ubcf4\ud1b5"
+        },
+        "performance": {
+          "put_performance": "15 MiB/s (\uc720\uc785\ub960\uacfc \ub3d9\uc77c)",
+          "latency": "\ubcf4\ud1b5",
+          "consistency": "\ubcf4\ud1b5"
+        }
+      },
+      "scenario_3_high_load": {
+        "description": "\ub192\uc740 \ubd80\ud558 (\u03bb \u2248 0.8 \u00d7 S_max)",
+        "conditions": {
+          "ingress_rate": "24 MiB/s",
+          "max_throughput": "30 MiB/s",
+          "utilization": "80%"
+        },
+        "stabilization": {
+          "possible": true,
+          "time_to_stabilize": "\ub290\ub9bc (1-2\uc2dc\uac04)",
+          "backlog_size": "\ud07c",
+          "compaction_frequency": "\ub192\uc74c"
+        },
+        "performance": {
+          "put_performance": "24 MiB/s (\uc720\uc785\ub960\uacfc \ub3d9\uc77c)",
+          "latency": "\ub192\uc74c",
+          "consistency": "\ub0ae\uc74c"
+        }
+      },
+      "scenario_4_critical_load": {
+        "description": "\uc784\uacc4 \ubd80\ud558 (\u03bb \u2248 S_max)",
+        "conditions": {
+          "ingress_rate": "29 MiB/s",
+          "max_throughput": "30 MiB/s",
+          "utilization": "97%"
+        },
+        "stabilization": {
+          "possible": "\ubd88\uc548\uc815",
+          "time_to_stabilize": "\ub9e4\uc6b0 \ub290\ub9bc \ub610\ub294 \ubd88\uac00\ub2a5",
+          "backlog_size": "\ub9e4\uc6b0 \ud07c",
+          "compaction_frequency": "\ub9e4\uc6b0 \ub192\uc74c"
+        },
+        "performance": {
+          "put_performance": "29 MiB/s (\uac04\ud5d0\uc801)",
+          "latency": "\ub9e4\uc6b0 \ub192\uc74c",
+          "consistency": "\ub9e4\uc6b0 \ub0ae\uc74c"
+        }
+      },
+      "scenario_5_overload": {
+        "description": "\uacfc\ubd80\ud558 (\u03bb > S_max)",
+        "conditions": {
+          "ingress_rate": "35 MiB/s",
+          "max_throughput": "30 MiB/s",
+          "utilization": "117%"
+        },
+        "stabilization": {
+          "possible": false,
+          "time_to_stabilize": "\ubd88\uac00\ub2a5",
+          "backlog_size": "\ubb34\ud55c \uc99d\uac00",
+          "compaction_frequency": "\ucd5c\ub300"
+        },
+        "performance": {
+          "put_performance": "30 MiB/s (\ucd5c\ub300)",
+          "latency": "\ubb34\ud55c\ub300 (Write Stall)",
+          "consistency": "\ubd88\uac00\ub2a5"
+        }
+      }
+    },
+    "stabilization_factors": {
+      "positive_factors": {
+        "sufficient_bandwidth": "\uc7a5\uce58 \ub300\uc5ed\ud3ed\uc774 \ucda9\ubd84\ud55c \uacbd\uc6b0",
+        "efficient_compaction": "\ucef4\ud329\uc158\uc774 \ud6a8\uc728\uc801\uc73c\ub85c \uc9c4\ud589\ub418\ub294 \uacbd\uc6b0",
+        "balanced_workload": "\uc6cc\ud06c\ub85c\ub4dc\uac00 \uade0\ud615\uc7a1\ud78c \uacbd\uc6b0",
+        "optimal_configuration": "RocksDB \uc124\uc815\uc774 \ucd5c\uc801\ud654\ub41c \uacbd\uc6b0"
+      },
+      "negative_factors": {
+        "insufficient_bandwidth": "\uc7a5\uce58 \ub300\uc5ed\ud3ed \ubd80\uc871",
+        "inefficient_compaction": "L2 \ucef4\ud329\uc158 \ube44\ud6a8\uc728\uc131",
+        "unbalanced_workload": "FillRandom\uacfc \uac19\uc740 \ube44\ud6a8\uc728\uc801 \uc6cc\ud06c\ub85c\ub4dc",
+        "poor_configuration": "\ubd80\uc801\uc808\ud55c RocksDB \uc124\uc815"
+      },
+      "critical_factors": {
+        "L2_bottleneck": "L2\uac00 \uc8fc\uc694 \ubcd1\ubaa9 \uc9c0\uc810",
+        "WAF_impact": "\ub192\uc740 Write Amplification",
+        "compaction_scheduling": "\ucef4\ud329\uc158 \uc2a4\ucf00\uc904\ub9c1 \ud6a8\uc728\uc131",
+        "resource_contention": "\uc2dc\uc2a4\ud15c \uc790\uc6d0 \uacbd\ud569"
+      }
+    }
+  },
+  "steady_state_analysis": {
+    "performance_modeling": {
+      "steady_state_throughput": {
+        "formula": "S_steady = min(\u03bb, S_max)",
+        "description": "\uc548\uc815\ud654 \uc2dc \ucc98\ub9ac\ub7c9\uc740 \uc720\uc785\ub960\uacfc \ucd5c\ub300 \ucc98\ub9ac\ub7c9 \uc911 \uc791\uc740 \uac12",
+        "components": {
+          "ingress_rate": "\u03bb (\uc720\uc785\ub960)",
+          "max_throughput": "S_max (\ucd5c\ub300 \ucc98\ub9ac\ub7c9)",
+          "actual_throughput": "S_steady (\uc2e4\uc81c \ucc98\ub9ac\ub7c9)"
+        }
+      },
+      "S_max_calculation": {
+        "device_constraint": {
+          "write_bandwidth": "1581.4 MiB/s",
+          "compaction_overhead": "95% (L2 \ube44\ud6a8\uc728\uc131)",
+          "effective_bandwidth": "1581.4 \u00d7 0.05 = 79.1 MiB/s"
+        },
+        "compaction_constraint": {
+          "L2_compaction_cost": "8.73x I/O \uc99d\ud3ed",
+          "compaction_efficiency": "0.05",
+          "compaction_limited_throughput": "79.1 / 8.73 = 9.1 MiB/s"
+        },
+        "system_constraint": {
+          "observed_performance": "30.1 MiB/s",
+          "model_prediction": "7.14 MiB/s (\uac1c\uc120\ub41c v5)",
+          "discrepancy": "\uc2e4\uc81c \uc131\ub2a5\uc774 \ubaa8\ub378\ubcf4\ub2e4 4.2\ubc30 \ub192\uc74c"
+        }
+      }
+    },
+    "steady_state_scenarios": {
+      "light_load_stable": {
+        "ingress_rate": "5 MiB/s",
+        "max_throughput": "30 MiB/s",
+        "steady_throughput": "5 MiB/s",
+        "utilization": "17%",
+        "characteristics": {
+          "compaction_frequency": "\ub0ae\uc74c",
+          "backlog_size": "\ucd5c\uc18c",
+          "latency": "\ub9e4\uc6b0 \ub0ae\uc74c",
+          "consistency": "\uc644\ubcbd"
+        }
+      },
+      "moderate_load_stable": {
+        "ingress_rate": "15 MiB/s",
+        "max_throughput": "30 MiB/s",
+        "steady_throughput": "15 MiB/s",
+        "utilization": "50%",
+        "characteristics": {
+          "compaction_frequency": "\ubcf4\ud1b5",
+          "backlog_size": "\uc911\uac04",
+          "latency": "\ubcf4\ud1b5",
+          "consistency": "\uc591\ud638"
+        }
+      },
+      "high_load_stable": {
+        "ingress_rate": "25 MiB/s",
+        "max_throughput": "30 MiB/s",
+        "steady_throughput": "25 MiB/s",
+        "utilization": "83%",
+        "characteristics": {
+          "compaction_frequency": "\ub192\uc74c",
+          "backlog_size": "\ud07c",
+          "latency": "\ub192\uc74c",
+          "consistency": "\ubcf4\ud1b5"
+        }
+      },
+      "critical_load_stable": {
+        "ingress_rate": "30 MiB/s",
+        "max_throughput": "30 MiB/s",
+        "steady_throughput": "30 MiB/s",
+        "utilization": "100%",
+        "characteristics": {
+          "compaction_frequency": "\ucd5c\ub300",
+          "backlog_size": "\ucd5c\ub300",
+          "latency": "\ub9e4\uc6b0 \ub192\uc74c",
+          "consistency": "\ubd88\uc548\uc815"
+        }
+      }
+    },
+    "performance_characteristics": {
+      "throughput_behavior": {
+        "linear_region": {
+          "range": "\u03bb \u2264 0.8 \u00d7 S_max",
+          "behavior": "S_steady = \u03bb (\uc120\ud615 \uad00\uacc4)",
+          "description": "\uc720\uc785\ub960\uc5d0 \ube44\ub840\ud558\uc5ec \ucc98\ub9ac\ub7c9 \uc99d\uac00"
+        },
+        "saturation_region": {
+          "range": "0.8 \u00d7 S_max < \u03bb \u2264 S_max",
+          "behavior": "S_steady \u2248 S_max (\ud3ec\ud654)",
+          "description": "\ucc98\ub9ac\ub7c9\uc774 \ucd5c\ub300\uac12\uc5d0 \uadfc\uc811\ud558\uc5ec \ud3ec\ud654"
+        },
+        "overload_region": {
+          "range": "\u03bb > S_max",
+          "behavior": "S_steady = S_max (\uc81c\ud55c)",
+          "description": "\ucc98\ub9ac\ub7c9\uc774 \ucd5c\ub300\uac12\uc73c\ub85c \uc81c\ud55c\ub428"
+        }
+      },
+      "latency_behavior": {
+        "low_load": {
+          "utilization": "0-50%",
+          "latency": "\ub0ae\uc74c (ms \ub2e8\uc704)",
+          "factors": "MemTable flush \uc9c0\uc5f0\ub9cc"
+        },
+        "medium_load": {
+          "utilization": "50-80%",
+          "latency": "\ubcf4\ud1b5 (10ms \ub2e8\uc704)",
+          "factors": "\ucef4\ud329\uc158 \ub300\uae30 \uc2dc\uac04 \ucd94\uac00"
+        },
+        "high_load": {
+          "utilization": "80-95%",
+          "latency": "\ub192\uc74c (100ms \ub2e8\uc704)",
+          "factors": "Write Stall \ubc1c\uc0dd \uac00\ub2a5"
+        },
+        "critical_load": {
+          "utilization": "95-100%",
+          "latency": "\ub9e4\uc6b0 \ub192\uc74c (\ucd08 \ub2e8\uc704)",
+          "factors": "Write Stop \ubc1c\uc0dd"
+        }
+      }
+    },
+    "optimization_impact": {
+      "L2_optimization": {
+        "current_efficiency": "0.05",
+        "optimized_efficiency": "0.2-0.4",
+        "throughput_improvement": "4-8x",
+        "new_S_max": "120-240 MiB/s"
+      },
+      "compaction_optimization": {
+        "current_WAF": "22.6",
+        "optimized_WAF": "5-10",
+        "io_reduction": "2.3-4.5x",
+        "throughput_improvement": "2.3-4.5x"
+      },
+      "combined_optimization": {
+        "total_improvement": "8-36x",
+        "new_S_max": "240-1080 MiB/s",
+        "practical_improvement": "3-5x (\ud604\uc2e4\uc801 \ubaa9\ud45c)",
+        "new_practical_S_max": "90-150 MiB/s"
+      }
+    }
+  },
+  "implications_analysis": {
+    "stabilization_guarantees": {
+      "what_is_guaranteed": {
+        "finite_backlog": "\ubc31\ub85c\uadf8\uac00 \uc720\ud55c\ud558\uac8c \uc720\uc9c0\ub428",
+        "bounded_latency": "\uc9c0\uc5f0\uc2dc\uac04\uc774 \uc720\ud55c\ud558\uac8c \uc81c\ud55c\ub428",
+        "consistent_throughput": "\uc77c\uc815\ud55c \ucc98\ub9ac\ub7c9 \uc720\uc9c0",
+        "resource_utilization": "\uc790\uc6d0 \uc0ac\uc6a9\ub960\uc774 \uc548\uc815\ud654\ub428"
+      },
+      "what_is_not_guaranteed": {
+        "optimal_performance": "\ucd5c\uc801 \uc131\ub2a5\uc774 \ubcf4\uc7a5\ub418\uc9c0 \uc54a\uc74c",
+        "low_latency": "\ub0ae\uc740 \uc9c0\uc5f0\uc2dc\uac04\uc774 \ubcf4\uc7a5\ub418\uc9c0 \uc54a\uc74c",
+        "high_throughput": "\ub192\uc740 \ucc98\ub9ac\ub7c9\uc774 \ubcf4\uc7a5\ub418\uc9c0 \uc54a\uc74c",
+        "immediate_response": "\uc989\uc2dc \uc751\ub2f5\uc774 \ubcf4\uc7a5\ub418\uc9c0 \uc54a\uc74c"
+      }
+    },
+    "practical_implications": {
+      "for_light_workloads": {
+        "stabilization": "\uc27d\uac8c \ub2ec\uc131",
+        "performance": "\uc6b0\uc218\ud55c \uc131\ub2a5",
+        "recommendations": [
+          "\uae30\ubcf8 \uc124\uc815\uc73c\ub85c\ub3c4 \ucda9\ubd84",
+          "\ucd5c\uc801\ud654 \ud544\uc694\uc131 \ub0ae\uc74c",
+          "\uc548\uc815\uc801\uc778 \uc6b4\uc601 \uac00\ub2a5"
+        ]
+      },
+      "for_moderate_workloads": {
+        "stabilization": "\uc870\uac74\ubd80 \ub2ec\uc131",
+        "performance": "\uc591\ud638\ud55c \uc131\ub2a5",
+        "recommendations": [
+          "\uc801\uc808\ud55c \uc124\uc815 \uc870\uc815 \ud544\uc694",
+          "\ubaa8\ub2c8\ud130\ub9c1 \uc911\uc694",
+          "\uc8fc\uae30\uc801 \ud29c\ub2dd \uad8c\uc7a5"
+        ]
+      },
+      "for_heavy_workloads": {
+        "stabilization": "\uc5b4\ub824\uc6c0",
+        "performance": "\uc81c\ud55c\uc801 \uc131\ub2a5",
+        "recommendations": [
+          "\uc801\uadf9\uc801 \ucd5c\uc801\ud654 \ud544\uc694",
+          "L2 \ucef4\ud329\uc158 \ucd5c\uc801\ud654 \ud575\uc2ec",
+          "\uc9c0\uc18d\uc801 \ubaa8\ub2c8\ud130\ub9c1 \ud544\uc218",
+          "\uc131\ub2a5 \ud29c\ub2dd \uc804\ubb38\uac00 \ud544\uc694"
+        ]
+      },
+      "for_critical_workloads": {
+        "stabilization": "\ub9e4\uc6b0 \uc5b4\ub824\uc6c0",
+        "performance": "\ubd88\uc548\uc815\ud55c \uc131\ub2a5",
+        "recommendations": [
+          "\ub300\uaddc\ubaa8 \ucd5c\uc801\ud654 \ud544\uc694",
+          "\ud558\ub4dc\uc6e8\uc5b4 \uc5c5\uadf8\ub808\uc774\ub4dc \uace0\ub824",
+          "\uc6cc\ud06c\ub85c\ub4dc \ubd84\uc0b0 \uace0\ub824",
+          "\ub300\uc548 \uc194\ub8e8\uc158 \uac80\ud1a0 \ud544\uc694"
+        ]
+      }
+    },
+    "model_validation": {
+      "current_model_accuracy": {
+        "fillrandom_v5_error": "8.2%",
+        "level_enhanced_v5_error": "76.3%",
+        "actual_performance": "30.1 MiB/s",
+        "model_prediction": "7.14 MiB/s"
+      },
+      "model_limitations": {
+        "L2_efficiency_estimation": "\uacfc\ub3c4\ud558\uac8c \ubcf4\uc218\uc801",
+        "compaction_overhead": "\uc815\ud655\ud55c \ubaa8\ub378\ub9c1 \uc5b4\ub824\uc6c0",
+        "environmental_factors": "\ubaa8\ub4e0 \uc694\uc778 \ubc18\uc601 \uc5b4\ub824\uc6c0",
+        "dynamic_behavior": "\uc2dc\uac04\uc5d0 \ub530\ub978 \ubcc0\ud654 \ubaa8\ub378\ub9c1 \uc5b4\ub824\uc6c0"
+      },
+      "model_improvements": {
+        "L2_parameter_tuning": "L2 \ud6a8\uc728\uc131 \uc870\uc815 \ud544\uc694",
+        "compaction_modeling": "\ub354 \uc815\ud655\ud55c \ucef4\ud329\uc158 \ubaa8\ub378\ub9c1",
+        "environmental_factors": "\ud658\uacbd\uc801 \uc694\uc778 \ucd94\uac00 \ubc18\uc601",
+        "validation_data": "\ub354 \ub9ce\uc740 \uac80\uc99d \ub370\uc774\ud130 \ud544\uc694"
+      }
+    }
+  },
+  "key_answers": {
+    "question_1": {
+      "question": "\ud56d\uc0c1 \uc548\uc815\ud654\uac00 \uac00\ub2a5\ud55c\uac00?",
+      "answer": "\uc870\uac74\ubd80\ub85c \uac00\ub2a5 (\u03bb \u2264 S_max)",
+      "current_s_max": "~30 MiB/s",
+      "stabilization_scenarios": "\uac00\ubcbc\uc6b4-\uc911\uac04 \ubd80\ud558\ub294 \uac00\ub2a5, \ub192\uc740 \ubd80\ud558\ub294 \uc5b4\ub824\uc6c0"
+    },
+    "question_2": {
+      "question": "\uc548\uc815\ud654\uac00 \ub41c\ub2e4\uba74 Put \uc131\ub2a5\uc740?",
+      "answer": "S_steady = min(\u03bb, S_max)",
+      "performance_range": "5-30 MiB/s (\ubd80\ud558\uc5d0 \ub530\ub77c)",
+      "characteristics": "\uc720\uc785\ub960\uc5d0 \ube44\ub840\ud558\uc9c0\ub9cc S_max\ub85c \uc81c\ud55c\ub428"
+    }
+  }
+}

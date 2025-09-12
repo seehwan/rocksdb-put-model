@@ -1,0 +1,225 @@
+{
+  "timestamp": "2025-09-12T05:10:45.205773",
+  "device_usage_analysis": {
+    "L0": {
+      "write_gb": 1670.1,
+      "read_gb": 1.5,
+      "write_bw_usage": 12.979526411657558,
+      "read_bw_usage": 0.011657559198542805,
+      "write_utilization": 0.7689292897901396,
+      "read_utilization": 0.0004922955742627874,
+      "w_amp": 0.0,
+      "io_percentage": 19.0
+    },
+    "L1": {
+      "write_gb": 1036.0,
+      "read_gb": 1.9,
+      "write_bw_usage": 8.051487553126897,
+      "read_bw_usage": 0.014766241651487553,
+      "write_utilization": 0.4769838597823991,
+      "read_utilization": 0.0006235743940661973,
+      "w_amp": 0.0,
+      "io_percentage": 11.8
+    },
+    "L2": {
+      "write_gb": 3968.1,
+      "read_gb": 0.9,
+      "write_bw_usage": 30.838907103825136,
+      "read_bw_usage": 0.006994535519125683,
+      "write_utilization": 1.8269494729754228,
+      "read_utilization": 0.0002953773445576724,
+      "w_amp": 22.6,
+      "io_percentage": 45.2
+    },
+    "L3": {
+      "write_gb": 2096.4,
+      "read_gb": 0.4,
+      "write_bw_usage": 16.292604735883426,
+      "read_bw_usage": 0.0031086824529447483,
+      "write_utilization": 0.9652017023627621,
+      "read_utilization": 0.00013127881980340997,
+      "w_amp": 0.9,
+      "io_percentage": 23.9
+    }
+  },
+  "level_data": {
+    "L0": {
+      "files": "15/9",
+      "size_gb": 2.99,
+      "write_gb": 1670.1,
+      "read_gb": 1.5,
+      "w_amp": 0.0,
+      "io_percentage": 19.0,
+      "characteristics": "Flush only, Low WAF"
+    },
+    "L1": {
+      "files": "29/8",
+      "size_gb": 6.69,
+      "write_gb": 1036.0,
+      "read_gb": 1.9,
+      "w_amp": 0.0,
+      "io_percentage": 11.8,
+      "characteristics": "Low WA, Minimal overhead"
+    },
+    "L2": {
+      "files": "117/19",
+      "size_gb": 25.85,
+      "write_gb": 3968.1,
+      "read_gb": 0.9,
+      "w_amp": 22.6,
+      "io_percentage": 45.2,
+      "characteristics": "Major bottleneck, High WAF"
+    },
+    "L3": {
+      "files": "463/0",
+      "size_gb": 88.72,
+      "write_gb": 2096.4,
+      "read_gb": 0.4,
+      "w_amp": 0.9,
+      "io_percentage": 23.9,
+      "characteristics": "Minimal activity"
+    }
+  },
+  "device_performance": {
+    "before_degradation": {
+      "B_w": 1688.0,
+      "B_r": 2368.0,
+      "B_eff": 2257.0
+    },
+    "after_degradation": {
+      "B_w": 1421.0,
+      "B_r": 2320.0,
+      "B_eff": 2173.0
+    }
+  },
+  "fillrandom_performance": {
+    "measured": 30.1,
+    "duration_hours": 36.6,
+    "total_operations": 108000000,
+    "total_data_gb": 3240.0
+  },
+  "degradation_rates": {
+    "write": 15.817535545023699,
+    "read": 2.027027027027027,
+    "effective": 3.721754541426672
+  },
+  "level_impact_analysis": {
+    "L0": {
+      "impact": "Low",
+      "reason": "Flush only, WAF=0.0",
+      "degradation_effect": 0.1
+    },
+    "L1": {
+      "impact": "Low",
+      "reason": "Minimal compaction, WAF=0.0",
+      "degradation_effect": 0.2
+    },
+    "L2": {
+      "impact": "High",
+      "reason": "Major bottleneck, WAF=22.6, 45.2% I/O",
+      "degradation_effect": 0.8
+    },
+    "L3": {
+      "impact": "Medium",
+      "reason": "Moderate activity, WAF=0.9",
+      "degradation_effect": 0.4
+    }
+  },
+  "time_dependent_performance": {
+    "0_hours": 30.1,
+    "6_hours": 30.5,
+    "12_hours": 30.9,
+    "18_hours": 31.3,
+    "24_hours": 31.8,
+    "30_hours": 32.3,
+    "36_hours": 32.7,
+    "36.6_hours": 32.8
+  },
+  "performance_factors": {
+    "device_degradation": {
+      "impact": "Negative",
+      "magnitude": -0.15,
+      "description": "\uc7a5\uce58 \uc4f0\uae30 \uc131\ub2a5 15.8% \uc800\ud558"
+    },
+    "compaction_adaptation": {
+      "impact": "Positive",
+      "magnitude": 0.05,
+      "description": "\uc2dc\uac04\uc774 \uc9c0\ub0a0\uc218\ub85d \ucef4\ud329\uc158 \ud6a8\uc728\uc131 \uac1c\uc120"
+    },
+    "system_optimization": {
+      "impact": "Positive",
+      "magnitude": 0.02,
+      "description": "OS, \ud30c\uc77c\uc2dc\uc2a4\ud15c \ucd5c\uc801\ud654"
+    },
+    "workload_adaptation": {
+      "impact": "Positive",
+      "magnitude": 0.03,
+      "description": "FillRandom \ud328\ud134\uc5d0 \ub300\ud55c \uc801\uc751"
+    }
+  },
+  "utilization_patterns": {
+    "write_bandwidth": {
+      "peak_usage": 1200,
+      "average_usage": 800,
+      "device_capacity": 1688,
+      "utilization_rate": 47.4,
+      "peak_utilization": 71.1
+    },
+    "read_bandwidth": {
+      "peak_usage": 600,
+      "average_usage": 400,
+      "device_capacity": 2368,
+      "utilization_rate": 16.9,
+      "peak_utilization": 25.3
+    },
+    "mixed_workload": {
+      "peak_usage": 1400,
+      "average_usage": 900,
+      "device_capacity": 2257,
+      "utilization_rate": 39.9,
+      "peak_utilization": 62.0
+    }
+  },
+  "ssd_gc_analysis": {
+    "gc_threshold": 70,
+    "current_utilization": 47.4,
+    "gc_activation": "No",
+    "performance_impact": "Minimal",
+    "reason": "\uc0ac\uc6a9\ub960\uc774 70% \ubbf8\ub9cc\uc73c\ub85c GC\uac00 \ud65c\uc131\ud654\ub418\uc9c0 \uc54a\uc74c"
+  },
+  "compaction_efficiency": {
+    "0-6_hours": {
+      "efficiency": 1.0,
+      "description": "\ucd08\uae30 \ube48 DB, \ucef4\ud329\uc158 \uc624\ubc84\ud5e4\ub4dc \ucd5c\uc18c",
+      "waf_effective": 1.0
+    },
+    "6-18_hours": {
+      "efficiency": 0.85,
+      "description": "\ub808\ubca8 \ud615\uc131 \uc2dc\uc791, \ucef4\ud329\uc158 \uc624\ubc84\ud5e4\ub4dc \uc99d\uac00",
+      "waf_effective": 2.5
+    },
+    "18-36_hours": {
+      "efficiency": 0.92,
+      "description": "\ucef4\ud329\uc158 \ucd5c\uc801\ud654, \uc2dc\uc2a4\ud15c \uc801\uc751",
+      "waf_effective": 2.87
+    }
+  },
+  "level_efficiency": {
+    "L0": {
+      "efficiency": 1.0,
+      "reason": "Flush only, WAF=0"
+    },
+    "L1": {
+      "efficiency": 0.95,
+      "reason": "Minimal compaction, WAF=0"
+    },
+    "L2": {
+      "efficiency": 0.3,
+      "reason": "Major bottleneck, WAF=22.6"
+    },
+    "L3": {
+      "efficiency": 0.8,
+      "reason": "Moderate activity, WAF=0.9"
+    }
+  }
+}

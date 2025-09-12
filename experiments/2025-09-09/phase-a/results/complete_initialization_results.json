@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-09-12T03:17:48",
+  "initialization_type": "complete_clean_initialization",
+  "device": "/dev/nvme1n1p2",
+  "clean_results": {
+    "Sequential Write": {
+      "write": 4160.8740234375,
+      "read": 0.0
+    },
+    "Random Write": {
+      "write": 1581.4248046875,
+      "read": 0.0
+    },
+    "Mixed R/W": {
+      "write": 1139.9365234375,
+      "read": 1140.890625
+    }
+  },
+  "previous_results": {
+    "Sequential Write": 1770.0,
+    "Random Write": 1809.3,
+    "Mixed R/W": {
+      "write": 1220.1,
+      "read": 1221.3
+    }
+  },
+  "comparison_results": {
+    "Sequential Write": {
+      "write_diff_pct": 135.0776284427966
+    },
+    "Random Write": {
+      "write_diff_pct": -12.594660659509199
+    },
+    "Mixed R/W": {
+      "write_diff_pct": -6.570238223301361,
+      "read_diff_pct": -6.583916728076636
+    }
+  },
+  "analysis": {
+    "initialization_impact": "Complete device initialization with blkdiscard and full write",
+    "expected_behavior": "Performance should be similar to or slightly different from previous results",
+    "key_findings": "See console output above"
+  }
+}

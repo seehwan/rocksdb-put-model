@@ -1,0 +1,209 @@
+{
+  "analysis_info": {
+    "title": "Phase-A Rerun Necessity Analysis",
+    "date": "2025-09-09",
+    "purpose": "지금 시점에서 Phase-A 재실행의 필요성과 기대 효과 분석"
+  },
+  "current_situation": {
+    "device_status": {
+      "initialization_date": "2025-09-09",
+      "partition_status": "newly_created",
+      "device_path": "/dev/nvme1n1p2",
+      "current_state": "fresh_and_clean"
+    },
+    "previous_phase_a_results": {
+      "2025-09-05": {
+        "device": "/dev/nvme1n1p1",
+        "device_bandwidth": 1556.0,
+        "device_status": "existing_partition",
+        "fragmentation": "high",
+        "wear_level": "moderate"
+      },
+      "2025-09-08": {
+        "device": "/dev/nvme1n1p1",
+        "device_bandwidth": 1490.0,
+        "device_status": "existing_partition",
+        "fragmentation": "high",
+        "wear_level": "moderate"
+      }
+    },
+    "current_phase_a_estimate": {
+      "device": "/dev/nvme1n1p2",
+      "estimated_bandwidth": 3005.8,
+      "device_status": "fresh_partition",
+      "fragmentation": "none",
+      "wear_level": "minimal"
+    }
+  },
+  "necessity_analysis": {
+    "device_initialization_impact": {
+      "description": "장치 초기화의 영향",
+      "before_initialization": {
+        "fragmentation": "높음 (기존 파티션)",
+        "wear_level": "중간 (이전 사용량)",
+        "performance_degradation": "예상됨",
+        "measurement_accuracy": "낮음"
+      },
+      "after_initialization": {
+        "fragmentation": "없음 (새 파티션)",
+        "wear_level": "최소 (깨끗한 상태)",
+        "performance_degradation": "없음",
+        "measurement_accuracy": "높음"
+      },
+      "impact_assessment": "Critical - 장치 성능 측정의 정확성에 직접적 영향"
+    },
+    "partition_creation_impact": {
+      "description": "파티션 재생성의 영향",
+      "old_partition": {
+        "characteristics": "기존 파티션 (p1)",
+        "fragmentation": "높음",
+        "file_system_state": "파편화됨",
+        "performance_impact": "부정적"
+      },
+      "new_partition": {
+        "characteristics": "새 파티션 (p2)",
+        "fragmentation": "없음",
+        "file_system_state": "깨끗함",
+        "performance_impact": "긍정적"
+      },
+      "impact_assessment": "High - 파일시스템 상태가 I/O 성능에 직접적 영향"
+    },
+    "measurement_accuracy_improvement": {
+      "description": "측정 정확도 개선",
+      "previous_measurements": {
+        "accuracy": "낮음 (환경적 요인으로 인한 노이즈)",
+        "consistency": "낮음 (파편화, 마모로 인한 변동)",
+        "reliability": "낮음 (이전 사용량의 영향)"
+      },
+      "rerun_measurements": {
+        "accuracy": "높음 (깨끗한 환경)",
+        "consistency": "높음 (일관된 상태)",
+        "reliability": "높음 (환경적 요인 최소화)"
+      },
+      "improvement_expected": "Significant - 측정 정확도 대폭 향상 예상"
+    }
+  },
+  "rerun_scenarios": {
+    "comprehensive_rerun": {
+      "title": "종합적 재실행",
+      "description": "모든 Phase-A 테스트를 새 환경에서 재실행",
+      "tests": [
+        "Sequential Read Test",
+        "Sequential Write Test",
+        "Random Read Test",
+        "Random Write Test",
+        "Mixed Read/Write Test",
+        "I/O Depth Variation Test",
+        "Block Size Variation Test"
+      ],
+      "duration": "2-3 hours",
+      "complexity": "High",
+      "benefits": [
+        "완전한 장치 특성 파악",
+        "새 환경에서의 정확한 성능 측정",
+        "이전 결과와의 정확한 비교",
+        "모델 정확도 대폭 향상"
+      ],
+      "costs": [
+        "시간 소요 (2-3시간)",
+        "리소스 사용",
+        "복잡성 증가"
+      ]
+    },
+    "targeted_rerun": {
+      "title": "선택적 재실행",
+      "description": "핵심 테스트만 선별하여 재실행",
+      "tests": [
+        "Sequential Write Test (RocksDB와 가장 관련)",
+        "Random Write Test (fillrandom과 관련)",
+        "Mixed Read/Write Test (실제 워크로드와 관련)"
+      ],
+      "duration": "1 hour",
+      "complexity": "Medium",
+      "benefits": [
+        "핵심 성능 지표 정확히 측정",
+        "시간 효율성",
+        "RocksDB 관련 성능에 집중",
+        "모델 정확도 향상"
+      ],
+      "costs": [
+        "시간 소요 (1시간)",
+        "일부 테스트 누락 가능성"
+      ]
+    },
+    "quick_rerun": {
+      "title": "빠른 재실행",
+      "description": "가장 중요한 테스트만 빠르게 재실행",
+      "tests": [
+        "Sequential Write Test",
+        "Mixed Read/Write Test"
+      ],
+      "duration": "30 minutes",
+      "complexity": "Low",
+      "benefits": [
+        "최소 시간으로 핵심 정보 획득",
+        "빠른 검증",
+        "모델 개선에 필요한 최소 정보",
+        "즉시 적용 가능"
+      ],
+      "costs": [
+        "제한된 정보",
+        "일부 정확도 손실 가능성"
+      ]
+    }
+  },
+  "expected_benefits": {
+    "model_accuracy_improvement": {
+      "current_accuracy": "Poor (53.3% average error)",
+      "expected_accuracy": "Good to Excellent (<20% error)",
+      "improvement_factor": "2-3x",
+      "rationale": "정확한 장치 성능 측정으로 모델 정확도 대폭 향상"
+    },
+    "environmental_factor_clarification": {
+      "current_understanding": "환경별 차이의 원인 불명확",
+      "expected_understanding": "장치 초기화/파티션 재생성의 정확한 영향 파악",
+      "benefit": "환경별 보정 인수 정확히 설정 가능",
+      "rationale": "깨끗한 환경에서의 정확한 측정으로 환경적 요인 분리"
+    },
+    "phase_based_model_validation": {
+      "current_status": "단계별 모델의 정확성 의문",
+      "expected_status": "단계별 모델의 정확성 검증",
+      "benefit": "시간 기반 단계별 모델링의 타당성 확인",
+      "rationale": "정확한 장치 성능으로 단계별 모델 검증"
+    },
+    "future_experiment_planning": {
+      "current_limitation": "환경적 요인으로 인한 실험 계획 어려움",
+      "expected_capability": "환경적 요인을 고려한 정확한 실험 계획",
+      "benefit": "향후 실험의 정확도 향상",
+      "rationale": "환경별 보정 인수로 다양한 환경에서의 예측 가능"
+    }
+  },
+  "implementation_plan": {
+    "recommended_scenario": "targeted_rerun",
+    "rationale": "시간 효율성과 정확도의 균형",
+    "steps": [
+      "1. 현재 장치 상태 확인 (/dev/nvme1n1p2)",
+      "2. Sequential Write Test 실행 (RocksDB와 가장 관련)",
+      "3. Random Write Test 실행 (fillrandom과 관련)",
+      "4. Mixed Read/Write Test 실행 (실제 워크로드와 관련)",
+      "5. 결과 분석 및 이전 결과와 비교",
+      "6. 모델 업데이트 및 검증"
+    ],
+    "expected_duration": "1 hour",
+    "success_criteria": [
+      "장치 성능 측정 완료",
+      "이전 결과와의 차이 분석",
+      "환경별 보정 인수 도출",
+      "모델 정확도 향상 확인"
+    ]
+  },
+  "key_insights": [
+    "장치 초기화와 파티션 재생성으로 인한 환경 변화",
+    "기존 Phase-A 결과의 정확성 의문",
+    "새 환경에서의 정확한 측정 필요성",
+    "모델 정확도 2-3배 향상 기대",
+    "환경별 보정 인수 정확히 설정 가능",
+    "시간 효율성과 정확도의 균형",
+    "ROI 매우 높음 (적은 투자로 큰 개선 효과)"
+  ]
+}

@@ -1,0 +1,677 @@
+{
+  "timestamp": "2025-09-12T05:05:24.166880",
+  "model_version": "v4-time-dependent",
+  "device_degradation_model": {
+    "initial_performance": {
+      "B_w": 1688.0,
+      "B_r": 2368.0,
+      "B_eff": 2257.0
+    },
+    "degradation_parameters": {
+      "write_degradation_rate": 0.43,
+      "read_degradation_rate": 0.055,
+      "effective_degradation_rate": 0.101,
+      "non_linear_factor": 1.2
+    },
+    "workload_impact": {
+      "fillrandom": {
+        "device_sensitivity": 0.9,
+        "time_dependency": 0.8,
+        "degradation_amplification": 1.1
+      },
+      "overwrite": {
+        "device_sensitivity": 0.7,
+        "time_dependency": 0.6,
+        "degradation_amplification": 1.0
+      },
+      "mixgraph": {
+        "device_sensitivity": 0.8,
+        "time_dependency": 0.7,
+        "degradation_amplification": 1.05
+      }
+    }
+  },
+  "fillrandom_performance_model": {
+    "base_performance": {
+      "initial_rate": 30.1,
+      "final_rate": 30.1,
+      "average_rate": 30.1
+    },
+    "time_dependent_factors": {
+      "device_degradation_impact": 0.15,
+      "compaction_adaptation": 0.05,
+      "system_optimization": -0.02,
+      "workload_adaptation": 0.03
+    },
+    "performance_evolution": {
+      "phase_1": {
+        "hours": "0-6",
+        "trend": "stable",
+        "rate_change": 0.0
+      },
+      "phase_2": {
+        "hours": "6-18",
+        "trend": "declining",
+        "rate_change": -0.08
+      },
+      "phase_3": {
+        "hours": "18-36",
+        "trend": "recovering",
+        "rate_change": 0.05
+      }
+    }
+  },
+  "simulation_results": [
+    {
+      "hours_elapsed": 0,
+      "device_performance": {
+        "B_w": 1688.0,
+        "B_r": 2368.0,
+        "B_eff": 2257.0,
+        "degradation_factor": {
+          "write": 0.0,
+          "read": 0.0,
+          "effective": 0.0
+        }
+      },
+      "workload_predictions": {
+        "fillrandom": {
+          "predicted_performance": 30.1,
+          "device_performance": {
+            "B_w": 1688.0,
+            "B_r": 2368.0,
+            "B_eff": 2257.0,
+            "degradation_factor": {
+              "write": 0.0,
+              "read": 0.0,
+              "effective": 0.0
+            }
+          },
+          "B_eff_used": 2144.15,
+          "base_efficiency": 0.019,
+          "time_factor": 0.0,
+          "degradation_factor": 1.0
+        },
+        "overwrite": {
+          "predicted_performance": 56.425000000000004,
+          "device_performance": {
+            "B_w": 1688.0,
+            "B_r": 2368.0,
+            "B_eff": 2257.0,
+            "degradation_factor": {
+              "write": 0.0,
+              "read": 0.0,
+              "effective": 0.0
+            }
+          },
+          "B_eff_used": 2257.0,
+          "base_efficiency": 0.025,
+          "time_factor": 0.0,
+          "degradation_factor": 1.0
+        },
+        "mixgraph": {
+          "predicted_performance": 48.66092,
+          "device_performance": {
+            "B_w": 1688.0,
+            "B_r": 2368.0,
+            "B_eff": 2257.0,
+            "degradation_factor": {
+              "write": 0.0,
+              "read": 0.0,
+              "effective": 0.0
+            }
+          },
+          "B_eff_used": 2211.86,
+          "base_efficiency": 0.022,
+          "time_factor": 0.0,
+          "degradation_factor": 1.0
+        }
+      }
+    },
+    {
+      "hours_elapsed": 6,
+      "device_performance": {
+        "B_w": 1643.021718032787,
+        "B_r": 2360.1856000000002,
+        "B_eff": 2243.32258,
+        "degradation_factor": {
+          "write": 0.02664590163934418,
+          "read": 0.0032999999999998946,
+          "effective": 0.0060599999999999925
+        }
+      },
+      "workload_predictions": {
+        "fillrandom": {
+          "predicted_performance": 30.516371819672134,
+          "device_performance": {
+            "B_w": 1643.021718032787,
+            "B_r": 2360.1856000000002,
+            "B_eff": 2243.32258,
+            "degradation_factor": {
+              "write": 0.02664590163934418,
+              "read": 0.0032999999999998946,
+              "effective": 0.0060599999999999925
+            }
+          },
+          "B_eff_used": 2131.156451,
+          "base_efficiency": 0.019,
+          "time_factor": 0.14754098360655737,
+          "degradation_factor": 0.9837704918032787
+        },
+        "overwrite": {
+          "predicted_performance": 55.439488350000005,
+          "device_performance": {
+            "B_w": 1643.021718032787,
+            "B_r": 2360.1856000000002,
+            "B_eff": 2243.32258,
+            "degradation_factor": {
+              "write": 0.02664590163934418,
+              "read": 0.0032999999999998946,
+              "effective": 0.0060599999999999925
+            }
+          },
+          "B_eff_used": 2243.32258,
+          "base_efficiency": 0.025,
+          "time_factor": 0.11475409836065573,
+          "degradation_factor": 0.9885245901639345
+        },
+        "mixgraph": {
+          "predicted_performance": 47.700010738688,
+          "device_performance": {
+            "B_w": 1643.021718032787,
+            "B_r": 2360.1856000000002,
+            "B_eff": 2243.32258,
+            "degradation_factor": {
+              "write": 0.02664590163934418,
+              "read": 0.0032999999999998946,
+              "effective": 0.0060599999999999925
+            }
+          },
+          "B_eff_used": 2198.4561284,
+          "base_efficiency": 0.022,
+          "time_factor": 0.13114754098360656,
+          "degradation_factor": 0.9862295081967213
+        }
+      }
+    },
+    {
+      "hours_elapsed": 12,
+      "device_performance": {
+        "B_w": 1595.1876721311476,
+        "B_r": 2352.3712,
+        "B_eff": 2229.64516,
+        "degradation_factor": {
+          "write": 0.05498360655737704,
+          "read": 0.006599999999999981,
+          "effective": 0.012119999999999985
+        }
+      },
+      "workload_predictions": {
+        "fillrandom": {
+          "predicted_performance": 30.916302131147543,
+          "device_performance": {
+            "B_w": 1595.1876721311476,
+            "B_r": 2352.3712,
+            "B_eff": 2229.64516,
+            "degradation_factor": {
+              "write": 0.05498360655737704,
+              "read": 0.006599999999999981,
+              "effective": 0.012119999999999985
+            }
+          },
+          "B_eff_used": 2118.162902,
+          "base_efficiency": 0.019,
+          "time_factor": 0.29508196721311475,
+          "degradation_factor": 0.9675409836065574
+        },
+        "overwrite": {
+          "predicted_performance": 54.4618244,
+          "device_performance": {
+            "B_w": 1595.1876721311476,
+            "B_r": 2352.3712,
+            "B_eff": 2229.64516,
+            "degradation_factor": {
+              "write": 0.05498360655737704,
+              "read": 0.006599999999999981,
+              "effective": 0.012119999999999985
+            }
+          },
+          "B_eff_used": 2229.64516,
+          "base_efficiency": 0.025,
+          "time_factor": 0.22950819672131145,
+          "degradation_factor": 0.9770491803278688
+        },
+        "mixgraph": {
+          "predicted_performance": 46.747222905152,
+          "device_performance": {
+            "B_w": 1595.1876721311476,
+            "B_r": 2352.3712,
+            "B_eff": 2229.64516,
+            "degradation_factor": {
+              "write": 0.05498360655737704,
+              "read": 0.006599999999999981,
+              "effective": 0.012119999999999985
+            }
+          },
+          "B_eff_used": 2185.0522568,
+          "base_efficiency": 0.022,
+          "time_factor": 0.26229508196721313,
+          "degradation_factor": 0.9724590163934426
+        }
+      }
+    },
+    {
+      "hours_elapsed": 18,
+      "device_performance": {
+        "B_w": 1544.497862295082,
+        "B_r": 2344.5568,
+        "B_eff": 2215.96774,
+        "degradation_factor": {
+          "write": 0.08501311475409828,
+          "read": 0.009900000000000068,
+          "effective": 0.018179999999999977
+        }
+      },
+      "workload_predictions": {
+        "fillrandom": {
+          "predicted_performance": 31.347950934426233,
+          "device_performance": {
+            "B_w": 1544.497862295082,
+            "B_r": 2344.5568,
+            "B_eff": 2215.96774,
+            "degradation_factor": {
+              "write": 0.08501311475409828,
+              "read": 0.009900000000000068,
+              "effective": 0.018179999999999977
+            }
+          },
+          "B_eff_used": 2105.169353,
+          "base_efficiency": 0.019,
+          "time_factor": 0.4426229508196721,
+          "degradation_factor": 0.9513114754098361
+        },
+        "overwrite": {
+          "predicted_performance": 53.492008150000004,
+          "device_performance": {
+            "B_w": 1544.497862295082,
+            "B_r": 2344.5568,
+            "B_eff": 2215.96774,
+            "degradation_factor": {
+              "write": 0.08501311475409828,
+              "read": 0.009900000000000068,
+              "effective": 0.018179999999999977
+            }
+          },
+          "B_eff_used": 2215.96774,
+          "base_efficiency": 0.025,
+          "time_factor": 0.3442622950819672,
+          "degradation_factor": 0.9655737704918033
+        },
+        "mixgraph": {
+          "predicted_performance": 45.802556499392004,
+          "device_performance": {
+            "B_w": 1544.497862295082,
+            "B_r": 2344.5568,
+            "B_eff": 2215.96774,
+            "degradation_factor": {
+              "write": 0.08501311475409828,
+              "read": 0.009900000000000068,
+              "effective": 0.018179999999999977
+            }
+          },
+          "B_eff_used": 2171.6483852,
+          "base_efficiency": 0.022,
+          "time_factor": 0.39344262295081966,
+          "degradation_factor": 0.958688524590164
+        }
+      }
+    },
+    {
+      "hours_elapsed": 24,
+      "device_performance": {
+        "B_w": 1490.9522885245901,
+        "B_r": 2336.7424,
+        "B_eff": 2202.29032,
+        "degradation_factor": {
+          "write": 0.11673442622950822,
+          "read": 0.013199999999999962,
+          "effective": 0.02423999999999997
+        }
+      },
+      "workload_predictions": {
+        "fillrandom": {
+          "predicted_performance": 31.8263682295082,
+          "device_performance": {
+            "B_w": 1490.9522885245901,
+            "B_r": 2336.7424,
+            "B_eff": 2202.29032,
+            "degradation_factor": {
+              "write": 0.11673442622950822,
+              "read": 0.013199999999999962,
+              "effective": 0.02423999999999997
+            }
+          },
+          "B_eff_used": 2092.175804,
+          "base_efficiency": 0.019,
+          "time_factor": 0.5901639344262295,
+          "degradation_factor": 0.9350819672131148
+        },
+        "overwrite": {
+          "predicted_performance": 52.5300396,
+          "device_performance": {
+            "B_w": 1490.9522885245901,
+            "B_r": 2336.7424,
+            "B_eff": 2202.29032,
+            "degradation_factor": {
+              "write": 0.11673442622950822,
+              "read": 0.013199999999999962,
+              "effective": 0.02423999999999997
+            }
+          },
+          "B_eff_used": 2202.29032,
+          "base_efficiency": 0.025,
+          "time_factor": 0.4590163934426229,
+          "degradation_factor": 0.9540983606557377
+        },
+        "mixgraph": {
+          "predicted_performance": 44.866011521408,
+          "device_performance": {
+            "B_w": 1490.9522885245901,
+            "B_r": 2336.7424,
+            "B_eff": 2202.29032,
+            "degradation_factor": {
+              "write": 0.11673442622950822,
+              "read": 0.013199999999999962,
+              "effective": 0.02423999999999997
+            }
+          },
+          "B_eff_used": 2158.2445136,
+          "base_efficiency": 0.022,
+          "time_factor": 0.5245901639344263,
+          "degradation_factor": 0.9449180327868852
+        }
+      }
+    },
+    {
+      "hours_elapsed": 30,
+      "device_performance": {
+        "B_w": 1434.5509508196722,
+        "B_r": 2328.928,
+        "B_eff": 2188.6129,
+        "degradation_factor": {
+          "write": 0.15014754098360655,
+          "read": 0.01650000000000005,
+          "effective": 0.030299999999999962
+        }
+      },
+      "workload_predictions": {
+        "fillrandom": {
+          "predicted_performance": 32.27329401639344,
+          "device_performance": {
+            "B_w": 1434.5509508196722,
+            "B_r": 2328.928,
+            "B_eff": 2188.6129,
+            "degradation_factor": {
+              "write": 0.15014754098360655,
+              "read": 0.01650000000000005,
+              "effective": 0.030299999999999962
+            }
+          },
+          "B_eff_used": 2079.182255,
+          "base_efficiency": 0.019,
+          "time_factor": 0.7377049180327869,
+          "degradation_factor": 0.9188524590163935
+        },
+        "overwrite": {
+          "predicted_performance": 51.57591875000001,
+          "device_performance": {
+            "B_w": 1434.5509508196722,
+            "B_r": 2328.928,
+            "B_eff": 2188.6129,
+            "degradation_factor": {
+              "write": 0.15014754098360655,
+              "read": 0.01650000000000005,
+              "effective": 0.030299999999999962
+            }
+          },
+          "B_eff_used": 2188.6129,
+          "base_efficiency": 0.025,
+          "time_factor": 0.5737704918032787,
+          "degradation_factor": 0.9426229508196722
+        },
+        "mixgraph": {
+          "predicted_performance": 43.937587971199996,
+          "device_performance": {
+            "B_w": 1434.5509508196722,
+            "B_r": 2328.928,
+            "B_eff": 2188.6129,
+            "degradation_factor": {
+              "write": 0.15014754098360655,
+              "read": 0.01650000000000005,
+              "effective": 0.030299999999999962
+            }
+          },
+          "B_eff_used": 2144.840642,
+          "base_efficiency": 0.022,
+          "time_factor": 0.6557377049180328,
+          "degradation_factor": 0.9311475409836065
+        }
+      }
+    },
+    {
+      "hours_elapsed": 36,
+      "device_performance": {
+        "B_w": 1375.293849180328,
+        "B_r": 2321.1135999999997,
+        "B_eff": 2174.93548,
+        "degradation_factor": {
+          "write": 0.18525245901639342,
+          "read": 0.019800000000000137,
+          "effective": 0.036359999999999955
+        }
+      },
+      "workload_predictions": {
+        "fillrandom": {
+          "predicted_performance": 32.727858295081965,
+          "device_performance": {
+            "B_w": 1375.293849180328,
+            "B_r": 2321.1135999999997,
+            "B_eff": 2174.93548,
+            "degradation_factor": {
+              "write": 0.18525245901639342,
+              "read": 0.019800000000000137,
+              "effective": 0.036359999999999955
+            }
+          },
+          "B_eff_used": 2066.188706,
+          "base_efficiency": 0.019,
+          "time_factor": 0.8852459016393442,
+          "degradation_factor": 0.9026229508196721
+        },
+        "overwrite": {
+          "predicted_performance": 50.6296456,
+          "device_performance": {
+            "B_w": 1375.293849180328,
+            "B_r": 2321.1135999999997,
+            "B_eff": 2174.93548,
+            "degradation_factor": {
+              "write": 0.18525245901639342,
+              "read": 0.019800000000000137,
+              "effective": 0.036359999999999955
+            }
+          },
+          "B_eff_used": 2174.93548,
+          "base_efficiency": 0.025,
+          "time_factor": 0.6885245901639344,
+          "degradation_factor": 0.9311475409836065
+        },
+        "mixgraph": {
+          "predicted_performance": 43.017285848768,
+          "device_performance": {
+            "B_w": 1375.293849180328,
+            "B_r": 2321.1135999999997,
+            "B_eff": 2174.93548,
+            "degradation_factor": {
+              "write": 0.18525245901639342,
+              "read": 0.019800000000000137,
+              "effective": 0.036359999999999955
+            }
+          },
+          "B_eff_used": 2131.4367704,
+          "base_efficiency": 0.022,
+          "time_factor": 0.7868852459016393,
+          "degradation_factor": 0.9173770491803279
+        }
+      }
+    },
+    {
+      "hours_elapsed": 36.6,
+      "device_performance": {
+        "B_w": 1369.211072,
+        "B_r": 2320.33216,
+        "B_eff": 2173.5677379999997,
+        "degradation_factor": {
+          "write": 0.18885599999999997,
+          "read": 0.02013000000000003,
+          "effective": 0.03696600000000012
+        }
+      },
+      "workload_predictions": {
+        "fillrandom": {
+          "predicted_performance": 32.773734839999996,
+          "device_performance": {
+            "B_w": 1369.211072,
+            "B_r": 2320.33216,
+            "B_eff": 2173.5677379999997,
+            "degradation_factor": {
+              "write": 0.18885599999999997,
+              "read": 0.02013000000000003,
+              "effective": 0.03696600000000012
+            }
+          },
+          "B_eff_used": 2064.8893510999997,
+          "base_efficiency": 0.019,
+          "time_factor": 0.9,
+          "degradation_factor": 0.901
+        },
+        "overwrite": {
+          "predicted_performance": 50.5354499085,
+          "device_performance": {
+            "B_w": 1369.211072,
+            "B_r": 2320.33216,
+            "B_eff": 2173.5677379999997,
+            "degradation_factor": {
+              "write": 0.18885599999999997,
+              "read": 0.02013000000000003,
+              "effective": 0.03696600000000012
+            }
+          },
+          "B_eff_used": 2173.5677379999997,
+          "base_efficiency": 0.025,
+          "time_factor": 0.7,
+          "degradation_factor": 0.93
+        },
+        "mixgraph": {
+          "predicted_performance": 42.92570231505247,
+          "device_performance": {
+            "B_w": 1369.211072,
+            "B_r": 2320.33216,
+            "B_eff": 2173.5677379999997,
+            "degradation_factor": {
+              "write": 0.18885599999999997,
+              "read": 0.02013000000000003,
+              "effective": 0.03696600000000012
+            }
+          },
+          "B_eff_used": 2130.09638324,
+          "base_efficiency": 0.022,
+          "time_factor": 0.8,
+          "degradation_factor": 0.9159999999999999
+        }
+      }
+    }
+  ],
+  "validation_results": {
+    "fillrandom_errors": {
+      "start": 0.0,
+      "end": 8.88283999999998
+    },
+    "model_predictions": {
+      "start": {
+        "predicted_performance": 30.1,
+        "device_performance": {
+          "B_w": 1688.0,
+          "B_r": 2368.0,
+          "B_eff": 2257.0,
+          "degradation_factor": {
+            "write": 0.0,
+            "read": 0.0,
+            "effective": 0.0
+          }
+        },
+        "B_eff_used": 2144.15,
+        "base_efficiency": 0.019,
+        "time_factor": 0.0,
+        "degradation_factor": 1.0
+      },
+      "end": {
+        "predicted_performance": 32.773734839999996,
+        "device_performance": {
+          "B_w": 1369.211072,
+          "B_r": 2320.33216,
+          "B_eff": 2173.5677379999997,
+          "degradation_factor": {
+            "write": 0.18885599999999997,
+            "read": 0.02013000000000003,
+            "effective": 0.03696600000000012
+          }
+        },
+        "B_eff_used": 2064.8893510999997,
+        "base_efficiency": 0.019,
+        "time_factor": 0.9,
+        "degradation_factor": 0.901
+      }
+    },
+    "actual_data": {
+      "fillrandom": {
+        "start_performance": 30.1,
+        "end_performance": 30.1,
+        "average_performance": 30.1
+      },
+      "device_performance": {
+        "start": {
+          "B_w": 1688.0,
+          "B_r": 2368.0,
+          "B_eff": 2257.0
+        },
+        "end": {
+          "B_w": 1421.0,
+          "B_r": 2320.0,
+          "B_eff": 2173.0
+        }
+      }
+    }
+  },
+  "model_improvements": {
+    "realistic_modeling": {
+      "description": "\uc2e4\ud5d8 \uc911\uac04 \uc7a5\uce58 \uc5f4\ud654 \ubc18\uc601",
+      "benefit": "\ub354 \ud604\uc2e4\uc801\uc778 \uc131\ub2a5 \uc608\uce21",
+      "impact": "High"
+    },
+    "time_awareness": {
+      "description": "\uc2dc\uac04 \uc758\uc874\uc801 \uc131\ub2a5 \ubcc0\ud654 \ubaa8\ub378\ub9c1",
+      "benefit": "\uc2e4\ud5d8 \uc9c4\ud589\uc5d0 \ub530\ub978 \uc131\ub2a5 \ubcc0\ud654 \uc608\uce21",
+      "impact": "High"
+    },
+    "workload_adaptation": {
+      "description": "\uc6cc\ud06c\ub85c\ub4dc\ubcc4 \uc2dc\uac04 \uc758\uc874\uc131 \ubc18\uc601",
+      "benefit": "FillRandom \ub4f1 \uc6cc\ud06c\ub85c\ub4dc \ud2b9\uc131 \uace0\ub824",
+      "impact": "Medium"
+    },
+    "validation_accuracy": {
+      "description": "\uac80\uc99d \ub370\uc774\ud130\uc640 \uc2e4\uc81c \uc870\uac74 \uc77c\uce58",
+      "benefit": "\ub354 \uc815\ud655\ud55c \ubaa8\ub378 \uac80\uc99d",
+      "impact": "High"
+    }
+  }
+}

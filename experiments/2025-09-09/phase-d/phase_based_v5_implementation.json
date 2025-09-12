@@ -1,0 +1,152 @@
+{
+  "model_info": {
+    "name": "RocksDB Put Model v5 - Phase-Based Implementation",
+    "version": "5.1-phase-based-impl",
+    "description": "시간에 따른 성능 단계별 변화를 반영한 v5 모델 구현",
+    "creation_date": "2025-09-09",
+    "approach": "Time-based Phase Modeling with Actual Calculations"
+  },
+  "experiment_data": {
+    "2025-09-05": {
+      "duration_hours": 17,
+      "device_bandwidth": 1556.0,
+      "actual_throughput": 196.2,
+      "actual_efficiency": 0.12609254498714653
+    },
+    "2025-09-08": {
+      "duration_hours": 8,
+      "device_bandwidth": 1490.0,
+      "actual_throughput": 157.5,
+      "actual_efficiency": 0.10570469798657718
+    },
+    "2025-09-09": {
+      "duration_hours": 36.5,
+      "device_bandwidth": 3005.8,
+      "actual_throughput": 30.1,
+      "actual_efficiency": 0.010013972985561248
+    }
+  },
+  "phase_performance": {
+    "initial_phase": {
+      "time_range_hours": 0.167,
+      "estimated_throughput": 200,
+      "estimated_efficiency": 0.2,
+      "characteristics": "high_performance, memory_based, low_compaction"
+    },
+    "transitional_phase": {
+      "time_range_hours": 0.833,
+      "estimated_throughput": 100,
+      "estimated_efficiency": 0.1,
+      "characteristics": "medium_performance, compaction_starting, transition"
+    },
+    "stable_phase": {
+      "time_range_hours": 35.5,
+      "measured_throughput": 30.1,
+      "measured_efficiency": 0.01,
+      "characteristics": "low_performance, high_compaction, stable"
+    }
+  },
+  "validation_results": {
+    "2025-09-05": {
+      "predicted_throughput": 37.87366588235294,
+      "actual_throughput": 196.2,
+      "error_rate": 80.69639863284763,
+      "accuracy_grade": "Poor",
+      "phases": [
+        "initial_phase",
+        "transitional_phase",
+        "stable_phase"
+      ],
+      "weights": {
+        "initial_phase": 0.009823529411764707,
+        "transitional_phase": 0.048999999999999995,
+        "stable_phase": 0.9411764705882353
+      },
+      "phase_throughputs": {
+        "initial_phase": 1292.0,
+        "transitional_phase": 215.03999999999996,
+        "stable_phase": 15.56
+      }
+    },
+    "2025-09-08": {
+      "predicted_throughput": 62.39904,
+      "actual_throughput": 157.5,
+      "error_rate": 60.3815619047619,
+      "accuracy_grade": "Poor",
+      "phases": [
+        "initial_phase",
+        "transitional_phase",
+        "stable_phase"
+      ],
+      "weights": {
+        "initial_phase": 0.020875,
+        "transitional_phase": 0.104125,
+        "stable_phase": 0.875
+      },
+      "phase_throughputs": {
+        "initial_phase": 1292.0,
+        "transitional_phase": 215.03999999999996,
+        "stable_phase": 14.9
+      }
+    },
+    "2025-09-09": {
+      "predicted_throughput": 40.05346082191781,
+      "actual_throughput": 30.1,
+      "error_rate": 33.067976152550855,
+      "accuracy_grade": "Fair",
+      "phases": [
+        "initial_phase",
+        "transitional_phase",
+        "stable_phase"
+      ],
+      "weights": {
+        "initial_phase": 0.004575342465753425,
+        "transitional_phase": 0.022821917808219176,
+        "stable_phase": 0.9726027397260274
+      },
+      "phase_throughputs": {
+        "initial_phase": 1292.0,
+        "transitional_phase": 215.03999999999996,
+        "stable_phase": 30.058000000000003
+      }
+    }
+  },
+  "overall_accuracy": {
+    "average_error_rate": 58.0486455633868,
+    "overall_grade": "Poor"
+  },
+  "model_parameters": {
+    "initial_phase": {
+      "memory_bandwidth": 8000,
+      "memtable_efficiency": 0.25,
+      "write_stall_efficiency": 0.95,
+      "cache_efficiency": 0.8,
+      "flush_efficiency": 0.85
+    },
+    "transitional_phase": {
+      "memory_bandwidth": 8000,
+      "memtable_efficiency": 0.2,
+      "decay_factor": 0.8,
+      "write_stall_efficiency": 0.7,
+      "cache_efficiency": 0.4,
+      "compaction_efficiency": 0.6
+    },
+    "stable_phase": {
+      "device_bandwidth": 3005.8,
+      "device_efficiency": 0.01,
+      "write_amplification_factor": 1.64,
+      "write_stall_efficiency": 0.182,
+      "cache_efficiency": 0.01,
+      "compaction_efficiency": 0.2
+    }
+  },
+  "key_insights": [
+    "시간에 따른 성능 단계별 변화 모델링",
+    "초기(0-10분) → 전환(10-60분) → 안정화(60+분)",
+    "단계별 성능 저하 (200→100→30.1 MB/s)",
+    "실험 시간에 따른 단계 자동 감지",
+    "단계별 가중치 기반 성능 예측",
+    "이전 실험들이 09-09 실험의 일부분으로 해석",
+    "실제 계산 로직을 포함한 완전한 구현"
+  ]
+}

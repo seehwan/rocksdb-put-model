@@ -1,0 +1,120 @@
+{
+  "validation_info": {
+    "model_name": "RocksDB Put Model v5 - Envelope + Dynamic Integration",
+    "validation_date": "2025-09-09",
+    "total_experiments": 3,
+    "validation_method": "Historical experiment data validation"
+  },
+  "validation_results": {
+    "2025-09-05": {
+      "predicted": 9.615146400000002,
+      "actual": 196.1885696,
+      "error_rate": 0.9509902823614856,
+      "components": {
+        "envelope_bandwidth": 1556,
+        "workload_eta": 0.02,
+        "dynamic_eta": 0.34330000000000005,
+        "system_eta": 0.9,
+        "total_efficiency": 0.0061794000000000016
+      }
+    },
+    "2025-09-08": {
+      "predicted": 9.207306000000003,
+      "actual": 157.5,
+      "error_rate": 0.9415409142857142,
+      "components": {
+        "envelope_bandwidth": 1490.0,
+        "workload_eta": 0.02,
+        "dynamic_eta": 0.34330000000000005,
+        "system_eta": 0.9,
+        "total_efficiency": 0.0061794000000000016
+      }
+    },
+    "2025-09-09": {
+      "predicted": 18.574040520000004,
+      "actual": 30.1,
+      "error_rate": 0.38292224186046503,
+      "components": {
+        "envelope_bandwidth": 3005.8,
+        "workload_eta": 0.02,
+        "dynamic_eta": 0.34330000000000005,
+        "system_eta": 0.9,
+        "total_efficiency": 0.0061794000000000016
+      }
+    }
+  },
+  "model_comparison": {
+    "2025-09-05": {
+      "actual": 196.1885696,
+      "v1_error": 1.0,
+      "v2_1_error": 1.0,
+      "v3_error": 1.0,
+      "v4_error": 1.0
+    }
+  },
+  "analysis": {
+    "total_experiments": 3,
+    "average_error_rate": 0.758484479502555,
+    "min_error_rate": 0.38292224186046503,
+    "max_error_rate": 0.9509902823614856,
+    "overall_accuracy": "Poor",
+    "individual_results": {
+      "2025-09-05": {
+        "predicted": 9.615146400000002,
+        "actual": 196.1885696,
+        "error_rate": 0.9509902823614856,
+        "components": {
+          "envelope_bandwidth": 1556,
+          "workload_eta": 0.02,
+          "dynamic_eta": 0.34330000000000005,
+          "system_eta": 0.9,
+          "total_efficiency": 0.0061794000000000016
+        }
+      },
+      "2025-09-08": {
+        "predicted": 9.207306000000003,
+        "actual": 157.5,
+        "error_rate": 0.9415409142857142,
+        "components": {
+          "envelope_bandwidth": 1490.0,
+          "workload_eta": 0.02,
+          "dynamic_eta": 0.34330000000000005,
+          "system_eta": 0.9,
+          "total_efficiency": 0.0061794000000000016
+        }
+      },
+      "2025-09-09": {
+        "predicted": 18.574040520000004,
+        "actual": 30.1,
+        "error_rate": 0.38292224186046503,
+        "components": {
+          "envelope_bandwidth": 3005.8,
+          "workload_eta": 0.02,
+          "dynamic_eta": 0.34330000000000005,
+          "system_eta": 0.9,
+          "total_efficiency": 0.0061794000000000016
+        }
+      }
+    }
+  },
+  "historical_data_summary": {
+    "2025-09-05": {
+      "date": "2025-09-05",
+      "environment": "GPU-01 server",
+      "actual_throughput": 196.1885696,
+      "device_write_bw": 1556
+    },
+    "2025-09-08": {
+      "date": "2025-09-08",
+      "environment": "GPU-01 server",
+      "actual_throughput": 157.5,
+      "device_write_bw": 1490.0
+    },
+    "2025-09-09": {
+      "date": "2025-09-09",
+      "environment": "GPU-01 server",
+      "actual_throughput": 30.1,
+      "device_write_bw": 3005.8
+    }
+  }
+}

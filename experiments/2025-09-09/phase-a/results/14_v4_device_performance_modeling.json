@@ -1,0 +1,146 @@
+{
+  "timestamp": "2025-09-12T04:59:05.007430",
+  "envelope_modeling_structure": {
+    "description": "4D \uadf8\ub9ac\ub4dc \uae30\ubc18 \uc7a5\uce58 \uc131\ub2a5 \ubaa8\ub378\ub9c1",
+    "dimensions": {
+      "rho_r": "\uc77d\uae30 \ube44\uc728 (0.0-1.0)",
+      "iodepth": "\ud050 \uae4a\uc774 (1, 4, 16, 64)",
+      "numjobs": "\ubcd1\ub82c \uc791\uc5c5 \uc218 (1, 2, 4)",
+      "bs_k": "\ube14\ub85d \ud06c\uae30 KiB (4, 64, 1024)"
+    },
+    "total_grid_points": 180,
+    "interpolation_method": "Linear interpolation"
+  },
+  "device_parameter_integration": {
+    "device_parameters": {
+      "B_w": "Write bandwidth (MiB/s)",
+      "B_r": "Read bandwidth (MiB/s)",
+      "B_eff": "Effective bandwidth (MiB/s)",
+      "physical_constraints": "min(Br, Bw) \ud074\ub7a8\ud551"
+    },
+    "integration_method": {
+      "envelope_query": "4D \uadf8\ub9ac\ub4dc\uc5d0\uc11c \uc720\ud6a8 \ub300\uc5ed\ud3ed \uc870\ud68c",
+      "level_capacity": "mu \u00d7 k \u00d7 eta \u00d7 capacity_factor \u00d7 Beff",
+      "workload_demands": "\uc6cc\ud06c\ub85c\ub4dc\ubcc4 I/O \uc694\uad6c\uc0ac\ud56d \uacc4\uc0b0",
+      "backlog_dynamics": "\uc218\uc694\uc640 \uc6a9\ub7c9\uc758 \ucc28\uc774\ub85c \ubc31\ub85c\uadf8 \uc5c5\ub370\uc774\ud2b8"
+    }
+  },
+  "phase_a_device_performance": {
+    "B_w": {
+      "before": 1688.0,
+      "after": 1421.0,
+      "degradation_pct": -15.817535545023699,
+      "degradation_abs": -267.0
+    },
+    "B_r": {
+      "before": 2368.0,
+      "after": 2320.0,
+      "degradation_pct": -2.027027027027027,
+      "degradation_abs": -48.0
+    },
+    "B_eff": {
+      "before": 2257.0,
+      "after": 2173.0,
+      "degradation_pct": -3.721754541426672,
+      "degradation_abs": -84.0
+    }
+  },
+  "modeling_workflow": {
+    "envelope_query": "4D \uadf8\ub9ac\ub4dc \uae30\ubc18 \uc720\ud6a8 \ub300\uc5ed\ud3ed \uc870\ud68c",
+    "physical_constraints": "min(Br, Bw) \ud074\ub7a8\ud551",
+    "level_capacity": "\u03bc \u00d7 k \u00d7 \u03b7 \u00d7 capacity_factor \u00d7 Beff",
+    "workload_demands": "S_put \u00d7 compression_ratio \u00d7 level_factor",
+    "backlog_dynamics": "Q += (D - C) \u00d7 dt"
+  },
+  "validation_results": {
+    "before_degradation": {
+      "v4_model": {
+        "fillrandom": {
+          "predicted": 32.1,
+          "actual": 30.1,
+          "error": 6.6
+        },
+        "overwrite": {
+          "predicted": 42.2,
+          "actual": 45.2,
+          "error": 6.6
+        },
+        "mixgraph": {
+          "predicted": 37.1,
+          "actual": 38.7,
+          "error": 4.0
+        },
+        "mean_error": 5.7
+      }
+    },
+    "after_degradation": {
+      "v4_model": {
+        "fillrandom": {
+          "predicted": 27.0,
+          "actual": 30.1,
+          "error": 10.3
+        },
+        "overwrite": {
+          "predicted": 35.5,
+          "actual": 45.2,
+          "error": 21.4
+        },
+        "mixgraph": {
+          "predicted": 31.3,
+          "actual": 38.7,
+          "error": 19.2
+        },
+        "mean_error": 17.0
+      }
+    }
+  },
+  "device_performance_impact": 11.3,
+  "comprehensive_analysis": {
+    "device_envelope_modeling": {
+      "method": "4D \uadf8\ub9ac\ub4dc \uae30\ubc18 \uc120\ud615 \ubcf4\uac04",
+      "grid_points": 180,
+      "dimensions": [
+        "rho_r",
+        "iodepth",
+        "numjobs",
+        "bs_k"
+      ],
+      "integration": "Envelope.query() \u2192 \ubb3c\ub9ac\uc801 \uc81c\uc57d \u2192 \ub808\ubca8 \uc6a9\ub7c9 \uacc4\uc0b0"
+    },
+    "device_performance_integration": {
+      "before_degradation": {
+        "B_w": 1688.0,
+        "B_r": 2368.0,
+        "B_eff": 2257.0,
+        "description": "\uc644\uc804 \ucd08\uae30\ud654 \uc9c1\ud6c4"
+      },
+      "after_degradation": {
+        "B_w": 1421.0,
+        "B_r": 2320.0,
+        "B_eff": 2173.0,
+        "description": "\uc0ac\uc6a9 \ud6c4 \uc5f4\ud654 \uc0c1\ud0dc"
+      },
+      "degradation_impact": "\ud3c9\uade0 \uc624\ucc28 5.7% \u2192 17.0% (11.3% \uc99d\uac00)"
+    },
+    "key_insights": [
+      "Device Envelope Modeling\uc774 v4 \ubaa8\ub378\uc758 \ud575\uc2ec",
+      "4D \uadf8\ub9ac\ub4dc \uae30\ubc18 \uc120\ud615 \ubcf4\uac04\uc73c\ub85c \uc815\ud655\ud55c \ub300\uc5ed\ud3ed \uc608\uce21",
+      "\ubb3c\ub9ac\uc801 \uc81c\uc57d(min(Br, Bw)) \uc801\uc6a9\uc73c\ub85c \ud604\uc2e4\uc801 \uc608\uce21",
+      "\uc7a5\uce58 \uc131\ub2a5 \uc5f4\ud654\uac00 \ubaa8\ub378 \uc815\ud655\ub3c4\uc5d0 \uc9c1\uc811\uc801 \uc601\ud5a5",
+      "\uc5f4\ud654 \uc804 \uc0c1\ud0dc\uc5d0\uc11c \ucd5c\uace0 \uc815\ud655\ub3c4 \ub2ec\uc131"
+    ],
+    "modeling_strengths": [
+      "\uc2e4\uc81c fio \uce21\uc815 \ub370\uc774\ud130 \uae30\ubc18",
+      "\ub2e4\ucc28\uc6d0 I/O \ud328\ud134 \ubc18\uc601",
+      "\ubb3c\ub9ac\uc801 \uc81c\uc57d \uace0\ub824",
+      "\ub3d9\uc801 \uc2dc\ubbac\ub808\uc774\uc158 \ud1b5\ud569",
+      "\ub808\ubca8\ubcc4 \uc6a9\ub7c9 \ubaa8\ub378\ub9c1"
+    ],
+    "limitations": [
+      "\uc7a5\uce58 \uc0c1\ud0dc \ubcc0\ud654\uc5d0 \ubbfc\uac10",
+      "\ucd08\uae30\ud654 \uc0c1\ud0dc \uc758\uc874\uc131",
+      "\ubcf5\uc7a1\ud55c \ud30c\ub77c\ubbf8\ud130 \uc870\uc815 \ud544\uc694",
+      "\uadf8\ub9ac\ub4dc \ubc94\uc704 \uc678 \ucd94\uc815 \ud55c\uacc4"
+    ]
+  }
+}

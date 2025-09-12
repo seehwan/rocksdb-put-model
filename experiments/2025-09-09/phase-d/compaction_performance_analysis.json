@@ -1,0 +1,968 @@
+{
+  "analysis_info": {
+    "model_name": "RocksDB Compaction Performance Analysis",
+    "analysis_date": "2025-09-09",
+    "data_points": 17405,
+    "compaction_events": 0
+  },
+  "performance_patterns": {
+    "initial_performance": 30826.125,
+    "mid_performance": 18397.874649859943,
+    "stable_performance": 8546.153289018373,
+    "performance_degradation": 22279.971710981627,
+    "degradation_rate": 72.27626472993809,
+    "time_performance": "            current_rate                              avg_rate                           \n                    mean       std      min      max      mean      std      min      max\ntime_bucket                                                                              \n0.0             52960.50     52.06  52882.5  52988.8  52960.50    52.06  52882.5  52988.8\n1.0             23442.84  21078.09   3541.2  43454.8  40653.70  7934.19  33096.9  48248.4\n2.0             16462.61   4050.11  11562.9  20457.6  28261.10  1823.60  26430.4  30137.7\n3.0             40473.99   7669.38  33082.2  48609.3  30278.98   266.16  29909.8  30598.8\n4.0             30186.40   5510.83  24445.8  35703.4  30779.95   361.31  30396.9  31175.8\n...                  ...       ...      ...      ...       ...      ...      ...      ...\n2188.0           7026.59   1408.43   5575.4   8355.7   7601.36     0.61   7600.6   7602.1\n2189.0           6771.56   1575.34   5603.0   8683.3   7600.86     0.71   7599.8   7601.9\n2190.0           7048.35    925.71   5527.9   8405.8   7600.70     0.60   7600.0   7601.5\n2191.0           6251.54   1600.98   4745.7   7788.8   7600.28     0.77   7599.4   7601.5\n2192.0           7201.84   1259.48   4626.1   7990.6   7599.83     0.83   7598.8   7600.9\n\n[2193 rows x 8 columns]",
+    "performance_phases": [
+      {
+        "phase": "high",
+        "start_minute": 0,
+        "end_minute": 218,
+        "duration_minutes": 218,
+        "avg_performance": 14494.124160143509
+      },
+      {
+        "phase": "medium",
+        "start_minute": 218,
+        "end_minute": 2193,
+        "duration_minutes": 1975,
+        "avg_performance": 8254.356977998794
+      }
+    ]
+  },
+  "compaction_model": {
+    "name": "RocksDB Compaction-Aware Performance Model",
+    "version": "1.0",
+    "philosophy": "컴팩션 동작을 기반으로 한 성능 예측",
+    "formula": "S_compaction = S_base × η_phase(time) × η_compaction_overhead × η_write_stall",
+    "phases": {
+      "initial": {
+        "performance_factor": 3.6070175618790876,
+        "duration_minutes": 10,
+        "characteristics": "MemTable Flush, L0 Compaction 시작"
+      },
+      "transitional": {
+        "performance_factor": 2.1527667510364954,
+        "duration_minutes": 50,
+        "characteristics": "간헐적 Compaction, 스파이크 발생"
+      },
+      "stable": {
+        "performance_factor": 1.0,
+        "duration_minutes": "indefinite",
+        "characteristics": "지속적 Compaction 오버헤드"
+      }
+    },
+    "compaction_overhead": {
+      "base_overhead": 0.2,
+      "peak_overhead": 0.8,
+      "average_overhead": 0.5
+    },
+    "write_stall_model": {
+      "stall_probability": 0.818,
+      "stall_impact": 0.8,
+      "recovery_factor": 1.2
+    }
+  },
+  "temporal_data_sample": [
+    {
+      "timestamp": "2025-09-09 23:48:01",
+      "elapsed_seconds": 31.0,
+      "thread_id": 0,
+      "current_ops": 1616000,
+      "total_ops": 1616000,
+      "current_rate": 52988.8,
+      "avg_rate": 52988.8
+    },
+    {
+      "timestamp": "2025-09-09 23:48:01",
+      "elapsed_seconds": 31.0,
+      "thread_id": 2,
+      "current_ops": 1616000,
+      "total_ops": 1616000,
+      "current_rate": 52987.8,
+      "avg_rate": 52987.8
+    },
+    {
+      "timestamp": "2025-09-09 23:48:01",
+      "elapsed_seconds": 31.0,
+      "thread_id": 3,
+      "current_ops": 1616000,
+      "total_ops": 1616000,
+      "current_rate": 52982.9,
+      "avg_rate": 52982.9
+    },
+    {
+      "timestamp": "2025-09-09 23:48:01",
+      "elapsed_seconds": 31.0,
+      "thread_id": 1,
+      "current_ops": 1613000,
+      "total_ops": 1613000,
+      "current_rate": 52882.5,
+      "avg_rate": 52882.5
+    },
+    {
+      "timestamp": "2025-09-09 23:48:31",
+      "elapsed_seconds": 61.0,
+      "thread_id": 3,
+      "current_ops": 1309000,
+      "total_ops": 2925000,
+      "current_rate": 43454.8,
+      "avg_rate": 48248.4
+    },
+    {
+      "timestamp": "2025-09-09 23:48:31",
+      "elapsed_seconds": 61.0,
+      "thread_id": 1,
+      "current_ops": 1303000,
+      "total_ops": 2916000,
+      "current_rate": 43248.6,
+      "avg_rate": 48095.2
+    },
+    {
+      "timestamp": "2025-09-09 23:48:31",
+      "elapsed_seconds": 61.0,
+      "thread_id": 0,
+      "current_ops": 1310000,
+      "total_ops": 2926000,
+      "current_rate": 43060.0,
+      "avg_rate": 48030.5
+    },
+    {
+      "timestamp": "2025-09-09 23:48:32",
+      "elapsed_seconds": 62.0,
+      "thread_id": 2,
+      "current_ops": 1310000,
+      "total_ops": 2926000,
+      "current_rate": 42869.8,
+      "avg_rate": 47923.8
+    },
+    {
+      "timestamp": "2025-09-09 23:49:01",
+      "elapsed_seconds": 91.0,
+      "thread_id": 3,
+      "current_ops": 112000,
+      "total_ops": 3037000,
+      "current_rate": 3697.6,
+      "avg_rate": 33405.4
+    },
+    {
+      "timestamp": "2025-09-09 23:49:02",
+      "elapsed_seconds": 92.0,
+      "thread_id": 1,
+      "current_ops": 109000,
+      "total_ops": 3025000,
+      "current_rate": 3555.2,
+      "avg_rate": 33136.4
+    },
+    {
+      "timestamp": "2025-09-09 23:49:02",
+      "elapsed_seconds": 92.0,
+      "thread_id": 2,
+      "current_ops": 126000,
+      "total_ops": 3052000,
+      "current_rate": 4115.5,
+      "avg_rate": 33293.0
+    },
+    {
+      "timestamp": "2025-09-09 23:49:02",
+      "elapsed_seconds": 92.0,
+      "thread_id": 0,
+      "current_ops": 109000,
+      "total_ops": 3035000,
+      "current_rate": 3541.2,
+      "avg_rate": 33096.9
+    },
+    {
+      "timestamp": "2025-09-09 23:49:32",
+      "elapsed_seconds": 122.0,
+      "thread_id": 3,
+      "current_ops": 616000,
+      "total_ops": 3653000,
+      "current_rate": 20332.1,
+      "avg_rate": 30137.7
+    },
+    {
+      "timestamp": "2025-09-09 23:49:32",
+      "elapsed_seconds": 122.0,
+      "thread_id": 1,
+      "current_ops": 617000,
+      "total_ops": 3642000,
+      "current_rate": 20457.6,
+      "avg_rate": 29987.8
+    },
+    {
+      "timestamp": "2025-09-09 23:49:33",
+      "elapsed_seconds": 123.0,
+      "thread_id": 0,
+      "current_ops": 616000,
+      "total_ops": 3651000,
+      "current_rate": 19936.1,
+      "avg_rate": 29780.0
+    },
+    {
+      "timestamp": "2025-09-09 23:49:33",
+      "elapsed_seconds": 123.0,
+      "thread_id": 2,
+      "current_ops": 620000,
+      "total_ops": 3672000,
+      "current_rate": 20023.3,
+      "avg_rate": 29942.6
+    },
+    {
+      "timestamp": "2025-09-09 23:50:02",
+      "elapsed_seconds": 152.0,
+      "thread_id": 3,
+      "current_ops": 347000,
+      "total_ops": 4000000,
+      "current_rate": 11562.9,
+      "avg_rate": 26451.5
+    },
+    {
+      "timestamp": "2025-09-09 23:50:02",
+      "elapsed_seconds": 152.0,
+      "thread_id": 1,
+      "current_ops": 361000,
+      "total_ops": 4003000,
+      "current_rate": 12031.4,
+      "avg_rate": 26430.4
+    },
+    {
+      "timestamp": "2025-09-09 23:50:03",
+      "elapsed_seconds": 153.0,
+      "thread_id": 0,
+      "current_ops": 409000,
+      "total_ops": 4060000,
+      "current_rate": 13630.2,
+      "avg_rate": 26604.4
+    },
+    {
+      "timestamp": "2025-09-09 23:50:03",
+      "elapsed_seconds": 153.0,
+      "thread_id": 2,
+      "current_ops": 412000,
+      "total_ops": 4084000,
+      "current_rate": 13727.3,
+      "avg_rate": 26754.4
+    },
+    {
+      "timestamp": "2025-09-09 23:50:32",
+      "elapsed_seconds": 182.0,
+      "thread_id": 1,
+      "current_ops": 1459000,
+      "total_ops": 5462000,
+      "current_rate": 48609.3,
+      "avg_rate": 30098.8
+    },
+    {
+      "timestamp": "2025-09-09 23:50:32",
+      "elapsed_seconds": 182.0,
+      "thread_id": 3,
+      "current_ops": 1474000,
+      "total_ops": 5474000,
+      "current_rate": 48417.6,
+      "avg_rate": 30132.6
+    },
+    {
+      "timestamp": "2025-09-09 23:50:33",
+      "elapsed_seconds": 183.0,
+      "thread_id": 0,
+      "current_ops": 1402000,
+      "total_ops": 5462000,
+      "current_rate": 46718.0,
+      "avg_rate": 29909.8
+    },
+    {
+      "timestamp": "2025-09-09 23:50:33",
+      "elapsed_seconds": 183.0,
+      "thread_id": 2,
+      "current_ops": 1402000,
+      "total_ops": 5486000,
+      "current_rate": 46731.9,
+      "avg_rate": 30035.8
+    },
+    {
+      "timestamp": "2025-09-09 23:51:02",
+      "elapsed_seconds": 212.0,
+      "thread_id": 1,
+      "current_ops": 1018000,
+      "total_ops": 6480000,
+      "current_rate": 33470.0,
+      "avg_rate": 30582.7
+    },
+    {
+      "timestamp": "2025-09-09 23:51:03",
+      "elapsed_seconds": 213.0,
+      "thread_id": 3,
+      "current_ops": 1018000,
+      "total_ops": 6492000,
+      "current_rate": 33375.7,
+      "avg_rate": 30598.8
+    },
+    {
+      "timestamp": "2025-09-09 23:51:03",
+      "elapsed_seconds": 213.0,
+      "thread_id": 0,
+      "current_ops": 1007000,
+      "total_ops": 6469000,
+      "current_rate": 33387.2,
+      "avg_rate": 30402.7
+    },
+    {
+      "timestamp": "2025-09-09 23:51:04",
+      "elapsed_seconds": 214.0,
+      "thread_id": 2,
+      "current_ops": 1006000,
+      "total_ops": 6492000,
+      "current_rate": 33082.2,
+      "avg_rate": 30470.6
+    },
+    {
+      "timestamp": "2025-09-09 23:51:33",
+      "elapsed_seconds": 243.0,
+      "thread_id": 1,
+      "current_ops": 1066000,
+      "total_ops": 7546000,
+      "current_rate": 35021.9,
+      "avg_rate": 31140.3
+    },
+    {
+      "timestamp": "2025-09-09 23:51:33",
+      "elapsed_seconds": 243.0,
+      "thread_id": 3,
+      "current_ops": 1071000,
+      "total_ops": 7563000,
+      "current_rate": 35198.9,
+      "avg_rate": 31175.8
+    },
+    {
+      "timestamp": "2025-09-09 23:51:34",
+      "elapsed_seconds": 244.0,
+      "thread_id": 2,
+      "current_ops": 1074000,
+      "total_ops": 7566000,
+      "current_rate": 35703.4,
+      "avg_rate": 31118.0
+    },
+    {
+      "timestamp": "2025-09-09 23:51:34",
+      "elapsed_seconds": 244.0,
+      "thread_id": 0,
+      "current_ops": 1075000,
+      "total_ops": 7544000,
+      "current_rate": 35365.1,
+      "avg_rate": 31023.0
+    },
+    {
+      "timestamp": "2025-09-09 23:52:03",
+      "elapsed_seconds": 273.0,
+      "thread_id": 1,
+      "current_ops": 740000,
+      "total_ops": 8286000,
+      "current_rate": 24445.8,
+      "avg_rate": 30396.9
+    },
+    {
+      "timestamp": "2025-09-09 23:52:03",
+      "elapsed_seconds": 273.0,
+      "thread_id": 3,
+      "current_ops": 736000,
+      "total_ops": 8299000,
+      "current_rate": 24512.3,
+      "avg_rate": 30441.9
+    },
+    {
+      "timestamp": "2025-09-09 23:52:04",
+      "elapsed_seconds": 274.0,
+      "thread_id": 2,
+      "current_ops": 768000,
+      "total_ops": 8334000,
+      "current_rate": 25591.3,
+      "avg_rate": 30510.8
+    },
+    {
+      "timestamp": "2025-09-09 23:52:04",
+      "elapsed_seconds": 274.0,
+      "thread_id": 0,
+      "current_ops": 770000,
+      "total_ops": 8314000,
+      "current_rate": 25652.5,
+      "avg_rate": 30432.9
+    },
+    {
+      "timestamp": "2025-09-09 23:52:33",
+      "elapsed_seconds": 303.0,
+      "thread_id": 1,
+      "current_ops": 924000,
+      "total_ops": 9210000,
+      "current_rate": 30797.7,
+      "avg_rate": 30436.6
+    },
+    {
+      "timestamp": "2025-09-09 23:52:33",
+      "elapsed_seconds": 303.0,
+      "thread_id": 3,
+      "current_ops": 925000,
+      "total_ops": 9224000,
+      "current_rate": 30816.1,
+      "avg_rate": 30479.0
+    },
+    {
+      "timestamp": "2025-09-09 23:52:34",
+      "elapsed_seconds": 304.0,
+      "thread_id": 2,
+      "current_ops": 919000,
+      "total_ops": 9253000,
+      "current_rate": 30316.7,
+      "avg_rate": 30491.4
+    },
+    {
+      "timestamp": "2025-09-09 23:52:34",
+      "elapsed_seconds": 304.0,
+      "thread_id": 0,
+      "current_ops": 917000,
+      "total_ops": 9231000,
+      "current_rate": 30241.4,
+      "avg_rate": 30413.8
+    },
+    {
+      "timestamp": "2025-09-09 23:53:03",
+      "elapsed_seconds": 333.0,
+      "thread_id": 1,
+      "current_ops": 513000,
+      "total_ops": 9723000,
+      "current_rate": 16964.8,
+      "avg_rate": 29212.7
+    },
+    {
+      "timestamp": "2025-09-09 23:53:03",
+      "elapsed_seconds": 333.0,
+      "thread_id": 3,
+      "current_ops": 511000,
+      "total_ops": 9735000,
+      "current_rate": 16920.4,
+      "avg_rate": 29248.7
+    },
+    {
+      "timestamp": "2025-09-09 23:53:04",
+      "elapsed_seconds": 334.0,
+      "thread_id": 2,
+      "current_ops": 491000,
+      "total_ops": 9744000,
+      "current_rate": 16233.7,
+      "avg_rate": 29199.1
+    },
+    {
+      "timestamp": "2025-09-09 23:53:04",
+      "elapsed_seconds": 334.0,
+      "thread_id": 0,
+      "current_ops": 491000,
+      "total_ops": 9722000,
+      "current_rate": 16224.9,
+      "avg_rate": 29127.3
+    },
+    {
+      "timestamp": "2025-09-09 23:53:33",
+      "elapsed_seconds": 363.0,
+      "thread_id": 1,
+      "current_ops": 700000,
+      "total_ops": 10423000,
+      "current_rate": 23324.6,
+      "avg_rate": 28725.7
+    },
+    {
+      "timestamp": "2025-09-09 23:53:33",
+      "elapsed_seconds": 363.0,
+      "thread_id": 3,
+      "current_ops": 703000,
+      "total_ops": 10438000,
+      "current_rate": 23422.5,
+      "avg_rate": 28766.8
+    },
+    {
+      "timestamp": "2025-09-09 23:53:34",
+      "elapsed_seconds": 364.0,
+      "thread_id": 2,
+      "current_ops": 758000,
+      "total_ops": 10502000,
+      "current_rate": 25260.1,
+      "avg_rate": 28874.2
+    },
+    {
+      "timestamp": "2025-09-09 23:53:34",
+      "elapsed_seconds": 364.0,
+      "thread_id": 0,
+      "current_ops": 765000,
+      "total_ops": 10487000,
+      "current_rate": 25489.3,
+      "avg_rate": 28827.2
+    },
+    {
+      "timestamp": "2025-09-09 23:54:04",
+      "elapsed_seconds": 394.0,
+      "thread_id": 1,
+      "current_ops": 331000,
+      "total_ops": 10754000,
+      "current_rate": 10946.0,
+      "avg_rate": 27357.9
+    },
+    {
+      "timestamp": "2025-09-09 23:54:04",
+      "elapsed_seconds": 394.0,
+      "thread_id": 3,
+      "current_ops": 332000,
+      "total_ops": 10770000,
+      "current_rate": 10870.8,
+      "avg_rate": 27377.5
+    },
+    {
+      "timestamp": "2025-09-09 23:54:05",
+      "elapsed_seconds": 395.0,
+      "thread_id": 0,
+      "current_ops": 270000,
+      "total_ops": 10757000,
+      "current_rate": 8902.7,
+      "avg_rate": 27294.0
+    },
+    {
+      "timestamp": "2025-09-09 23:54:05",
+      "elapsed_seconds": 395.0,
+      "thread_id": 2,
+      "current_ops": 275000,
+      "total_ops": 10777000,
+      "current_rate": 9015.8,
+      "avg_rate": 27337.7
+    },
+    {
+      "timestamp": "2025-09-09 23:54:34",
+      "elapsed_seconds": 424.0,
+      "thread_id": 1,
+      "current_ops": 113000,
+      "total_ops": 10867000,
+      "current_rate": 3765.6,
+      "avg_rate": 25684.6
+    },
+    {
+      "timestamp": "2025-09-09 23:54:34",
+      "elapsed_seconds": 424.0,
+      "thread_id": 3,
+      "current_ops": 114000,
+      "total_ops": 10884000,
+      "current_rate": 3734.1,
+      "avg_rate": 25674.7
+    },
+    {
+      "timestamp": "2025-09-09 23:54:35",
+      "elapsed_seconds": 425.0,
+      "thread_id": 2,
+      "current_ops": 96000,
+      "total_ops": 10873000,
+      "current_rate": 3163.2,
+      "avg_rate": 25609.6
+    },
+    {
+      "timestamp": "2025-09-09 23:54:36",
+      "elapsed_seconds": 426.0,
+      "thread_id": 0,
+      "current_ops": 96000,
+      "total_ops": 10853000,
+      "current_rate": 3089.1,
+      "avg_rate": 25524.9
+    },
+    {
+      "timestamp": "2025-09-09 23:55:04",
+      "elapsed_seconds": 454.0,
+      "thread_id": 1,
+      "current_ops": 336000,
+      "total_ops": 11203000,
+      "current_rate": 11199.7,
+      "avg_rate": 24725.5
+    },
+    {
+      "timestamp": "2025-09-09 23:55:04",
+      "elapsed_seconds": 454.0,
+      "thread_id": 3,
+      "current_ops": 333000,
+      "total_ops": 11217000,
+      "current_rate": 11095.2,
+      "avg_rate": 24710.8
+    },
+    {
+      "timestamp": "2025-09-09 23:55:05",
+      "elapsed_seconds": 455.0,
+      "thread_id": 2,
+      "current_ops": 367000,
+      "total_ops": 11240000,
+      "current_rate": 12231.5,
+      "avg_rate": 24726.6
+    },
+    {
+      "timestamp": "2025-09-09 23:55:06",
+      "elapsed_seconds": 456.0,
+      "thread_id": 0,
+      "current_ops": 402000,
+      "total_ops": 11255000,
+      "current_rate": 13393.5,
+      "avg_rate": 24725.0
+    },
+    {
+      "timestamp": "2025-09-09 23:55:34",
+      "elapsed_seconds": 484.0,
+      "thread_id": 1,
+      "current_ops": 390000,
+      "total_ops": 11593000,
+      "current_rate": 12856.3,
+      "avg_rate": 23980.7
+    },
+    {
+      "timestamp": "2025-09-09 23:55:34",
+      "elapsed_seconds": 484.0,
+      "thread_id": 3,
+      "current_ops": 379000,
+      "total_ops": 11596000,
+      "current_rate": 12607.3,
+      "avg_rate": 23959.0
+    },
+    {
+      "timestamp": "2025-09-09 23:55:35",
+      "elapsed_seconds": 485.0,
+      "thread_id": 2,
+      "current_ops": 341000,
+      "total_ops": 11581000,
+      "current_rate": 11303.4,
+      "avg_rate": 23891.2
+    },
+    {
+      "timestamp": "2025-09-09 23:55:36",
+      "elapsed_seconds": 486.0,
+      "thread_id": 0,
+      "current_ops": 303000,
+      "total_ops": 11558000,
+      "current_rate": 10031.7,
+      "avg_rate": 23810.7
+    },
+    {
+      "timestamp": "2025-09-09 23:56:04",
+      "elapsed_seconds": 514.0,
+      "thread_id": 1,
+      "current_ops": 398000,
+      "total_ops": 11991000,
+      "current_rate": 13262.1,
+      "avg_rate": 23354.2
+    },
+    {
+      "timestamp": "2025-09-09 23:56:04",
+      "elapsed_seconds": 514.0,
+      "thread_id": 3,
+      "current_ops": 432000,
+      "total_ops": 12028000,
+      "current_rate": 14394.0,
+      "avg_rate": 23400.5
+    },
+    {
+      "timestamp": "2025-09-09 23:56:05",
+      "elapsed_seconds": 515.0,
+      "thread_id": 2,
+      "current_ops": 476000,
+      "total_ops": 12057000,
+      "current_rate": 15865.5,
+      "avg_rate": 23423.4
+    },
+    {
+      "timestamp": "2025-09-09 23:56:06",
+      "elapsed_seconds": 516.0,
+      "thread_id": 0,
+      "current_ops": 517000,
+      "total_ops": 12075000,
+      "current_rate": 17225.8,
+      "avg_rate": 23427.3
+    },
+    {
+      "timestamp": "2025-09-09 23:56:34",
+      "elapsed_seconds": 544.0,
+      "thread_id": 1,
+      "current_ops": 847000,
+      "total_ops": 12838000,
+      "current_rate": 28232.0,
+      "avg_rate": 23623.5
+    },
+    {
+      "timestamp": "2025-09-09 23:56:34",
+      "elapsed_seconds": 544.0,
+      "thread_id": 3,
+      "current_ops": 846000,
+      "total_ops": 12874000,
+      "current_rate": 28184.0,
+      "avg_rate": 23664.4
+    },
+    {
+      "timestamp": "2025-09-09 23:56:35",
+      "elapsed_seconds": 545.0,
+      "thread_id": 2,
+      "current_ops": 843000,
+      "total_ops": 12900000,
+      "current_rate": 28099.7,
+      "avg_rate": 23680.9
+    },
+    {
+      "timestamp": "2025-09-09 23:56:36",
+      "elapsed_seconds": 546.0,
+      "thread_id": 0,
+      "current_ops": 841000,
+      "total_ops": 12916000,
+      "current_rate": 28029.5,
+      "avg_rate": 23680.4
+    },
+    {
+      "timestamp": "2025-09-09 23:57:04",
+      "elapsed_seconds": 574.0,
+      "thread_id": 1,
+      "current_ops": 1450000,
+      "total_ops": 14288000,
+      "current_rate": 48099.1,
+      "avg_rate": 24909.9
+    },
+    {
+      "timestamp": "2025-09-09 23:57:05",
+      "elapsed_seconds": 575.0,
+      "thread_id": 3,
+      "current_ops": 1417000,
+      "total_ops": 14291000,
+      "current_rate": 47019.1,
+      "avg_rate": 24890.3
+    },
+    {
+      "timestamp": "2025-09-09 23:57:06",
+      "elapsed_seconds": 576.0,
+      "thread_id": 2,
+      "current_ops": 1376000,
+      "total_ops": 14276000,
+      "current_rate": 45379.3,
+      "avg_rate": 24825.0
+    },
+    {
+      "timestamp": "2025-09-09 23:57:06",
+      "elapsed_seconds": 576.0,
+      "thread_id": 0,
+      "current_ops": 1354000,
+      "total_ops": 14270000,
+      "current_rate": 45123.2,
+      "avg_rate": 24798.6
+    },
+    {
+      "timestamp": "2025-09-09 23:57:34",
+      "elapsed_seconds": 604.0,
+      "thread_id": 1,
+      "current_ops": 676000,
+      "total_ops": 14964000,
+      "current_rate": 22522.1,
+      "avg_rate": 24791.1
+    },
+    {
+      "timestamp": "2025-09-09 23:57:35",
+      "elapsed_seconds": 605.0,
+      "thread_id": 3,
+      "current_ops": 710000,
+      "total_ops": 15001000,
+      "current_rate": 23656.2,
+      "avg_rate": 24829.0
+    },
+    {
+      "timestamp": "2025-09-09 23:57:36",
+      "elapsed_seconds": 606.0,
+      "thread_id": 2,
+      "current_ops": 763000,
+      "total_ops": 15039000,
+      "current_rate": 25429.1,
+      "avg_rate": 24855.0
+    },
+    {
+      "timestamp": "2025-09-09 23:57:36",
+      "elapsed_seconds": 606.0,
+      "thread_id": 0,
+      "current_ops": 750000,
+      "total_ops": 15020000,
+      "current_rate": 24973.0,
+      "avg_rate": 24807.2
+    },
+    {
+      "timestamp": "2025-09-09 23:58:04",
+      "elapsed_seconds": 634.0,
+      "thread_id": 1,
+      "current_ops": 1226000,
+      "total_ops": 16190000,
+      "current_rate": 40850.8,
+      "avg_rate": 25551.8
+    },
+    {
+      "timestamp": "2025-09-09 23:58:05",
+      "elapsed_seconds": 635.0,
+      "thread_id": 3,
+      "current_ops": 1205000,
+      "total_ops": 16206000,
+      "current_rate": 40004.2,
+      "avg_rate": 25549.6
+    },
+    {
+      "timestamp": "2025-09-09 23:58:06",
+      "elapsed_seconds": 636.0,
+      "thread_id": 2,
+      "current_ops": 1153000,
+      "total_ops": 16192000,
+      "current_rate": 38385.2,
+      "avg_rate": 25494.9
+    },
+    {
+      "timestamp": "2025-09-09 23:58:06",
+      "elapsed_seconds": 636.0,
+      "thread_id": 0,
+      "current_ops": 1169000,
+      "total_ops": 16189000,
+      "current_rate": 38953.3,
+      "avg_rate": 25475.3
+    },
+    {
+      "timestamp": "2025-09-09 23:58:34",
+      "elapsed_seconds": 664.0,
+      "thread_id": 1,
+      "current_ops": 457000,
+      "total_ops": 16647000,
+      "current_rate": 15155.8,
+      "avg_rate": 25079.5
+    },
+    {
+      "timestamp": "2025-09-09 23:58:35",
+      "elapsed_seconds": 665.0,
+      "thread_id": 3,
+      "current_ops": 445000,
+      "total_ops": 16651000,
+      "current_rate": 14781.0,
+      "avg_rate": 25061.7
+    },
+    {
+      "timestamp": "2025-09-09 23:58:36",
+      "elapsed_seconds": 666.0,
+      "thread_id": 2,
+      "current_ops": 480000,
+      "total_ops": 16672000,
+      "current_rate": 15998.5,
+      "avg_rate": 25066.5
+    },
+    {
+      "timestamp": "2025-09-09 23:58:36",
+      "elapsed_seconds": 666.0,
+      "thread_id": 0,
+      "current_ops": 481000,
+      "total_ops": 16670000,
+      "current_rate": 16024.8,
+      "avg_rate": 25049.0
+    },
+    {
+      "timestamp": "2025-09-09 23:59:04",
+      "elapsed_seconds": 694.0,
+      "thread_id": 1,
+      "current_ops": 1174000,
+      "total_ops": 17821000,
+      "current_rate": 38928.7,
+      "avg_rate": 25681.4
+    },
+    {
+      "timestamp": "2025-09-09 23:59:05",
+      "elapsed_seconds": 695.0,
+      "thread_id": 3,
+      "current_ops": 1180000,
+      "total_ops": 17831000,
+      "current_rate": 39045.2,
+      "avg_rate": 25670.1
+    },
+    {
+      "timestamp": "2025-09-09 23:59:06",
+      "elapsed_seconds": 696.0,
+      "thread_id": 2,
+      "current_ops": 1144000,
+      "total_ops": 17816000,
+      "current_rate": 37756.8,
+      "avg_rate": 25619.5
+    },
+    {
+      "timestamp": "2025-09-09 23:59:06",
+      "elapsed_seconds": 696.0,
+      "thread_id": 0,
+      "current_ops": 1122000,
+      "total_ops": 17792000,
+      "current_rate": 37382.3,
+      "avg_rate": 25581.3
+    },
+    {
+      "timestamp": "2025-09-09 23:59:35",
+      "elapsed_seconds": 725.0,
+      "thread_id": 1,
+      "current_ops": 58000,
+      "total_ops": 17879000,
+      "current_rate": 1896.1,
+      "avg_rate": 24677.2
+    },
+    {
+      "timestamp": "2025-09-09 23:59:35",
+      "elapsed_seconds": 725.0,
+      "thread_id": 3,
+      "current_ops": 57000,
+      "total_ops": 17888000,
+      "current_rate": 1886.9,
+      "avg_rate": 24678.9
+    },
+    {
+      "timestamp": "2025-09-09 23:59:36",
+      "elapsed_seconds": 726.0,
+      "thread_id": 2,
+      "current_ops": 57000,
+      "total_ops": 17873000,
+      "current_rate": 1877.3,
+      "avg_rate": 24626.2
+    },
+    {
+      "timestamp": "2025-09-09 23:59:36",
+      "elapsed_seconds": 726.0,
+      "thread_id": 0,
+      "current_ops": 57000,
+      "total_ops": 17849000,
+      "current_rate": 1877.2,
+      "avg_rate": 24589.7
+    },
+    {
+      "timestamp": "2025-09-10 00:00:05",
+      "elapsed_seconds": 755.0,
+      "thread_id": 1,
+      "current_ops": 305000,
+      "total_ops": 18184000,
+      "current_rate": 10130.6,
+      "avg_rate": 24096.9
+    },
+    {
+      "timestamp": "2025-09-10 00:00:06",
+      "elapsed_seconds": 756.0,
+      "thread_id": 3,
+      "current_ops": 291000,
+      "total_ops": 18179000,
+      "current_rate": 9439.8,
+      "avg_rate": 24057.2
+    },
+    {
+      "timestamp": "2025-09-10 00:00:07",
+      "elapsed_seconds": 757.0,
+      "thread_id": 2,
+      "current_ops": 290000,
+      "total_ops": 18163000,
+      "current_rate": 9385.4,
+      "avg_rate": 24003.8
+    },
+    {
+      "timestamp": "2025-09-10 00:00:07",
+      "elapsed_seconds": 757.0,
+      "thread_id": 0,
+      "current_ops": 290000,
+      "total_ops": 18139000,
+      "current_rate": 9382.1,
+      "avg_rate": 23968.6
+    }
+  ],
+  "compaction_events": []
+}

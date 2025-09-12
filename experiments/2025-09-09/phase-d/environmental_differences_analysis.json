@@ -1,0 +1,79 @@
+{
+  "analysis_info": {
+    "title": "Environmental Differences and Negative Performance Analysis",
+    "date": "2025-09-09",
+    "purpose": "환경별 차이와 음수 성능 발생 원인 분석"
+  },
+  "experiment_data": {
+    "2025-09-05": {
+      "device": "/dev/nvme1n1p1",
+      "device_bandwidth": 1556.0,
+      "actual_throughput": 196.2,
+      "actual_efficiency": 0.12609254498714653,
+      "duration_hours": 17,
+      "operations": 3200000000.0,
+      "workload": "fillrandom"
+    },
+    "2025-09-08": {
+      "device": "/dev/nvme1n1p1",
+      "device_bandwidth": 1490.0,
+      "actual_throughput": 157.5,
+      "actual_efficiency": 0.10570469798657718,
+      "duration_hours": 8,
+      "operations": 3200000000.0,
+      "workload": "fillrandom"
+    },
+    "2025-09-09": {
+      "device": "/dev/nvme1n1p2",
+      "device_bandwidth": 3005.8,
+      "actual_throughput": 30.1,
+      "actual_efficiency": 0.010013972985561248,
+      "duration_hours": 36.5,
+      "operations": 4000000000.0,
+      "workload": "fillrandom"
+    }
+  },
+  "device_analysis": {
+    "/dev/nvme1n1p1": {
+      "experiments": [
+        "2025-09-05",
+        "2025-09-08"
+      ],
+      "bandwidths": [
+        1556.0,
+        1490.0
+      ],
+      "throughputs": [
+        196.2,
+        157.5
+      ],
+      "efficiencies": [
+        0.12609254498714653,
+        0.10570469798657718
+      ]
+    },
+    "/dev/nvme1n1p2": {
+      "experiments": [
+        "2025-09-09"
+      ],
+      "bandwidths": [
+        3005.8
+      ],
+      "throughputs": [
+        30.1
+      ],
+      "efficiencies": [
+        0.010013972985561248
+      ]
+    }
+  },
+  "key_insights": [
+    "장치 대역폭 차이의 실제 원인: 파티션 차이 (p1 vs p2)",
+    "음수 성능 발생 원인: 단계별 성능 가정이 비현실적",
+    "초기/전환 단계 성능이 실제 전체 성능보다 높게 설정됨",
+    "시간 기반 가중치의 한계: 실제 성능 변화 패턴 무시",
+    "단계 분리 가정의 문제: 전체 성능을 단계별로 분리 불가",
+    "역산 계산의 오류: 가정과 현실의 불일치",
+    "환경 인식 모델링 필요"
+  ]
+}

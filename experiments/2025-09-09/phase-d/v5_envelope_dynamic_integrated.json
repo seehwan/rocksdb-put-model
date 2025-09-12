@@ -1,0 +1,109 @@
+{
+  "model_info": {
+    "name": "RocksDB Put Model v5 - Envelope + Dynamic Integration",
+    "version": "5.1",
+    "formula": "S_v5 = S_envelope(read_ratio) × η_workload × η_dynamic × η_system",
+    "components": {
+      "workload_efficiency": {
+        "fillrandom": 0.02,
+        "overwrite": 0.05
+      },
+      "system_overhead": 0.1
+    }
+  },
+  "predictions": {
+    "fillrandom": {
+      "predicted": 18.576463019617055,
+      "actual": 30.1,
+      "error_rate": 0.38284176014561283,
+      "components": {
+        "envelope_bandwidth": 3005.8330078125,
+        "read_ratio": 0.0,
+        "workload_eta": 0.02,
+        "dynamic_eta": 0.3433410041841004,
+        "system_eta": 0.9,
+        "total_efficiency": 0.006180138075313808
+      }
+    },
+    "overwrite": {
+      "predicted": 46.60941735571289,
+      "actual": 74.4,
+      "error_rate": 0.37352933661676224,
+      "components": {
+        "envelope_bandwidth": 2450.0646484375,
+        "read_ratio": 0.1,
+        "workload_eta": 0.05,
+        "dynamic_eta": 0.42275,
+        "system_eta": 0.9,
+        "total_efficiency": 0.019023750000000002
+      }
+    }
+  },
+  "analysis": {
+    "total_error_rate": 0.37818554838118756,
+    "overall_accuracy": "Poor",
+    "improvements": [
+      "장치 Envelope 모델 통합",
+      "RocksDB 동적 모델 통합",
+      "워크로드별 세밀한 차별화",
+      "실제 운영 환경 반영"
+    ]
+  },
+  "envelope_characteristics": {
+    "0_read": {
+      "read_ratio": 0.0,
+      "read_bandwidth": 0,
+      "write_bandwidth": 3005.8330078125,
+      "total_bandwidth": 3005.8330078125,
+      "read_iops": 0.0,
+      "write_iops": 3005.799807,
+      "total_iops": 3005.799807
+    },
+    "25_read": {
+      "read_ratio": 0.25,
+      "read_bandwidth": 403.7529296875,
+      "write_bandwidth": 1212.6591796875,
+      "total_bandwidth": 1616.412109375,
+      "read_iops": 6459.851338,
+      "write_iops": 19402.553248,
+      "total_iops": 25862.404586
+    },
+    "50_read": {
+      "read_ratio": 0.5,
+      "read_bandwidth": 649.890625,
+      "write_bandwidth": 651.205078125,
+      "total_bandwidth": 1301.095703125,
+      "read_iops": 10398.053398,
+      "write_iops": 10419.286024,
+      "total_iops": 20817.339422
+    },
+    "75_read": {
+      "read_ratio": 0.75,
+      "read_bandwidth": 1126.3974609375,
+      "write_bandwidth": 378.41796875,
+      "total_bandwidth": 1504.8154296875,
+      "read_iops": 18022.165189,
+      "write_iops": 6054.696354,
+      "total_iops": 24076.861543
+    },
+    "100_read": {
+      "read_ratio": 1.0,
+      "read_bandwidth": 1864.2041015625,
+      "write_bandwidth": 0,
+      "total_bandwidth": 1864.2041015625,
+      "read_iops": 1864.204527,
+      "write_iops": 0.0,
+      "total_iops": 1864.204527
+    }
+  },
+  "dynamic_factors": {
+    "write_stall_ratio": 0.818,
+    "compaction_io_ratio": 0.314,
+    "cache_miss_ratio": 1.0,
+    "flush_ratio": 0.155,
+    "compaction_frequency": "high",
+    "waf": 2.39,
+    "key_distribution": "random",
+    "access_pattern": "random"
+  }
+}

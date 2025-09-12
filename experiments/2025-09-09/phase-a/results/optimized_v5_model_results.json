@@ -1,0 +1,102 @@
+{
+  "timestamp": "2025-09-12T05:15:47.109129",
+  "model_version": "v5-optimized",
+  "optimized_parameters": {
+    "base_efficiency": {
+      "fillrandom": 0.022
+    },
+    "level_efficiency_adjustment": {
+      "L0": 1.0,
+      "L1": 0.95,
+      "L2": 0.35,
+      "L3": 0.8
+    },
+    "time_dependent_factors": {
+      "compaction_adaptation": 0.08,
+      "system_optimization": 0.03,
+      "workload_adaptation": 0.04,
+      "device_degradation": -0.12
+    },
+    "compaction_efficiency_scaling": {
+      "0-6_hours": 1.0,
+      "6-18_hours": 0.88,
+      "18-36_hours": 0.95
+    },
+    "device_degradation_scaling": 0.8
+  },
+  "validation_results": {
+    "predictions": {
+      "0": {
+        "predicted": 25.43947140370371,
+        "actual": 30.1,
+        "error": 15.483483708625553
+      },
+      "6": {
+        "predicted": 25.316140846338556,
+        "actual": 30.5,
+        "error": 16.996259520201455
+      },
+      "12": {
+        "predicted": 22.169673054296588,
+        "actual": 30.9,
+        "error": 28.25348526117609
+      },
+      "18": {
+        "predicted": 22.061142163815255,
+        "actual": 31.3,
+        "error": 29.5171176874912
+      },
+      "24": {
+        "predicted": 23.698841715530932,
+        "actual": 31.8,
+        "error": 25.47534051719833
+      },
+      "30": {
+        "predicted": 23.58167768603403,
+        "actual": 32.3,
+        "error": 26.991709950359034
+      },
+      "36": {
+        "predicted": 23.464513656537132,
+        "actual": 32.7,
+        "error": 28.24307750294456
+      },
+      "36.6": {
+        "predicted": 23.452797253587445,
+        "actual": 32.8,
+        "error": 28.497569348818757
+      }
+    },
+    "average_error": 24.932255437101873,
+    "max_error": 29.5171176874912,
+    "min_error": 15.483483708625553,
+    "std_error": 5.154126357910112,
+    "errors": [
+      15.483483708625553,
+      16.996259520201455,
+      28.25348526117609,
+      29.5171176874912,
+      25.47534051719833,
+      26.991709950359034,
+      28.24307750294456,
+      28.497569348818757
+    ]
+  },
+  "optimization_impact": {
+    "original_error": 8.7,
+    "optimized_error": 24.932255437101873,
+    "improvement": -16.232255437101873,
+    "improvement_pct": -186.57764870232037
+  },
+  "model_summary": {
+    "model_structure": "S = B_eff \u00d7 \u03b7_base \u00d7 \u03b7_level \u00d7 \u03b7_compaction \u00d7 \u03b7_time \u00d7 \u03b7_utilization",
+    "level_efficiency": 0.4974124124124124,
+    "base_efficiency": 0.022,
+    "time_factors": {
+      "compaction_adaptation": 0.08,
+      "system_optimization": 0.03,
+      "workload_adaptation": 0.04,
+      "device_degradation": -0.12
+    }
+  }
+}

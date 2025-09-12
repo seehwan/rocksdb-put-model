@@ -1,0 +1,186 @@
+{
+  "model_info": {
+    "name": "RocksDB Realistic Performance Model",
+    "version": "2.0",
+    "philosophy": "실제 RocksDB 동작을 반영한 현실적 예측",
+    "formula": "S_realistic = S_device × η_compaction_aware × η_workload_factor × η_environment",
+    "key_insights": {
+      "compaction_understanding": "컴팩션은 성능 저하의 원인이지만 완전한 실패가 아님",
+      "bottleneck_reinterpretation": "병목은 상대적 영향이지 절대적 실패가 아님",
+      "actual_efficiency_baseline": "실제 FillRandom 효율성: 0.0100",
+      "performance_phases": "초기 높음 → 중간 변동 → 안정화 낮음"
+    },
+    "compaction_aware_model": {
+      "initial_phase": {
+        "efficiency_factor": 1.0,
+        "duration_minutes": 10,
+        "description": "MemTable Flush, L0 생성"
+      },
+      "transitional_phase": {
+        "efficiency_factor": 0.6,
+        "duration_minutes": 50,
+        "description": "간헐적 Compaction, 스파이크"
+      },
+      "stable_phase": {
+        "efficiency_factor": 0.3,
+        "duration_minutes": "indefinite",
+        "description": "지속적 Compaction 오버헤드"
+      }
+    },
+    "bottleneck_impact_model": {
+      "write_stall": {
+        "probability": 0.8183708172095113,
+        "impact_factor": 0.5,
+        "description": "Write Stall은 지연이지 완전 중단이 아님"
+      },
+      "cache_miss": {
+        "rate": 1.0,
+        "impact_factor": 0.8,
+        "description": "Cache Miss는 성능 저하이지 완전 실패가 아님"
+      },
+      "compaction_overhead": {
+        "cpu_ratio": 2.7169451836824394,
+        "impact_factor": 0.6,
+        "description": "Compaction은 백그라운드에서 진행"
+      },
+      "write_amplification": {
+        "factor": 1.638488679,
+        "impact_factor": 0.7,
+        "description": "WAF는 추가 쓰기이지 성능 중단이 아님"
+      }
+    },
+    "workload_factor": {
+      "fillrandom": {
+        "base_efficiency": 0.010013972985561248,
+        "randomness_penalty": 0.8,
+        "compaction_penalty": 0.6,
+        "total_factor": 0.004806707033069399
+      }
+    },
+    "environment_factor": {
+      "device_bandwidth": 3005.8,
+      "scaling_factor": 1.0,
+      "system_overhead": 0.9
+    }
+  },
+  "validation_results": {
+    "5_minutes": {
+      "predicted": 5.867186294954053,
+      "actual": 30.1,
+      "error_rate": 0.805076867277274,
+      "compaction_phase": "initial_phase",
+      "components": {
+        "base_bandwidth": 3005.8,
+        "compaction_factor": 1.0,
+        "workload_factor": 0.004806707033069399,
+        "environment_factor": 0.9,
+        "bottleneck_impact": 0.45121095537668054,
+        "total_efficiency": 0.001951954985346348
+      }
+    },
+    "30_minutes": {
+      "predicted": 3.520311776972432,
+      "actual": 30.1,
+      "error_rate": 0.8830461203663644,
+      "compaction_phase": "transitional_phase",
+      "components": {
+        "base_bandwidth": 3005.8,
+        "compaction_factor": 0.6,
+        "workload_factor": 0.004806707033069399,
+        "environment_factor": 0.9,
+        "bottleneck_impact": 0.45121095537668054,
+        "total_efficiency": 0.0011711729912078088
+      }
+    },
+    "120_minutes": {
+      "predicted": 1.760155888486216,
+      "actual": 30.1,
+      "error_rate": 0.9415230601831821,
+      "compaction_phase": "stable_phase",
+      "components": {
+        "base_bandwidth": 3005.8,
+        "compaction_factor": 0.3,
+        "workload_factor": 0.004806707033069399,
+        "environment_factor": 0.9,
+        "bottleneck_impact": 0.45121095537668054,
+        "total_efficiency": 0.0005855864956039044
+      }
+    },
+    "360_minutes": {
+      "predicted": 1.760155888486216,
+      "actual": 30.1,
+      "error_rate": 0.9415230601831821,
+      "compaction_phase": "stable_phase",
+      "components": {
+        "base_bandwidth": 3005.8,
+        "compaction_factor": 0.3,
+        "workload_factor": 0.004806707033069399,
+        "environment_factor": 0.9,
+        "bottleneck_impact": 0.45121095537668054,
+        "total_efficiency": 0.0005855864956039044
+      }
+    },
+    "720_minutes": {
+      "predicted": 1.760155888486216,
+      "actual": 30.1,
+      "error_rate": 0.9415230601831821,
+      "compaction_phase": "stable_phase",
+      "components": {
+        "base_bandwidth": 3005.8,
+        "compaction_factor": 0.3,
+        "workload_factor": 0.004806707033069399,
+        "environment_factor": 0.9,
+        "bottleneck_impact": 0.45121095537668054,
+        "total_efficiency": 0.0005855864956039044
+      }
+    },
+    "1440_minutes": {
+      "predicted": 1.760155888486216,
+      "actual": 30.1,
+      "error_rate": 0.9415230601831821,
+      "compaction_phase": "stable_phase",
+      "components": {
+        "base_bandwidth": 3005.8,
+        "compaction_factor": 0.3,
+        "workload_factor": 0.004806707033069399,
+        "environment_factor": 0.9,
+        "bottleneck_impact": 0.45121095537668054,
+        "total_efficiency": 0.0005855864956039044
+      }
+    }
+  },
+  "model_comparison": {
+    "v5_original": {
+      "error_rate": 0.378,
+      "accuracy": "Poor"
+    },
+    "v5_refined": {
+      "error_rate": 0.427,
+      "accuracy": "Poor"
+    },
+    "log_based": {
+      "error_rate": 0.716,
+      "accuracy": "Poor"
+    },
+    "compaction_based": {
+      "error_rate": 0.962,
+      "accuracy": "Poor"
+    },
+    "realistic_improved": {
+      "error_rate": 0.9090358713960612,
+      "accuracy": "TBD"
+    }
+  },
+  "improvement_summary": {
+    "key_improvements": [
+      "병목을 상대적 영향으로 재해석",
+      "실제 측정 효율성을 기준으로 사용",
+      "컴팩션 단계별 현실적 효율성 적용",
+      "복잡한 계산 대신 간단한 현실적 모델",
+      "이론적 모델과 실제 동작의 차이 반영"
+    ],
+    "philosophy_change": "절대적 실패 → 상대적 영향",
+    "efficiency_baseline": "실제 측정값 기반",
+    "bottleneck_interpretation": "완전 중단 → 성능 저하"
+  }
+}

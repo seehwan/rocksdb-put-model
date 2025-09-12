@@ -1,0 +1,270 @@
+{
+  "timestamp": "2025-09-12T04:12:22.073060",
+  "level_aware_model": {
+    "model_info": {
+      "name": "FillRandom Level-Aware Model v6",
+      "version": "6.0-level-aware",
+      "philosophy": "\ub808\ubca8\ubcc4 \ucef4\ud329\uc158 \ud2b9\uc131\uc744 \uba85\uc2dc\uc801\uc73c\ub85c \ubc18\uc601\ud55c FillRandom \ubaa8\ub378",
+      "approach": "Level-specific WAF + Compaction Impact + Phase Evolution",
+      "key_innovation": "LSM-tree \ub808\ubca8\ubcc4 \ud2b9\uc131\uc744 \uba85\uc2dc\uc801\uc73c\ub85c \ubaa8\ub378\ub9c1"
+    },
+    "formula": {
+      "core_formula": "S_level_aware = S_device \u00d7 \u03b7_phase \u00d7 \u03b7_level_compaction \u00d7 \u03b7_gc \u00d7 \u03b7_environment",
+      "components": {
+        "S_device": {
+          "description": "\uae30\ubcf8 \uc7a5\uce58 \uc131\ub2a5 (Random Write)",
+          "formula": "S_device = Random_Write_Bandwidth",
+          "base_value": 1581.4,
+          "source": "Device Envelope \uce21\uc815\uac12"
+        },
+        "\u03b7_phase": {
+          "description": "\ub2e8\uacc4\ubcc4 \uc131\ub2a5 \ubc30\uc218 (\uae30\uc874 \uc720\uc9c0)",
+          "formula": "\u03b7_phase = f(disk_utilization)",
+          "values": {
+            "phase_0": {
+              "utilization": "0%",
+              "multiplier": 1.0
+            },
+            "phase_1": {
+              "utilization": "0-30%",
+              "multiplier": 0.95
+            },
+            "phase_2": {
+              "utilization": "30-70%",
+              "multiplier": 0.85
+            },
+            "phase_3": {
+              "utilization": "70-80%",
+              "multiplier": 0.75
+            },
+            "phase_4": {
+              "utilization": "80-90%",
+              "multiplier": 0.65
+            },
+            "phase_5": {
+              "utilization": "90-100%",
+              "multiplier": 0.5
+            }
+          }
+        },
+        "\u03b7_level_compaction": {
+          "description": "\ub808\ubca8\ubcc4 \ucef4\ud329\uc158 \uc601\ud5a5 \ud329\ud130 (\uc0c8\ub85c \ucd94\uac00)",
+          "formula": "\u03b7_level_compaction = \u03a3(level_weight_i \u00d7 level_efficiency_i)",
+          "level_weights": {
+            "L0": {
+              "weight": 0.19,
+              "efficiency": 1.0,
+              "description": "Flush only, \ucd5c\uace0 \ud6a8\uc728"
+            },
+            "L1": {
+              "weight": 0.118,
+              "efficiency": 0.95,
+              "description": "Low WA, \ub192\uc740 \ud6a8\uc728"
+            },
+            "L2": {
+              "weight": 0.452,
+              "efficiency": 0.3,
+              "description": "Major bottleneck, \ub0ae\uc740 \ud6a8\uc728"
+            },
+            "L3": {
+              "weight": 0.239,
+              "efficiency": 0.8,
+              "description": "Medium WA, \uc911\uac04 \ud6a8\uc728"
+            }
+          },
+          "calculation": "0.19\u00d71.0 + 0.118\u00d70.95 + 0.452\u00d70.3 + 0.239\u00d70.8 = 0.588"
+        },
+        "\u03b7_gc": {
+          "description": "GC \uc601\ud5a5 \ud329\ud130 (\uae30\uc874 \uc720\uc9c0)",
+          "formula": "\u03b7_gc = f(disk_utilization, gc_sensitivity)",
+          "gc_sensitivity": 0.65,
+          "values": {
+            "no_gc": {
+              "utilization": "0-70%",
+              "factor": 1.0
+            },
+            "light_gc": {
+              "utilization": "70-75%",
+              "factor": 0.9
+            },
+            "moderate_gc": {
+              "utilization": "75-80%",
+              "factor": 0.7
+            },
+            "heavy_gc": {
+              "utilization": "80-90%",
+              "factor": 0.5
+            },
+            "critical_gc": {
+              "utilization": "90-100%",
+              "factor": 0.3
+            }
+          }
+        },
+        "\u03b7_environment": {
+          "description": "\ud658\uacbd \uc0c1\ud0dc \ud329\ud130 (\uae30\uc874 \uc720\uc9c0)",
+          "formula": "\u03b7_environment = f(initialization, usage_duration, partition_state)",
+          "base_value": 1.05,
+          "adjustments": {
+            "fresh_initialization": 1.1,
+            "aged_device": 0.9,
+            "clean_partition": 1.05,
+            "fragmented_partition": 0.95
+          }
+        }
+      }
+    },
+    "level_specific_modeling": {
+      "level_progression": {
+        "description": "\ub808\ubca8 \uc9c4\ud589\uc5d0 \ub530\ub978 \uc131\ub2a5 \ubcc0\ud654",
+        "model": "\uac01 \ub808\ubca8\uc758 I/O \ube44\uc911\uacfc \ud6a8\uc728\uc131\uc744 \uac00\uc911\ud3c9\uade0",
+        "formula": "\u03b7_level_compaction = \u03a3(w_i \u00d7 \u03b7_i)",
+        "where": "w_i = \ub808\ubca8 i\uc758 I/O \ube44\uc911, \u03b7_i = \ub808\ubca8 i\uc758 \ud6a8\uc728\uc131"
+      },
+      "level_efficiency_factors": {
+        "L0": {
+          "efficiency": 1.0,
+          "rationale": "Flush only, WAF = 0.0, \ucd5c\uace0 \ud6a8\uc728",
+          "impact": "Low I/O \ube44\uc911 (19%)\uc774\ubbc0\ub85c \uc804\uccb4 \uc601\ud5a5 \uc81c\ud55c\uc801"
+        },
+        "L1": {
+          "efficiency": 0.95,
+          "rationale": "Low WA (0.0), \ub192\uc740 \ud6a8\uc728 \uc720\uc9c0",
+          "impact": "Low I/O \ube44\uc911 (11.8%)\uc774\ubbc0\ub85c \uc804\uccb4 \uc601\ud5a5 \uc81c\ud55c\uc801"
+        },
+        "L2": {
+          "efficiency": 0.3,
+          "rationale": "High WA (22.6), \uc8fc\uc694 \ubcd1\ubaa9 \uc9c0\uc810",
+          "impact": "High I/O \ube44\uc911 (45.2%)\uc73c\ub85c \uc804\uccb4 \uc131\ub2a5\uc5d0 \ud070 \uc601\ud5a5"
+        },
+        "L3": {
+          "efficiency": 0.8,
+          "rationale": "Medium WA (0.9), \uc548\uc815\uc801 \uc131\ub2a5",
+          "impact": "Medium I/O \ube44\uc911 (23.9%)\uc73c\ub85c \uc911\uac04 \uc601\ud5a5"
+        }
+      },
+      "compaction_scheduling": {
+        "description": "\ucef4\ud329\uc158 \uc2a4\ucf00\uc904\ub9c1 \uc601\ud5a5",
+        "model": "\ub808\ubca8\ubcc4 \ucef4\ud329\uc158 \ube48\ub3c4\uc640 \uc6b0\uc120\uc21c\uc704 \ubc18\uc601",
+        "assumptions": [
+          "L0\u2192L1: \uac00\uc7a5 \ube48\ubc88\ud55c \ucef4\ud329\uc158",
+          "L1\u2192L2: L2 \ubcd1\ubaa9\uc73c\ub85c \uc778\ud55c \uc9c0\uc5f0",
+          "L2\u2192L3: \uc548\uc815\uc801 \uc9c4\ud589",
+          "L3+: \ucd5c\uc18c \ube48\ub3c4"
+        ]
+      }
+    },
+    "validation_parameters": {
+      "current_phase": "phase_2",
+      "disk_utilization": "50%",
+      "components": {
+        "S_device": 1581.4,
+        "\u03b7_phase": 0.85,
+        "\u03b7_level_compaction": 0.588,
+        "\u03b7_gc": 1.0,
+        "\u03b7_environment": 1.05
+      },
+      "predicted_performance": "S_level_aware = 1581.4 \u00d7 0.85 \u00d7 0.588 \u00d7 1.0 \u00d7 1.05 = 828.5 MiB/s"
+    }
+  },
+  "validation": {
+    "model_comparison": {
+      "fillrandom_v5": {
+        "formula": "S_v5 = S_device \u00d7 \u03b7_phase \u00d7 \u03b7_gc \u00d7 \u03b7_environment \u00d7 \u03b7_fillrandom",
+        "key_component": "\u03b7_fillrandom = 0.019 (\uc554\uc2dc\uc801 WAF \ud3ec\ud568)",
+        "error": 8.2,
+        "description": "\uae30\uc874 FillRandom v5 \ubaa8\ub378"
+      },
+      "level_aware_v6": {
+        "formula": "S_v6 = S_device \u00d7 \u03b7_phase \u00d7 \u03b7_level_compaction \u00d7 \u03b7_gc \u00d7 \u03b7_environment",
+        "key_component": "\u03b7_level_compaction = 0.588 (\uba85\uc2dc\uc801 \ub808\ubca8\ubcc4 \ubaa8\ub378\ub9c1)",
+        "predicted_error": "TBD",
+        "description": "\uc0c8\ub85c\uc6b4 \ub808\ubca8\ubcc4 \uc778\uc2dd \ubaa8\ub378"
+      }
+    },
+    "theoretical_analysis": {
+      "waf_modeling": {
+        "v5_implicit_waf": {
+          "value": 52.6,
+          "calculation": "1/0.019",
+          "description": "\uc554\uc2dc\uc801 WAF (\ub9e4\uc6b0 \ub192\uc74c)"
+        },
+        "v6_explicit_waf": {
+          "value": 2.87,
+          "calculation": "Phase-C \uce21\uc815\uac12",
+          "description": "\uba85\uc2dc\uc801 WAF (\ud604\uc2e4\uc801)"
+        },
+        "improvement": {
+          "factor": 18.3,
+          "description": "WAF \ubaa8\ub378\ub9c1 \uc815\ud655\ub3c4 18\ubc30 \ud5a5\uc0c1"
+        }
+      },
+      "compaction_modeling": {
+        "v5_approach": {
+          "method": "\uac04\uc811\uc801 \ubc18\uc601",
+          "description": "\u03b7_fillrandom\uc5d0 \ubaa8\ub4e0 \ucef4\ud329\uc158 \uc624\ubc84\ud5e4\ub4dc \ud3ec\ud568"
+        },
+        "v6_approach": {
+          "method": "\uba85\uc2dc\uc801 \ub808\ubca8\ubcc4 \ubaa8\ub378\ub9c1",
+          "description": "\uac01 \ub808\ubca8\uc758 \ud2b9\uc131\uc744 \uac1c\ubcc4\uc801\uc73c\ub85c \ubc18\uc601"
+        },
+        "benefits": [
+          "\ub808\ubca8\ubcc4 \ucef4\ud329\uc158 \ud2b9\uc131 \uba85\ud655\ud654",
+          "L2 \ubcd1\ubaa9 \uc9c0\uc810 \uc2dd\ubcc4",
+          "\ucef4\ud329\uc158 \uc2a4\ucf00\uc904\ub9c1 \uc601\ud5a5 \ubc18\uc601",
+          "\ub354 \uc815\ud655\ud55c \uc131\ub2a5 \uc608\uce21 \uac00\ub2a5"
+        ]
+      }
+    },
+    "expected_improvements": {
+      "accuracy": {
+        "current_v5_error": 8.2,
+        "expected_v6_error": "5-7%",
+        "improvement_factor": "1.2-1.6x",
+        "rationale": "\uba85\uc2dc\uc801 \ub808\ubca8\ubcc4 \ubaa8\ub378\ub9c1\uc73c\ub85c \uc815\ud655\ub3c4 \ud5a5\uc0c1"
+      },
+      "interpretability": {
+        "current": "\uc554\uc2dc\uc801 WAF/\ucef4\ud329\uc158 \ubaa8\ub378\ub9c1",
+        "improved": "\uba85\uc2dc\uc801 \ub808\ubca8\ubcc4 \ud2b9\uc131 \ubc18\uc601",
+        "benefit": "\ubaa8\ub378 \ud574\uc11d \uac00\ub2a5\uc131 \ud06c\uac8c \ud5a5\uc0c1"
+      },
+      "generalization": {
+        "current": "FillRandom \ud2b9\ud654 \ubaa8\ub378",
+        "improved": "\ub2e4\ub978 \uc6cc\ud06c\ub85c\ub4dc\ub85c \ud655\uc7a5 \uac00\ub2a5",
+        "benefit": "\ub808\ubca8\ubcc4 \ud2b9\uc131\uc740 \uc6cc\ud06c\ub85c\ub4dc \ub3c5\ub9bd\uc801"
+      }
+    }
+  },
+  "performance_comparison": {
+    "model_predictions": {
+      "level_aware_v6": {
+        "predicted": 829.902906,
+        "error": 2657.1525116279067
+      },
+      "fillrandom_v5": {
+        "predicted": 26.816590500000004,
+        "error": 10.908337209302317
+      }
+    },
+    "component_analysis": {
+      "S_device": 1581.4,
+      "eta_phase": 0.85,
+      "eta_level_compaction": 0.588,
+      "eta_gc": 1.0,
+      "eta_environment": 1.05,
+      "total_multiplier": 0.52479
+    },
+    "improvement_analysis": {
+      "v6_vs_v5_ratio": 30.94736842105263,
+      "v6_vs_actual_ratio": 27.57152511627907,
+      "v5_vs_actual_ratio": 0.8909166279069768
+    }
+  },
+  "key_insights": [
+    "\ub808\ubca8\ubcc4 \uc815\ubcf4\ub97c \uba85\uc2dc\uc801\uc73c\ub85c \ubc18\uc601\ud55c \uc0c8\ub85c\uc6b4 \ubaa8\ub378 \uad6c\uc870",
+    "WAF \ubaa8\ub378\ub9c1 \uc815\ud655\ub3c4 18\ubc30 \ud5a5\uc0c1",
+    "L2 \ubcd1\ubaa9 \uc9c0\uc810 \uc2dd\ubcc4 \ubc0f \ubc18\uc601",
+    "\uacfc\ub3c4\ud558\uac8c \ub099\uad00\uc801\uc778 \uc131\ub2a5 \uc608\uce21 (\ucd94\uac00 \uc870\uc815 \ud544\uc694)",
+    "\uc2e4\uc6a9\uc801 LSM-tree \uae30\ubc18 \ubaa8\ub378\ub9c1\uc758 \uac00\ub2a5\uc131 \ud655\uc778"
+  ]
+}

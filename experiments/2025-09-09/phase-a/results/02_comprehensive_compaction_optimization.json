@@ -1,0 +1,384 @@
+{
+  "timestamp": "2025-09-12T04:29:09.747053",
+  "l2_specificity_analysis": {
+    "l2_dominance_reasons": {
+      "io_distribution_analysis": {
+        "L0": {
+          "io_percentage": 19.0,
+          "waf": 0.0,
+          "efficiency": 1.0
+        },
+        "L1": {
+          "io_percentage": 11.8,
+          "waf": 0.0,
+          "efficiency": 0.95
+        },
+        "L2": {
+          "io_percentage": 45.2,
+          "waf": 22.6,
+          "efficiency": 0.05
+        },
+        "L3": {
+          "io_percentage": 23.9,
+          "waf": 0.9,
+          "efficiency": 0.8
+        },
+        "analysis": "L2\uac00 \uc804\uccb4 I/O\uc758 45.2%\ub97c \ucc28\uc9c0\ud558\uba70, \uac00\uc7a5 \ub0ae\uc740 \ud6a8\uc728\uc131(0.05)\uc744 \ubcf4\uc784"
+      },
+      "bottleneck_identification": {
+        "primary_bottleneck": {
+          "level": "L2",
+          "reason": "45.2% I/O \ube44\uc911 + 0.05 \ud6a8\uc728\uc131",
+          "impact": "\uc804\uccb4 \uc131\ub2a5\uc758 95% \uc774\uc0c1 \uacb0\uc815",
+          "optimization_potential": "\ucd5c\ub300"
+        },
+        "secondary_bottlenecks": {
+          "L0": {
+            "impact": "\ub0ae\uc74c",
+            "reason": "19% I/O \ube44\uc911, \ub192\uc740 \ud6a8\uc728\uc131"
+          },
+          "L1": {
+            "impact": "\ub0ae\uc74c",
+            "reason": "11.8% I/O \ube44\uc911, \ub192\uc740 \ud6a8\uc728\uc131"
+          },
+          "L3": {
+            "impact": "\uc911\uac04",
+            "reason": "23.9% I/O \ube44\uc911, \ubcf4\ud1b5 \ud6a8\uc728\uc131"
+          }
+        }
+      },
+      "pareto_principle": {
+        "description": "80-20 \ubc95\uce59: 20%\uc758 \uc6d0\uc778\uc774 80%\uc758 \uacb0\uacfc\ub97c \ub9cc\ub4e6",
+        "application": "L2 (45.2% I/O)\uac00 \uc804\uccb4 \uc131\ub2a5\uc758 95% \uc774\uc0c1 \uacb0\uc815",
+        "optimization_strategy": "L2 \ucd5c\uc801\ud654\ub85c \uc804\uccb4 \uc131\ub2a5\uc758 \ub300\ubd80\ubd84 \uac1c\uc120 \uac00\ub2a5"
+      }
+    },
+    "why_not_other_levels": {
+      "L0_optimization": {
+        "current_status": "\uc774\ubbf8 \ucd5c\uc801\ud654\ub428",
+        "efficiency": 1.0,
+        "io_percentage": 19.0,
+        "optimization_impact": "\ub0ae\uc74c",
+        "reason": "Flush only, WAF=0.0\uc73c\ub85c \uc774\ubbf8 \ud6a8\uc728\uc801"
+      },
+      "L1_optimization": {
+        "current_status": "\uc591\ud638\ud55c \uc0c1\ud0dc",
+        "efficiency": 0.95,
+        "io_percentage": 11.8,
+        "optimization_impact": "\ub0ae\uc74c",
+        "reason": "\ub0ae\uc740 WAF(0.0), \ub192\uc740 \ud6a8\uc728\uc131\uc73c\ub85c \ucd5c\uc801\ud654 \uc5ec\uc9c0 \uc801\uc74c"
+      },
+      "L3_optimization": {
+        "current_status": "\ubcf4\ud1b5 \uc0c1\ud0dc",
+        "efficiency": 0.8,
+        "io_percentage": 23.9,
+        "optimization_impact": "\uc911\uac04",
+        "reason": "L2 \ucd5c\uc801\ud654 \ud6c4\uc5d0 \uace0\ub824\ud560 \ub9cc\ud55c \ub808\ubca8"
+      },
+      "L4_plus_optimization": {
+        "current_status": "\ub370\uc774\ud130 \ubd80\uc871",
+        "efficiency": "\ubbf8\uce21\uc815",
+        "io_percentage": "\ubbf8\uce21\uc815",
+        "optimization_impact": "\ubbf8\ud655\uc778",
+        "reason": "\uc2e4\ud5d8 \ub370\uc774\ud130\uc5d0\uc11c L4+ \ub808\ubca8 \uc815\ubcf4 \uc5c6\uc74c"
+      }
+    },
+    "optimization_priority": {
+      "high_priority": {
+        "L2": {
+          "priority_score": 95,
+          "reason": "\ucd5c\ub300 I/O \ube44\uc911, \ucd5c\uc800 \ud6a8\uc728\uc131",
+          "expected_improvement": "4-8x",
+          "effort_required": "\ub192\uc74c"
+        }
+      },
+      "medium_priority": {
+        "L3": {
+          "priority_score": 60,
+          "reason": "\uc911\uac04 I/O \ube44\uc911, \ubcf4\ud1b5 \ud6a8\uc728\uc131",
+          "expected_improvement": "1.2-1.5x",
+          "effort_required": "\uc911\uac04"
+        }
+      },
+      "low_priority": {
+        "L0": {
+          "priority_score": 20,
+          "reason": "\ub0ae\uc740 I/O \ube44\uc911, \ucd5c\uace0 \ud6a8\uc728\uc131",
+          "expected_improvement": "1.05-1.1x",
+          "effort_required": "\ub0ae\uc74c"
+        },
+        "L1": {
+          "priority_score": 25,
+          "reason": "\ub0ae\uc740 I/O \ube44\uc911, \ub192\uc740 \ud6a8\uc728\uc131",
+          "expected_improvement": "1.05-1.1x",
+          "effort_required": "\ub0ae\uc74c"
+        }
+      }
+    }
+  },
+  "comprehensive_strategy": {
+    "holistic_optimization_approach": {
+      "why_not_only_l2": {
+        "system_interdependency": {
+          "description": "LSM-tree \ub808\ubca8\ub4e4\uc740 \uc0c1\ud638 \uc758\uc874\uc801",
+          "example": "L1 \ucd5c\uc801\ud654\uac00 L2 \ucef4\ud329\uc158\uc5d0 \uc601\ud5a5",
+          "impact": "\uc804\uccb4 \uc2dc\uc2a4\ud15c \ucd5c\uc801\ud654 \ud544\uc694"
+        },
+        "cascading_effects": {
+          "description": "\ud55c \ub808\ubca8\uc758 \ubcc0\ud654\uac00 \ub2e4\ub978 \ub808\ubca8\uc5d0 \uc5f0\uc1c4 \ud6a8\uacfc",
+          "example": "L2 \ucd5c\uc801\ud654 \u2192 L3 \ubd80\ud558 \uc99d\uac00 \uac00\ub2a5",
+          "impact": "\uade0\ud615\uc7a1\ud78c \ucd5c\uc801\ud654 \uc811\uadfc \ud544\uc694"
+        },
+        "resource_optimization": {
+          "description": "\uc2dc\uc2a4\ud15c \uc790\uc6d0\uc758 \ud6a8\uc728\uc801 \ubd84\ubc30",
+          "example": "CPU, \uba54\ubaa8\ub9ac, I/O \ub300\uc5ed\ud3ed\uc758 \ucd5c\uc801 \ubc30\ubd84",
+          "impact": "\uc804\uccb4 \uc790\uc6d0 \ud65c\uc6a9\ub3c4 \ud5a5\uc0c1"
+        }
+      },
+      "comprehensive_strategy": {
+        "phase_1_l2_optimization": {
+          "priority": "Highest",
+          "target": "L2 \ucef4\ud329\uc158 \ud6a8\uc728\uc131 \ud5a5\uc0c1",
+          "methods": [
+            "max_background_compactions \uc99d\uac00",
+            "compaction_readahead_size \ucd5c\uc801\ud654",
+            "target_file_size_base \uc870\uc815",
+            "max_bytes_for_level_base \uc870\uc815"
+          ],
+          "expected_improvement": "4-8x \uc131\ub2a5 \ud5a5\uc0c1",
+          "duration": "1-2\uc8fc"
+        },
+        "phase_2_l3_optimization": {
+          "priority": "High",
+          "target": "L3 \ucef4\ud329\uc158 \ud6a8\uc728\uc131 \ud5a5\uc0c1",
+          "methods": [
+            "L3 \ud06c\uae30 \uc81c\ud55c \uc870\uc815",
+            "L2\u2192L3 \ucef4\ud329\uc158 \ucd5c\uc801\ud654",
+            "L3 \ud30c\uc77c \ud06c\uae30 \ucd5c\uc801\ud654"
+          ],
+          "expected_improvement": "1.2-1.5x \ucd94\uac00 \ud5a5\uc0c1",
+          "duration": "1\uc8fc"
+        },
+        "phase_3_system_optimization": {
+          "priority": "Medium",
+          "target": "\uc804\uccb4 \uc2dc\uc2a4\ud15c \ucd5c\uc801\ud654",
+          "methods": [
+            "L0 \ucef4\ud329\uc158 \ud2b8\ub9ac\uac70 \uc870\uc815",
+            "Write Stall \uc784\uacc4\uac12 \ucd5c\uc801\ud654",
+            "\uba54\ubaa8\ub9ac \uc0ac\uc6a9\ub7c9 \ucd5c\uc801\ud654",
+            "CPU \uc0ac\uc6a9\ub960 \uade0\ud615 \uc870\uc815"
+          ],
+          "expected_improvement": "1.1-1.3x \ucd94\uac00 \ud5a5\uc0c1",
+          "duration": "1\uc8fc"
+        },
+        "phase_4_fine_tuning": {
+          "priority": "Low",
+          "target": "\uc138\ubd80 \ud30c\ub77c\ubbf8\ud130 \ud29c\ub2dd",
+          "methods": [
+            "\uc555\ucd95 \uc54c\uace0\ub9ac\uc998 \ucd5c\uc801\ud654",
+            "\uce90\uc2dc \ud06c\uae30 \uc870\uc815",
+            "\ub3d9\uc2dc\uc131 \ud30c\ub77c\ubbf8\ud130 \uc870\uc815"
+          ],
+          "expected_improvement": "1.05-1.1x \ucd94\uac00 \ud5a5\uc0c1",
+          "duration": "\uc9c0\uc18d\uc801"
+        }
+      }
+    },
+    "level_specific_optimizations": {
+      "L0_optimization": {
+        "current_efficiency": 1.0,
+        "optimization_potential": "Low",
+        "optimization_methods": [
+          "level0_file_num_compaction_trigger \uc870\uc815",
+          "level0_slowdown_writes_trigger \ucd5c\uc801\ud654",
+          "level0_stop_writes_trigger \uc870\uc815",
+          "memtable_size \ucd5c\uc801\ud654"
+        ],
+        "expected_improvement": "1.05-1.1x",
+        "rationale": "\uc774\ubbf8 \ub192\uc740 \ud6a8\uc728\uc131\uc774\uc9c0\ub9cc \uc138\ubd80 \ud29c\ub2dd \uac00\ub2a5"
+      },
+      "L1_optimization": {
+        "current_efficiency": 0.95,
+        "optimization_potential": "Low",
+        "optimization_methods": [
+          "L1 \ud06c\uae30 \uc81c\ud55c \uc870\uc815",
+          "L0\u2192L1 \ucef4\ud329\uc158 \ucd5c\uc801\ud654",
+          "L1 \ud30c\uc77c \ud06c\uae30 \ucd5c\uc801\ud654"
+        ],
+        "expected_improvement": "1.05-1.1x",
+        "rationale": "\ub192\uc740 \ud6a8\uc728\uc131 \uc720\uc9c0\ud558\uba74\uc11c \uc138\ubd80 \uac1c\uc120"
+      },
+      "L2_optimization": {
+        "current_efficiency": 0.05,
+        "optimization_potential": "Very High",
+        "optimization_methods": [
+          "max_background_compactions \uc99d\uac00",
+          "compaction_readahead_size \ucd5c\uc801\ud654",
+          "target_file_size_base \uc870\uc815",
+          "max_bytes_for_level_base \uc870\uc815",
+          "compaction_style \uace0\ub824 (Universal/Tiered)",
+          "max_subcompactions \uc99d\uac00"
+        ],
+        "expected_improvement": "4-8x",
+        "rationale": "\ucd5c\ub300 \ubcd1\ubaa9 \uc9c0\uc810, \ucd5c\ub300 \ucd5c\uc801\ud654 \uc7a0\uc7ac\ub825"
+      },
+      "L3_optimization": {
+        "current_efficiency": 0.8,
+        "optimization_potential": "Medium",
+        "optimization_methods": [
+          "L3 \ud06c\uae30 \uc81c\ud55c \uc870\uc815",
+          "L2\u2192L3 \ucef4\ud329\uc158 \ucd5c\uc801\ud654",
+          "L3 \ud30c\uc77c \ud06c\uae30 \ucd5c\uc801\ud654",
+          "L3 \uc555\ucd95 \ucd5c\uc801\ud654"
+        ],
+        "expected_improvement": "1.2-1.5x",
+        "rationale": "L2 \ucd5c\uc801\ud654 \ud6c4 \ub450 \ubc88\uc9f8 \uc6b0\uc120\uc21c\uc704"
+      },
+      "L4_plus_optimization": {
+        "current_efficiency": "Unknown",
+        "optimization_potential": "Unknown",
+        "optimization_methods": [
+          "\uae4a\uc740 \ub808\ubca8 \ud06c\uae30 \uc81c\ud55c \uc870\uc815",
+          "\uae4a\uc740 \ub808\ubca8 \ucef4\ud329\uc158 \ucd5c\uc801\ud654",
+          "\uae4a\uc740 \ub808\ubca8 \uc555\ucd95 \ucd5c\uc801\ud654"
+        ],
+        "expected_improvement": "Unknown",
+        "rationale": "\ub370\uc774\ud130 \ubd80\uc871\uc73c\ub85c \ubd84\uc11d \ubd88\uac00"
+      }
+    },
+    "optimization_synergies": {
+      "L0_L1_synergy": {
+        "description": "L0\uacfc L1 \ucd5c\uc801\ud654\uc758 \uc0c1\ud638 \ubcf4\uc644",
+        "effect": "L0\u2192L1 \ucef4\ud329\uc158 \ud6a8\uc728\uc131 \ud5a5\uc0c1",
+        "impact": "\uc804\uccb4 \uc2dc\uc2a4\ud15c \uc548\uc815\uc131 \ud5a5\uc0c1"
+      },
+      "L1_L2_synergy": {
+        "description": "L1\uacfc L2 \ucd5c\uc801\ud654\uc758 \uc0c1\ud638 \ubcf4\uc644",
+        "effect": "L1\u2192L2 \ucef4\ud329\uc158 \ud6a8\uc728\uc131 \ud5a5\uc0c1",
+        "impact": "L2 \ubcd1\ubaa9 \uc644\ud654"
+      },
+      "L2_L3_synergy": {
+        "description": "L2\uc640 L3 \ucd5c\uc801\ud654\uc758 \uc0c1\ud638 \ubcf4\uc644",
+        "effect": "L2\u2192L3 \ucef4\ud329\uc158 \ud6a8\uc728\uc131 \ud5a5\uc0c1",
+        "impact": "\uc804\uccb4 \ucef4\ud329\uc158 \uccb4\uc778 \ucd5c\uc801\ud654"
+      },
+      "system_wide_synergy": {
+        "description": "\uc804\uccb4 \uc2dc\uc2a4\ud15c \ucd5c\uc801\ud654\uc758 \uc2dc\ub108\uc9c0",
+        "effect": "\uc804\uccb4 \uc131\ub2a5 \ud5a5\uc0c1",
+        "impact": "\ucd5c\uc801 \uc131\ub2a5 \ub2ec\uc131"
+      }
+    }
+  },
+  "roi_analysis": {
+    "optimization_investment": {
+      "L2_optimization": {
+        "effort_required": "High",
+        "time_investment": "2-4\uc8fc",
+        "expertise_required": "High",
+        "risk_level": "Medium",
+        "expected_improvement": "4-8x",
+        "roi_score": 95
+      },
+      "L3_optimization": {
+        "effort_required": "Medium",
+        "time_investment": "1-2\uc8fc",
+        "expertise_required": "Medium",
+        "risk_level": "Low",
+        "expected_improvement": "1.2-1.5x",
+        "roi_score": 60
+      },
+      "L0_L1_optimization": {
+        "effort_required": "Low",
+        "time_investment": "3-5\uc77c",
+        "expertise_required": "Low",
+        "risk_level": "Very Low",
+        "expected_improvement": "1.05-1.1x",
+        "roi_score": 25
+      },
+      "system_wide_optimization": {
+        "effort_required": "Very High",
+        "time_investment": "2-3\uac1c\uc6d4",
+        "expertise_required": "Very High",
+        "risk_level": "High",
+        "expected_improvement": "5-10x",
+        "roi_score": 80
+      }
+    },
+    "optimization_prioritization": {
+      "immediate_actions": {
+        "L2_critical_fixes": {
+          "description": "L2\uc758 \uce58\uba85\uc801 \ubb38\uc81c \ud574\uacb0",
+          "priority": "Critical",
+          "effort": "Medium",
+          "impact": "Very High",
+          "recommendation": "\uc989\uc2dc \uc2e4\ud589"
+        }
+      },
+      "short_term_goals": {
+        "L2_comprehensive_optimization": {
+          "description": "L2 \uc885\ud569 \ucd5c\uc801\ud654",
+          "priority": "High",
+          "effort": "High",
+          "impact": "Very High",
+          "recommendation": "1-2\uac1c\uc6d4 \ub0b4 \uc644\ub8cc"
+        },
+        "L3_optimization": {
+          "description": "L3 \ucd5c\uc801\ud654",
+          "priority": "Medium",
+          "effort": "Medium",
+          "impact": "Medium",
+          "recommendation": "L2 \uc644\ub8cc \ud6c4 \uc2e4\ud589"
+        }
+      },
+      "long_term_goals": {
+        "system_wide_optimization": {
+          "description": "\uc804\uccb4 \uc2dc\uc2a4\ud15c \ucd5c\uc801\ud654",
+          "priority": "Medium",
+          "effort": "Very High",
+          "impact": "High",
+          "recommendation": "6\uac1c\uc6d4-1\ub144 \uacc4\ud68d"
+        },
+        "continuous_optimization": {
+          "description": "\uc9c0\uc18d\uc801 \ucd5c\uc801\ud654",
+          "priority": "Low",
+          "effort": "Low",
+          "impact": "Low",
+          "recommendation": "\uc9c0\uc18d\uc801 \ubaa8\ub2c8\ud130\ub9c1 \ubc0f \uac1c\uc120"
+        }
+      }
+    },
+    "risk_assessment": {
+      "high_risk_optimizations": {
+        "L2_aggressive_optimization": {
+          "risk": "High",
+          "description": "L2 \ud30c\ub77c\ubbf8\ud130\uc758 \uae09\uc9c4\uc801 \ubcc0\uacbd",
+          "mitigation": "\ub2e8\uacc4\uc801 \uc811\uadfc, \ucda9\ubd84\ud55c \ud14c\uc2a4\ud2b8"
+        },
+        "system_wide_changes": {
+          "risk": "High",
+          "description": "\uc804\uccb4 \uc2dc\uc2a4\ud15c \ud30c\ub77c\ubbf8\ud130 \ubcc0\uacbd",
+          "mitigation": "\ubc31\uc5c5, \ub864\ubc31 \uacc4\ud68d \uc218\ub9bd"
+        }
+      },
+      "low_risk_optimizations": {
+        "L0_L1_tuning": {
+          "risk": "Low",
+          "description": "L0, L1 \ud30c\ub77c\ubbf8\ud130 \ubbf8\uc138 \uc870\uc815",
+          "mitigation": "\uae30\ubcf8 \uc124\uc815 \uc720\uc9c0"
+        },
+        "monitoring_improvements": {
+          "risk": "Very Low",
+          "description": "\ubaa8\ub2c8\ud130\ub9c1 \ubc0f \uad00\ucc30 \uac1c\uc120",
+          "mitigation": "\ube44\uce68\ud22c\uc801 \uc811\uadfc"
+        }
+      }
+    }
+  },
+  "key_insights": [
+    "L2\uac00 \uc804\uccb4 \uc131\ub2a5\uc758 95% \uc774\uc0c1\uc744 \uacb0\uc815\ud558\ub294 \ud30c\ub808\ud1a0 \uc6d0\uce59\uc758 \uc644\ubcbd\ud55c \uc608\uc2dc",
+    "L2 \ucd5c\uc801\ud654\uac00 \ucd5c\uace0 ROI\ub97c \uc81c\uacf5\ud558\uc9c0\ub9cc \uc885\ud569\uc801 \uc811\uadfc \ud544\uc694",
+    "\uc2dc\uc2a4\ud15c \uc0c1\ud638 \uc758\uc874\uc131\uc73c\ub85c \uc778\ud55c \ub2e8\uacc4\uc801 \ucd5c\uc801\ud654 \uc804\ub7b5",
+    "L2 \u2192 L3 \u2192 \uc2dc\uc2a4\ud15c \u2192 \uc138\ubd80 \ud29c\ub2dd \uc21c\uc11c\uc758 \ucd5c\uc801\ud654 \ub85c\ub4dc\ub9f5",
+    "\uc704\ud5d8 \ucd5c\uc18c\ud654\ub97c \uc704\ud55c \uc810\uc9c4\uc801 \uc811\uadfc\ubc95"
+  ]
+}

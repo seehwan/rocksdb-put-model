@@ -1,0 +1,189 @@
+{
+  "timestamp": "2025-09-12T03:53:32.654891",
+  "model_name": "FillRandom-Focused Performance Model v6.2",
+  "workload_characteristics": {
+    "workload_type": "Random Write",
+    "io_pattern": "Random 4KB writes",
+    "compaction_impact": "Minimal (L0 only)",
+    "gc_sensitivity": "Low (0.8x)",
+    "complexity": "Simple",
+    "predictability": "High"
+  },
+  "phase_model": {
+    "phase_0_empty_disk": {
+      "description": "\ucd08\uae30 \ube48 \ub514\uc2a4\ud06c \uc0c1\ud0dc",
+      "disk_utilization": 0.0,
+      "gc_activity": 0.0,
+      "fragmentation": 0.0,
+      "device_envelope_multiplier": 1.0,
+      "gc_impact_factor": 1.0,
+      "fillrandom_efficiency": 0.02,
+      "predicted_performance": 31.6,
+      "characteristics": {
+        "random_write_optimization": "\ucd5c\uc801 (\ube48 \ube14\ub85d \uc9c1\uc811 \ud560\ub2f9)",
+        "wear_leveling": "\ube44\ud65c\uc131",
+        "compaction_load": "\uc5c6\uc74c",
+        "gc_interference": "\uc5c6\uc74c"
+      }
+    },
+    "phase_1_initial_writes": {
+      "description": "\ucd08\uae30 \uc4f0\uae30 \ub2e8\uacc4 (0-30% \ud65c\uc6a9\ub960)",
+      "disk_utilization": 0.15,
+      "gc_activity": 0.05,
+      "fragmentation": 0.1,
+      "device_envelope_multiplier": 0.95,
+      "gc_impact_factor": 0.98,
+      "fillrandom_efficiency": 0.019,
+      "predicted_performance": 28.8,
+      "characteristics": {
+        "random_write_optimization": "\uc6b0\uc218 (\uc5ec\uc804\ud788 \uc5f0\uc18d \ube14\ub85d \uac00\ub2a5)",
+        "wear_leveling": "\uacbd\ub7c9 \ud65c\uc131\ud654",
+        "compaction_load": "\ucd5c\uc18c (L0\ub9cc)",
+        "gc_interference": "\ucd5c\uc18c"
+      }
+    },
+    "phase_2_growth_phase": {
+      "description": "\uc131\uc7a5 \ub2e8\uacc4 (30-70% \ud65c\uc6a9\ub960)",
+      "disk_utilization": 0.5,
+      "gc_activity": 0.3,
+      "fragmentation": 0.4,
+      "device_envelope_multiplier": 0.85,
+      "gc_impact_factor": 0.9,
+      "fillrandom_efficiency": 0.0153,
+      "predicted_performance": 24.2,
+      "characteristics": {
+        "random_write_optimization": "\uc591\ud638 (\uc77c\ubd80 \ubd84\uc0b0 \ubc1c\uc0dd)",
+        "wear_leveling": "\ud65c\uc131\ud654",
+        "compaction_load": "\uc911\uac04 (L0, L1)",
+        "gc_interference": "\uc911\uac04"
+      }
+    },
+    "phase_3_gc_activation": {
+      "description": "GC \ud65c\uc131\ud654 \ub2e8\uacc4 (70-80% \ud65c\uc6a9\ub960)",
+      "disk_utilization": 0.75,
+      "gc_activity": 0.7,
+      "fragmentation": 0.6,
+      "device_envelope_multiplier": 0.75,
+      "gc_impact_factor": 0.6,
+      "fillrandom_efficiency": 0.009,
+      "predicted_performance": 14.2,
+      "characteristics": {
+        "random_write_optimization": "\ubcf4\ud1b5 (\ubd84\uc0b0 \ube14\ub85d \ud560\ub2f9)",
+        "wear_leveling": "\uc801\uadf9\uc801",
+        "compaction_load": "\ub192\uc74c (L0, L1, L2)",
+        "gc_interference": "\ub192\uc74c"
+      }
+    },
+    "phase_4_gc_intensive": {
+      "description": "GC \uc9d1\uc911 \ub2e8\uacc4 (80-90% \ud65c\uc6a9\ub960)",
+      "disk_utilization": 0.85,
+      "gc_activity": 0.9,
+      "fragmentation": 0.8,
+      "device_envelope_multiplier": 0.65,
+      "gc_impact_factor": 0.4,
+      "fillrandom_efficiency": 0.0052,
+      "predicted_performance": 8.2,
+      "characteristics": {
+        "random_write_optimization": "\ub098\uc068 (GC\ub85c \uc778\ud55c \uc9c0\uc5f0)",
+        "wear_leveling": "\uc9d1\uc911\uc801",
+        "compaction_load": "\ub9e4\uc6b0 \ub192\uc74c",
+        "gc_interference": "\ub9e4\uc6b0 \ub192\uc74c"
+      }
+    },
+    "phase_5_gc_critical": {
+      "description": "GC \uc784\uacc4 \ub2e8\uacc4 (90-100% \ud65c\uc6a9\ub960)",
+      "disk_utilization": 0.95,
+      "gc_activity": 1.0,
+      "fragmentation": 0.95,
+      "device_envelope_multiplier": 0.5,
+      "gc_impact_factor": 0.25,
+      "fillrandom_efficiency": 0.0025,
+      "predicted_performance": 4.0,
+      "characteristics": {
+        "random_write_optimization": "\ub9e4\uc6b0 \ub098\uc068 (GC \ube14\ub85d\ud0b9)",
+        "wear_leveling": "\uadf9\ud55c",
+        "compaction_load": "\uadf9\ud55c",
+        "gc_interference": "\uadf9\ud55c"
+      }
+    }
+  },
+  "performance_factors": {
+    "primary_factors": {
+      "device_envelope": {
+        "description": "\uae30\ubcf8 \uc7a5\uce58 \uc131\ub2a5",
+        "impact": "High",
+        "variability": "Medium",
+        "control": "Hardware dependent"
+      },
+      "gc_interference": {
+        "description": "GC \uac04\uc12d",
+        "impact": "High",
+        "variability": "High",
+        "control": "Disk utilization dependent"
+      },
+      "fragmentation": {
+        "description": "\ub2e8\ud3b8\ud654",
+        "impact": "Medium",
+        "variability": "Medium",
+        "control": "Time dependent"
+      }
+    },
+    "secondary_factors": {
+      "wear_leveling": {
+        "description": "Wear Leveling",
+        "impact": "Low",
+        "variability": "Low",
+        "control": "Automatic"
+      },
+      "compaction_load": {
+        "description": "\ucef4\ud329\uc158 \ubd80\ud558",
+        "impact": "Low",
+        "variability": "Low",
+        "control": "RocksDB internal"
+      },
+      "memory_pressure": {
+        "description": "\uba54\ubaa8\ub9ac \uc555\ubc15",
+        "impact": "Low",
+        "variability": "Low",
+        "control": "System dependent"
+      }
+    }
+  },
+  "validation_results": {
+    "predicted_performance": 24.2,
+    "actual_performance": 30.1,
+    "error_pct": 19.60132890365449,
+    "accuracy_level": "\uc591\ud638"
+  },
+  "optimization_results": [
+    {
+      "efficiency_adjustment": {
+        "description": "\uae30\ubcf8 \ud6a8\uc728\uc131 \uc870\uc815",
+        "current_value": 0.02,
+        "optimized_value": 0.019,
+        "rationale": "\uc2e4\uc81c \ud658\uacbd\uc5d0\uc11c\uc758 \uc624\ubc84\ud5e4\ub4dc \uace0\ub824"
+      },
+      "gc_sensitivity_tuning": {
+        "description": "GC \ubbfc\uac10\ub3c4 \ud29c\ub2dd",
+        "current_value": 0.8,
+        "optimized_value": 0.7,
+        "rationale": "FillRandom\uc758 GC \uc601\ud5a5 \uc7ac\ud3c9\uac00"
+      },
+      "device_multiplier_refinement": {
+        "description": "Device Envelope \ubc30\uc218 \uc815\ubc00\ud654",
+        "current_value": 0.85,
+        "optimized_value": 0.88,
+        "rationale": "\uc2e4\uc81c \uc7a5\uce58 \uc131\ub2a5 \ud2b9\uc131 \ubc18\uc601"
+      }
+    },
+    18.5087056,
+    38.509283720930235
+  ],
+  "key_insights": [
+    "FillRandom\uc740 \ub2e8\uc21c\ud558\uace0 \uc608\uce21 \uac00\ub2a5\ud55c \uc6cc\ud06c\ub85c\ub4dc",
+    "\ub0ae\uc740 GC \ubbfc\uac10\ub3c4\ub85c \uc778\ud55c \uc0c1\ub300\uc801 \uc548\uc815\uc131",
+    "\ucd5c\uc18c \ucef4\ud329\uc158 \uc601\ud5a5\uc73c\ub85c \ubaa8\ub378\ub9c1 \ub2e8\uc21c\ud654",
+    "\ub192\uc740 \ubaa8\ub378 \uc815\ud655\ub3c4 \ub2ec\uc131 \uac00\ub2a5",
+    "\ub2e4\ub978 \uc6cc\ud06c\ub85c\ub4dc \ubaa8\ub378\ub9c1\uc758 \uae30\ucd08 \uc5ed\ud560"
+  ]
+}

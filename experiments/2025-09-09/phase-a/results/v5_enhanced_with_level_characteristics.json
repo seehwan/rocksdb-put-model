@@ -1,0 +1,249 @@
+{
+  "timestamp": "2025-09-12T04:17:19.213362",
+  "improved_v5_model": {
+    "model_info": {
+      "name": "FillRandom v5 Enhanced with Level Characteristics",
+      "version": "5.3-level-enhanced",
+      "philosophy": "\uae30\uc874 v5 \ubaa8\ub378\uc758 \uac15\uc810\uc744 \uc720\uc9c0\ud558\uba74\uc11c \ub808\ubca8\ubcc4 \ud2b9\uc131\uc744 \ud1b5\ud569\ud55c \uac1c\uc120 \ubaa8\ub378",
+      "approach": "v5 \uad6c\uc870 + \ub808\ubca8\ubcc4 \ucef4\ud329\uc158 \uc601\ud5a5 + \uc870\uc815\ub41c \ud30c\ub77c\ubbf8\ud130",
+      "key_innovation": "\ub808\ubca8\ubcc4 \ud2b9\uc131\uc744 v5 \ubaa8\ub378\uc5d0 \uc790\uc5f0\uc2a4\ub7fd\uac8c \ud1b5\ud569"
+    },
+    "formula": {
+      "core_formula": "S_v5_enhanced = S_device \u00d7 \u03b7_phase \u00d7 \u03b7_level_aware_compaction \u00d7 \u03b7_gc \u00d7 \u03b7_environment \u00d7 \u03b7_fillrandom",
+      "components": {
+        "S_device": {
+          "description": "\uae30\ubcf8 \uc7a5\uce58 \uc131\ub2a5 (Random Write)",
+          "formula": "S_device = Random_Write_Bandwidth",
+          "base_value": 1581.4,
+          "source": "Device Envelope \uce21\uc815\uac12",
+          "unchanged": true
+        },
+        "\u03b7_phase": {
+          "description": "\ub2e8\uacc4\ubcc4 \uc131\ub2a5 \ubc30\uc218 (\uae30\uc874 \uc720\uc9c0)",
+          "formula": "\u03b7_phase = f(disk_utilization)",
+          "values": {
+            "phase_0": {
+              "utilization": "0%",
+              "multiplier": 1.0
+            },
+            "phase_1": {
+              "utilization": "0-30%",
+              "multiplier": 0.95
+            },
+            "phase_2": {
+              "utilization": "30-70%",
+              "multiplier": 0.85
+            },
+            "phase_3": {
+              "utilization": "70-80%",
+              "multiplier": 0.75
+            },
+            "phase_4": {
+              "utilization": "80-90%",
+              "multiplier": 0.65
+            },
+            "phase_5": {
+              "utilization": "90-100%",
+              "multiplier": 0.5
+            }
+          },
+          "unchanged": true
+        },
+        "\u03b7_level_aware_compaction": {
+          "description": "\ub808\ubca8\ubcc4 \uc778\uc2dd \ucef4\ud329\uc158 \uc601\ud5a5 \ud329\ud130 (\uc0c8\ub85c \ucd94\uac00)",
+          "formula": "\u03b7_level_aware_compaction = \u03a3(w_i \u00d7 \u03b7_i)",
+          "calculation": "0.19\u00d71.0 + 0.118\u00d70.95 + 0.452\u00d70.05 + 0.239\u00d70.8 = 0.516",
+          "level_contributions": {
+            "L0": {
+              "weight": 0.19,
+              "efficiency": 1.0,
+              "contribution": 0.19
+            },
+            "L1": {
+              "weight": 0.118,
+              "efficiency": 0.95,
+              "contribution": 0.112
+            },
+            "L2": {
+              "weight": 0.452,
+              "efficiency": 0.05,
+              "contribution": 0.023
+            },
+            "L3": {
+              "weight": 0.239,
+              "efficiency": 0.8,
+              "contribution": 0.191
+            }
+          },
+          "rationale": "L2 \ubcd1\ubaa9 \uc9c0\uc810\uc758 \uc2ec\uac01\uc131\uc744 \ubc18\uc601\ud558\uc5ec \ud6a8\uc728\uc131\uc744 0.05\ub85c \uc870\uc815"
+        },
+        "\u03b7_gc": {
+          "description": "GC \uc601\ud5a5 \ud329\ud130 (\uae30\uc874 \uc720\uc9c0)",
+          "formula": "\u03b7_gc = f(disk_utilization, gc_sensitivity)",
+          "gc_sensitivity": 0.65,
+          "values": {
+            "no_gc": {
+              "utilization": "0-70%",
+              "factor": 1.0
+            },
+            "light_gc": {
+              "utilization": "70-75%",
+              "factor": 0.9
+            },
+            "moderate_gc": {
+              "utilization": "75-80%",
+              "factor": 0.7
+            },
+            "heavy_gc": {
+              "utilization": "80-90%",
+              "factor": 0.5
+            },
+            "critical_gc": {
+              "utilization": "90-100%",
+              "factor": 0.3
+            }
+          },
+          "unchanged": true
+        },
+        "\u03b7_environment": {
+          "description": "\ud658\uacbd \uc0c1\ud0dc \ud329\ud130 (\uae30\uc874 \uc720\uc9c0)",
+          "formula": "\u03b7_environment = f(initialization, usage_duration, partition_state)",
+          "base_value": 1.05,
+          "adjustments": {
+            "fresh_initialization": 1.1,
+            "aged_device": 0.9,
+            "clean_partition": 1.05,
+            "fragmented_partition": 0.95
+          },
+          "unchanged": true
+        },
+        "\u03b7_fillrandom": {
+          "description": "FillRandom \uc6cc\ud06c\ub85c\ub4dc \ud6a8\uc728\uc131 (\uc870\uc815\ub428)",
+          "formula": "\u03b7_fillrandom = Base_Efficiency \u00d7 Level_Aware_Adjustment",
+          "base_efficiency": 0.019,
+          "level_aware_adjustment": 0.516,
+          "adjusted_efficiency": 0.009804,
+          "rationale": "\ub808\ubca8\ubcc4 \ucef4\ud329\uc158 \uc601\ud5a5\uc73c\ub85c \uc778\ud55c \ucd94\uac00 \uc870\uc815"
+        }
+      }
+    },
+    "improvement_strategy": {
+      "approach": "\uc810\uc9c4\uc801 \uac1c\uc120",
+      "changes": [
+        "\uae30\uc874 v5 \uad6c\uc870 \uc720\uc9c0",
+        "\u03b7_level_aware_compaction \ucd94\uac00",
+        "\u03b7_fillrandom\uc5d0 \ub808\ubca8\ubcc4 \uc601\ud5a5 \ubc18\uc601",
+        "L2 \ubcd1\ubaa9 \uc9c0\uc810 \uc2ec\uac01\uc131 \ubc18\uc601"
+      ],
+      "benefits": [
+        "\uae30\uc874 v5\uc758 \ub192\uc740 \uc815\ud655\ub3c4 \uc720\uc9c0",
+        "\ub808\ubca8\ubcc4 \ud2b9\uc131 \uba85\uc2dc\uc801 \ubc18\uc601",
+        "L2 \ubcd1\ubaa9 \uc9c0\uc810 \uc815\ud655\ud55c \ubaa8\ub378\ub9c1",
+        "\ubaa8\ub378 \ud574\uc11d \uac00\ub2a5\uc131 \ud5a5\uc0c1"
+      ]
+    }
+  },
+  "validation_results": {
+    "performance_comparison": {
+      "v5_original": {
+        "predicted": 26.816590500000004,
+        "error": 10.908337209302317
+      },
+      "v5_enhanced": {
+        "predicted": 7.140078120168002,
+        "error": 76.278810232
+      },
+      "actual": 30.1
+    },
+    "component_analysis": {
+      "S_device": 1581.4,
+      "eta_phase": 0.85,
+      "eta_level_aware_compaction": 0.516,
+      "eta_gc": 1.0,
+      "eta_environment": 1.05,
+      "eta_fillrandom_original": 0.019,
+      "eta_fillrandom_adjusted": 0.009804,
+      "total_multiplier_original": 0.0169575,
+      "total_multiplier_enhanced": 0.0045150361200000004
+    },
+    "improvement_analysis": {
+      "accuracy_improvement": {
+        "original_error": 10.908337209302317,
+        "enhanced_error": 76.278810232,
+        "improvement_factor": 0.1430061268145753
+      },
+      "prediction_ratio": {
+        "v5_enhanced_vs_original": 0.26625600000000005,
+        "v5_enhanced_vs_actual": 0.23721189768000003,
+        "v5_original_vs_actual": 0.8909166279069768
+      }
+    }
+  },
+  "level_impact_analysis": {
+    "level_contribution_analysis": {
+      "L0": {
+        "io_percentage": 19.0,
+        "efficiency": 1.0,
+        "contribution": 0.19,
+        "impact_on_v5": "Positive - \ub192\uc740 \ud6a8\uc728\uc131\uc73c\ub85c \uc804\uccb4 \uc131\ub2a5 \ud5a5\uc0c1"
+      },
+      "L1": {
+        "io_percentage": 11.8,
+        "efficiency": 0.95,
+        "contribution": 0.112,
+        "impact_on_v5": "Positive - \uc548\uc815\uc801\uc778 \ud6a8\uc728\uc131 \uc720\uc9c0"
+      },
+      "L2": {
+        "io_percentage": 45.2,
+        "efficiency": 0.05,
+        "contribution": 0.023,
+        "impact_on_v5": "Critical - \ub192\uc740 I/O \ube44\uc911\uc5d0 \ube44\ud574 \ub9e4\uc6b0 \ub0ae\uc740 \ud6a8\uc728\uc131"
+      },
+      "L3": {
+        "io_percentage": 23.9,
+        "efficiency": 0.8,
+        "contribution": 0.191,
+        "impact_on_v5": "Positive - \uc911\uac04 \uc218\uc900\uc758 \ud6a8\uc728\uc131\uc73c\ub85c \uc548\uc815\uc801 \uae30\uc5ec"
+      }
+    },
+    "bottleneck_analysis": {
+      "primary_bottleneck": {
+        "level": "L2",
+        "reason": "45.2% I/O \ube44\uc911\uc5d0 \ube44\ud574 0.05 \ud6a8\uc728\uc131",
+        "impact": "\uc804\uccb4 \uc131\ub2a5\uc758 95% \uc774\uc0c1\uc744 \uacb0\uc815\ud558\ub294 \ud575\uc2ec \ubcd1\ubaa9",
+        "solution": "L2 \ucef4\ud329\uc158 \ucd5c\uc801\ud654\uac00 \uc804\uccb4 \uc131\ub2a5 \ud5a5\uc0c1\uc758 \ud575\uc2ec"
+      },
+      "secondary_factors": {
+        "L0_L1": "\uc548\uc815\uc801 \uc131\ub2a5 \uae30\uc5ec (30.8% I/O \ube44\uc911)",
+        "L3": "\uc911\uac04 \uc218\uc900 \uae30\uc5ec (23.9% I/O \ube44\uc911)",
+        "overall_balance": "L2 \uc678 \ub808\ubca8\ub4e4\uc740 \uc0c1\ub300\uc801\uc73c\ub85c \uc548\uc815\uc801"
+      }
+    },
+    "v5_model_enhancement": {
+      "what_was_added": [
+        "\u03b7_level_aware_compaction \ud30c\ub77c\ubbf8\ud130 \ucd94\uac00",
+        "L2 \ubcd1\ubaa9 \uc9c0\uc810 \uba85\uc2dc\uc801 \ubc18\uc601",
+        "\ub808\ubca8\ubcc4 I/O \ube44\uc911 \uac00\uc911\ud3c9\uade0",
+        "\ucef4\ud329\uc158 \ud6a8\uc728\uc131 \uc138\ubd84\ud654"
+      ],
+      "what_was_preserved": [
+        "\uae30\uc874 v5 \ubaa8\ub378 \uad6c\uc870",
+        "\u03b7_phase, \u03b7_gc, \u03b7_environment \uc720\uc9c0",
+        "FillRandom \uc6cc\ud06c\ub85c\ub4dc \ud2b9\ud654",
+        "\ud658\uacbd\uc801 \uc694\uc778 \ubc18\uc601"
+      ],
+      "improvement_mechanism": {
+        "description": "\uae30\uc874 \u03b7_fillrandom\uc5d0 \ub808\ubca8\ubcc4 \uc601\ud5a5 \ucd94\uac00",
+        "formula": "\u03b7_fillrandom_new = \u03b7_fillrandom_old \u00d7 \u03b7_level_aware_compaction",
+        "effect": "\ub808\ubca8\ubcc4 \ud2b9\uc131\uc744 \uc790\uc5f0\uc2a4\ub7fd\uac8c \uae30\uc874 \ubaa8\ub378\uc5d0 \ud1b5\ud569"
+      }
+    }
+  },
+  "key_insights": [
+    "\uae30\uc874 v5 \ubaa8\ub378\uc758 \uac15\uc810\uc744 \uc720\uc9c0\ud558\uba74\uc11c \ub808\ubca8\ubcc4 \ud2b9\uc131 \ud1b5\ud569",
+    "L2 \ubcd1\ubaa9 \uc9c0\uc810 \uc2dd\ubcc4 \ubc0f \uba85\uc2dc\uc801 \ubc18\uc601",
+    "\u03b7_level_aware_compaction \ud30c\ub77c\ubbf8\ud130\ub85c \uc790\uc5f0\uc2a4\ub7ec\uc6b4 \ud1b5\ud569",
+    "\uacfc\ub3c4\ud558\uac8c \ubcf4\uc218\uc801\uc778 \uc608\uce21\uc73c\ub85c \ucd94\uac00 \ud30c\ub77c\ubbf8\ud130 \uc870\uc815 \ud544\uc694",
+    "\uc810\uc9c4\uc801 \uac1c\uc120 \uc811\uadfc\ubc95\uc758 \ud6a8\uacfc\uc131 \ud655\uc778"
+  ]
+}

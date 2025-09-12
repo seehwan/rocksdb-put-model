@@ -1,0 +1,73 @@
+{
+  "timestamp": "2025-09-12T04:38:08.962131",
+  "predictions": {
+    "fillrandom_09_09": {
+      "actual": 30.1,
+      "predicted": 7.851042007813738,
+      "error": 73.9168039607517,
+      "components": {
+        "S_device": 1581.4,
+        "eta_phase": 0.85,
+        "eta_level_compaction": 0.5159,
+        "eta_gc": 1.0,
+        "eta_environment": 1.1550000000000002,
+        "eta_fillrandom": 0.009802100000000001
+      },
+      "total_multiplier": 0.004964614903132502
+    },
+    "fillrandom_09_08": {
+      "actual": 25.3,
+      "predicted": 4.883314734217262,
+      "error": 80.69836073431912,
+      "components": {
+        "S_device": 1484.0,
+        "eta_phase": 0.85,
+        "eta_level_compaction": 0.48817,
+        "eta_gc": 1.0,
+        "eta_environment": 0.855,
+        "eta_fillrandom": 0.009275229999999999
+      },
+      "total_multiplier": 0.0032906433518984247
+    },
+    "fillrandom_09_05": {
+      "actual": 22.7,
+      "predicted": 3.550473624747817,
+      "error": 84.35914702754266,
+      "components": {
+        "S_device": 1420.0,
+        "eta_phase": 0.85,
+        "eta_level_compaction": 0.46371000000000007,
+        "eta_gc": 1.0,
+        "eta_environment": 0.7200000000000001,
+        "eta_fillrandom": 0.00881049
+      },
+      "total_multiplier": 0.0025003335385548006
+    }
+  },
+  "accuracy_analysis": {
+    "statistics": {
+      "mean_error": 79.65810390753782,
+      "std_error": 4.326063097119456,
+      "max_error": 84.35914702754266,
+      "min_error": 73.9168039607517
+    },
+    "accuracy_grades": [
+      {
+        "experiment": "fillrandom_09_09",
+        "error": 73.9168039607517,
+        "grade": "Poor"
+      },
+      {
+        "experiment": "fillrandom_09_08",
+        "error": 80.69836073431912,
+        "grade": "Poor"
+      },
+      {
+        "experiment": "fillrandom_09_05",
+        "error": 84.35914702754266,
+        "grade": "Poor"
+      }
+    ],
+    "goal_achievement": {
+      "target": 15.0,
+      "achieved": 

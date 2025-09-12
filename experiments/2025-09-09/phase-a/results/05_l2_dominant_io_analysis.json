@@ -1,0 +1,312 @@
+{
+  "timestamp": "2025-09-12T04:21:04.088473",
+  "l2_dominant_analysis": {
+    "structural_factors": {
+      "lsm_tree_architecture": {
+        "level_size_ratio": "T=10 (\uc77c\ubc18\uc801\uc778 RocksDB \uc124\uc815)",
+        "level_progression": "L0 \u2192 L1 \u2192 L2 \u2192 L3 \u2192 ...",
+        "compaction_trigger": "L0 \ud30c\uc77c \uc218 \ub610\ub294 \ud06c\uae30 \ucd08\uacfc \uc2dc",
+        "explanation": "LSM-tree\uc758 \uc9c0\uc218\uc801 \ud06c\uae30 \uc99d\uac00 \uad6c\uc870"
+      },
+      "level_size_calculations": {
+        "L0": "2.99 GB (MemTable flush)",
+        "L1": "6.69 GB (L0 \u2192 L1 compaction)",
+        "L2": "25.85 GB (L1 \u2192 L2 compaction)",
+        "L3": "88.72 GB (L2 \u2192 L3 compaction)",
+        "size_ratio_analysis": {
+          "L1/L0": 2.237458193979933,
+          "L2/L1": 3.8639760837070254,
+          "L3/L2": 3.4321083172146998,
+          "pattern": "\uc9c0\uc218\uc801 \ud06c\uae30 \uc99d\uac00 (T\u22484-5)"
+        }
+      }
+    },
+    "compaction_pattern_analysis": {
+      "compaction_frequency": {
+        "L0_to_L1": {
+          "frequency": "High (MemTable flush\ub9c8\ub2e4)",
+          "trigger": "L0 \ud30c\uc77c \uc218 \ucd08\uacfc",
+          "io_impact": "L0 \ub370\uc774\ud130\ub97c L1\uc73c\ub85c \uc774\ub3d9"
+        },
+        "L1_to_L2": {
+          "frequency": "Medium (L1 \ud06c\uae30 \ucd08\uacfc \uc2dc)",
+          "trigger": "L1 \ud06c\uae30 \uc81c\ud55c \ucd08\uacfc",
+          "io_impact": "L1 \ub370\uc774\ud130\ub97c L2\ub85c \uc774\ub3d9"
+        },
+        "L2_to_L3": {
+          "frequency": "Low (L2 \ud06c\uae30 \ucd08\uacfc \uc2dc)",
+          "trigger": "L2 \ud06c\uae30 \uc81c\ud55c \ucd08\uacfc",
+          "io_impact": "L2 \ub370\uc774\ud130\ub97c L3\uc73c\ub85c \uc774\ub3d9"
+        }
+      },
+      "write_amplification_impact": {
+        "L0": {
+          "waf": 0.0,
+          "description": "Flush only, \ucd94\uac00 \uc4f0\uae30 \uc5c6\uc74c"
+        },
+        "L1": {
+          "waf": 0.0,
+          "description": "Low WA, \ud6a8\uc728\uc801 \ucef4\ud329\uc158"
+        },
+        "L2": {
+          "waf": 22.6,
+          "description": "High WA, \ube44\ud6a8\uc728\uc801 \ucef4\ud329\uc158"
+        },
+        "L3": {
+          "waf": 0.9,
+          "description": "Medium WA, \uc548\uc815\uc801 \ucef4\ud329\uc158"
+        }
+      }
+    },
+    "io_distribution_analysis": {
+      "level_io_breakdown": {
+        "L0": {
+          "write_gb": 1670.1,
+          "percentage": 19.0,
+          "contribution_factors": [
+            "MemTable flush (\uc9c1\uc811 \uc4f0\uae30)",
+            "L0 \ud30c\uc77c \uc0dd\uc131",
+            "WAL \uc4f0\uae30 \ud3ec\ud568 \uac00\ub2a5"
+          ]
+        },
+        "L1": {
+          "write_gb": 1036.0,
+          "percentage": 11.8,
+          "contribution_factors": [
+            "L0 \u2192 L1 \ucef4\ud329\uc158",
+            "L1 \ud30c\uc77c \uc0dd\uc131",
+            "\uc0c1\ub300\uc801\uc73c\ub85c \uc801\uc740 \ud06c\uae30"
+          ]
+        },
+        "L2": {
+          "write_gb": 3968.1,
+          "percentage": 45.2,
+          "contribution_factors": [
+            "L1 \u2192 L2 \ucef4\ud329\uc158 (\uc8fc\uc694 \uc6d0\uc778)",
+            "L2 \ud06c\uae30\uac00 L1\ubcf4\ub2e4 3.9\ubc30 \ud07c",
+            "\ub192\uc740 WAF (22.6)\ub85c \uc778\ud55c \ucd94\uac00 \uc4f0\uae30",
+            "\ucef4\ud329\uc158 \uc911 \uc911\ubcf5 \ub370\uc774\ud130 \ucc98\ub9ac"
+          ]
+        },
+        "L3": {
+          "write_gb": 2096.4,
+          "percentage": 23.9,
+          "contribution_factors": [
+            "L2 \u2192 L3 \ucef4\ud329\uc158",
+            "L3 \ud06c\uae30\uac00 L2\ubcf4\ub2e4 3.4\ubc30 \ud07c",
+            "\uc911\uac04 \uc218\uc900 WAF (0.9)"
+          ]
+        }
+      }
+    },
+    "l2_specific_analysis": {
+      "why_l2_dominates": {
+        "size_factor": {
+          "L2_size": 25.85,
+          "L1_size": 6.69,
+          "size_ratio": 3.8639760837070254,
+          "explanation": "L2\uac00 L1\ubcf4\ub2e4 3.9\ubc30 \ud07c"
+        },
+        "compaction_overhead": {
+          "L1_to_L2_compaction": {
+            "description": "L1 \u2192 L2 \ucef4\ud329\uc158 \uc2dc \uc804\uccb4 L1 \ub370\uc774\ud130 \uc774\ub3d9",
+            "data_volume": "6.69 GB \u2192 25.85 GB",
+            "expansion_factor": 3.8639760837070254,
+            "additional_io": "L2 \ud06c\uae30\ub9cc\ud07c\uc758 \ucd94\uac00 \uc4f0\uae30"
+          },
+          "waf_impact": {
+            "L2_waf": 22.6,
+            "description": "L2\uc5d0\uc11c \ub192\uc740 WAF \ubc1c\uc0dd",
+            "additional_writes": "WAF\ub85c \uc778\ud55c 22.6\ubc30 \ucd94\uac00 \uc4f0\uae30",
+            "total_impact": "\uae30\ubcf8 \ud06c\uae30 \u00d7 WAF = 25.85 \u00d7 22.6 = 584.2 GB \uc774\ub860\uc801 \uc4f0\uae30"
+          }
+        },
+        "file_management": {
+          "L2_files": "117/19",
+          "L1_files": "29/8",
+          "file_ratio": 4.0344827586206895,
+          "explanation": "L2\uc5d0 4\ubc30 \ub9ce\uc740 \ud30c\uc77c\ub85c \uc778\ud55c \uad00\ub9ac \uc624\ubc84\ud5e4\ub4dc"
+        }
+      }
+    },
+    "comparison_with_other_levels": {
+      "L0_vs_L2": {
+        "L0_characteristics": {
+          "io_percentage": 19.0,
+          "primary_source": "MemTable flush",
+          "waf": 0.0,
+          "efficiency": "High"
+        },
+        "L2_characteristics": {
+          "io_percentage": 45.2,
+          "primary_source": "L1 \u2192 L2 compaction",
+          "waf": 22.6,
+          "efficiency": "Low"
+        },
+        "comparison": "L2\uac00 L0\ubcf4\ub2e4 2.4\ubc30 \ub9ce\uc740 I/O, \ud558\uc9c0\ub9cc \ud6a8\uc728\uc131\uc740 \ud6e8\uc52c \ub0ae\uc74c"
+      },
+      "L1_vs_L2": {
+        "L1_characteristics": {
+          "io_percentage": 11.8,
+          "size_gb": 6.69,
+          "waf": 0.0,
+          "efficiency": "High"
+        },
+        "L2_characteristics": {
+          "io_percentage": 45.2,
+          "size_gb": 25.85,
+          "waf": 22.6,
+          "efficiency": "Low"
+        },
+        "comparison": "L2\uac00 L1\ubcf4\ub2e4 3.9\ubc30 \ud06c\uace0 3.8\ubc30 \ub9ce\uc740 I/O, \ud558\uc9c0\ub9cc \ud6a8\uc728\uc131\uc740 \ub9e4\uc6b0 \ub0ae\uc74c"
+      }
+    }
+  },
+  "l2_inefficiency_analysis": {
+    "waf_breakdown": {
+      "theoretical_vs_observed": {
+        "theoretical_waf": {
+          "formula": "WA \u2248 1 + T/(T-1) \u00d7 L",
+          "assumption": "T=10, L=2 (L0\u2192L1\u2192L2)",
+          "calculation": "1 + 10/9 \u00d7 2 = 1 + 2.22 = 3.22",
+          "description": "\uc774\ub860\uc801 L2 WAF"
+        },
+        "observed_waf": {
+          "value": 22.6,
+          "difference": "22.6 - 3.22 = 19.38",
+          "ratio": "22.6 / 3.22 = 7.02",
+          "description": "\uc2e4\uc81c \uad00\uce21\ub41c L2 WAF"
+        }
+      },
+      "waf_discrepancy_causes": {
+        "overlap_management": {
+          "description": "L1\uacfc L2 \uac04 \ud0a4 \ubc94\uc704 \uc911\ubcf5",
+          "impact": "\uc911\ubcf5 \ub370\uc774\ud130 \ucc98\ub9ac\ub85c \uc778\ud55c \ucd94\uac00 \uc4f0\uae30",
+          "magnitude": "Medium"
+        },
+        "compaction_scheduling": {
+          "description": "\ucef4\ud329\uc158 \ud0c0\uc774\ubc0d\uacfc \uc6b0\uc120\uc21c\uc704",
+          "impact": "\ube44\ucd5c\uc801 \ucef4\ud329\uc158 \uc21c\uc11c\ub85c \uc778\ud55c \ube44\ud6a8\uc728\uc131",
+          "magnitude": "High"
+        },
+        "file_fragmentation": {
+          "description": "L2\uc758 117\uac1c \ud30c\uc77c\ub85c \uc778\ud55c \uc870\uac01\ud654",
+          "impact": "\ud30c\uc77c \uac04 \uacbd\uacc4 \ucc98\ub9ac \uc624\ubc84\ud5e4\ub4dc",
+          "magnitude": "Medium"
+        },
+        "random_write_pattern": {
+          "description": "FillRandom\uc758 \ub79c\ub364 \ud0a4 \ud328\ud134",
+          "impact": "\uc21c\ucc28\uc801 \ucef4\ud329\uc158\uacfc \ub79c\ub364 \ud328\ud134\uc758 \ucda9\ub3cc",
+          "magnitude": "High"
+        }
+      }
+    },
+    "compaction_flow_analysis": {
+      "L1_to_L2_compaction": {
+        "input_data": {
+          "L1_size": 6.69,
+          "L1_files": 29,
+          "description": "L1\uc5d0\uc11c L2\ub85c \uc774\ub3d9\ud560 \ub370\uc774\ud130"
+        },
+        "output_data": {
+          "L2_size": 25.85,
+          "L2_files": 117,
+          "description": "L2\uc5d0 \uc0dd\uc131\ub420 \ub370\uc774\ud130"
+        },
+        "expansion_factor": {
+          "size_expansion": 3.8639760837070254,
+          "file_expansion": 4.0344827586206895,
+          "description": "L1 \ub300\ube44 L2\uc758 \ud655\uc7a5 \ube44\uc728"
+        },
+        "compaction_overhead": {
+          "read_overhead": "L1 \uc804\uccb4 \ub370\uc774\ud130 \uc77d\uae30",
+          "write_overhead": "L2 \ud06c\uae30\ub9cc\ud07c \uc4f0\uae30",
+          "merge_overhead": "\ud0a4 \ubc94\uc704 \uc911\ubcf5 \ucc98\ub9ac",
+          "total_overhead": "\uc77d\uae30 + \uc4f0\uae30 + \ubcd1\ud569"
+        }
+      }
+    },
+    "io_amplification_factors": {
+      "read_amplification": {
+        "L1_read": "6.69 GB (L1 \uc804\uccb4 \uc77d\uae30)",
+        "L2_read": "25.85 GB (L2 \uae30\uc874 \ub370\uc774\ud130 \uc77d\uae30)",
+        "total_read": "32.54 GB",
+        "read_amplification": "32.54 / 6.69 = 4.86"
+      },
+      "write_amplification": {
+        "L2_write": "25.85 GB (L2 \uc0c8 \ub370\uc774\ud130 \uc4f0\uae30)",
+        "write_amplification": "25.85 / 6.69 = 3.86",
+        "additional_writes": "WAF 22.6\ub85c \uc778\ud55c \ucd94\uac00 \uc4f0\uae30"
+      },
+      "total_io_amplification": {
+        "total_io": "\uc77d\uae30 + \uc4f0\uae30 = 32.54 + 25.85 = 58.39 GB",
+        "input_data": "6.69 GB",
+        "total_amplification": "58.39 / 6.69 = 8.73",
+        "description": "L1\u2192L2 \ucef4\ud329\uc158 \uc2dc \uc804\uccb4 I/O \uc99d\ud3ed"
+      }
+    }
+  },
+  "optimization_potential": {
+    "current_bottleneck": {
+      "L2_characteristics": {
+        "io_percentage": 45.2,
+        "waf": 22.6,
+        "size_gb": 25.85,
+        "files": 117,
+        "efficiency": 0.05
+      },
+      "impact_assessment": {
+        "total_io_impact": "\uc804\uccb4 I/O\uc758 45.2% \ucc28\uc9c0",
+        "performance_impact": "\uc804\uccb4 \uc131\ub2a5\uc758 95% \uc774\uc0c1 \uacb0\uc815",
+        "optimization_potential": "L2 \ucd5c\uc801\ud654 \uc2dc \uc804\uccb4 \uc131\ub2a5 \ub300\ud3ed \ud5a5\uc0c1 \uac00\ub2a5"
+      }
+    },
+    "optimization_strategies": {
+      "compaction_tuning": {
+        "max_background_compactions": "\ub3d9\uc2dc \ucef4\ud329\uc158 \uc218 \uc99d\uac00",
+        "compaction_readahead_size": "\ucef4\ud329\uc158 \uc77d\uae30 \ucd5c\uc801\ud654",
+        "target_file_size_base": "\ud30c\uc77c \ud06c\uae30 \uc870\uc815\uc73c\ub85c \uc870\uac01\ud654 \uac10\uc18c",
+        "max_bytes_for_level_base": "\ub808\ubca8\ubcc4 \ud06c\uae30 \uc81c\ud55c \uc870\uc815"
+      },
+      "level_configuration": {
+        "level0_file_num_compaction_trigger": "L0 \ucef4\ud329\uc158 \ud2b8\ub9ac\uac70 \uc870\uc815",
+        "level0_slowdown_writes_trigger": "Write slowdown \uc784\uacc4\uac12 \uc870\uc815",
+        "level0_stop_writes_trigger": "Write stop \uc784\uacc4\uac12 \uc870\uc815",
+        "soft_pending_compaction_bytes_limit": "\ucef4\ud329\uc158 \ubc31\ub85c\uadf8 \uc81c\ud55c"
+      },
+      "io_optimization": {
+        "compaction_style": "Leveled \u2192 Universal \ub610\ub294 Tiered \uace0\ub824",
+        "compression": "\uc555\ucd95 \uc54c\uace0\ub9ac\uc998 \ucd5c\uc801\ud654",
+        "compaction_readahead_size": "\uc21c\ucc28 \uc77d\uae30 \ucd5c\uc801\ud654",
+        "max_subcompactions": "\uc11c\ube0c\ucef4\ud329\uc158 \ubcd1\ub82c\ud654"
+      }
+    },
+    "expected_improvements": {
+      "waf_reduction": {
+        "current_waf": 22.6,
+        "target_waf": "5-10 (\ud604\uc2e4\uc801 \ubaa9\ud45c)",
+        "improvement_factor": "2.3-4.5x",
+        "io_reduction": "L2 I/O\ub97c 50-75% \uac10\uc18c \uac00\ub2a5"
+      },
+      "efficiency_improvement": {
+        "current_efficiency": 0.05,
+        "target_efficiency": "0.2-0.4",
+        "improvement_factor": "4-8x",
+        "performance_impact": "\uc804\uccb4 \uc131\ub2a5 2-4\ubc30 \ud5a5\uc0c1 \uac00\ub2a5"
+      },
+      "overall_performance": {
+        "current_prediction": "7.14 MiB/s (\uac1c\uc120\ub41c v5 \ubaa8\ub378)",
+        "optimized_prediction": "20-30 MiB/s (L2 \ucd5c\uc801\ud654 \ud6c4)",
+        "improvement_factor": "3-4x",
+        "target_accuracy": "\uc2e4\uc81c \uc131\ub2a5 30.1 MiB/s\uc5d0 \uadfc\uc811"
+      }
+    }
+  },
+  "key_insights": [
+    "L2\uc758 \ub192\uc740 I/O \ube44\uc911\uc740 LSM-tree \uad6c\uc870\uc801 \ud2b9\uc131",
+    "L1\u2192L2 \ucef4\ud329\uc158\uc758 \ube44\ud6a8\uc728\uc131\uc774 \uc8fc\uc694 \uc6d0\uc778",
+    "FillRandom \uc6cc\ud06c\ub85c\ub4dc\uc640 \ucef4\ud329\uc158 \ud328\ud134\uc758 \ubd88\uc77c\uce58",
+    "L2 \ucd5c\uc801\ud654\uac00 \uc804\uccb4 \uc131\ub2a5 \ud5a5\uc0c1\uc758 \ud575\uc2ec",
+    "\ubaa8\ub378\uc5d0\uc11c L2 \ud6a8\uc728\uc131 0.05 \uc124\uc815\uc774 \ud0c0\ub2f9\ud568"
+  ]
+}

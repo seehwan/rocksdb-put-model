@@ -1,0 +1,18 @@
+Phase-A Device Envelope Summary
+========================================
+
+Total Tests: 180
+Max Total BW (MiB/s): 5638.259765625
+Min Total BW (MiB/s): 42.9267578125
+Mean Total BW (MiB/s): 1896.6138292100695
+Max Read BW (MiB/s): 5638.259765625
+Max Write BW (MiB/s): 3657.724609375
+Max IOPS: 813953.434886
+Mean IOPS: 90446.0843794389
+
+Optimal Configuration:
+  Read Ratio: 100.0%
+  IODepth: 16.0
+  NumJobs: 2.0
+  Block Size: 1024.0 KiB
+  Total BW: 5638.3 MiB/s

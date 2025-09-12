@@ -1,0 +1,48 @@
+{
+  "timestamp": "2025-09-12T02:51:57.551664",
+  "new_device_performance": {
+    "Sequential Write": {
+      "write_bw_kb_s": 1812436,
+      "write_bw_mib_s": 1769.95703125,
+      "read_bw_kb_s": 0,
+      "read_bw_mib_s": 0.0
+    },
+    "Random Write": {
+      "write_bw_kb_s": 1852694,
+      "write_bw_mib_s": 1809.271484375,
+      "read_bw_kb_s": 0,
+      "read_bw_mib_s": 0.0
+    },
+    "Mixed R/W": {
+      "write_bw_kb_s": 1249399,
+      "write_bw_mib_s": 1220.1162109375,
+      "read_bw_kb_s": 1250628,
+      "read_bw_mib_s": 1221.31640625
+    }
+  },
+  "improvements": {
+    "Sequential Write": {
+      "old": 1688.0,
+      "new": 1769.95703125,
+      "improvement_pct": 4.855274363151659
+    },
+    "Random Write": {
+      "old": 1688.0,
+      "new": 1809.271484375,
+      "improvement_pct": 7.184329643068721
+    }
+  },
+  "device_envelope": {
+    "read_ratio_0.00": 1769.95703125,
+    "read_ratio_0.25": 1220.416259765625,
+    "read_ratio_0.50": 1220.71630859375,
+    "read_ratio_0.75": 1221.016357421875,
+    "read_ratio_1.00": 1831.974609375
+  },
+  "recommendations": [
+    "Update Device Envelope with new performance data",
+    "Adjust Write Amplification model for improved sequential write",
+    "Improve Compaction model for better random write performance",
+    "Update Read/Write balance model for mixed workloads"
+  ]
+}

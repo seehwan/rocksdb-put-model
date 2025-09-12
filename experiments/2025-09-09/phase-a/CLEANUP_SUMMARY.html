@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase-A 디렉토리 정리 작업 요약</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #2980b9;
+            margin-top: 25px;
+        }
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .summary-box h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .comparison-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .comparison-card h4 {
+            color: #2c3e50;
+            margin-top: 0;
+            text-align: center;
+        }
+        .before {
+            border-left: 4px solid #e74c3c;
+        }
+        .after {
+            border-left: 4px solid #27ae60;
+        }
+        .directory-structure {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .file-category {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .file-category h4 {
+            color: #2c3e50;
+            margin-top: 0;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        .file-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .file-list li:before {
+            content: "📄 ";
+            margin-right: 8px;
+        }
+        .improvement-box {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .improvement-box h4 {
+            color: #27ae60;
+            margin-top: 0;
+        }
+        .preserved-data {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .preserved-data h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+        }
+        .stat-highlight {
+            background: #3498db;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Phase-A 디렉토리 정리 작업 요약</h1>
+
+        <div class="summary-box">
+            <h2>🎯 정리 목표</h2>
+            <p>09-09 실험 Phase-A 디렉토리의 파일들을 체계적으로 정리하고, 파일명을 더 명확하고 체계적으로 변경</p>
+        </div>
+
+        <h2>📊 정리 전후 비교</h2>
+        <div class="comparison-grid">
+            <div class="comparison-card before">
+                <h4>정리 전</h4>
+                <ul>
+                    <li><span class="stat-highlight">Python 파일</span>: 84개 (분산된 위치)</li>
+                    <li><span class="stat-highlight">JSON 파일</span>: 438개 (많은 중복 및 임시 파일)</li>
+                    <li><span class="stat-highlight">디렉토리</span>: 비체계적 구조</li>
+                    <li><span class="stat-highlight">파일명</span>: 불명확하고 일관성 없음</li>
+                </ul>
+            </div>
+            <div class="comparison-card after">
+                <h4>정리 후</h4>
+                <ul>
+                    <li><span class="stat-highlight">Python 파일</span>: 35개 (카테고리별 정리)</li>
+                    <li><span class="stat-highlight">JSON 파일</span>: 핵심 결과만 보존</li>
+                    <li><span class="stat-highlight">디렉토리</span>: 10개 체계적 구조</li>
+                    <li><span class="stat-highlight">파일명</span>: 번호-설명 형태로 표준화</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>🗂️ 새로운 디렉토리 구조</h2>
+        <div class="directory-structure">
+phase-a/
+├── analysis/           # 분석 스크립트 (15개)
+├── data/              # 원시 데이터 파일
+├── device_envelope_results/  # Device Envelope 측정 결과
+├── logs/              # 실행 로그 파일
+├── models/            # 모델 설계 스크립트 (15개)
+├── results/           # 분석 결과 JSON (20개)
+├── scripts/           # 실행 스크립트
+├── validation/        # 검증 스크립트 (5개)
+├── visualization/     # 시각화 스크립트
+└── visualizations/    # 생성된 시각화 파일
+        </div>
+
+        <h2>📁 카테고리별 파일 정리</h2>
+        <div class="file-grid">
+            <div class="file-category">
+                <h4>1. Analysis (분석 스크립트)</h4>
+                <ul class="file-list">
+                    <li>01_compaction_device_usage_analysis.py</li>
+                    <li>02_device_aging_analysis.py</li>
+                    <li>03_experiment_duration_degradation.py</li>
+                    <li>04_l2_compaction_bottleneck.py</li>
+                    <li>05_model_error_impact.py</li>
+                    <li>06_comprehensive_compaction_optimization.py</li>
+                    <li>07_experiment_differences.py</li>
+                    <li>08_fillrandom_lsm_tree_basis.py</li>
+                    <li>09_initialization_impact.py</li>
+                    <li>10_performance_improvement_causes.py</li>
+                    <li>11_rerun_results.py</li>
+                    <li>12_stabilization_steady_state.py</li>
+                    <li>13_v4_device_performance_modeling.py</li>
+                    <li>14_fillrandom_v5_research_goals.py</li>
+                </ul>
+            </div>
+            <div class="file-category">
+                <h4>2. Models (모델 설계 스크립트)</h4>
+                <ul class="file-list">
+                    <li>01_enhanced_v5_model_design.py</li>
+                    <li>02_fillrandom_focused_model.py</li>
+                    <li>03_level_aware_model.py</li>
+                    <li>04_new_v5_model_design.py</li>
+                    <li>05_phase_based_model.py</li>
+                    <li>06_refined_v6_model.py</li>
+                    <li>07_time_dependent_model.py</li>
+                    <li>08_final_enhanced_v5_model.py</li>
+                    <li>09_comprehensive_v5_model_final.py</li>
+                    <li>10_v5_with_level_characteristics.py</li>
+                    <li>11_optimize_enhanced_v5_model.py</li>
+                    <li>12_optimize_new_v5_model.py</li>
+                    <li>13_refine_v5_fillrandom_model.py</li>
+                    <li>14_integrate_analysis_into_v4.py</li>
+                    <li>15_update_model_with_ssd_gc.py</li>
+                </ul>
+            </div>
+            <div class="file-category">
+                <h4>3. Validation (검증 스크립트)</h4>
+                <ul class="file-list">
+                    <li>01_comprehensive_v5_validation.py</li>
+                    <li>02_phase_based_model_validation.py</li>
+                    <li>03_phase_a_model_validation.py</li>
+                    <li>04_model_validation_failure_analysis.py</li>
+                </ul>
+            </div>
+            <div class="file-category">
+                <h4>4. Results (분석 결과 JSON)</h4>
+                <ul class="file-list">
+                    <li>01_compaction_device_usage_analysis.json</li>
+                    <li>02_comprehensive_compaction_optimization.json</li>
+                    <li>03_device_aging_impact.json</li>
+                    <li>04_experiment_duration_degradation.json</li>
+                    <li>05_l2_dominant_io_analysis.json</li>
+                    <li>06_comprehensive_v5_model_final.json</li>
+                    <li>07_enhanced_v5_model_design.json</li>
+                    <li>08_final_enhanced_v5_model_results.json</li>
+                    <li>09_level_aware_fillrandom_model.json</li>
+                    <li>10_time_dependent_model_design.json</li>
+                    <li>11_phase_a_model_validation.json</li>
+                    <li>12_model_validation_failure.json</li>
+                    <li>13_v4_integration_strategy.json</li>
+                    <li>14_v4_device_performance_modeling.json</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>🧹 정리된 파일들</h2>
+        
+        <div class="improvement-box">
+            <h4>삭제된 임시 파일들</h4>
+            <ul>
+                <li><code>test.json</code>, <code>write_test.json</code> (중복 임시 파일)</li>
+                <li><code>*_clean.json</code>, <code>*_test.json</code> (임시 테스트 파일)</li>
+                <li><code>mixed_test.json</code>, <code>read_test.json</code> (빈 파일)</li>
+            </ul>
+        </div>
+
+        <div class="improvement-box">
+            <h4>삭제된 중복 파일들</h4>
+            <ul>
+                <li>중복된 모델 파일들</li>
+                <li>구버전 분석 파일들</li>
+                <li>임시 분석 결과 파일들</li>
+            </ul>
+        </div>
+
+        <h2>🔒 보존된 중요 파일들</h2>
+        
+        <div class="preserved-data">
+            <h4>핵심 백업 데이터</h4>
+            <ul>
+                <li><strong>phase-a-backup-20250911-232640/</strong>: 장치 열화 분석의 핵심 데이터</li>
+                <ul>
+                    <li>182개 Device Envelope 측정 결과</li>
+                    <li>열화 전 장치 성능 기준점</li>
+                    <li>v4 모델 검증의 핵심 데이터</li>
+                </ul>
+            </ul>
+        </div>
+
+        <div class="preserved-data">
+            <h4>중요한 실험 데이터</h4>
+            <ul>
+                <li><strong>device_envelope_results/</strong>: 364개 fio 벤치마크 결과</li>
+                <li><strong>data/</strong>: 원시 데이터 및 설정 파일</li>
+                <li><strong>logs/</strong>: 실험 실행 로그</li>
+            </ul>
+        </div>
+
+        <h2>📈 정리 효과</h2>
+        
+        <div class="improvement-box">
+            <h4>1. 구조적 개선</h4>
+            <ul>
+                <li><strong>카테고리별 분류</strong>: 분석, 모델, 검증, 결과로 명확히 구분</li>
+                <li><strong>번호 체계</strong>: 파일명에 번호를 추가하여 순서 명확화</li>
+                <li><strong>의미있는 이름</strong>: 파일의 목적과 내용을 명확히 표현</li>
+            </ul>
+        </div>
+
+        <div class="improvement-box">
+            <h4>2. 접근성 향상</h4>
+            <ul>
+                <li><strong>빠른 탐색</strong>: 카테고리별 디렉토리로 원하는 파일 쉽게 찾기</li>
+                <li><strong>논리적 순서</strong>: 번호 체계로 작업 순서 파악 용이</li>
+                <li><strong>명확한 구분</strong>: 분석 스크립트와 결과 파일 분리</li>
+            </ul>
+        </div>
+
+        <div class="improvement-box">
+            <h4>3. 유지보수성</h4>
+            <ul>
+                <li><strong>중복 제거</strong>: 불필요한 중복 파일 정리</li>
+                <li><strong>임시 파일 정리</strong>: 테스트용 임시 파일들 삭제</li>
+                <li><strong>체계적 보관</strong>: 중요한 데이터만 선별하여 보존</li>
+            </ul>
+        </div>
+
+        <h2>🎯 핵심 성과</h2>
+        <div class="file-grid">
+            <div class="file-category">
+                <h4>파일 구조 체계화</h4>
+                <p>10개 카테고리로 명확한 분류</p>
+            </div>
+            <div class="file-category">
+                <h4>파일명 표준화</h4>
+                <p>번호-설명 형태로 일관된 명명 규칙</p>
+            </div>
+            <div class="file-category">
+                <h4>중요 데이터 보존</h4>
+                <p>열화 분석 핵심 데이터 안전 보관</p>
+            </div>
+            <div class="file-category">
+                <h4>접근성 향상</h4>
+                <p>원하는 파일을 빠르게 찾을 수 있는 구조</p>
+            </div>
+        </div>
+
+        <h2>💡 향후 활용 방안</h2>
+        <div class="improvement-box">
+            <h4>연구 참조</h4>
+            <p>카테고리별로 필요한 분석 스크립트 쉽게 찾기</p>
+        </div>
+
+        <div class="improvement-box">
+            <h4>결과 재현</h4>
+            <p>번호 순서대로 분석 스크립트 실행 가능</p>
+        </div>
+
+        <div class="improvement-box">
+            <h4>데이터 보관</h4>
+            <p>중요한 실험 데이터 체계적 보관</p>
+        </div>
+
+        <div class="improvement-box">
+            <h4>문서화</h4>
+            <p>각 파일의 목적과 결과를 명확히 파악</p>
+        </div>
+
+        <div class="footer">
+            <p><strong>정리 완료일</strong>: 2025-09-12</p>
+            <p><strong>정리된 파일 수</strong>: 84개 Python + JSON 파일 → 체계적 구조로 재정리</p>
+            <p><strong>보존된 핵심 데이터</strong>: phase-a-backup-20250911-232640 (열화 분석 핵심)</p>
+        </div>
+    </div>
+</body>
+</html>

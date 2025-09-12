@@ -1,0 +1,118 @@
+{
+  "timestamp": "2025-09-12T05:17:23.061022",
+  "model_version": "v5-final-enhanced",
+  "final_parameters": {
+    "base_efficiency": {
+      "fillrandom": 0.026
+    },
+    "level_efficiency_adjustment": {
+      "L0": 1.0,
+      "L1": 0.95,
+      "L2": 0.32,
+      "L3": 0.8
+    },
+    "time_dependent_factors": {
+      "compaction_adaptation": 0.06,
+      "system_optimization": 0.025,
+      "workload_adaptation": 0.035,
+      "device_degradation": -0.14
+    },
+    "compaction_efficiency_scaling": {
+      "0-6_hours": 1.0,
+      "6-18_hours": 0.87,
+      "18-36_hours": 0.93
+    },
+    "device_degradation_scaling": 0.9
+  },
+  "validation_results": {
+    "predictions": {
+      "0": {
+        "predicted": 28.37119389481481,
+        "actual": 30.1,
+        "error": 5.743541877691669
+      },
+      "6": {
+        "predicted": 28.21645740331249,
+        "actual": 30.5,
+        "error": 7.487024907172166
+      },
+      "12": {
+        "predicted": 24.413697193274846,
+        "actual": 30.9,
+        "error": 20.991271219175253
+      },
+      "18": {
+        "predicted": 24.279076445667833,
+        "actual": 31.3,
+        "error": 22.43106566879287
+      },
+      "24": {
+        "predicted": 25.80959057378914,
+        "actual": 31.8,
+        "error": 18.83776549122912
+      },
+      "30": {
+        "predicted": 25.66568563669199,
+        "actual": 32.3,
+        "error": 20.53967295141798
+      },
+      "36": {
+        "predicted": 25.52178069959483,
+        "actual": 32.7,
+        "error": 21.951740979832326
+      },
+      "36.6": {
+        "predicted": 25.507390205885113,
+        "actual": 32.8,
+        "error": 22.23356644547221
+      }
+    },
+    "average_error": 17.52695619259795,
+    "max_error": 22.43106566879287,
+    "min_error": 5.743541877691669,
+    "std_error": 6.405333961460739,
+    "errors": [
+      5.743541877691669,
+      7.487024907172166,
+      20.991271219175253,
+      22.43106566879287,
+      18.83776549122912,
+      20.53967295141798,
+      21.951740979832326,
+      22.23356644547221
+    ]
+  },
+  "model_comparison": {
+    "original_v4": {
+      "error": 5.7,
+      "description": "\uc815\uc801 Device Envelope"
+    },
+    "time_dependent_v4": {
+      "error": 26.2,
+      "description": "\uc2dc\uac04 \uc758\uc874\uc801 Device Envelope"
+    },
+    "enhanced_v5_initial": {
+      "error": 8.7,
+      "description": "\ud5a5\uc0c1\ub41c v5 (\ucd08\uae30)"
+    },
+    "optimized_v5_failed": {
+      "error": 24.9,
+      "description": "\ucd5c\uc801\ud654 v5 (\uc2e4\ud328)"
+    },
+    "final_v5": {
+      "error": 17.52695619259795,
+      "description": "\ucd5c\uc885 \ud5a5\uc0c1\ub41c v5"
+    }
+  },
+  "final_summary": {
+    "model_structure": "S = B_eff \u00d7 \u03b7_base \u00d7 \u03b7_level \u00d7 \u03b7_compaction \u00d7 \u03b7_time \u00d7 \u03b7_utilization",
+    "level_efficiency": 0.49334034034034036,
+    "base_efficiency": 0.026,
+    "time_factors": {
+      "compaction_adaptation": 0.06,
+      "system_optimization": 0.025,
+      "workload_adaptation": 0.035,
+      "device_degradation": -0.14
+    }
+  }
+}

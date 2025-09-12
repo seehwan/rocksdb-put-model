@@ -1,0 +1,243 @@
+{
+  "timestamp": "2025-09-11T20:03:22.627249",
+  "workload_characteristics": {
+    "fillrandom": {
+      "performance": {
+        "throughput_mb_s": 30.1,
+        "ops_per_sec": 30397,
+        "micros_per_op": 131.58,
+        "efficiency": 0.02028301886792453,
+        "ops_efficiency": 0.30397,
+        "latency_efficiency": 0.7599939200486395
+      },
+      "bottlenecks": {
+        "write_stall_ratio": 0.8183708172095112,
+        "compaction_io_ratio": 0.3140382790795727,
+        "cache_miss_ratio": 1.0,
+        "flush_ratio": 0.155087785656554,
+        "total_bottleneck_ratio": 2.287496881945638,
+        "max_bottleneck": "cache_miss_ratio",
+        "bottleneck_diversity": 4
+      },
+      "workload_type": {
+        "access_pattern": "random",
+        "write_type": "new_keys",
+        "key_distribution": "uniform",
+        "value_size": "fixed",
+        "compression_ratio": "high",
+        "cache_friendliness": "low",
+        "compaction_frequency": "high"
+      },
+      "integrated_scores": {
+        "performance_score": 0.36141564630552137,
+        "bottleneck_score": 0.42812577951359054,
+        "workload_complexity": 4,
+        "overall_efficiency": 0.02028301886792453
+      }
+    },
+    "overwrite": {
+      "performance": {
+        "throughput_mb_s": 74.4,
+        "ops_per_sec": 75033,
+        "micros_per_op": 53.309,
+        "efficiency": 0.050134770889487874,
+        "ops_efficiency": 0.75033,
+        "latency_efficiency": 1.8758558592357764
+      },
+      "bottlenecks": {
+        "write_stall_ratio": 0.6321422814333238,
+        "compaction_io_ratio": 0.25095204978383717,
+        "cache_miss_ratio": 1.0,
+        "flush_ratio": 0.3651184582474894,
+        "total_bottleneck_ratio": 2.2482127894646506,
+        "max_bottleneck": "cache_miss_ratio",
+        "bottleneck_diversity": 4
+      },
+      "workload_type": {
+        "access_pattern": "random",
+        "write_type": "existing_keys",
+        "key_distribution": "uniform",
+        "value_size": "fixed",
+        "compression_ratio": "medium",
+        "cache_friendliness": "medium",
+        "compaction_frequency": "medium"
+      },
+      "integrated_scores": {
+        "performance_score": 0.8921068767084215,
+        "bottleneck_score": 0.43794680263383734,
+        "workload_complexity": 4,
+        "overall_efficiency": 0.050134770889487874
+      }
+    }
+  },
+  "refined_models": {
+    "performance_based": {
+      "name": "\uc131\ub2a5 \uae30\ubc18 \ubaa8\ub378",
+      "formula": "S_predicted = S_theoretical \u00d7 \u03b7_performance",
+      "description": "\uc131\ub2a5 \ud2b9\uc131(\ucc98\ub9ac\ub7c9, \uc5f0\uc0b0\uc218, \uc9c0\uc5f0\uc2dc\uac04)\uc744 \uc885\ud569\ud55c \ubaa8\ub378",
+      "parameters": {
+        "fillrandom": 0.03614156463055214,
+        "overwrite": 0.08921068767084216
+      },
+      "calculation_method": "performance_based"
+    },
+    "bottleneck_based": {
+      "name": "\ubcd1\ubaa9 \uae30\ubc18 \ubaa8\ub378 (\uac1c\uc120)",
+      "formula": "S_predicted = S_theoretical \u00d7 (1 - weighted_bottleneck_impact)",
+      "description": "\ubcd1\ubaa9\uc758 \uac00\uc911\uce58\ub97c \uace0\ub824\ud55c \uac1c\uc120\ub41c \ubcd1\ubaa9 \ubaa8\ub378",
+      "parameters": {
+        "fillrandom": 0.36293141082666835,
+        "overwrite": 0.43534562666677024
+      },
+      "calculation_method": "bottleneck_based"
+    },
+    "workload_type_based": {
+      "name": "\uc6cc\ud06c\ub85c\ub4dc \uc720\ud615 \uae30\ubc18 \ubaa8\ub378",
+      "formula": "S_predicted = S_theoretical \u00d7 \u03b7_workload_type",
+      "description": "\uc6cc\ud06c\ub85c\ub4dc \uc720\ud615\ubcc4 \ud2b9\uc131\uc744 \ubc18\uc601\ud55c \ubaa8\ub378",
+      "parameters": {
+        "fillrandom": 0.02,
+        "overwrite": 0.05
+      },
+      "calculation_method": "workload_type_based"
+    },
+    "integrated": {
+      "name": "\ud1b5\ud569 \ubaa8\ub378",
+      "formula": "S_predicted = S_theoretical \u00d7 \u03b7_performance \u00d7 \u03b7_bottleneck \u00d7 \u03b7_workload_type",
+      "description": "\uc131\ub2a5, \ubcd1\ubaa9, \uc6cc\ud06c\ub85c\ub4dc \uc720\ud615\uc744 \ubaa8\ub450 \uace0\ub824\ud55c \ud1b5\ud569 \ubaa8\ub378",
+      "parameters": {
+        "fillrandom": 0.027908889803666306,
+        "overwrite": 0.05032672227403662
+      },
+      "calculation_method": "integrated"
+    },
+    "adaptive": {
+      "name": "\uc801\uc751\ud615 \ubaa8\ub378",
+      "formula": "S_predicted = S_theoretical \u00d7 adaptive_efficiency",
+      "description": "\uc6cc\ud06c\ub85c\ub4dc \ud2b9\uc131\uc5d0 \ub530\ub77c \uc801\uc751\uc801\uc73c\ub85c \ud6a8\uc728\uc131\uc744 \uc870\uc815\ud558\ub294 \ubaa8\ub378",
+      "parameters": {
+        "fillrandom": 0.012169811320754719,
+        "overwrite": 0.030080862533692722
+      },
+      "calculation_method": "adaptive"
+    }
+  },
+  "validation_results": {
+    "performance_based": {
+      "results": {
+        "fillrandom": {
+          "actual": 30.1,
+          "predicted": 53.63408191173937,
+          "error": 23.53408191173937,
+          "error_rate": 0.7818631864365239
+        },
+        "overwrite": {
+          "actual": 74.4,
+          "predicted": 132.38866050352976,
+          "error": 57.98866050352976,
+          "error_rate": 0.7794174798861526
+        }
+      },
+      "total_error_rate": 0.7806403331613383
+    },
+    "bottleneck_based": {
+      "results": {
+        "fillrandom": {
+          "actual": 30.1,
+          "predicted": 538.5902136667759,
+          "error": 508.49021366677584,
+          "error_rate": 16.893362580291555
+        },
+        "overwrite": {
+          "actual": 74.4,
+          "predicted": 646.052909973487,
+          "error": 571.652909973487,
+          "error_rate": 7.683506854482352
+        }
+      },
+      "total_error_rate": 12.288434717386954
+    },
+    "workload_type_based": {
+      "results": {
+        "fillrandom": {
+          "actual": 30.1,
+          "predicted": 29.68,
+          "error": 0.4200000000000017,
+          "error_rate": 0.013953488372093079
+        },
+        "overwrite": {
+          "actual": 74.4,
+          "predicted": 74.2,
+          "error": 0.20000000000000284,
+          "error_rate": 0.0026881720430107906
+        }
+      },
+      "total_error_rate": 0.008320830207551935
+    },
+    "integrated": {
+      "results": {
+        "fillrandom": {
+          "actual": 30.1,
+          "predicted": 41.4167924686408,
+          "error": 11.316792468640799,
+          "error_rate": 0.37597317171564115
+        },
+        "overwrite": {
+          "actual": 74.4,
+          "predicted": 74.68485585467035,
+          "error": 0.28485585467034014,
+          "error_rate": 0.003828707724063711
+        }
+      },
+      "total_error_rate": 0.18990093971985242
+    },
+    "adaptive": {
+      "results": {
+        "fillrandom": {
+          "actual": 30.1,
+          "predicted": 18.060000000000002,
+          "error": 12.04,
+          "error_rate": 0.39999999999999997
+        },
+        "overwrite": {
+          "actual": 74.4,
+          "predicted": 44.64,
+          "error": 29.760000000000005,
+          "error_rate": 0.4
+        }
+      },
+      "total_error_rate": 0.4
+    }
+  },
+  "recommendation": {
+    "best_model_name": "workload_type_based",
+    "best_model": {
+      "name": "\uc6cc\ud06c\ub85c\ub4dc \uc720\ud615 \uae30\ubc18 \ubaa8\ub378",
+      "formula": "S_predicted = S_theoretical \u00d7 \u03b7_workload_type",
+      "description": "\uc6cc\ud06c\ub85c\ub4dc \uc720\ud615\ubcc4 \ud2b9\uc131\uc744 \ubc18\uc601\ud55c \ubaa8\ub378",
+      "parameters": {
+        "fillrandom": 0.02,
+        "overwrite": 0.05
+      },
+      "calculation_method": "workload_type_based"
+    },
+    "best_results": {
+      "results": {
+        "fillrandom": {
+          "actual": 30.1,
+          "predicted": 29.68,
+          "error": 0.4200000000000017,
+          "error_rate": 0.013953488372093079
+        },
+        "overwrite": {
+          "actual": 74.4,
+          "predicted": 74.2,
+          "error": 0.20000000000000284,
+          "error_rate": 0.0026881720430107906
+        }
+      },
+      "total_error_rate": 0.008320830207551935
+    },
+    "recommendations": "\ubaa8\ub378 \uac1c\uc120 \uc81c\uc548"
+  }
+}

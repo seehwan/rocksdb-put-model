@@ -1,0 +1,42 @@
+{
+  "model_info": {
+    "name": "RocksDB Put Model v6 - Environment-Aware Adaptive Model",
+    "version": "6.0",
+    "philosophy": "환경 인식 적응형 모델링",
+    "formula": "S_v6 = S_envelope(read_ratio) × η_adaptive(environment) × η_dynamic(workload) × η_system",
+    "key_features": [
+      "환경별 적응적 효율성",
+      "장치 대역폭 기반 스케일링",
+      "데이터 규모 인식",
+      "실행 시간 고려",
+      "실험 데이터 기반 학습"
+    ],
+    "components": {
+      "envelope_function": "읽기/쓰기 비율에 따른 장치 성능",
+      "adaptive_efficiency": "환경 요인 기반 적응적 효율성",
+      "dynamic_efficiency": "워크로드별 동적 효율성",
+      "system_efficiency": "시스템 오버헤드"
+    }
+  },
+  "environment_analysis": {
+    "bandwidth_range": [
+      1490.0,
+      3005.8
+    ],
+    "throughput_range": [
+      30.1,
+      196.2
+    ],
+    "efficiency_range": [
+      0.010013972985561248,
+      0.12609254498714653
+    ],
+    "patterns": {
+      "bandwidth_efficiency_correlation": "negative",
+      "scale_efficiency_correlation": "negative",
+      "time_efficiency_correlation": "negative"
+    }
+  },
+  "adaptive_models": {
+    "bandwidth": {
+      "model": 

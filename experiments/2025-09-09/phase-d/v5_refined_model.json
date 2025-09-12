@@ -1,0 +1,149 @@
+{
+  "model_info": {
+    "name": "RocksDB Put Model v5 - Refined Environment-Aware",
+    "version": "5.1",
+    "philosophy": "환경 인식 정교화된 v5 모델",
+    "formula": "S_v5_refined = S_envelope(read_ratio) × η_adaptive(environment) × η_dynamic(workload) × η_system",
+    "improvements": [
+      "환경별 적응적 효율성",
+      "장치 대역폭 기반 스케일링",
+      "데이터 규모 인식",
+      "실행 시간 고려",
+      "실험 데이터 기반 학습"
+    ],
+    "components": {
+      "envelope_function": "읽기/쓰기 비율에 따른 장치 성능",
+      "adaptive_efficiency": "환경 요인 기반 적응적 효율성",
+      "dynamic_efficiency": "워크로드별 동적 효율성 (개선됨)",
+      "system_efficiency": "시스템 오버헤드"
+    },
+    "adaptive_model": {
+      "bandwidth": {
+        "slope": -7.084431923074615e-05,
+        "intercept": 0.22351562235997152
+      },
+      "scale": {
+        "small": 0.15,
+        "medium": 0.12,
+        "large": 0.08,
+        "huge": 0.01
+      },
+      "time": {
+        "slope": -0.056664904210669644,
+        "intercept": 0.6779485892019936
+      },
+      "weights": {
+        "bandwidth": 0.4,
+        "scale": 0.3,
+        "time": 0.2,
+        "base": 0.1
+      }
+    }
+  },
+  "validation_results": {
+    "2025-09-05": {
+      "predicted": 124.42773247236151,
+      "actual": 196.2,
+      "error_rate": 0.3658117610990748,
+      "components": {
+        "envelope_bandwidth": 1556.0,
+        "adaptive_eta": 0.10453125365220148,
+        "dynamic_eta": 0.85,
+        "system_eta": 0.9,
+        "total_efficiency": 0.07996640904393414
+      },
+      "adaptive_breakdown": {
+        "bandwidth_efficiency": 0.1132818616369305,
+        "scale_efficiency": 0.08,
+        "time_efficiency": 0.1260925449871464,
+        "integrated_efficiency": 0.10453125365220148
+      }
+    },
+    "2025-09-08": {
+      "predicted": 227.97,
+      "actual": 157.5,
+      "error_rate": 0.4474285714285714,
+      "components": {
+        "envelope_bandwidth": 1490.0,
+        "adaptive_eta": 0.2,
+        "dynamic_eta": 0.85,
+        "system_eta": 0.9,
+        "total_efficiency": 0.15300000000000002
+      },
+      "adaptive_breakdown": {
+        "bandwidth_efficiency": 0.11795758670615974,
+        "scale_efficiency": 0.12,
+        "time_efficiency": 0.6779485892019936,
+        "integrated_efficiency": 0.2
+      }
+    },
+    "2025-09-09": {
+      "predicted": 44.22162644483195,
+      "actual": 30.1,
+      "error_rate": 0.46915702474524734,
+      "components": {
+        "envelope_bandwidth": 3005.8,
+        "adaptive_eta": 0.019231501643590124,
+        "dynamic_eta": 0.85,
+        "system_eta": 0.9,
+        "total_efficiency": 0.014712098757346444
+      },
+      "adaptive_breakdown": {
+        "bandwidth_efficiency": 0.010571767616194716,
+        "scale_efficiency": 0.01,
+        "time_efficiency": 0.01001397298556117,
+        "integrated_efficiency": 0.019231501643590124
+      }
+    }
+  },
+  "historical_data": {
+    "2025-09-05": {
+      "device_bandwidth": 1556.0,
+      "actual_throughput": 196.2,
+      "efficiency_ratio": 0.12609254498714653,
+      "data_scale": "large",
+      "execution_time": 16965.531
+    },
+    "2025-09-08": {
+      "device_bandwidth": 1490.0,
+      "actual_throughput": 157.5,
+      "efficiency_ratio": 0.10570469798657718,
+      "data_scale": "medium",
+      "execution_time": 0
+    },
+    "2025-09-09": {
+      "device_bandwidth": 3005.8,
+      "actual_throughput": 30.1,
+      "efficiency_ratio": 0.010013972985561248,
+      "data_scale": "huge",
+      "execution_time": 131590.233
+    }
+  },
+  "adaptive_efficiency_model": {
+    "bandwidth": {
+      "slope": -7.084431923074615e-05,
+      "intercept": 0.22351562235997152
+    },
+    "scale": {
+      "small": 0.15,
+      "medium": 0.12,
+      "large": 0.08,
+      "huge": 0.01
+    },
+    "time": {
+      "slope": -0.056664904210669644,
+      "intercept": 0.6779485892019936
+    },
+    "weights": {
+      "bandwidth": 0.4,
+      "scale": 0.3,
+      "time": 0.2,
+      "base": 0.1
+    }
+  },
+  "improvement_summary": {
+    "original_v5_avg_error": 0.378,
+    "refined_v5_avg_error": 0.42746578575763117,
+    "improvement": "환경 인식 적응형 효율성 모델 적용"
+  }
+}

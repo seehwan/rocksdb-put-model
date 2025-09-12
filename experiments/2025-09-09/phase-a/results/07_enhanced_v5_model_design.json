@@ -1,0 +1,225 @@
+{
+  "timestamp": "2025-09-12T05:14:06.349544",
+  "model_version": "v5-enhanced",
+  "model_parameters": {
+    "base_efficiency": {
+      "fillrandom": 0.025,
+      "overwrite": 0.03,
+      "mixgraph": 0.028
+    },
+    "level_compaction_factor": {
+      "L0": 1.0,
+      "L1": 0.95,
+      "L2": 0.3,
+      "L3": 0.8
+    },
+    "time_dependent_factors": {
+      "compaction_adaptation": 0.05,
+      "system_optimization": 0.02,
+      "workload_adaptation": 0.03,
+      "device_degradation": -0.15
+    },
+    "device_utilization_factor": {
+      "low_utilization": 1.0,
+      "medium_utilization": 0.95,
+      "high_utilization": 0.85,
+      "critical_utilization": 0.7
+    }
+  },
+  "level_analysis": {
+    "L0": {
+      "files": "15/9",
+      "size_gb": 2.99,
+      "write_gb": 1670.1,
+      "read_gb": 1.5,
+      "w_amp": 0.0,
+      "io_percentage": 19.0,
+      "efficiency": 1.0,
+      "device_usage": {
+        "write_bw_usage": 13.0,
+        "read_bw_usage": 0.0,
+        "write_utilization": 0.8,
+        "read_utilization": 0.0
+      }
+    },
+    "L1": {
+      "files": "29/8",
+      "size_gb": 6.69,
+      "write_gb": 1036.0,
+      "read_gb": 1.9,
+      "w_amp": 0.0,
+      "io_percentage": 11.8,
+      "efficiency": 0.95,
+      "device_usage": {
+        "write_bw_usage": 8.1,
+        "read_bw_usage": 0.0,
+        "write_utilization": 0.5,
+        "read_utilization": 0.0
+      }
+    },
+    "L2": {
+      "files": "117/19",
+      "size_gb": 25.85,
+      "write_gb": 3968.1,
+      "read_gb": 0.9,
+      "w_amp": 22.6,
+      "io_percentage": 45.2,
+      "efficiency": 0.3,
+      "device_usage": {
+        "write_bw_usage": 30.8,
+        "read_bw_usage": 0.0,
+        "write_utilization": 1.8,
+        "read_utilization": 0.0
+      }
+    },
+    "L3": {
+      "files": "463/0",
+      "size_gb": 88.72,
+      "write_gb": 2096.4,
+      "read_gb": 0.4,
+      "w_amp": 0.9,
+      "io_percentage": 23.9,
+      "efficiency": 0.8,
+      "device_usage": {
+        "write_bw_usage": 16.3,
+        "read_bw_usage": 0.0,
+        "write_utilization": 1.0,
+        "read_utilization": 0.0
+      }
+    }
+  },
+  "time_dependent_model": {
+    "device_degradation": {
+      "write_degradation_rate": 0.43,
+      "read_degradation_rate": 0.055,
+      "effective_degradation_rate": 0.101,
+      "non_linear_factor": 1.2
+    },
+    "compaction_efficiency_evolution": {
+      "0-6_hours": {
+        "efficiency": 1.0,
+        "waf_effective": 1.0
+      },
+      "6-18_hours": {
+        "efficiency": 0.85,
+        "waf_effective": 2.5
+      },
+      "18-36_hours": {
+        "efficiency": 0.92,
+        "waf_effective": 2.87
+      }
+    },
+    "fillrandom_performance_evolution": {
+      "0_hours": 30.1,
+      "6_hours": 30.5,
+      "12_hours": 30.9,
+      "18_hours": 31.3,
+      "24_hours": 31.8,
+      "30_hours": 32.3,
+      "36_hours": 32.7,
+      "36.6_hours": 32.8
+    }
+  },
+  "device_utilization": {
+    "write_bandwidth": {
+      "peak_usage": 1200,
+      "average_usage": 800,
+      "utilization_rate": 47.4,
+      "peak_utilization": 71.1
+    },
+    "read_bandwidth": {
+      "peak_usage": 600,
+      "average_usage": 400,
+      "utilization_rate": 16.9,
+      "peak_utilization": 25.3
+    },
+    "ssd_gc": {
+      "gc_threshold": 70,
+      "current_utilization": 47.4,
+      "gc_activation": false,
+      "performance_impact": "Minimal"
+    }
+  },
+  "components_analysis": {
+    "level_efficiency": 0.6295295295295296,
+    "time_factors": {
+      "compaction_adaptation": 0.05,
+      "system_optimization": 0.02,
+      "workload_adaptation": 0.03,
+      "device_degradation": -0.15
+    },
+    "utilization_factor": 1.0
+  },
+  "validation_results": {
+    "model_predictions": {
+      "0": {
+        "predicted": 33.745143518518525,
+        "actual": 30.1,
+        "error": 12.110111357204396
+      },
+      "6": {
+        "predicted": 33.540647948796305,
+        "actual": 30.5,
+        "error": 9.969337537037067
+      },
+      "12": {
+        "predicted": 28.335729522212965,
+        "actual": 30.9,
+        "error": 8.298609960475838
+      },
+      "18": {
+        "predicted": 28.16190828794908,
+        "actual": 31.3,
+        "error": 10.025852115178665
+      },
+      "24": {
+        "predicted": 30.29298834045927,
+        "actual": 31.8,
+        "error": 4.739030375914245
+      },
+      "30": {
+        "predicted": 30.10485241631482,
+        "actual": 32.3,
+        "error": 6.796122550108907
+      },
+      "36": {
+        "predicted": 29.91671649217038,
+        "actual": 32.7,
+        "error": 8.511570360335236
+      },
+      "36.6": {
+        "predicted": 29.897902899755927,
+        "actual": 32.8,
+        "error": 8.847857012939238
+      }
+    },
+    "average_error": 8.662311408649199,
+    "errors": [
+      12.110111357204396,
+      9.969337537037067,
+      8.298609960475838,
+      10.025852115178665,
+      4.739030375914245,
+      6.796122550108907,
+      8.511570360335236,
+      8.847857012939238
+    ]
+  },
+  "optimization_attempts": [
+    {
+      "name": "Base Efficiency \uc870\uc815",
+      "fillrandom": 0.03,
+      "expected_improvement": "FillRandom \uae30\ubcf8 \ud6a8\uc728\uc131 \uc99d\uac00"
+    },
+    {
+      "name": "Level Efficiency \uc870\uc815",
+      "L2_efficiency": 0.35,
+      "expected_improvement": "L2 \ubcd1\ubaa9 \uc644\ud654"
+    },
+    {
+      "name": "Time Factors \uc870\uc815",
+      "compaction_adaptation": 0.08,
+      "expected_improvement": "\ucef4\ud329\uc158 \uc801\uc751 \ud6a8\uacfc \uc99d\uac00"
+    }
+  ]
+}

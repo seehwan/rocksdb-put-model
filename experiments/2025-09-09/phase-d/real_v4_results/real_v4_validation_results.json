@@ -1,0 +1,38 @@
+{
+  "experiment_info": {
+    "date": "2025-09-09",
+    "phase_c_data": {
+      "waf_measured": 2.391092408459961,
+      "user_data_gb": 953.67431640625,
+      "flush_gb": 2280.323418102227,
+      "key_count": 1000000000,
+      "value_size": 1024
+    }
+  },
+  "v4_simulation_results": {
+    "avg_put_rate": 196.4027580075817,
+    "avg_stall_prob": 0.017986209962091555,
+    "avg_l0_files": 0.0
+  },
+  "overhead_analysis": {
+    "efficiency_ratio": 0.1532565036527545,
+    "expected_efficiency": 0.050000000000000044,
+    "overhead_factors": {
+      "cpu_overhead": 0.3,
+      "memory_constraint": 0.2,
+      "concurrency_limit": 0.2,
+      "os_filesystem": 0.15,
+      "rocksdb_internal": 0.1
+    },
+    "correction_factor": 3.0651300730550872
+  },
+  "v5_prediction": {
+    "v4_simulation": 196.4027580075817,
+    "correction_factor": 3.0651300730550872,
+    "v5_prediction": 601.9999999999995
+  },
+  "measured_result": {
+    "measured_mb_s": 30.1,
+    "source": "Phase-B FillRandom \uacb0\uacfc"
+  }
+}

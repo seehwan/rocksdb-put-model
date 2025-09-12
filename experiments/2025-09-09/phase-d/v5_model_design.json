@@ -1,0 +1,128 @@
+{
+  "architecture": {
+    "name": "RocksDB Put Model v5 - Data-Driven Hybrid Model",
+    "philosophy": "실제 데이터 기반 + 이론적 상한선 + 워크로드 특화",
+    "approach": "하이브리드 접근법 (실험적 + 이론적)",
+    "key_innovation": "워크로드별 동적 적응 모델"
+  },
+  "components": {
+    "S_device": {
+      "description": "장치 특성 기반 이론적 최대",
+      "calculation": "fio 순수 쓰기 성능 × 동시성 팩터",
+      "value": 3005.8330078125,
+      "source": "Phase-A fio 측정값"
+    },
+    "η_workload": {
+      "description": "워크로드별 효율성",
+      "fillrandom": 0.02,
+      "overwrite": 0.05,
+      "source": "Phase-D 실험 결과"
+    },
+    "η_bottleneck": {
+      "description": "실시간 병목 효율성",
+      "calculation": "1 - max(cache_miss, write_stall, compaction_io)",
+      "fillrandom": 0.0,
+      "overwrite": 0.0,
+      "source": "FillRandom 로그 분석"
+    },
+    "η_adaptive": {
+      "description": "적응적 보정 계수",
+      "calculation": "과거 데이터 기반 학습된 계수",
+      "fillrandom": 0.5,
+      "overwrite": 1.0,
+      "source": "기존 실험 데이터 학습"
+    }
+  },
+  "predictions": {
+    "fillrandom": {
+      "predicted": 0.0,
+      "actual": 30.1,
+      "error_rate": 1.0,
+      "components": {
+        "S_device": 3005.8330078125,
+        "eta_workload": 0.02,
+        "eta_bottleneck": 0.0,
+        "eta_adaptive": 0.5
+      }
+    },
+    "overwrite": {
+      "predicted": 0.0,
+      "actual": 74.4,
+      "error_rate": 1.0,
+      "components": {
+        "S_device": 3005.8330078125,
+        "eta_workload": 0.05,
+        "eta_bottleneck": 0.0,
+        "eta_adaptive": 1.0
+      }
+    }
+  },
+  "improvements": {
+    "real_time_monitoring": {
+      "description": "실시간 모니터링 기반 적응",
+      "features": [
+        "RocksDB 로그 실시간 분석",
+        "병목 전환 시 자동 모델 조정",
+        "성능 예측 정확도 지속 개선"
+      ]
+    },
+    "workload_specific_models": {
+      "description": "워크로드별 특화 모델",
+      "features": [
+        "FillRandom: 캐시 무효화 모델",
+        "Overwrite: 업데이트 효율성 모델",
+        "Mixed: 혼합 워크로드 모델"
+      ]
+    },
+    "machine_learning_integration": {
+      "description": "머신러닝 통합",
+      "features": [
+        "과거 데이터 기반 패턴 학습",
+        "자동 파라미터 튜닝",
+        "예측 정확도 지속 개선"
+      ]
+    },
+    "system_awareness": {
+      "description": "시스템 인식 모델",
+      "features": [
+        "하드웨어 특성 자동 감지",
+        "OS/파일시스템 오버헤드 반영",
+        "동적 시스템 상태 적응"
+      ]
+    }
+  },
+  "device_characteristics": {
+    "write_bandwidth": 3005.8330078125,
+    "write_iops": 3005.799807,
+    "write_latency": 158.392737439,
+    "read_bandwidth": 1864.2041015625,
+    "read_iops": 1864.204527,
+    "read_latency": 368.97622614799997,
+    "mixed_read_bandwidth": 649.890625,
+    "mixed_write_bandwidth": 651.205078125,
+    "mixed_total_bandwidth": 1301.095703125
+  },
+  "historical_patterns": {
+    "fillrandom": {
+      "actual_throughput": 30.1,
+      "theoretical_max": 1484,
+      "efficiency": 0.0203,
+      "bottlenecks": {
+        "cache_miss": 1.0,
+        "write_stall": 0.818,
+        "compaction_io": 0.314,
+        "flush": 0.155
+      }
+    },
+    "overwrite": {
+      "actual_throughput": 74.4,
+      "efficiency": 0.0501,
+      "bottlenecks": {
+        "cache_miss": 1.0,
+        "write_stall": 0.632,
+        "compaction_io": 0.251,
+        "flush": 0.365
+      }
+    }
+  }
+}

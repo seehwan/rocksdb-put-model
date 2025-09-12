@@ -1,0 +1,190 @@
+{
+  "analysis_info": {
+    "title": "Theoretical Modeling Failure Analysis",
+    "date": "2025-09-09",
+    "purpose": "동일한 환경에서도 이론적 모델링이 실패하는 원인 분석"
+  },
+  "experimental_data": {
+    "2025-09-05": {
+      "environment": "GPU-01 server",
+      "device": "/dev/nvme1n1p1",
+      "device_bandwidth": 1556.0,
+      "actual_throughput": 196.2,
+      "efficiency": 0.12609254498714653,
+      "workload": "fillrandom",
+      "data_size": "3.2B operations",
+      "duration": "17 hours",
+      "system_state": "stable"
+    },
+    "2025-09-08": {
+      "environment": "GPU-01 server",
+      "device": "/dev/nvme1n1p1",
+      "device_bandwidth": 1490.0,
+      "actual_throughput": 157.5,
+      "efficiency": 0.10570469798657718,
+      "workload": "fillrandom",
+      "data_size": "similar",
+      "duration": "shorter",
+      "system_state": "stable"
+    },
+    "2025-09-09": {
+      "environment": "GPU-01 server",
+      "device": "/dev/nvme1n1p2",
+      "device_bandwidth": 3005.8,
+      "actual_throughput": 30.1,
+      "efficiency": 0.010013972985561248,
+      "workload": "fillrandom",
+      "data_size": "4B operations",
+      "duration": "36.5 hours",
+      "system_state": "stable"
+    }
+  },
+  "model_predictions": {
+    "v5_original": {
+      "2025-09-05": 9.62,
+      "2025-09-08": 9.21,
+      "2025-09-09": 18.57
+    },
+    "v5_refined": {
+      "2025-09-05": 124.43,
+      "2025-09-08": 227.97,
+      "2025-09-09": 44.22
+    },
+    "log_based": {
+      "2025-09-09": 8.56
+    },
+    "compaction_based": {
+      "2025-09-09": 0.76
+    }
+  },
+  "failure_analysis": {},
+  "root_causes": {
+    "false_environmental_assumption": {
+      "description": "잘못된 환경 동일성 가정",
+      "details": [
+        "장치 파티션이 다름 (p1 vs p2)",
+        "장치 대역폭이 다름 (1,490 vs 3,005 MB/s)",
+        "데이터 크기가 다름 (3.2B vs 4B operations)",
+        "실행 시간이 다름 (17시간 vs 36.5시간)",
+        "시스템 상태가 시간에 따라 변함"
+      ],
+      "impact": "Critical",
+      "evidence": "효율성 차이 12.6배 (1% vs 12.61%)"
+    },
+    "theoretical_modeling_limitations": {
+      "description": "이론적 모델링의 근본적 한계",
+      "details": [
+        "RocksDB의 복잡한 동작을 수학적으로 모델링하기 어려움",
+        "시간에 따른 동적 변화를 정적으로 모델링",
+        "병목 현상을 절대적 실패로 잘못 해석",
+        "환경별 복잡한 차이를 단순화"
+      ],
+      "impact": "Critical",
+      "evidence": "모든 모델이 17-216배 예측 오차"
+    },
+    "rocksdb_internal_complexity": {
+      "description": "RocksDB 내부 복잡성",
+      "details": [
+        "컴팩션 동작의 시간적 변화",
+        "메모리 관리, 캐시 관리의 복잡성",
+        "Write Stall, WAF의 동적 변화",
+        "내부 최적화의 시간적 효과"
+      ],
+      "impact": "High",
+      "evidence": "컴팩션 단계별 성능 변화 (초기→중간→안정화)"
+    },
+    "measurement_vs_prediction_gap": {
+      "description": "측정 vs 예측의 근본적 차이",
+      "details": [
+        "실제 측정: RocksDB가 병목에도 동작",
+        "모델 예측: 병목 시 완전 실패",
+        "실제 동작: 복잡한 상호작용과 회복 메커니즘",
+        "모델 가정: 단순한 선형적 관계"
+      ],
+      "impact": "Critical",
+      "evidence": "실제 30.1 MB/s vs 예측 0.76 MB/s (39배 차이)"
+    }
+  },
+  "proposed_solutions": {
+    "environmental_awareness": {
+      "title": "환경 인식 모델링",
+      "description": "환경별 차이를 정확히 반영한 모델링",
+      "methods": [
+        "장치별, 파티션별 성능 특성 매핑",
+        "데이터 크기별, 실행 시간별 성능 변화 모델링",
+        "시스템 상태 변화를 고려한 동적 모델링",
+        "환경별 보정 계수 도출"
+      ],
+      "pros": [
+        "환경별 차이 정확히 반영",
+        "현실적 예측 가능"
+      ],
+      "cons": [
+        "복잡성 증가",
+        "환경별 데이터 필요"
+      ]
+    },
+    "empirical_approach": {
+      "title": "경험적 접근법",
+      "description": "이론보다는 실제 측정 데이터에 의존",
+      "methods": [
+        "실제 측정값을 기준으로 역산",
+        "환경별 효율성 매핑 테이블",
+        "실험 데이터 기반 보정 계수",
+        "통계적 학습 모델"
+      ],
+      "pros": [
+        "실제 성능 반영",
+        "검증된 데이터 기반"
+      ],
+      "cons": [
+        "이론적 이해 부족",
+        "일반화 어려움"
+      ]
+    },
+    "dynamic_modeling": {
+      "title": "동적 모델링",
+      "description": "시간에 따른 변화를 고려한 모델링",
+      "methods": [
+        "컴팩션 단계별 성능 변화 모델링",
+        "시간에 따른 시스템 상태 변화 반영",
+        "실행 시간에 따른 최적화 효과 모델링",
+        "동적 보정 메커니즘"
+      ],
+      "pros": [
+        "시간적 변화 반영",
+        "현실적 모델링"
+      ],
+      "cons": [
+        "복잡성 증가",
+        "계산 오버헤드"
+      ]
+    },
+    "bottleneck_reinterpretation": {
+      "title": "병목 현상 재해석",
+      "description": "절대적 실패 → 상대적 영향으로 재해석",
+      "methods": [
+        "병목을 성능 저하 요인으로 해석",
+        "RocksDB의 실제 동작 방식 반영",
+        "병목 간 상호작용과 회복 메커니즘 고려",
+        "상대적 영향도 기반 모델링"
+      ],
+      "pros": [
+        "현실적 해석",
+        "정확한 모델링"
+      ],
+      "cons": [
+        "기존 모델 전면 수정 필요"
+      ]
+    }
+  },
+  "key_insights": [
+    "동일한 환경이라고 가정했지만 실제로는 다름",
+    "장치 파티션, 대역폭, 데이터 크기, 실행 시간 모두 다름",
+    "효율성 차이 12.6배 (1% vs 12.61%)",
+    "이론적 모델링의 근본적 한계",
+    "RocksDB 내부 복잡성 무시",
+    "병목 현상 해석의 근본적 오류",
+    "환경별 복잡한 차이를 단순화"
+  ]
+}

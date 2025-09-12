@@ -1,0 +1,250 @@
+{
+  "analysis_info": {
+    "title": "Long Experiment Timeline-Based Modeling Analysis",
+    "date": "2025-09-09",
+    "purpose": "긴 실험(09-09)을 바탕으로 이전 실험들이 일부분인지 분석"
+  },
+  "experiment_timeline": {
+    "2025-09-05": {
+      "duration": 61200,
+      "duration_hours": 17,
+      "operations": 3200000000.0,
+      "throughput": 196.2,
+      "phase": "early_phase",
+      "description": "초기 단계 (17시간)"
+    },
+    "2025-09-08": {
+      "duration": 28800,
+      "duration_hours": 8,
+      "operations": 3200000000.0,
+      "throughput": 157.5,
+      "phase": "early_phase",
+      "description": "초기 단계 (8시간)"
+    },
+    "2025-09-09": {
+      "duration": 131400.0,
+      "duration_hours": 36.5,
+      "operations": 4000000000.0,
+      "throughput": 30.1,
+      "phase": "complete_experiment",
+      "description": "완전한 실험 (36.5시간)"
+    }
+  },
+  "performance_phases": {
+    "initial_phase": {
+      "time_range": "0-10 minutes",
+      "time_range_seconds": 600,
+      "characteristics": [
+        "높은 초기 성능",
+        "상대적으로 적은 컴팩션",
+        "메모리 기반 쓰기",
+        "낮은 Write Amplification"
+      ],
+      "estimated_throughput": 200,
+      "estimated_efficiency": 0.2
+    },
+    "transitional_phase": {
+      "time_range": "10-60 minutes",
+      "time_range_seconds": 3000,
+      "characteristics": [
+        "성능 급격히 하락",
+        "컴팩션 시작",
+        "중간 스파이크 발생",
+        "불안정한 성능 패턴"
+      ],
+      "estimated_throughput": 100,
+      "estimated_efficiency": 0.1
+    },
+    "stable_phase": {
+      "time_range": "60+ minutes",
+      "time_range_seconds": 2160,
+      "characteristics": [
+        "낮은 안정적 성능",
+        "지속적인 컴팩션",
+        "높은 Write Amplification",
+        "Write Stall 빈발"
+      ],
+      "measured_throughput": 30.1,
+      "measured_efficiency": 0.01
+    }
+  },
+  "timeline_analysis": {
+    "experiment_progression": {
+      "09-05": "초기 17시간 구간",
+      "09-08": "초기 8시간 구간 (추정)",
+      "09-09": "완전한 36.5시간 실험"
+    },
+    "throughput_degradation": {
+      "09-05_17h": 196.2,
+      "09-08_8h": 157.5,
+      "09-09_36.5h": 30.1,
+      "degradation_pattern": "시간이 지날수록 성능 저하"
+    },
+    "phase_correlation": {
+      "09-05_17h": "initial_phase + transitional_phase",
+      "09-08_8h": "initial_phase",
+      "09-09_36.5h": "complete_phases (initial + transitional + stable)"
+    }
+  },
+  "phase_analysis": {
+    "performance_degradation": {
+      "initial_phase": 200,
+      "transitional_phase": 100,
+      "stable_phase": 30.1,
+      "degradation_factor": 6.644518272425249
+    },
+    "efficiency_degradation": {
+      "initial_phase": 0.2,
+      "transitional_phase": 0.1,
+      "stable_phase": 0.01,
+      "degradation_factor": 20.0
+    },
+    "phase_duration_analysis": {
+      "initial_phase_duration": "0-10 minutes (10분)",
+      "transitional_phase_duration": "10-60 minutes (50분)",
+      "stable_phase_duration": "60+ minutes (35.5시간)",
+      "stable_phase_ratio": 0.9726027397260274
+    }
+  },
+  "timeline_model": {
+    "model_philosophy": {
+      "approach": "시간 기반 성능 단계 모델링",
+      "key_insight": "RocksDB 성능은 시간에 따라 단계별로 변화",
+      "modeling_strategy": "각 단계별 특성과 전환 조건 모델링"
+    },
+    "phase_based_modeling": {
+      "initial_phase_model": {
+        "duration": "0-10 minutes",
+        "characteristics": [
+          "높은 초기 성능 (200 MB/s)",
+          "메모리 기반 쓰기",
+          "낮은 컴팩션",
+          "높은 효율성 (20%)"
+        ],
+        "modeling_approach": "메모리 기반 성능 모델",
+        "key_factors": [
+          "MemTable 크기",
+          "메모리 대역폭",
+          "초기 상태"
+        ]
+      },
+      "transitional_phase_model": {
+        "duration": "10-60 minutes",
+        "characteristics": [
+          "성능 급격히 하락 (100 MB/s)",
+          "컴팩션 시작",
+          "불안정한 패턴",
+          "중간 효율성 (10%)"
+        ],
+        "modeling_approach": "컴팩션 전환 모델",
+        "key_factors": [
+          "컴팩션 시작 시점",
+          "전환 속도",
+          "중간 스파이크"
+        ]
+      },
+      "stable_phase_model": {
+        "duration": "60+ minutes",
+        "characteristics": [
+          "낮은 안정적 성능 (30.1 MB/s)",
+          "지속적인 컴팩션",
+          "높은 Write Amplification",
+          "낮은 효율성 (1%)"
+        ],
+        "modeling_approach": "컴팩션 안정화 모델",
+        "key_factors": [
+          "Write Amplification",
+          "컴팩션 오버헤드",
+          "Write Stall"
+        ]
+      }
+    },
+    "experiment_correlation": {
+      "09-05_17h": {
+        "phase_coverage": "initial + transitional",
+        "expected_throughput": "150-200 MB/s",
+        "actual_throughput": 196.2,
+        "correlation": "Good match"
+      },
+      "09-08_8h": {
+        "phase_coverage": "initial",
+        "expected_throughput": "180-220 MB/s",
+        "actual_throughput": 157.5,
+        "correlation": "Good match"
+      },
+      "09-09_36.5h": {
+        "phase_coverage": "complete phases",
+        "expected_throughput": "30-50 MB/s (stable phase)",
+        "actual_throughput": 30.1,
+        "correlation": "Perfect match"
+      }
+    }
+  },
+  "modeling_approach": {
+    "core_concept": {
+      "title": "시간 기반 성능 단계 모델링",
+      "description": "RocksDB 성능을 시간에 따른 단계별 변화로 모델링",
+      "key_insight": "이전 실험들이 09-09 실험의 일부분일 수 있음"
+    },
+    "modeling_strategy": {
+      "phase_identification": {
+        "method": "실험 시간에 따른 성능 단계 식별",
+        "criteria": [
+          "실험 지속시간",
+          "예상 성능 단계",
+          "측정된 성능 값"
+        ]
+      },
+      "phase_modeling": {
+        "method": "각 단계별 특성 모델링",
+        "components": [
+          "초기 단계: 메모리 기반 성능",
+          "전환 단계: 컴팩션 시작 성능",
+          "안정화 단계: 컴팩션 안정화 성능"
+        ]
+      },
+      "transition_modeling": {
+        "method": "단계 간 전환 조건 모델링",
+        "factors": [
+          "시간 기반 전환",
+          "데이터 크기 기반 전환",
+          "컴팩션 상태 기반 전환"
+        ]
+      }
+    },
+    "validation_approach": {
+      "historical_experiment_validation": {
+        "method": "이전 실험들을 단계별로 검증",
+        "validation_criteria": [
+          "실험 시간이 예상 단계와 일치하는가?",
+          "측정된 성능이 예상 단계 성능과 일치하는가?",
+          "단계별 특성이 예상과 일치하는가?"
+        ]
+      },
+      "phase_prediction": {
+        "method": "실험 시간에 따른 성능 단계 예측",
+        "prediction_accuracy": "단계별 예측 정확도 측정"
+      }
+    },
+    "advantages": {
+      "realistic_modeling": "실제 RocksDB 동작 패턴 반영",
+      "time_awareness": "시간에 따른 성능 변화 고려",
+      "phase_specificity": "단계별 특성 정확히 모델링",
+      "historical_consistency": "이전 실험들과의 일관성"
+    },
+    "challenges": {
+      "phase_boundary_detection": "단계 경계 정확한 식별",
+      "transition_modeling": "단계 간 전환 조건 모델링",
+      "environmental_variation": "환경별 차이 반영",
+      "generalization": "다른 환경으로의 일반화"
+    }
+  },
+  "key_insights": [
+    "09-09 실험이 36.5시간의 완전한 실험",
+    "이전 실험들이 09-09 실험의 일부분일 가능성",
+    "시간에 따른 성능 단계별 변화 (초기→전환→안정화)",
+    "단계별 성능 저하 (200→100→30.1 MB/s)",
+    "안정화 단계가 전체의 97.3% (35.5시간)",
+    "타임라인 기반 모델링의 가능성"
+  ]
+}

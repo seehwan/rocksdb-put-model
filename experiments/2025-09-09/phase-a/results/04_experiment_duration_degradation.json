@@ -1,0 +1,185 @@
+{
+  "timestamp": "2025-09-12T05:02:47.167153",
+  "experiment_timeline": {
+    "start_time": "2025-09-09 00:00:00",
+    "end_time": "2025-09-11 17:02:56",
+    "total_duration_hours": 36.6,
+    "description": "Phase-B 10\uc5b5 \ud0a4 \ub300\uaddc\ubaa8 \uc2e4\ud5d8"
+  },
+  "workloads": {
+    "fillrandom": {
+      "duration_hours": 36.6,
+      "operations": 1000000000,
+      "data_size_gb": 1000,
+      "description": "\uc5f0\uc18d \uc4f0\uae30 \uc791\uc5c5"
+    }
+  },
+  "device_performance_timeline": {
+    "before_experiment": {
+      "description": "\uc2e4\ud5d8 \uc2dc\uc791 \uc804 (\uc644\uc804 \ucd08\uae30\ud654)",
+      "performance": {
+        "B_w": 1688.0,
+        "B_r": 2368.0,
+        "B_eff": 2257.0
+      }
+    },
+    "after_experiment": {
+      "description": "\uc2e4\ud5d8 \uc644\ub8cc \ud6c4 (36\uc2dc\uac04 \uc5f0\uc18d \uc4f0\uae30 \ud6c4)",
+      "performance": {
+        "B_w": 1421.0,
+        "B_r": 2320.0,
+        "B_eff": 2173.0
+      }
+    },
+    "refreshed_after_experiment": {
+      "description": "\uc2e4\ud5d8 \ud6c4 \uc7ac\ucd08\uae30\ud654",
+      "performance": {
+        "B_w": 1581.4,
+        "B_r": 2368.0,
+        "B_eff": 2231.0
+      }
+    }
+  },
+  "degradation_analysis": {
+    "B_w": {
+      "before_experiment": 1688.0,
+      "after_experiment": 1421.0,
+      "after_refresh": 1581.4,
+      "experiment_degradation_pct": -15.817535545023699,
+      "recovery_pct": 11.2878254750176
+    },
+    "B_r": {
+      "before_experiment": 2368.0,
+      "after_experiment": 2320.0,
+      "after_refresh": 2368.0,
+      "experiment_degradation_pct": -2.027027027027027,
+      "recovery_pct": 2.0689655172413794
+    },
+    "B_eff": {
+      "before_experiment": 2257.0,
+      "after_experiment": 2173.0,
+      "after_refresh": 2231.0,
+      "experiment_degradation_pct": -3.721754541426672,
+      "recovery_pct": 2.6691210308329496
+    }
+  },
+  "mid_experiment_simulation": {
+    "time_points": [
+      {
+        "period": "0-6_hours",
+        "hours_start": 0.0,
+        "hours_end": 6.0,
+        "duration": 6.0,
+        "degradation_rate_per_hour": 0.5,
+        "period_degradation": 3.0,
+        "cumulative_degradation": 3.0,
+        "description": "\ucd08\uae30 \uc548\uc815\ud654 \uad6c\uac04"
+      },
+      {
+        "period": "6-18_hours",
+        "hours_start": 6.0,
+        "hours_end": 18.0,
+        "duration": 12.0,
+        "degradation_rate_per_hour": 1.2,
+        "period_degradation": 14.399999999999999,
+        "cumulative_degradation": 17.4,
+        "description": "\uc5f4\ud654 \uac00\uc18d\ud654 \uad6c\uac04"
+      },
+      {
+        "period": "18-36_hours",
+        "hours_start": 18.0,
+        "hours_end": 36.0,
+        "duration": 18.0,
+        "degradation_rate_per_hour": 2.0,
+        "period_degradation": 36.0,
+        "cumulative_degradation": 53.4,
+        "description": "\uc2ec\uac01\ud55c \uc5f4\ud654 \uad6c\uac04"
+      }
+    ],
+    "cumulative_degradation": 53.4
+  },
+  "model_impact_analysis": {
+    "current_issues": {
+      "static_device_envelope": {
+        "problem": "\ubaa8\ub378\uc774 \uc2e4\ud5d8 \uc2dc\uc791 \uc2dc\uc810\uc758 \uc7a5\uce58 \uc131\ub2a5\ub9cc \uc0ac\uc6a9",
+        "impact": "\uc2e4\ud5d8 \uc911\uac04 \uc5f4\ud654 \ubc18\uc601 \uc548\ub428",
+        "evidence": "Phase-A\uc5d0\uc11c \uce21\uc815\ud55c B_w=1688 MiB/s\ub85c \uace0\uc815"
+      },
+      "missing_time_dependency": {
+        "problem": "\uc2dc\uac04 \uc758\uc874\uc801 \uc7a5\uce58 \uc131\ub2a5 \ubcc0\ud654 \ubbf8\uace0\ub824",
+        "impact": "\uc2e4\ud5d8 \uc9c4\ud589\uc5d0 \ub530\ub978 \uc131\ub2a5 \uc800\ud558 \ubc18\uc601 \uc548\ub428",
+        "evidence": "36\uc2dc\uac04 \uc5f0\uc18d \uc4f0\uae30 \uc601\ud5a5 \ubb34\uc2dc"
+      },
+      "validation_bias": {
+        "problem": "\uc2e4\ud5d8 \uc644\ub8cc \ud6c4 \uce21\uc815\ub41c \uc131\ub2a5\uc73c\ub85c \uac80\uc99d",
+        "impact": "\uc2e4\uc81c \uc2e4\ud5d8 \uc911 \uc131\ub2a5\uacfc \uac80\uc99d \ub370\uc774\ud130 \ubd88\uc77c\uce58",
+        "evidence": "Phase-B \uc644\ub8cc \ud6c4 \uce21\uc815\ub41c \uc131\ub2a5 \uc0ac\uc6a9"
+      }
+    },
+    "improved_proposal": {
+      "time_dependent_device_envelope": {
+        "approach": "\uc2dc\uac04 \uc758\uc874\uc801 Device Envelope \ubaa8\ub378\ub9c1",
+        "implementation": "B_w(t) = B_w_initial \u00d7 (1 - degradation_rate \u00d7 t)",
+        "benefit": "\uc2e4\ud5d8 \uc911\uac04 \uc5f4\ud654 \ubc18\uc601"
+      },
+      "continuous_monitoring": {
+        "approach": "\uc2e4\ud5d8 \uc911 \uc9c0\uc18d\uc801 \uc131\ub2a5 \ubaa8\ub2c8\ud130\ub9c1",
+        "implementation": "\uc8fc\uae30\uc801 fio \uce21\uc815\uc73c\ub85c \uc2e4\uc2dc\uac04 \uc131\ub2a5 \ucd94\uc801",
+        "benefit": "\uc2e4\uc81c \uc131\ub2a5 \ubcc0\ud654 \uc815\ud655\ud55c \ubc18\uc601"
+      },
+      "adaptive_validation": {
+        "approach": "\uc801\uc751\uc801 \uac80\uc99d \ub370\uc774\ud130 \uc0ac\uc6a9",
+        "implementation": "\uc2e4\ud5d8 \uc2dc\uc810\ubcc4 \uc131\ub2a5 \ub370\uc774\ud130\ub85c \uac80\uc99d",
+        "benefit": "\uc2dc\uac04\uc5d0 \ub530\ub978 \uc131\ub2a5 \ubcc0\ud654 \uace0\ub824\ud55c \uac80\uc99d"
+      }
+    }
+  },
+  "corrected_model_performance": {
+    "results": {
+      "fillrandom": {
+        "actual": 30.1,
+        "predicted": 39.98075,
+        "error": 32.82641196013289,
+        "B_eff_used": 2104.25
+      },
+      "overwrite": {
+        "actual": 45.2,
+        "predicted": 55.375,
+        "error": 22.511061946902647,
+        "B_eff_used": 2215.0
+      },
+      "mixgraph": {
+        "actual": 38.7,
+        "predicted": 47.755399999999995,
+        "error": 23.39896640826871,
+        "B_eff_used": 2170.7
+      }
+    },
+    "mean_error": 26.24548010510141
+  },
+  "comprehensive_analysis": {
+    "experiment_duration_impact": {
+      "total_duration_hours": 36.6,
+      "continuous_write_impact": "36\uc2dc\uac04 \uc5f0\uc18d \uc4f0\uae30 \uc791\uc5c5",
+      "estimated_degradation": "15-20% \uc131\ub2a5 \uc800\ud558",
+      "recovery_after_refresh": "\ubd80\ubd84\uc801 \ubcf5\uad6c \uac00\ub2a5"
+    },
+    "model_current_issues": [
+      "\uc2e4\ud5d8 \uc2dc\uc791 \uc2dc\uc810 \uc7a5\uce58 \uc131\ub2a5\ub9cc \uc0ac\uc6a9 (\uc815\uc801 \ubaa8\ub378)",
+      "\uc2dc\uac04 \uc758\uc874\uc801 \uc7a5\uce58 \uc131\ub2a5 \ubcc0\ud654 \ubbf8\uace0\ub824",
+      "\uc2e4\ud5d8 \uc911\uac04 \uc5f4\ud654 \ubc18\uc601 \uc548\ub428",
+      "\uac80\uc99d \ub370\uc774\ud130\uc640 \uc2e4\uc81c \uc2e4\ud5d8 \uc870\uac74 \ubd88\uc77c\uce58"
+    ],
+    "corrected_model_performance": {
+      "approach": "\uc2e4\ud5d8 \uc911\uac04 \uc2dc\uc810 \uc7a5\uce58 \uc131\ub2a5 \uc0ac\uc6a9",
+      "estimated_improvement": "\ubaa8\ub378 \uc815\ud655\ub3c4 \ud5a5\uc0c1 \uc608\uc0c1",
+      "implementation": "\uc2dc\uac04 \uc758\uc874\uc801 Device Envelope"
+    },
+    "key_recommendations": [
+      "\uc2e4\ud5d8 \uc911 \uc9c0\uc18d\uc801 \uc131\ub2a5 \ubaa8\ub2c8\ud130\ub9c1 \ud544\uc694",
+      "\uc2dc\uac04 \uc758\uc874\uc801 Device Envelope \ubaa8\ub378\ub9c1",
+      "\uc2e4\ud5d8 \uc2dc\uc810\ubcc4 \uc801\uc751\uc801 \uac80\uc99d \ub370\uc774\ud130 \uc0ac\uc6a9",
+      "\uc5f0\uc18d \uc4f0\uae30 \uc791\uc5c5\uc758 \uc5f4\ud654 \uc601\ud5a5 \uace0\ub824"
+    ]
+  }
+}

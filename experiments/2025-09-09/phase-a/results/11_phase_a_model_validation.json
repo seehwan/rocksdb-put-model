@@ -1,0 +1,181 @@
+{
+  "timestamp": "2025-09-12T04:52:58.393857",
+  "phase_a_degradation_analysis": {
+    "degradation_analysis": {
+      "sequential_write": {
+        "before": 1688.0,
+        "after": 1421.0,
+        "degradation_pct": -15.817535545023699,
+        "degradation_abs": -267.0
+      },
+      "random_write": {
+        "before": 1688.0,
+        "after": 1421.0,
+        "degradation_pct": -15.817535545023699,
+        "degradation_abs": -267.0
+      },
+      "mixed_write": {
+        "before": 1129.0,
+        "after": 1086.0,
+        "degradation_pct": -3.8086802480070863,
+        "degradation_abs": -43.0
+      },
+      "mixed_read": {
+        "before": 1129.0,
+        "after": 1087.0,
+        "degradation_pct": -3.720106288751107,
+        "degradation_abs": -42.0
+      }
+    },
+    "envelope_degradation": {
+      "B_w": {
+        "before": 1688.0,
+        "after": 1421.0,
+        "degradation_pct": -15.817535545023699
+      },
+      "B_r": {
+        "before": 2368.0,
+        "after": 2320.0,
+        "degradation_pct": -2.027027027027027
+      },
+      "B_eff": {
+        "before": 2257.0,
+        "after": 2173.0,
+        "degradation_pct": -3.721754541426672
+      }
+    }
+  },
+  "model_validation_results": {
+    "before_degradation": {
+      "v4": {
+        "mean_error": 5.743335609151628,
+        "results": {
+          "fillrandom": {
+            "actual": 30.1,
+            "predicted": 32.072,
+            "error": 6.5514950166113
+          },
+          "overwrite": {
+            "actual": 45.2,
+            "predicted": 42.2,
+            "error": 6.63716814159292
+          },
+          "mixgraph": {
+            "actual": 38.7,
+            "predicted": 37.135999999999996,
+            "error": 4.041343669250664
+          }
+        }
+      },
+      "v5": {
+        "mean_error": 28.720778128471636,
+        "results": {
+          "fillrandom": {
+            "actual": 30.1,
+            "predicted": 15.093543893893894,
+            "error": 49.855335900684736
+          },
+          "overwrite": {
+            "actual": 45.2,
+            "predicted": 44.05644094094095,
+            "error": 2.5299979182722363
+          },
+          "mixgraph": {
+            "actual": 38.7,
+            "predicted": 25.628300780780783,
+            "error": 33.77700056645793
+          }
+        }
+      }
+    },
+    "after_degradation": {
+      "v4": {
+        "mean_error": 16.975610360308867,
+        "results": {
+          "fillrandom": {
+            "actual": 30.1,
+            "predicted": 26.999,
+            "error": 10.302325581395356
+          },
+          "overwrite": {
+            "actual": 45.2,
+            "predicted": 35.525,
+            "error": 21.404867256637175
+          },
+          "mixgraph": {
+            "actual": 38.7,
+            "predicted": 31.261999999999997,
+            "error": 19.21963824289407
+          }
+        }
+      },
+      "v5": {
+        "mean_error": 39.995394384216944,
+        "results": {
+          "fillrandom": {
+            "actual": 30.1,
+            "predicted": 12.706117223473477,
+            "error": 57.78698596852666
+          },
+          "overwrite": {
+            "actual": 45.2,
+            "predicted": 37.08779773523524,
+            "error": 17.94735014328487
+          },
+          "mixgraph": {
+            "actual": 38.7,
+            "predicted": 21.574535195195196,
+            "error": 44.251847040839294
+          }
+        }
+      }
+    }
+  },
+  "model_performance_comparison": [
+    {
+      "device_state": "before_degradation",
+      "model_type": "v4",
+      "mean_error": 5.743335609151628,
+      "description": "Before Degradation + V4"
+    },
+    {
+      "device_state": "after_degradation",
+      "model_type": "v4",
+      "mean_error": 16.975610360308867,
+      "description": "After Degradation + V4"
+    },
+    {
+      "device_state": "before_degradation",
+      "model_type": "v5",
+      "mean_error": 28.720778128471636,
+      "description": "Before Degradation + V5"
+    },
+    {
+      "device_state": "after_degradation",
+      "model_type": "v5",
+      "mean_error": 39.995394384216944,
+      "description": "After Degradation + V5"
+    }
+  ],
+  "best_model": {
+    "device_state": "before_degradation",
+    "model_type": "v4",
+    "mean_error": 5.743335609151628,
+    "description": "Before Degradation + V4"
+  },
+  "recommendations": {
+    "best_model": {
+      "model": "Before Degradation + V4",
+      "error": 5.743335609151628,
+      "rationale": "\ucd5c\uc800 \ud3c9\uade0 \uc624\ucc28 \ub2ec\uc131"
+    },
+    "device_state_impact": {
+      "finding": "\uc7a5\uce58 \uc0c1\ud0dc\uac00 \ubaa8\ub378 \uc131\ub2a5\uc5d0 \ubbf8\uce58\ub294 \uc601\ud5a5",
+      "recommendation": "\uc7a5\uce58 \ucd08\uae30\ud654 \uc0c1\ud0dc\ub97c \uace0\ub824\ud55c \ubaa8\ub378\ub9c1 \ud544\uc694"
+    },
+    "model_selection": {
+      "v4_vs_v5": "v4\uc640 v5 \ubaa8\ub378 \uc131\ub2a5 \ube44\uad50",
+      "recommendation": "\ub354 \ub098\uc740 \ubaa8\ub378 \uc120\ud0dd \ubc0f \ud30c\ub77c\ubbf8\ud130 \uc870\uc815"
+    }
+  }
+}

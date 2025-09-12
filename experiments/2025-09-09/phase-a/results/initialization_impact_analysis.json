@@ -1,0 +1,26 @@
+{
+  "timestamp": "2025-09-12T03:28:09.440919",
+  "key_findings": {
+    "environment_dependency": "Device initialization state has critical impact on performance",
+    "workload_specific_optimization": "Different workloads favor different device states",
+    "modeling_complexity": "Single environment assumption is inadequate",
+    "performance_variation": "Performance varies significantly based on device state"
+  },
+  "performance_patterns": {
+    "sequential_write": "Favors clean initialization state (+135.1% improvement)",
+    "random_write": "Favors used state (+7.2% improvement over clean)",
+    "mixed_rw": "Favors system optimization state (+8.1% improvement over clean)"
+  },
+  "modeling_implications": [
+    "Need environment-aware models",
+    "Workload-specific optimization states",
+    "Time-dependent performance modeling",
+    "Adaptive device envelope approach"
+  ],
+  "recommendations": [
+    "Always specify device state in performance measurements",
+    "Use environment-appropriate models for predictions",
+    "Implement continuous performance monitoring",
+    "Consider workload-specific optimization states"
+  ]
+}

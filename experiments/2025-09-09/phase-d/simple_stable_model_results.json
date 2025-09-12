@@ -1,0 +1,182 @@
+{
+  "timestamp": "2025-09-11T20:00:32.254562",
+  "patterns": {
+    "fillrandom": {
+      "performance": {
+        "throughput_mb_s": 30.1,
+        "ops_per_sec": 30397,
+        "micros_per_op": 131.58,
+        "total_seconds": 131590.233
+      },
+      "bottlenecks": {
+        "write_stall_ratio": 0.8183708172095112,
+        "compaction_io_ratio": 0.3140382790795727,
+        "cache_miss_ratio": 1.0,
+        "flush_ratio": 0.155087785656554
+      },
+      "workload_type": "random_write",
+      "access_pattern": "random"
+    },
+    "overwrite": {
+      "performance": {
+        "throughput_mb_s": 74.4,
+        "ops_per_sec": 75033,
+        "micros_per_op": 53.309,
+        "total_seconds": 1800.263
+      },
+      "bottlenecks": {
+        "write_stall_ratio": 0.6321422814333238,
+        "compaction_io_ratio": 0.25095204978383717,
+        "cache_miss_ratio": 1.0,
+        "flush_ratio": 0.3651184582474894
+      },
+      "workload_type": "overwrite",
+      "access_pattern": "random"
+    }
+  },
+  "model_design": {
+    "theoretical_max": 1484,
+    "workload_efficiency": {
+      "fillrandom": 0.02028301886792453,
+      "overwrite": 0.050134770889487874
+    },
+    "bottleneck_impacts": {
+      "fillrandom": {
+        "max_bottleneck": "cache_miss_ratio",
+        "max_impact": 1.0,
+        "all_bottlenecks": {
+          "write_stall_ratio": 0.8183708172095112,
+          "compaction_io_ratio": 0.3140382790795727,
+          "cache_miss_ratio": 1.0,
+          "flush_ratio": 0.155087785656554
+        }
+      },
+      "overwrite": {
+        "max_bottleneck": "cache_miss_ratio",
+        "max_impact": 1.0,
+        "all_bottlenecks": {
+          "write_stall_ratio": 0.6321422814333238,
+          "compaction_io_ratio": 0.25095204978383717,
+          "cache_miss_ratio": 1.0,
+          "flush_ratio": 0.3651184582474894
+        }
+      }
+    },
+    "models": [
+      {
+        "name": "\uc6cc\ud06c\ub85c\ub4dc\ubcc4 \uace0\uc815 \ud6a8\uc728\uc131 \ubaa8\ub378",
+        "formula": "S_predicted = S_theoretical \u00d7 \u03b7_workload",
+        "description": "\uc6cc\ud06c\ub85c\ub4dc\ubcc4\ub85c \uace0\uc815\ub41c \ud6a8\uc728\uc131\uc744 \uc0ac\uc6a9\ud558\ub294 \ub2e8\uc21c\ud55c \ubaa8\ub378",
+        "parameters": {
+          "S_theoretical": 1484,
+          "\u03b7_workload": {
+            "fillrandom": 0.02028301886792453,
+            "overwrite": 0.050134770889487874
+          }
+        }
+      },
+      {
+        "name": "\ubcd1\ubaa9 \uae30\ubc18 \ubaa8\ub378",
+        "formula": "S_predicted = S_theoretical \u00d7 (1 - max_bottleneck_impact)",
+        "description": "\uac00\uc7a5 \ud070 \ubcd1\ubaa9\uc758 \uc601\ud5a5\uc744 \uace0\ub824\ud55c \ubaa8\ub378",
+        "parameters": {
+          "S_theoretical": 1484,
+          "max_bottleneck_impact": {
+            "fillrandom": 1.0,
+            "overwrite": 1.0
+          }
+        }
+      },
+      {
+        "name": "\ubcf5\ud569 \ubaa8\ub378",
+        "formula": "S_predicted = S_theoretical \u00d7 \u03b7_workload \u00d7 (1 - max_bottleneck_impact)",
+        "description": "\uc6cc\ud06c\ub85c\ub4dc \ud6a8\uc728\uc131\uacfc \ubcd1\ubaa9\uc744 \ubaa8\ub450 \uace0\ub824\ud55c \ubaa8\ub378",
+        "parameters": {
+          "S_theoretical": 1484,
+          "\u03b7_workload": {
+            "fillrandom": 0.02028301886792453,
+            "overwrite": 0.050134770889487874
+          },
+          "max_bottleneck_impact": {
+            "fillrandom": 1.0,
+            "overwrite": 1.0
+          }
+        }
+      }
+    ]
+  },
+  "validation_results": {
+    "\uc6cc\ud06c\ub85c\ub4dc\ubcc4 \uace0\uc815 \ud6a8\uc728\uc131 \ubaa8\ub378": {
+      "results": {
+        "fillrandom": {
+          "actual": 30.1,
+          "predicted": 30.100000000000005,
+          "error": 3.552713678800501e-15,
+          "error_rate": 1.1803035477742526e-16
+        },
+        "overwrite": {
+          "actual": 74.4,
+          "predicted": 74.4,
+          "error": 0.0,
+          "error_rate": 0.0
+        }
+      },
+      "total_error_rate": 5.901517738871263e-17
+    },
+    "\ubcd1\ubaa9 \uae30\ubc18 \ubaa8\ub378": {
+      "results": {
+        "fillrandom": {
+          "actual": 30.1,
+          "predicted": 0.0,
+          "error": 30.1,
+          "error_rate": 1.0
+        },
+        "overwrite": {
+          "actual": 74.4,
+          "predicted": 0.0,
+          "error": 74.4,
+          "error_rate": 1.0
+        }
+      },
+      "total_error_rate": 1.0
+    },
+    "\ubcf5\ud569 \ubaa8\ub378": {
+      "results": {
+        "fillrandom": {
+          "actual": 30.1,
+          "predicted": 0.0,
+          "error": 30.1,
+          "error_rate": 1.0
+        },
+        "overwrite": {
+          "actual": 74.4,
+          "predicted": 0.0,
+          "error": 74.4,
+          "error_rate": 1.0
+        }
+      },
+      "total_error_rate": 1.0
+    }
+  },
+  "recommendation": {
+    "best_model": "\uc6cc\ud06c\ub85c\ub4dc\ubcc4 \uace0\uc815 \ud6a8\uc728\uc131 \ubaa8\ub378",
+    "best_results": {
+      "results": {
+        "fillrandom": {
+          "actual": 30.1,
+          "predicted": 30.100000000000005,
+          "error": 3.552713678800501e-15,
+          "error_rate": 1.1803035477742526e-16
+        },
+        "overwrite": {
+          "actual": 74.4,
+          "predicted": 74.4,
+          "error": 0.0,
+          "error_rate": 0.0
+        }
+      },
+      "total_error_rate": 5.901517738871263e-17
+    },
+    "recommendations": "\ubaa8\ub378 \uac1c\uc120 \uc81c\uc548"
+  }
+}

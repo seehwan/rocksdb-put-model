@@ -1,0 +1,197 @@
+{
+  "timestamp": "2025-09-11T19:59:24.418077",
+  "workload_data": [
+    {
+      "workload_name": "fillrandom",
+      "basic_performance": {
+        "micros_per_op": 131.58,
+        "ops_per_sec": 30397,
+        "total_seconds": 131590.233,
+        "total_operations": 4000000000,
+        "throughput_mb_s": 30.1
+      },
+      "detailed_stats": {
+        "block_cache_miss": 17312905941,
+        "block_cache_hit": 0,
+        "write_stall_count": 68980435,
+        "write_stall_sum": 107689606517,
+        "sst_read_count": 17315671257,
+        "sst_read_sum": 23118387969,
+        "sst_write_count": 35353543123,
+        "sst_write_sum": 19318168895,
+        "flush_count": 31310,
+        "flush_sum": 20408037850,
+        "compaction_write_count": 33353448473,
+        "compaction_write_sum": 18208725014,
+        "compaction_read_count": 17315546017,
+        "compaction_read_sum": 23115645301,
+        "db_write_count": 0,
+        "db_write_sum": 0,
+        "db_write_sum_micros": 0,
+        "compaction_time_cpu_micros": 0,
+        "compaction_time_cpu_sum": 0,
+        "flush_write_bytes": 2448478626263,
+        "flush_write_bytes_sum": 0,
+        "compaction_key_drop_new": 2553954716,
+        "compaction_key_drop_new_sum": 0
+      }
+    },
+    {
+      "workload_name": "overwrite",
+      "basic_performance": {
+        "micros_per_op": 53.309,
+        "ops_per_sec": 75033,
+        "total_seconds": 1800.263,
+        "total_operations": 135079996,
+        "throughput_mb_s": 74.4
+      },
+      "detailed_stats": {
+        "block_cache_miss": 238570128,
+        "block_cache_hit": 0,
+        "write_stall_count": 678998,
+        "write_stall_sum": 1138022360,
+        "sst_read_count": 238610144,
+        "sst_read_sum": 202927996,
+        "sst_write_count": 541927462,
+        "sst_write_sum": 283973184,
+        "flush_count": 2188,
+        "flush_sum": 657309251,
+        "compaction_write_count": 474388452,
+        "compaction_write_sum": 248935205,
+        "compaction_read_count": 238601392,
+        "compaction_read_sum": 202844485,
+        "db_write_count": 0,
+        "db_write_sum": 0,
+        "db_write_sum_micros": 0,
+        "compaction_time_cpu_micros": 0,
+        "compaction_time_cpu_sum": 0,
+        "flush_write_bytes": 82652227915,
+        "flush_write_bytes_sum": 0,
+        "compaction_key_drop_new": 5612711,
+        "compaction_key_drop_new_sum": 0
+      }
+    }
+  ],
+  "bottlenecks": {
+    "fillrandom": {
+      "write_stall": {
+        "count": 68980435,
+        "time_micros": 107689606517,
+        "time_seconds": 107689.606517,
+        "ratio": 0.8183708172095112,
+        "impact": "Compaction\uc73c\ub85c \uc778\ud55c \uc4f0\uae30 \uc9c0\uc5f0"
+      },
+      "compaction_io": {
+        "write_count": 33353448473,
+        "write_time_micros": 18208725014,
+        "read_count": 17315546017,
+        "read_time_micros": 23115645301,
+        "total_time_seconds": 41324.370315,
+        "ratio": 0.3140382790795727,
+        "impact": "Compaction \uc2dc SST \ud30c\uc77c I/O"
+      },
+      "cache_miss": {
+        "miss_count": 17312905941,
+        "hit_count": 0,
+        "total_access": 17312905941,
+        "miss_ratio": 1.0,
+        "impact": "\uce90\uc2dc \ubbf8\uc2a4\ub85c \uc778\ud55c \uc131\ub2a5 \uc800\ud558"
+      },
+      "flush": {
+        "count": 31310,
+        "time_micros": 20408037850,
+        "time_seconds": 20408.03785,
+        "ratio": 0.155087785656554,
+        "avg_time_micros": 651805.7441711914,
+        "impact": "MemTable Flush \uc624\ubc84\ud5e4\ub4dc"
+      }
+    },
+    "overwrite": {
+      "write_stall": {
+        "count": 678998,
+        "time_micros": 1138022360,
+        "time_seconds": 1138.02236,
+        "ratio": 0.6321422814333238,
+        "impact": "Compaction\uc73c\ub85c \uc778\ud55c \uc4f0\uae30 \uc9c0\uc5f0"
+      },
+      "compaction_io": {
+        "write_count": 474388452,
+        "write_time_micros": 248935205,
+        "read_count": 238601392,
+        "read_time_micros": 202844485,
+        "total_time_seconds": 451.77969,
+        "ratio": 0.25095204978383717,
+        "impact": "Compaction \uc2dc SST \ud30c\uc77c I/O"
+      },
+      "cache_miss": {
+        "miss_count": 238570128,
+        "hit_count": 0,
+        "total_access": 238570128,
+        "miss_ratio": 1.0,
+        "impact": "\uce90\uc2dc \ubbf8\uc2a4\ub85c \uc778\ud55c \uc131\ub2a5 \uc800\ud558"
+      },
+      "flush": {
+        "count": 2188,
+        "time_micros": 657309251,
+        "time_seconds": 657.309251,
+        "ratio": 0.3651184582474894,
+        "avg_time_micros": 300415.5626142596,
+        "impact": "MemTable Flush \uc624\ubc84\ud5e4\ub4dc"
+      }
+    }
+  },
+  "comparison": {
+    "fillrandom": {
+      "throughput_mb_s": 30.1,
+      "ops_per_sec": 30397,
+      "micros_per_op": 131.58,
+      "total_seconds": 131590.233,
+      "total_operations": 4000000000
+    },
+    "overwrite": {
+      "throughput_mb_s": 74.4,
+      "ops_per_sec": 75033,
+      "micros_per_op": 53.309,
+      "total_seconds": 1800.263,
+      "total_operations": 135079996
+    }
+  },
+  "core_variables": {
+    "core_variables": {
+      "performance_metrics": {
+        "throughput_mb_s": "\ucc98\ub9ac\ub7c9 (MB/s)",
+        "ops_per_sec": "\ucd08\ub2f9 \uc5f0\uc0b0 \uc218",
+        "micros_per_op": "\uc5f0\uc0b0\ub2f9 \ub9c8\uc774\ud06c\ub85c\ucd08",
+        "total_seconds": "\ucd1d \uc2e4\ud589 \uc2dc\uac04"
+      },
+      "bottleneck_metrics": {
+        "write_stall_ratio": "Write Stall \ube44\uc728",
+        "compaction_io_ratio": "Compaction I/O \ube44\uc728",
+        "cache_miss_ratio": "Cache Miss \ube44\uc728",
+        "flush_ratio": "Flush \ube44\uc728"
+      },
+      "workload_characteristics": {
+        "workload_type": "\uc6cc\ud06c\ub85c\ub4dc \uc720\ud615",
+        "access_pattern": "\uc811\uadfc \ud328\ud134",
+        "write_ratio": "\uc4f0\uae30 \ube44\uc728",
+        "read_ratio": "\uc77d\uae30 \ube44\uc728"
+      }
+    },
+    "workload_characteristics": {
+      "fillrandom": {
+        "type": "write_heavy",
+        "access_pattern": "random",
+        "write_ratio": 1.0,
+        "read_ratio": 0.0,
+        "description": "\ub79c\ub364 \ud0a4\ub85c \uc21c\ucc28 \uc4f0\uae30"
+      },
+      "overwrite": {
+        "type": "write_heavy",
+        "access_pattern": "random",
+        "write_ratio": 1.0,
+        "read_ratio": 0.0,
+        "description": "\uae30\uc874 \ud0a4 \ub36e\uc5b4\uc4f0\uae30"
+      }
+    }
+  }
+}

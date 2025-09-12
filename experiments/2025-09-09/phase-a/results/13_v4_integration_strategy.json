@@ -1,0 +1,177 @@
+{
+  "timestamp": "2025-09-12T05:18:29.642645",
+  "v4_strengths": {
+    "accuracy": {
+      "error": 5.7,
+      "description": "\ubaa8\ub4e0 \ubaa8\ub378 \uc911 \uac00\uc7a5 \ub0ae\uc740 \uc624\ucc28"
+    },
+    "simplicity": {
+      "complexity": "Low",
+      "description": "\ub2e8\uc21c\ud558\uace0 \uc774\ud574\ud558\uae30 \uc26c\uc6b4 \uad6c\uc870"
+    },
+    "stability": {
+      "consistency": "High",
+      "description": "\uc548\uc815\uc801\uc774\uace0 \uc77c\uad00\ub41c \uc131\ub2a5"
+    },
+    "device_envelope": {
+      "approach": "4D Grid Interpolation",
+      "description": "\uc815\uad50\ud55c Device Envelope \ubaa8\ub378\ub9c1"
+    },
+    "dynamic_simulation": {
+      "framework": "Comprehensive",
+      "description": "\uc644\uc804\ud55c \ub3d9\uc801 \uc2dc\ubbac\ub808\uc774\uc158 \ud504\ub808\uc784\uc6cc\ud06c"
+    }
+  },
+  "our_findings": {
+    "level_compaction_analysis": {
+      "L2_dominance": "45.2% I/O \uc0ac\uc6a9",
+      "waf_analysis": "L2 WAF=22.6, L3 WAF=0.9",
+      "efficiency_pattern": "L0=1.0, L1=0.95, L2=0.30, L3=0.80"
+    },
+    "device_degradation": {
+      "write_degradation": "15.8% (1688\u21921421 MiB/s)",
+      "read_degradation": "2.0% (2368\u21922320 MiB/s)",
+      "effective_degradation": "3.7% (2257\u21922173 MiB/s)",
+      "time_dependency": "\ube44\uc120\ud615 \uc5f4\ud654 \ubaa8\ub378"
+    },
+    "fillrandom_performance": {
+      "performance_evolution": "30.1\u219232.8 MiB/s (+8.9%)",
+      "time_dependent_factors": "\ucef4\ud329\uc158 \uc801\uc751, \uc2dc\uc2a4\ud15c \ucd5c\uc801\ud654, \uc6cc\ud06c\ub85c\ub4dc \uc801\uc751",
+      "paradox": "\uc7a5\uce58 \uc5f4\ud654\uc640 \ubc18\ub300 \ubc29\ud5a5 \uc131\ub2a5 \ud5a5\uc0c1"
+    },
+    "device_utilization": {
+      "average_utilization": "47.4% (GC \uc784\uacc4\uc810 \ubbf8\ub9cc)",
+      "peak_utilization": "71.1%",
+      "gc_impact": "SSD GC \ud65c\uc131\ud654\ub418\uc9c0 \uc54a\uc74c"
+    },
+    "compaction_efficiency": {
+      "time_evolution": "0-6h: 1.0, 6-18h: 0.85, 18-36h: 0.92",
+      "adaptation": "\uc2dc\uac04\uc774 \uc9c0\ub0a0\uc218\ub85d \ud6a8\uc728\uc131 \uac1c\uc120",
+      "bottleneck": "L2\uac00 \uc8fc\uc694 \ubcd1\ubaa9"
+    }
+  },
+  "integration_strategies": {
+    "strategy_1_preserve_core": {
+      "approach": "v4 \ud575\uc2ec \uad6c\uc870 \uc720\uc9c0",
+      "integration": "\ubd84\uc11d \uacb0\uacfc\ub97c \ud30c\ub77c\ubbf8\ud130 \ubcf4\uc815\uc73c\ub85c \ud65c\uc6a9",
+      "benefit": "\uae30\uc874 \uc131\ub2a5 \uc720\uc9c0\ud558\uba74\uc11c \uc815\ud655\ub3c4 \ud5a5\uc0c1",
+      "risk": "Low",
+      "implementation": "Device Envelope \ud30c\ub77c\ubbf8\ud130 \ubbf8\uc138 \uc870\uc815"
+    },
+    "strategy_2_enhance_envelope": {
+      "approach": "Device Envelope \ubaa8\ub378 \uac15\ud654",
+      "integration": "\uc2dc\uac04 \uc758\uc874\uc801 Device Envelope \ucd94\uac00",
+      "benefit": "\uc2e4\ud5d8 \uc911\uac04 \uc5f4\ud654 \ubc18\uc601",
+      "risk": "Medium",
+      "implementation": "B_w(t) = B_w_initial \u00d7 (1 - degradation_rate \u00d7 t)"
+    },
+    "strategy_3_level_awareness": {
+      "approach": "\ub808\ubca8\ubcc4 \uc778\uc2dd \ucd94\uac00",
+      "integration": "L2 \ubcd1\ubaa9 \uc9c0\uc810 \uba85\uc2dc\uc801 \ubaa8\ub378\ub9c1",
+      "benefit": "\ucef4\ud329\uc158 \ubcd1\ubaa9 \uc815\ud655 \ubc18\uc601",
+      "risk": "Medium",
+      "implementation": "Level-specific capacity calculations"
+    },
+    "strategy_4_time_dependent": {
+      "approach": "\uc2dc\uac04 \uc758\uc874\uc801 \uc131\ub2a5 \ubcc0\ud654",
+      "integration": "FillRandom \uc131\ub2a5 \uc9c4\ud654 \ubaa8\ub378\ub9c1",
+      "benefit": "\uc2e4\ud5d8 \uc9c4\ud589\uc5d0 \ub530\ub978 \uc131\ub2a5 \ubcc0\ud654 \uc608\uce21",
+      "risk": "High",
+      "implementation": "Time-dependent performance scaling"
+    },
+    "strategy_5_hybrid_approach": {
+      "approach": "\ud558\uc774\ube0c\ub9ac\ub4dc \uc811\uadfc\ubc95",
+      "integration": "v4 \uad6c\uc870 + \uc120\ud0dd\uc801 \ubd84\uc11d \uacb0\uacfc \ud1b5\ud569",
+      "benefit": "\ucd5c\uc801\uc758 \uc131\ub2a5\uacfc \ud604\uc2e4\uc131",
+      "risk": "Low-Medium",
+      "implementation": "\ub2e8\uacc4\ubcc4 \ud1b5\ud569 \ubc0f \uac80\uc99d"
+    }
+  },
+  "best_strategy": [
+    "strategy_5_hybrid_approach",
+    {
+      "risk": "Low-Medium",
+      "benefit": "High",
+      "implementation": "Medium",
+      "score": 9.0
+    }
+  ],
+  "evaluation_criteria": {
+    "strategy_1_preserve_core": {
+      "risk": "Low",
+      "benefit": "Medium",
+      "implementation": "Easy",
+      "score": 8.5
+    },
+    "strategy_2_enhance_envelope": {
+      "risk": "Medium",
+      "benefit": "High",
+      "implementation": "Medium",
+      "score": 8.0
+    },
+    "strategy_3_level_awareness": {
+      "risk": "Medium",
+      "benefit": "High",
+      "implementation": "Medium",
+      "score": 8.0
+    },
+    "strategy_4_time_dependent": {
+      "risk": "High",
+      "benefit": "High",
+      "implementation": "Hard",
+      "score": 6.5
+    },
+    "strategy_5_hybrid_approach": {
+      "risk": "Low-Medium",
+      "benefit": "High",
+      "implementation": "Medium",
+      "score": 9.0
+    }
+  },
+  "integration_plan": {
+    "phase_1_parameter_refinement": {
+      "description": "v4 \ud30c\ub77c\ubbf8\ud130 \ubbf8\uc138 \uc870\uc815",
+      "actions": [
+        "Device Envelope \ud30c\ub77c\ubbf8\ud130 \ubcf4\uc815",
+        "Level capacity \uacc4\uc0b0 \uac1c\uc120",
+        "Stall probability \uc870\uc815"
+      ],
+      "expected_improvement": "5.7% \u2192 4.5% \uc624\ucc28",
+      "risk": "Low",
+      "timeline": "1\uc77c"
+    },
+    "phase_2_device_degradation": {
+      "description": "\uc7a5\uce58 \uc5f4\ud654 \ubaa8\ub378 \ucd94\uac00",
+      "actions": [
+        "Time-dependent Device Envelope",
+        "\uc2e4\ud5d8 \uc911\uac04 \uc131\ub2a5 \ubcc0\ud654 \ubc18\uc601",
+        "\ube44\uc120\ud615 \uc5f4\ud654 \ubaa8\ub378"
+      ],
+      "expected_improvement": "4.5% \u2192 4.0% \uc624\ucc28",
+      "risk": "Medium",
+      "timeline": "2\uc77c"
+    },
+    "phase_3_level_awareness": {
+      "description": "\ub808\ubca8\ubcc4 \uc778\uc2dd \uac15\ud654",
+      "actions": [
+        "L2 \ubcd1\ubaa9 \uc9c0\uc810 \uba85\uc2dc\uc801 \ubaa8\ub378\ub9c1",
+        "Level-specific WAF \ubc18\uc601",
+        "\ucef4\ud329\uc158 \ud6a8\uc728\uc131 \uac1c\uc120"
+      ],
+      "expected_improvement": "4.0% \u2192 3.5% \uc624\ucc28",
+      "risk": "Medium",
+      "timeline": "3\uc77c"
+    },
+    "phase_4_validation": {
+      "description": "\ud1b5\ud569 \ubaa8\ub378 \uac80\uc99d",
+      "actions": [
+        "\uc885\ud569 \uc131\ub2a5 \ud3c9\uac00",
+        "\ub2e4\uc591\ud55c \uc6cc\ud06c\ub85c\ub4dc \ud14c\uc2a4\ud2b8",
+        "\uc2e4\uc81c \uc2e4\ud5d8 \ub370\uc774\ud130 \uac80\uc99d"
+      ],
+      "expected_improvement": "\ucd5c\uc885 3.5% \uc624\ucc28 \ub2ec\uc131",
+      "risk": "Low",
+      "timeline": "2\uc77c"
+    }
+  }
+}

@@ -1,0 +1,368 @@
+{
+  "model_info": {
+    "name": "RocksDB Put Model v5 - Phase-Based",
+    "version": "5.1-phase-based",
+    "description": "시간에 따른 성능 단계별 변화를 반영한 v5 모델",
+    "creation_date": "2025-09-09",
+    "approach": "Time-based Phase Modeling"
+  },
+  "phase_data": {
+    "initial_phase": {
+      "time_range": "0-10 minutes",
+      "time_range_seconds": 600,
+      "time_range_hours": 0.167,
+      "characteristics": {
+        "performance_level": "high",
+        "compaction_level": "low",
+        "memory_usage": "high",
+        "write_amplification": "low",
+        "write_stall": "minimal"
+      },
+      "performance_metrics": {
+        "estimated_throughput": 200,
+        "estimated_efficiency": 0.2,
+        "estimated_ops_per_sec": 50000,
+        "estimated_latency": 20,
+        "write_amplification_factor": 1.2
+      },
+      "bottleneck_factors": {
+        "write_stall_efficiency": 0.95,
+        "cache_efficiency": 0.8,
+        "compaction_efficiency": 0.9,
+        "flush_efficiency": 0.85
+      }
+    },
+    "transitional_phase": {
+      "time_range": "10-60 minutes",
+      "time_range_seconds": 3000,
+      "time_range_hours": 0.833,
+      "characteristics": {
+        "performance_level": "medium",
+        "compaction_level": "increasing",
+        "memory_usage": "decreasing",
+        "write_amplification": "increasing",
+        "write_stall": "increasing"
+      },
+      "performance_metrics": {
+        "estimated_throughput": 100,
+        "estimated_efficiency": 0.1,
+        "estimated_ops_per_sec": 25000,
+        "estimated_latency": 40,
+        "write_amplification_factor": 1.5
+      },
+      "bottleneck_factors": {
+        "write_stall_efficiency": 0.7,
+        "cache_efficiency": 0.4,
+        "compaction_efficiency": 0.6,
+        "flush_efficiency": 0.75
+      }
+    },
+    "stable_phase": {
+      "time_range": "60+ minutes",
+      "time_range_seconds": 2160,
+      "time_range_hours": 35.5,
+      "characteristics": {
+        "performance_level": "low",
+        "compaction_level": "high",
+        "memory_usage": "low",
+        "write_amplification": "high",
+        "write_stall": "high"
+      },
+      "performance_metrics": {
+        "measured_throughput": 30.1,
+        "measured_efficiency": 0.01,
+        "measured_ops_per_sec": 30397,
+        "measured_latency": 131.58,
+        "measured_write_amplification_factor": 1.64
+      },
+      "bottleneck_factors": {
+        "write_stall_efficiency": 0.182,
+        "cache_efficiency": 0.01,
+        "compaction_efficiency": 0.2,
+        "flush_efficiency": 0.3
+      }
+    }
+  },
+  "phase_models": {
+    "initial_phase_model": {
+      "model_name": "RocksDB Put Model v5 - Initial Phase",
+      "version": "5.1-initial",
+      "description": "초기 단계 (0-10분) 메모리 기반 성능 모델",
+      "formula": "S_initial = S_memory × η_memory_efficiency × η_initial_bottlenecks",
+      "components": {
+        "memory_throughput": {
+          "description": "메모리 기반 처리량",
+          "formula": "S_memory = Memory_Bandwidth × MemTable_Efficiency",
+          "parameters": {
+            "memory_bandwidth": 8000,
+            "memtable_efficiency": 0.25
+          }
+        },
+        "memory_efficiency": {
+          "description": "메모리 효율성",
+          "formula": "η_memory = f(MemTable_Size, Memory_Pressure)",
+          "parameters": {
+            "base_efficiency": 0.95,
+            "memory_pressure_factor": 0.05
+          }
+        },
+        "initial_bottlenecks": {
+          "description": "초기 단계 병목 현상",
+          "formula": "η_initial = η_write_stall × η_cache × η_flush",
+          "parameters": {
+            "write_stall_efficiency": 0.95,
+            "cache_efficiency": 0.8,
+            "flush_efficiency": 0.85
+          }
+        }
+      },
+      "expected_performance": {
+        "throughput": 200,
+        "efficiency": 0.2,
+        "ops_per_sec": 50000,
+        "latency": 20
+      }
+    },
+    "transitional_phase_model": {
+      "model_name": "RocksDB Put Model v5 - Transitional Phase",
+      "version": "5.1-transitional",
+      "description": "전환 단계 (10-60분) 컴팩션 시작 성능 모델",
+      "formula": "S_transitional = S_memory × η_compaction_transition × η_transitional_bottlenecks",
+      "components": {
+        "memory_throughput": {
+          "description": "메모리 기반 처리량 (감소)",
+          "formula": "S_memory = Memory_Bandwidth × MemTable_Efficiency × Decay_Factor",
+          "parameters": {
+            "memory_bandwidth": 8000,
+            "memtable_efficiency": 0.2,
+            "decay_factor": 0.8
+          }
+        },
+        "compaction_transition": {
+          "description": "컴팩션 전환 효율성",
+          "formula": "η_compaction = f(Compaction_Start, Transition_Speed)",
+          "parameters": {
+            "compaction_start_factor": 0.7,
+            "transition_speed_factor": 0.8
+          }
+        },
+        "transitional_bottlenecks": {
+          "description": "전환 단계 병목 현상",
+          "formula": "η_transitional = η_write_stall × η_cache × η_compaction",
+          "parameters": {
+            "write_stall_efficiency": 0.7,
+            "cache_efficiency": 0.4,
+            "compaction_efficiency": 0.6
+          }
+        }
+      },
+      "expected_performance": {
+        "throughput": 100,
+        "efficiency": 0.1,
+        "ops_per_sec": 25000,
+        "latency": 40
+      }
+    },
+    "stable_phase_model": {
+      "model_name": "RocksDB Put Model v5 - Stable Phase",
+      "version": "5.1-stable",
+      "description": "안정화 단계 (60+분) 컴팩션 안정화 성능 모델",
+      "formula": "S_stable = S_device × η_compaction_stable × η_stable_bottlenecks",
+      "components": {
+        "device_throughput": {
+          "description": "장치 기반 처리량",
+          "formula": "S_device = Device_Bandwidth × Device_Efficiency",
+          "parameters": {
+            "device_bandwidth": 3005.8,
+            "device_efficiency": 0.01
+          }
+        },
+        "compaction_stable": {
+          "description": "컴팩션 안정화 효율성",
+          "formula": "η_compaction = f(Write_Amplification, Compaction_Overhead)",
+          "parameters": {
+            "write_amplification_factor": 1.64,
+            "compaction_overhead_factor": 0.2
+          }
+        },
+        "stable_bottlenecks": {
+          "description": "안정화 단계 병목 현상",
+          "formula": "η_stable = η_write_stall × η_cache × η_compaction",
+          "parameters": {
+            "write_stall_efficiency": 0.182,
+            "cache_efficiency": 0.01,
+            "compaction_efficiency": 0.2
+          }
+        }
+      },
+      "measured_performance": {
+        "throughput": 30.1,
+        "efficiency": 0.01,
+        "ops_per_sec": 30397,
+        "latency": 131.58
+      }
+    }
+  },
+  "phase_detection": {
+    "detection_algorithm": {
+      "name": "Time-based Phase Detection",
+      "description": "실험 시간에 따른 성능 단계 자동 감지",
+      "algorithm": "if duration <= 0.167h: initial_phase\nelif duration <= 1h: transitional_phase\nelse: stable_phase"
+    },
+    "detection_criteria": {
+      "initial_phase": {
+        "time_threshold": 0.167,
+        "condition": "duration <= 0.167",
+        "characteristics": [
+          "high_performance",
+          "low_compaction",
+          "memory_based"
+        ]
+      },
+      "transitional_phase": {
+        "time_threshold": 1.0,
+        "condition": "0.167 < duration <= 1.0",
+        "characteristics": [
+          "medium_performance",
+          "increasing_compaction",
+          "transition"
+        ]
+      },
+      "stable_phase": {
+        "time_threshold": Infinity,
+        "condition": "duration > 1.0",
+        "characteristics": [
+          "low_performance",
+          "high_compaction",
+          "stable"
+        ]
+      }
+    },
+    "phase_weights_calculation": {
+      "method": "Time-based Weight Calculation",
+      "formula": "weight = time_in_phase / total_duration",
+      "example": {
+        "17h_experiment": {
+          "initial_phase_weight": 0.009823529411764707,
+          "transitional_phase_weight": 0.048999999999999995,
+          "stable_phase_weight": 0.9411764705882353
+        },
+        "36.5h_experiment": {
+          "initial_phase_weight": 0.004575342465753425,
+          "transitional_phase_weight": 0.022821917808219176,
+          "stable_phase_weight": 0.9726027397260274
+        }
+      }
+    }
+  },
+  "transition_models": {
+    "initial_to_transitional": {
+      "description": "초기 → 전환 단계 전환 모델",
+      "trigger_conditions": {
+        "time_trigger": "duration > 0.167 hours",
+        "performance_trigger": "throughput < 150 MB/s",
+        "compaction_trigger": "compaction_started"
+      },
+      "transition_function": {
+        "formula": "S_transition = S_initial × (1 - transition_decay)",
+        "parameters": {
+          "transition_decay": 0.5,
+          "transition_speed": 0.1
+        }
+      }
+    },
+    "transitional_to_stable": {
+      "description": "전환 → 안정화 단계 전환 모델",
+      "trigger_conditions": {
+        "time_trigger": "duration > 1.0 hours",
+        "performance_trigger": "throughput < 80 MB/s",
+        "compaction_trigger": "compaction_stabilized"
+      },
+      "transition_function": {
+        "formula": "S_stable = S_transitional × (1 - stabilization_decay)",
+        "parameters": {
+          "stabilization_decay": 0.7,
+          "stabilization_speed": 0.5
+        }
+      }
+    },
+    "phase_mixing": {
+      "description": "단계 간 혼합 모델",
+      "formula": "S_mixed = Σ(S_phase_i × weight_i)",
+      "parameters": {
+        "weight_calculation": "time_in_phase / total_duration",
+        "smoothing_factor": 0.1
+      }
+    }
+  },
+  "experiment_phase_mapping": {
+    "2025-09-05": {
+      "duration_hours": 17,
+      "phase_coverage": [
+        "initial_phase",
+        "transitional_phase"
+      ],
+      "phase_weights": {
+        "initial_phase": 0.6,
+        "transitional_phase": 0.4
+      },
+      "expected_throughput": 196.2
+    },
+    "2025-09-08": {
+      "duration_hours": 8,
+      "phase_coverage": [
+        "initial_phase"
+      ],
+      "phase_weights": {
+        "initial_phase": 1.0
+      },
+      "expected_throughput": 157.5
+    },
+    "2025-09-09": {
+      "duration_hours": 36.5,
+      "phase_coverage": [
+        "initial_phase",
+        "transitional_phase",
+        "stable_phase"
+      ],
+      "phase_weights": {
+        "initial_phase": 0.005,
+        "transitional_phase": 0.023,
+        "stable_phase": 0.972
+      },
+      "expected_throughput": 30.1
+    }
+  },
+  "validation_results": {
+    "2025-09-05": {
+      "predicted_throughput": 0,
+      "actual_throughput": 196.2,
+      "error_rate": 100.0,
+      "accuracy_grade": "Poor"
+    },
+    "2025-09-08": {
+      "predicted_throughput": 0,
+      "actual_throughput": 157.5,
+      "error_rate": 100.0,
+      "accuracy_grade": "Poor"
+    },
+    "2025-09-09": {
+      "predicted_throughput": 0,
+      "actual_throughput": 30.1,
+      "error_rate": 100.0,
+      "accuracy_grade": "Poor"
+    }
+  },
+  "overall_accuracy": {
+    "average_error_rate": 100.0,
+    "overall_grade": "Poor"
+  },
+  "key_insights": [
+    "시간에 따른 성능 단계별 변화 모델링",
+    "초기(0-10분) → 전환(10-60분) → 안정화(60+분)",
+    "단계별 성능 저하 (200→100→30.1 MB/s)",
+    "실험 시간에 따른 단계 자동 감지",
+    "단계별 가중치 기반 성능 예측",
+    "이전 실험들이 09-09 실험의 일부분으로 해석"
+  ]
+}

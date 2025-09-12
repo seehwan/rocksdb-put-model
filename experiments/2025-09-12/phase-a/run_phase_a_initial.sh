@@ -84,18 +84,32 @@ def analyze_fio_json(filename):
             data = json.load(f)
         
         job = data['jobs'][0]
-        bw_kbps = job['bw']
-        iops = job['iops']
-        lat_mean = job['clat']['mean'] if job['clat']['mean'] is not None else 0
-        lat_p95 = job['clat']['percentile']['95.000000'] if 'percentile' in job['clat'] else 0
-        lat_p99 = job['clat']['percentile']['99.000000'] if 'percentile' in job['clat'] else 0
+        
+        # 읽기/쓰기 중 더 큰 값을 선택
+        read_bw = job['read']['bw'] if 'read' in job else 0
+        write_bw = job['write']['bw'] if 'write' in job else 0
+        bw_kbps = max(read_bw, write_bw)
+        
+        read_iops = job['read']['iops'] if 'read' in job else 0
+        write_iops = job['write']['iops'] if 'write' in job else 0
+        iops = max(read_iops, write_iops)
+        
+        # 레이턴시는 읽기/쓰기 중 해당하는 것 사용
+        if read_bw > write_bw:
+            lat_mean = job['read']['clat']['mean'] if 'read' in job and 'clat' in job['read'] else 0
+            lat_p95 = job['read']['clat']['percentile']['95.000000'] if 'read' in job and 'clat' in job['read'] and 'percentile' in job['read']['clat'] else 0
+            lat_p99 = job['read']['clat']['percentile']['99.000000'] if 'read' in job and 'clat' in job['read'] and 'percentile' in job['read']['clat'] else 0
+        else:
+            lat_mean = job['write']['clat']['mean'] if 'write' in job and 'clat' in job['write'] else 0
+            lat_p95 = job['write']['clat']['percentile']['95.000000'] if 'write' in job and 'clat' in job['write'] and 'percentile' in job['write']['clat'] else 0
+            lat_p99 = job['write']['clat']['percentile']['99.000000'] if 'write' in job and 'clat' in job['write'] and 'percentile' in job['write']['clat'] else 0
         
         return {
             'bandwidth_mib_s': bw_kbps / 1024,
             'iops': iops,
-            'latency_mean_us': lat_mean,
-            'latency_p95_us': lat_p95,
-            'latency_p99_us': lat_p99
+            'latency_mean_us': lat_mean / 1000,  # ns를 us로 변환
+            'latency_p95_us': lat_p95 / 1000,
+            'latency_p99_us': lat_p99 / 1000
         }
     except Exception as e:
         print(f"Error analyzing {filename}: {e}")

@@ -1,0 +1,44 @@
+{
+  "device": "/dev/nvme1n1",
+  "mount_point": "/rocksdb",
+  "test_date": "2025-09-12",
+  "test_type": "initial_state_measurement",
+  "environment": "fresh_initialized_ssd",
+  "initialization": {
+    "umount": true,
+    "parted_mklabel_gpt": true,
+    "blkdiscard": true,
+    "mkfs_f2fs": true,
+    "mount": true
+  },
+  "tests": {
+    "sequential_write": {
+      "bandwidth_mib_s": 4116.6,
+      "description": "Sequential Write (RocksDB MemTable flush)"
+    },
+    "random_write": {
+      "bandwidth_mib_s": 1120.3,
+      "description": "Random Write (fillrandom workload)"
+    },
+    "sequential_read": {
+      "bandwidth_mib_s": 5487.2,
+      "description": "Sequential Read (compaction reads)"
+    },
+    "random_read": {
+      "bandwidth_mib_s": 399.7,
+      "description": "Random Read"
+    },
+    "mixed_rw": {
+      "bandwidth_mib_s": 294.2,
+      "description": "Mixed Read/Write (50:50)"
+    }
+  },
+  "summary": {
+    "max_write_bandwidth_mib_s": 4116.6,
+    "max_read_bandwidth_mib_s": 5487.2,
+    "avg_write_bandwidth_mib_s": 2618.5,
+    "avg_read_bandwidth_mib_s": 2943.5,
+    "mixed_bandwidth_mib_s": 294.2,
+    "environmental_factor": "initial_state"
+  }
+}

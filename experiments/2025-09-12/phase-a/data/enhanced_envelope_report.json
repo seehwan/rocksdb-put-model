@@ -1,0 +1,982 @@
+{
+  "device": "/dev/nvme1n1",
+  "test_date": "2025-09-12T09:28:54.756194",
+  "test_type": "enhanced_device_envelope",
+  "measurements": {
+    "block_size_sweep": {
+      "write": {
+        "4k": {
+          "bandwidth_mib_s": 1209.3701171875,
+          "iops": 309598.980034,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1209.3701171875
+        },
+        "8k": {
+          "bandwidth_mib_s": 2050.1552734375,
+          "iops": 262419.952668,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 2050.1552734375
+        },
+        "16k": {
+          "bandwidth_mib_s": 3537.0244140625,
+          "iops": 226369.58768,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 3537.0244140625
+        },
+        "32k": {
+          "bandwidth_mib_s": 5498.60546875,
+          "iops": 175955.401487,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 5498.60546875
+        },
+        "64k": {
+          "bandwidth_mib_s": 5164.0546875,
+          "iops": 82624.879171,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 5164.0546875
+        },
+        "128k": {
+          "bandwidth_mib_s": 4934.8896484375,
+          "iops": 39479.117363,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 4934.8896484375
+        },
+        "256k": {
+          "bandwidth_mib_s": 4981.333984375,
+          "iops": 19925.338311,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 4981.333984375
+        },
+        "512k": {
+          "bandwidth_mib_s": 4936.8583984375,
+          "iops": 9873.716838,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 4936.8583984375
+        },
+        "1m": {
+          "bandwidth_mib_s": 4934.181640625,
+          "iops": 4934.182024,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 4934.181640625
+        }
+      },
+      "randwrite": {
+        "4k": {
+          "bandwidth_mib_s": 1164.787109375,
+          "iops": 298185.627146,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1164.787109375
+        },
+        "8k": {
+          "bandwidth_mib_s": 1922.6162109375,
+          "iops": 246094.996833,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1922.6162109375
+        },
+        "16k": {
+          "bandwidth_mib_s": 1577.10546875,
+          "iops": 100934.802173,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1577.10546875
+        },
+        "32k": {
+          "bandwidth_mib_s": 1526.5576171875,
+          "iops": 48849.871671,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1526.5576171875
+        },
+        "64k": {
+          "bandwidth_mib_s": 1587.205078125,
+          "iops": 25395.286824,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1587.205078125
+        },
+        "128k": {
+          "bandwidth_mib_s": 1614.3759765625,
+          "iops": 12915.008499,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1614.3759765625
+        },
+        "256k": {
+          "bandwidth_mib_s": 1624.5537109375,
+          "iops": 6498.216964,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1624.5537109375
+        },
+        "512k": {
+          "bandwidth_mib_s": 1685.77734375,
+          "iops": 3371.5552,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1685.77734375
+        },
+        "1m": {
+          "bandwidth_mib_s": 1675.5380859375,
+          "iops": 1675.538825,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1675.5380859375
+        }
+      },
+      "read": {
+        "4k": {
+          "bandwidth_mib_s": 1161.603515625,
+          "iops": 297370.687644,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 1161.603515625,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "8k": {
+          "bandwidth_mib_s": 2004.1455078125,
+          "iops": 256530.682311,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 2004.1455078125,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "16k": {
+          "bandwidth_mib_s": 3308.109375,
+          "iops": 211719.018732,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 3308.109375,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "32k": {
+          "bandwidth_mib_s": 3026.4306640625,
+          "iops": 96845.782088,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 3026.4306640625,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "64k": {
+          "bandwidth_mib_s": 4042.53515625,
+          "iops": 64680.577314,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 4042.53515625,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "128k": {
+          "bandwidth_mib_s": 3882.041015625,
+          "iops": 31056.331456,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 3882.041015625,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "256k": {
+          "bandwidth_mib_s": 3776.65625,
+          "iops": 15106.626225,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 3776.65625,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "512k": {
+          "bandwidth_mib_s": 3886.744140625,
+          "iops": 7773.489318,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 3886.744140625,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "1m": {
+          "bandwidth_mib_s": 4071.9873046875,
+          "iops": 4071.988002,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 4071.9873046875,
+          "write_bandwidth_mib_s": 0.0
+        }
+      },
+      "randread": {
+        "4k": {
+          "bandwidth_mib_s": 1095.46484375,
+          "iops": 280439.018699,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 1095.46484375,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "8k": {
+          "bandwidth_mib_s": 1449.2470703125,
+          "iops": 185503.716543,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 1449.2470703125,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "16k": {
+          "bandwidth_mib_s": 2831.9521484375,
+          "iops": 181244.991834,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 2831.9521484375,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "32k": {
+          "bandwidth_mib_s": 4075.09765625,
+          "iops": 130403.153228,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 4075.09765625,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "64k": {
+          "bandwidth_mib_s": 5087.7880859375,
+          "iops": 81404.619846,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 5087.7880859375,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "128k": {
+          "bandwidth_mib_s": 5781.96484375,
+          "iops": 46255.724809,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 5781.96484375,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "256k": {
+          "bandwidth_mib_s": 5841.33203125,
+          "iops": 23365.330134,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 5841.33203125,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "512k": {
+          "bandwidth_mib_s": 5842.1484375,
+          "iops": 11684.298237,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 5842.1484375,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "1m": {
+          "bandwidth_mib_s": 5839.5595703125,
+          "iops": 5839.560073,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 5839.5595703125,
+          "write_bandwidth_mib_s": 0.0
+        }
+      }
+    },
+    "queue_depth_sweep": {
+      "write": {
+        "1": {
+          "bandwidth_mib_s": 150.76171875,
+          "iops": 38595.080164,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 150.76171875
+        },
+        "2": {
+          "bandwidth_mib_s": 467.1015625,
+          "iops": 119578.080731,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 467.1015625
+        },
+        "4": {
+          "bandwidth_mib_s": 932.1064453125,
+          "iops": 238619.412686,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 932.1064453125
+        },
+        "8": {
+          "bandwidth_mib_s": 1205.755859375,
+          "iops": 308673.710876,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1205.755859375
+        },
+        "16": {
+          "bandwidth_mib_s": 1216.6220703125,
+          "iops": 311455.284824,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1216.6220703125
+        },
+        "32": {
+          "bandwidth_mib_s": 1150.607421875,
+          "iops": 294555.71481,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1150.607421875
+        },
+        "64": {
+          "bandwidth_mib_s": 1146.357421875,
+          "iops": 293467.684411,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1146.357421875
+        },
+        "128": {
+          "bandwidth_mib_s": 1146.5810546875,
+          "iops": 293524.949168,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1146.5810546875
+        }
+      },
+      "randwrite": {
+        "1": {
+          "bandwidth_mib_s": 166.0400390625,
+          "iops": 42506.449785,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 166.0400390625
+        },
+        "2": {
+          "bandwidth_mib_s": 503.337890625,
+          "iops": 128854.738175,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 503.337890625
+        },
+        "4": {
+          "bandwidth_mib_s": 1085.1142578125,
+          "iops": 277789.307023,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1085.1142578125
+        },
+        "8": {
+          "bandwidth_mib_s": 1187.521484375,
+          "iops": 304005.69981,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1187.521484375
+        },
+        "16": {
+          "bandwidth_mib_s": 1163.119140625,
+          "iops": 297758.674711,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1163.119140625
+        },
+        "32": {
+          "bandwidth_mib_s": 1120.3046875,
+          "iops": 286798.006733,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1120.3046875
+        },
+        "64": {
+          "bandwidth_mib_s": 1099.3466796875,
+          "iops": 281432.952235,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1099.3466796875
+        },
+        "128": {
+          "bandwidth_mib_s": 1099.4482421875,
+          "iops": 281458.784707,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1099.4482421875
+        }
+      }
+    },
+    "mixed_workload_sweep": {
+      "4k": {
+        "0": {
+          "bandwidth_mib_s": 1194.08203125,
+          "iops": 305685.0105,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1194.08203125
+        },
+        "10": {
+          "bandwidth_mib_s": 1037.525390625,
+          "iops": 265606.746442,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 115.287109375,
+          "write_bandwidth_mib_s": 1037.525390625
+        },
+        "25": {
+          "bandwidth_mib_s": 856.658203125,
+          "iops": 219304.589847,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 285.5712890625,
+          "write_bandwidth_mib_s": 856.658203125
+        },
+        "50": {
+          "bandwidth_mib_s": 550.2568359375,
+          "iops": 140865.804473,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 550.2568359375,
+          "write_bandwidth_mib_s": 550.0439453125
+        },
+        "75": {
+          "bandwidth_mib_s": 771.1484375,
+          "iops": 197414.086197,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 771.1484375,
+          "write_bandwidth_mib_s": 257.1591796875
+        },
+        "90": {
+          "bandwidth_mib_s": 972.2685546875,
+          "iops": 248900.769974,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 972.2685546875,
+          "write_bandwidth_mib_s": 108.044921875
+        },
+        "100": {
+          "bandwidth_mib_s": 1139.00390625,
+          "iops": 291585.047165,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 1139.00390625,
+          "write_bandwidth_mib_s": 0.0
+        }
+      },
+      "16k": {
+        "0": {
+          "bandwidth_mib_s": 1929.0458984375,
+          "iops": 123458.984701,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1929.0458984375
+        },
+        "10": {
+          "bandwidth_mib_s": 1833.078125,
+          "iops": 117317.057726,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 203.720703125,
+          "write_bandwidth_mib_s": 1833.078125
+        },
+        "25": {
+          "bandwidth_mib_s": 1647.95703125,
+          "iops": 105469.302047,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 550.197265625,
+          "write_bandwidth_mib_s": 1647.95703125
+        },
+        "50": {
+          "bandwidth_mib_s": 692.4931640625,
+          "iops": 44319.622679,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 692.4931640625,
+          "write_bandwidth_mib_s": 691.708984375
+        },
+        "75": {
+          "bandwidth_mib_s": 1426.470703125,
+          "iops": 91294.156861,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 1426.470703125,
+          "write_bandwidth_mib_s": 475.8134765625
+        },
+        "90": {
+          "bandwidth_mib_s": 2188.494140625,
+          "iops": 140063.662423,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 2188.494140625,
+          "write_bandwidth_mib_s": 243.455078125
+        },
+        "100": {
+          "bandwidth_mib_s": 2781.955078125,
+          "iops": 178045.165161,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 2781.955078125,
+          "write_bandwidth_mib_s": 0.0
+        }
+      },
+      "64k": {
+        "0": {
+          "bandwidth_mib_s": 2000.47265625,
+          "iops": 32007.566414,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 2000.47265625
+        },
+        "10": {
+          "bandwidth_mib_s": 1881.76953125,
+          "iops": 30108.315281,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 208.9150390625,
+          "write_bandwidth_mib_s": 1881.76953125
+        },
+        "25": {
+          "bandwidth_mib_s": 1724.8720703125,
+          "iops": 27597.953606,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 576.0537109375,
+          "write_bandwidth_mib_s": 1724.8720703125
+        },
+        "50": {
+          "bandwidth_mib_s": 1101.0947265625,
+          "iops": 17617.525498,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 1101.0947265625,
+          "write_bandwidth_mib_s": 1099.8798828125
+        },
+        "75": {
+          "bandwidth_mib_s": 1922.0478515625,
+          "iops": 30752.774908,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 1922.0478515625,
+          "write_bandwidth_mib_s": 642.0283203125
+        },
+        "90": {
+          "bandwidth_mib_s": 3019.96875,
+          "iops": 48319.512033,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 3019.96875,
+          "write_bandwidth_mib_s": 335.6767578125
+        },
+        "100": {
+          "bandwidth_mib_s": 5204.740234375,
+          "iops": 83275.857471,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 5204.740234375,
+          "write_bandwidth_mib_s": 0.0
+        }
+      },
+      "128k": {
+        "0": {
+          "bandwidth_mib_s": 2028.6943359375,
+          "iops": 16229.559015,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 2028.6943359375
+        },
+        "10": {
+          "bandwidth_mib_s": 1901.046875,
+          "iops": 15208.379162,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 211.0283203125,
+          "write_bandwidth_mib_s": 1901.046875
+        },
+        "25": {
+          "bandwidth_mib_s": 1804.1611328125,
+          "iops": 14433.290004,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 605.3720703125,
+          "write_bandwidth_mib_s": 1804.1611328125
+        },
+        "50": {
+          "bandwidth_mib_s": 1325.470703125,
+          "iops": 10603.772956,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 1325.470703125,
+          "write_bandwidth_mib_s": 1324.24609375
+        },
+        "75": {
+          "bandwidth_mib_s": 2112.4248046875,
+          "iops": 16899.403353,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 2112.4248046875,
+          "write_bandwidth_mib_s": 706.9052734375
+        },
+        "90": {
+          "bandwidth_mib_s": 3599.8466796875,
+          "iops": 28798.780081,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 3599.8466796875,
+          "write_bandwidth_mib_s": 401.373046875
+        },
+        "100": {
+          "bandwidth_mib_s": 5913.27734375,
+          "iops": 47306.223126,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 5913.27734375,
+          "write_bandwidth_mib_s": 0.0
+        }
+      }
+    },
+    "concurrent_jobs_sweep": {
+      "randwrite": {
+        "1": {
+          "bandwidth_mib_s": 1188.8583984375,
+          "iops": 304347.888404,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1188.8583984375
+        },
+        "2": {
+          "bandwidth_mib_s": 1911.00390625,
+          "iops": 489217.19276,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1911.00390625
+        },
+        "4": {
+          "bandwidth_mib_s": 1980.4892578125,
+          "iops": 507005.366488,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 1980.4892578125
+        },
+        "8": {
+          "bandwidth_mib_s": 4134.4208984375,
+          "iops": 1058411.986267,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 4134.4208984375
+        },
+        "16": {
+          "bandwidth_mib_s": 3727.7841796875,
+          "iops": 954312.922903,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 3727.7841796875
+        },
+        "32": {
+          "bandwidth_mib_s": 3543.3310546875,
+          "iops": 907092.796907,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 0.0,
+          "write_bandwidth_mib_s": 3543.3310546875
+        }
+      },
+      "randread": {
+        "1": {
+          "bandwidth_mib_s": 767.2744140625,
+          "iops": 196422.485917,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 767.2744140625,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "2": {
+          "bandwidth_mib_s": 1397.9130859375,
+          "iops": 357865.971134,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 1397.9130859375,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "4": {
+          "bandwidth_mib_s": 2219.1630859375,
+          "iops": 568105.829806,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 2219.1630859375,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "8": {
+          "bandwidth_mib_s": 2702.814453125,
+          "iops": 691920.569314,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 2702.814453125,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "16": {
+          "bandwidth_mib_s": 3019.439453125,
+          "iops": 772976.668222,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 3019.439453125,
+          "write_bandwidth_mib_s": 0.0
+        },
+        "32": {
+          "bandwidth_mib_s": 3106.90625,
+          "iops": 795368.129854,
+          "latency_mean_us": 0.0,
+          "latency_p95_us": 0.0,
+          "latency_p99_us": 0.0,
+          "read_bandwidth_mib_s": 3106.90625,
+          "write_bandwidth_mib_s": 0.0
+        }
+      }
+    },
+    "rocksdb_patterns": {
+      "memtable_flush": {
+        "bandwidth_mib_s": 1440.4072265625,
+        "iops": 11523.265116,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 0.0,
+        "write_bandwidth_mib_s": 1440.4072265625
+      },
+      "l0_compaction_read": {
+        "bandwidth_mib_s": 4968.2294921875,
+        "iops": 39745.841805,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 4968.2294921875,
+        "write_bandwidth_mib_s": 0.0
+      },
+      "l0_compaction_write": {
+        "bandwidth_mib_s": 1453.068359375,
+        "iops": 11624.55006,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 0.0,
+        "write_bandwidth_mib_s": 1453.068359375
+      },
+      "fillrandom": {
+        "bandwidth_mib_s": 1069.1513671875,
+        "iops": 273702.776574,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 0.0,
+        "write_bandwidth_mib_s": 1069.1513671875
+      },
+      "point_lookup": {
+        "bandwidth_mib_s": 399.875,
+        "iops": 102368.054398,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 399.875,
+        "write_bandwidth_mib_s": 0.0
+      },
+      "range_scan": {
+        "bandwidth_mib_s": 1183.5458984375,
+        "iops": 302987.900403,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 1183.5458984375,
+        "write_bandwidth_mib_s": 0.0
+      },
+      "mixed_workload": {
+        "bandwidth_mib_s": 733.2275390625,
+        "iops": 187706.409786,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 733.2275390625,
+        "write_bandwidth_mib_s": 314.3125
+      }
+    }
+  },
+  "summary": {
+    "max_sequential_write": 0,
+    "max_sequential_read": 0,
+    "max_random_write": 0,
+    "max_random_read": 0,
+    "optimal_block_size": {
+      "write": {
+        "bandwidth_mib_s": 5498.60546875,
+        "iops": 175955.401487,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 0.0,
+        "write_bandwidth_mib_s": 5498.60546875
+      },
+      "randwrite": {
+        "bandwidth_mib_s": 1922.6162109375,
+        "iops": 246094.996833,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 0.0,
+        "write_bandwidth_mib_s": 1922.6162109375
+      },
+      "read": {
+        "bandwidth_mib_s": 4071.9873046875,
+        "iops": 4071.988002,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 4071.9873046875,
+        "write_bandwidth_mib_s": 0.0
+      },
+      "randread": {
+        "bandwidth_mib_s": 5842.1484375,
+        "iops": 11684.298237,
+        "latency_mean_us": 0.0,
+        "latency_p95_us": 0.0,
+        "latency_p99_us": 0.0,
+        "read_bandwidth_mib_s": 5842.1484375,
+        "write_bandwidth_mib_s": 0.0
+      }
+    },
+    "optimal_queue_depth": {},
+    "mixed_workload_characteristics": {},
+    "max_write": 5498.60546875,
+    "max_randwrite": 1922.6162109375,
+    "max_read": 4071.9873046875,
+    "max_randread": 5842.1484375
+  }
+}

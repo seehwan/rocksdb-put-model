@@ -18,14 +18,25 @@ def parse_log_file(log_file):
     
     stats_data = []
     compaction_data = []
+    current_timestamp = None
     
     with open(log_file, 'r') as f:
         for line in f:
             line = line.strip()
             
-            # Stats 로그 파싱
+            # 시간 정보 추출 (DUMPING STATS 라인 바로 위)
+            if "------- DUMPING STATS -------" in line:
+                # 이전 라인에서 시간 정보 추출
+                continue
+            
+            # 시간 정보가 있는 라인에서 timestamp 추출
+            time_match = re.search(r'(\d{4}/\d{2}/\d{2}-\d{2}:\d{2}:\d{2}\.\d+)', line)
+            if time_match:
+                current_timestamp = time_match.group(1)
+            
+            # Stats 로그 파싱 (시간 정보와 함께)
             if "Cumulative writes:" in line:
-                stats_data.append(parse_stats_line(line))
+                stats_data.append(parse_stats_line(line, current_timestamp))
             
             # Compaction 로그 파싱
             elif "Compaction start" in line or "Compaction finished" in line:
@@ -33,30 +44,30 @@ def parse_log_file(log_file):
     
     return stats_data, compaction_data
 
-def parse_stats_line(line):
+def parse_stats_line(line, timestamp=None):
     """Stats 라인 파싱"""
     try:
-        # 시간 추출
-        time_match = re.search(r'(\d{4}/\d{2}/\d{2}-\d{2}:\d{2}:\d{2})', line)
-        timestamp = time_match.group(1) if time_match else None
+        # Cumulative writes 추출 (K 단위 처리)
+        writes_match = re.search(r'Cumulative writes: (\d+)K writes', line)
+        if writes_match:
+            writes = int(writes_match.group(1)) * 1000  # K를 1000으로 변환
+        else:
+            writes_match = re.search(r'Cumulative writes: (\d+) writes', line)
+            writes = int(writes_match.group(1)) if writes_match else 0
         
-        # Cumulative writes 추출
-        writes_match = re.search(r'Cumulative writes: (\d+)', line)
-        writes = int(writes_match.group(1)) if writes_match else 0
-        
-        # Cumulative time 추출
-        time_match = re.search(r'(\d+) writes', line)
-        write_time = int(time_match.group(1)) if time_match else 0
-        
-        # Write rate 추출
-        rate_match = re.search(r'(\d+\.?\d*) writes/sec', line)
+        # Write rate 추출 (MB/s 단위)
+        rate_match = re.search(r'(\d+\.?\d*) MB/s', line)
         write_rate = float(rate_match.group(1)) if rate_match else 0
+        
+        # Ingest 추출 (GB 단위)
+        ingest_match = re.search(r'ingest: (\d+\.?\d*) GB', line)
+        ingest_gb = float(ingest_match.group(1)) if ingest_match else 0
         
         return {
             'timestamp': timestamp,
             'cumulative_writes': writes,
             'write_rate': write_rate,
-            'write_time': write_time
+            'ingest_gb': ingest_gb
         }
     except Exception as e:
         print(f"Stats 라인 파싱 오류: {e}")
@@ -65,8 +76,8 @@ def parse_stats_line(line):
 def parse_compaction_line(line):
     """Compaction 라인 파싱"""
     try:
-        # 시간 추출
-        time_match = re.search(r'(\d{4}/\d{2}/\d{2}-\d{2}:\d{2}:\d{2})', line)
+        # 시간 추출 (마이크로초 포함)
+        time_match = re.search(r'(\d{4}/\d{2}/\d{2}-\d{2}:\d{2}:\d{2}\.\d+)', line)
         timestamp = time_match.group(1) if time_match else None
         
         # Compaction 타입 추출
@@ -100,8 +111,8 @@ def analyze_performance_trends(stats_data):
         print("❌ 유효한 Stats 데이터가 없습니다!")
         return None
     
-    # 시간 변환
-    df['datetime'] = pd.to_datetime(df['timestamp'], format='%Y/%m/%d-%H:%M:%S')
+    # 시간 변환 (마이크로초 포함)
+    df['datetime'] = pd.to_datetime(df['timestamp'], format='%Y/%m/%d-%H:%M:%S.%f')
     
     # 성능 분석
     initial_rate = df['write_rate'].iloc[0] if len(df) > 0 else 0
@@ -146,8 +157,8 @@ def analyze_compaction_patterns(compaction_data):
         print("❌ 유효한 Compaction 데이터가 없습니다!")
         return None
     
-    # 시간 변환
-    df['datetime'] = pd.to_datetime(df['timestamp'], format='%Y/%m/%d-%H:%M:%S')
+    # 시간 변환 (마이크로초 포함)
+    df['datetime'] = pd.to_datetime(df['timestamp'], format='%Y/%m/%d-%H:%M:%S.%f')
     
     # 레벨별 Compaction 통계
     level_stats = df.groupby('level').size()

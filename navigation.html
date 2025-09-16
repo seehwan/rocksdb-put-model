@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>네비게이션 - RocksDB Put-Rate Model</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            margin-top: 40px;
+            font-size: 1.8em;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .nav-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid #27ae60;
+        }
+        
+        .nav-section h3 {
+            color: #2c3e50;
+            margin: 0 0 20px 0;
+            font-size: 1.5em;
+        }
+        
+        .nav-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav-section li {
+            margin: 10px 0;
+        }
+        
+        .nav-section a {
+            display: block;
+            padding: 12px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .nav-section a:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .nav-section a.primary {
+            background: #e74c3c;
+        }
+        
+        .nav-section a.primary:hover {
+            background: #c0392b;
+        }
+        
+        .nav-section a.secondary {
+            background: #27ae60;
+        }
+        
+        .nav-section a.secondary:hover {
+            background: #229954;
+        }
+        
+        .nav-section a.warning {
+            background: #f39c12;
+        }
+        
+        .nav-section a.warning:hover {
+            background: #e67e22;
+        }
+        
+        .quick-access {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .quick-access h3 {
+            color: white;
+            margin: 0 0 20px 0;
+        }
+        
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .quick-links a {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-links a:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>네비게이션</h1>
+            <p>RocksDB Put-Rate Model 프로젝트 전체 문서</p>
+            <p>21개 HTML 문서의 체계적인 탐색</p>
+        </div>
+
+        <div class="quick-access">
+            <h3>🚀 빠른 접근</h3>
+            <div class="quick-links">
+                <a href="index.html">메인 페이지</a>
+                <a href="PutModel_v4_Documentation.html">v4 모델 문서</a>
+                <a href="PROJECT_STATUS.html">프로젝트 현황</a>
+                <a href="experiments.html">실험 디렉토리</a>
+                <a href="validation.html">검증 계획</a>
+            </div>
+        </div>
+
+        <h2>📚 주요 문서</h2>
+        
+        <div class="nav-grid">
+            <div class="nav-section">
+                <h3>🏠 메인 및 개요</h3>
+                <ul>
+                    <li><a href="index.html" class="primary">메인 페이지</a></li>
+                    <li><a href="README.html">프로젝트 개요</a></li>
+                    <li><a href="PROJECT_STATUS.html">프로젝트 현황</a></li>
+                    <li><a href="navigation.html" class="secondary">네비게이션 (이 페이지)</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>🎯 v4 모델 (최신)</h3>
+                <ul>
+                    <li><a href="PutModel_v4_Documentation.html" class="primary">v4 모델 완전 문서</a></li>
+                    <li><a href="PutModel_v4_Implementation_Summary.html">구현 요약</a></li>
+                    <li><a href="PutModel_v4_Complete_Implementation.html">완전 구현</a></li>
+                    <li><a href="PutModel_v4_Implementation.html">구현 가이드</a></li>
+                    <li><a href="PutModel_v4_Experimental.html">실험 결과</a></li>
+                    <li><a href="PutModel_v4.html">v4 기본</a></li>
+                    <li><a href="PutModel_v4_Index.html">v4 인덱스</a></li>
+                    <li><a href="PutModel_v4_Theoretical.html">v4 이론</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>📊 모델 버전별</h3>
+                <ul>
+                    <li><a href="models.html" class="secondary">모델 버전별 개요</a></li>
+                    <li><a href="PutModel.html">전체 모델 (v1-v4)</a></li>
+                    <li><a href="PutModel_v2_1.html">v2.1 모델</a></li>
+                    <li><a href="PutModel_v3.html">v3 모델</a></li>
+                    <li><a href="PutModel_v3_rev.html">v3 개정</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>🧪 실험 및 검증</h3>
+                <ul>
+                    <li><a href="experiments.html" class="warning">실험 디렉토리</a></li>
+                    <li><a href="validation.html" class="warning">검증 계획</a></li>
+                    <li><a href="ValidationPlan.html">검증 계획서</a></li>
+                    <li><a href="ValidationGuide.html">검증 가이드</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>📖 관련 자료</h3>
+                <ul>
+                    <li><a href="related_work_section.html">관련 연구</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>🎯 모델 진화 과정</h2>
+        
+        <div class="nav-grid">
+            <div class="nav-section">
+                <h3>v1 모델</h3>
+                <ul>
+                    <li><a href="PutModel.html#v1">기본 Steady-State 공식</a></li>
+                    <li><span style="color: #e74c3c; font-weight: bold;">예측 오차: 210.9%</span></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>v2.1 모델</h3>
+                <ul>
+                    <li><a href="PutModel_v2_1.html">Harmonic Mean 혼합 I/O</a></li>
+                    <li><span style="color: #f39c12; font-weight: bold;">예측 오차: 66.0%</span></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>v3 모델</h3>
+                <ul>
+                    <li><a href="PutModel_v3.html">동적 시뮬레이터</a></li>
+                    <li><span style="color: #3498db; font-weight: bold;">예측 오차: 95.0%</span></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>v4 모델 ⭐</h3>
+                <ul>
+                    <li><a href="PutModel_v4_Documentation.html">Device Envelope + Closed Ledger</a></li>
+                    <li><span style="color: #27ae60; font-weight: bold;">예측 오차: 0.0% (Perfect 등급)</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>🚀 현재 상태</h2>
+        
+        <div class="quick-access">
+            <h3>진행 상황</h3>
+            <div class="quick-links">
+                <a href="PROJECT_STATUS.html">✅ v4 모델 완전 구현</a>
+                <a href="experiments.html">✅ Phase-A 완료</a>
+                <a href="experiments.html">🔄 Phase-B 진행 중 (54%)</a>
+                <a href="validation.html">📊 검증 계획 수립</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>네비게이션 - RocksDB Put-Rate Model</strong></p>
+            <p>21개 HTML 문서의 체계적인 탐색 및 모델 진화 과정</p>
+            <p>최종 업데이트: 2025-09-12 | 현재 버전: v4 (Perfect 등급)</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+

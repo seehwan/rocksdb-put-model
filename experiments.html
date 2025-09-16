@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실험 디렉토리 - RocksDB Put-Rate Model</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            margin-top: 40px;
+            font-size: 1.8em;
+        }
+        
+        .experiment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .experiment-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid #27ae60;
+            transition: transform 0.3s ease;
+        }
+        
+        .experiment-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .experiment-card.completed {
+            border-left-color: #27ae60;
+        }
+        
+        .experiment-card.in-progress {
+            border-left-color: #f39c12;
+        }
+        
+        .experiment-card h3 {
+            color: #2c3e50;
+            margin: 0 0 20px 0;
+            font-size: 1.5em;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+        
+        .status-badge.completed {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .status-badge.in-progress {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .experiment-card ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        .experiment-card li {
+            margin: 8px 0;
+            color: #555;
+        }
+        
+        .experiment-card .files {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .experiment-card .files h4 {
+            color: #3498db;
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .experiment-card .files ul {
+            margin: 0;
+            padding-left: 15px;
+        }
+        
+        .experiment-card .files li {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #2c3e50;
+        }
+        
+        .progress-section {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .progress-section h3 {
+            color: white;
+            margin: 0 0 20px 0;
+        }
+        
+        .progress-item {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ecf0f1;
+        }
+        
+        .progress-item h4 {
+            margin: 0 0 10px 0;
+            color: #ecf0f1;
+        }
+        
+        .progress-item p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        .nav-links {
+            background: #34495e;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 10px 20px;
+            background: #3498db;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .nav-links a:hover {
+            background: #2980b9;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .experiment-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links a {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>실험 디렉토리</h1>
+            <p>RocksDB Put-Rate Model 실험 및 검증 결과</p>
+            <p>Phase-A: Device Envelope 측정 | Phase-B: RocksDB FillRandom 실험</p>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">메인 페이지</a>
+            <a href="README.html">프로젝트 개요</a>
+            <a href="PutModel_v4_Documentation.html">v4 모델 문서</a>
+            <a href="PROJECT_STATUS.html">프로젝트 현황</a>
+        </div>
+
+        <h2>🧪 실험 개요</h2>
+        
+        <div class="experiment-grid">
+            <div class="experiment-card completed">
+                <h3>Phase-A: Enhanced Device Envelope <span class="status-badge completed">완료</span></h3>
+                <p><strong>목적</strong>: fio 그리드 스윕을 통한 정교한 Device Envelope 모델 생성</p>
+                <p><strong>기간</strong>: 2025-09-12</p>
+                <p><strong>결과</strong>: 120+ 측정점으로 완전한 4D Device Envelope 모델 구축</p>
+                
+                <div class="files">
+                    <h4>주요 파일</h4>
+                    <ul>
+                        <li>enhanced_envelope_measurement.py</li>
+                        <li>analyze_enhanced_envelope.py</li>
+                        <li>enhanced_envelope_report.json</li>
+                        <li>enhanced_envelope_analysis.png</li>
+                        <li>enhanced_envelope_summary.json</li>
+                    </ul>
+                </div>
+                
+                <h4>측정 범위</h4>
+                <ul>
+                    <li><span class="highlight">읽기 비율</span>: 0%, 25%, 50%, 75%, 100%</li>
+                    <li><span class="highlight">큐 깊이</span>: 1, 4, 16, 64</li>
+                    <li><span class="highlight">병렬 작업</span>: 1, 2, 4</li>
+                    <li><span class="highlight">블록 크기</span>: 4, 64, 1024 KiB</li>
+                    <li><span class="highlight">총 측정점</span>: 180개</li>
+                </ul>
+            </div>
+            
+            <div class="experiment-card in-progress">
+                <h3>Phase-B: RocksDB FillRandom <span class="status-badge in-progress">진행 중</span></h3>
+                <p><strong>목적</strong>: 실제 RocksDB FillRandom 워크로드 성능 측정 및 LOG 분석</p>
+                <p><strong>기간</strong>: 2025-09-12 (진행 중)</p>
+                <p><strong>상태</strong>: 백그라운드 실행 중 (진행률: 54%, 259GB/1TB)</p>
+                
+                <div class="files">
+                    <h4>주요 파일</h4>
+                    <ul>
+                        <li>run_phase_b_background.sh</li>
+                        <li>check_phase_b_status.sh</li>
+                        <li>stop_phase_b.sh</li>
+                        <li>analyze_phase_b.py</li>
+                        <li>logs/LOG (RocksDB 로그)</li>
+                    </ul>
+                </div>
+                
+                <h4>실험 설정</h4>
+                <ul>
+                    <li><span class="highlight">워크로드</span>: FillRandom</li>
+                    <li><span class="highlight">데이터 크기</span>: 1TB (1,000,000,000 키)</li>
+                    <li><span class="highlight">쓰레드</span>: 32개 (48코어 시스템)</li>
+                    <li><span class="highlight">실행 시간</span>: 예상 8-10시간</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h3>🚀 현재 진행 상황</h3>
+            
+            <div class="progress-item">
+                <h4>✅ Phase-A 완료</h4>
+                <p>Enhanced Device Envelope 측정 완료: 180개 측정점으로 정교한 4D 모델 생성</p>
+            </div>
+            
+            <div class="progress-item">
+                <h4>🔄 Phase-B 진행 중</h4>
+                <p>RocksDB FillRandom 실험 백그라운드 실행 중 (PID: 415826, 진행률: 54%)</p>
+            </div>
+            
+            <div class="progress-item">
+                <h4>📊 예상 완료</h4>
+                <p>Phase-B 완료 후 LOG 파일 분석 및 v4 모델 검증 예정</p>
+            </div>
+        </div>
+
+        <h2>📁 실험 디렉토리 구조</h2>
+        
+        <div class="experiment-grid">
+            <div class="experiment-card">
+                <h3>📂 experiments/2025-09-12/</h3>
+                <div class="files">
+                    <h4>Phase-A (완료)</h4>
+                    <ul>
+                        <li>enhanced_envelope_measurement.py</li>
+                        <li>analyze_enhanced_envelope.py</li>
+                        <li>data/enhanced_envelope_report.json</li>
+                        <li>data/enhanced_envelope_analysis.png</li>
+                        <li>data/enhanced_envelope_summary.json</li>
+                    </ul>
+                </div>
+                
+                <div class="files">
+                    <h4>Phase-B (진행 중)</h4>
+                    <ul>
+                        <li>run_phase_b_background.sh</li>
+                        <li>check_phase_b_status.sh</li>
+                        <li>stop_phase_b.sh</li>
+                        <li>analyze_phase_b.py</li>
+                        <li>logs/LOG (RocksDB 로그)</li>
+                        <li>nohup.out (백그라운드 출력)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="experiment-card">
+                <h3>🔧 실험 도구</h3>
+                <div class="files">
+                    <h4>실행 스크립트</h4>
+                    <ul>
+                        <li>run_phase_b.sh: 기본 실행</li>
+                        <li>run_phase_b_background.sh: 백그라운드 실행</li>
+                        <li>check_phase_b_status.sh: 상태 확인</li>
+                        <li>stop_phase_b.sh: 안전한 종료</li>
+                    </ul>
+                </div>
+                
+                <div class="files">
+                    <h4>분석 도구</h4>
+                    <ul>
+                        <li>analyze_phase_b.py: LOG 파일 분석</li>
+                        <li>enhanced_envelope_measurement.py: fio 스윕</li>
+                        <li>analyze_enhanced_envelope.py: 결과 분석</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2>📊 실험 결과 요약</h2>
+        
+        <div class="experiment-grid">
+            <div class="experiment-card">
+                <h3>Phase-A 결과</h3>
+                <h4>Device Envelope 측정</h4>
+                <ul>
+                    <li><span class="highlight">총 측정점</span>: 180개</li>
+                    <li><span class="highlight">측정 시간</span>: 약 2시간</li>
+                    <li><span class="highlight">결과 파일</span>: enhanced_envelope_report.json</li>
+                    <li><span class="highlight">시각화</span>: enhanced_envelope_analysis.png</li>
+                </ul>
+                
+                <h4>핵심 발견</h4>
+                <ul>
+                    <li>4D 선형보간 모델 정확성 확인</li>
+                    <li>물리적 제약 검증 완료</li>
+                    <li>Device Envelope 모델 구축 완료</li>
+                </ul>
+            </div>
+            
+            <div class="experiment-card">
+                <h3>Phase-B 진행 상황</h3>
+                <h4>현재 상태</h4>
+                <ul>
+                    <li><span class="highlight">실행 시간</span>: 약 4시간 경과</li>
+                    <li><span class="highlight">데이터 생성</span>: 259GB / 1TB (54%)</li>
+                    <li><span class="highlight">성능</span>: 530+ ops/sec 안정적 유지</li>
+                    <li><span class="highlight">예상 완료</span>: 내일 새벽 경</li>
+                </ul>
+                
+                <h4>모니터링</h4>
+                <ul>
+                    <li>PID: 415826 (백그라운드 실행)</li>
+                    <li>LOG 파일: 실시간 생성 중</li>
+                    <li>상태 확인: check_phase_b_status.sh</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>🔗 관련 링크</h2>
+        
+        <div class="nav-links">
+            <a href="experiments/2025-09-12/phase-a/">Phase-A 디렉토리</a>
+            <a href="experiments/2025-09-12/phase-b/">Phase-B 디렉토리</a>
+            <a href="PutModel_v4_Documentation.html">v4 모델 문서</a>
+            <a href="PROJECT_STATUS.html">프로젝트 현황</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>실험 디렉토리 - RocksDB Put-Rate Model</strong></p>
+            <p>Phase-A: Device Envelope 측정 완료 | Phase-B: RocksDB FillRandom 실험 진행 중</p>
+            <p>최종 업데이트: 2025-09-12 | 실험 상태: 활발한 진행 중</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+

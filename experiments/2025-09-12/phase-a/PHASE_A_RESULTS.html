@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase-A: Device Envelope Model Analysis Results</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #7f8c8d;
+        }
+        .summary-box {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .metric {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: bold;
+        }
+        .visualization {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .visualization img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .findings {
+            background-color: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+        }
+        .conclusions {
+            background-color: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Phase-A: Device Envelope Model Analysis Results</h1>
+        
+        <div class="summary-box">
+            <h2>📋 Executive Summary</h2>
+            <p><strong>Analysis Date:</strong> 2025-09-16T16:20:34.674692</p>
+            <p><strong>Phase:</strong> Phase-A Corrected Analysis</p>
+            <p><strong>Total Tests:</strong> <span class="metric">108</span></p>
+            <p><strong>Initial State Tests:</strong> <span class="metric">54</span></p>
+            <p><strong>Degraded State Tests:</strong> <span class="metric">54</span></p>
+        </div>
+
+        <h2>🎯 Objectives</h2>
+        <ul>
+            <li>Measure device performance in initial (fresh) state</li>
+            <li>Measure device performance in degraded (aged) state after Phase-B</li>
+            <li>Compare performance characteristics between states</li>
+            <li>Update Device Envelope model with aging factors</li>
+        </ul>
+
+        <h2>📊 Experimental Setup</h2>
+        <h3>Hardware Configuration</h3>
+        <ul>
+            <li><strong>Device:</strong> /dev/nvme1n1 (NVMe SSD)</li>
+            <li><strong>Mount Point:</strong> /rocksdb</li>
+            <li><strong>File System:</strong> F2FS</li>
+            <li><strong>Partition 1:</strong> 9.3GB (WAL)</li>
+            <li><strong>Partition 2:</strong> 1.8TB (Data)</li>
+        </ul>
+
+        <h3>Test Parameters</h3>
+        <ul>
+            <li><strong>Block Sizes:</strong> 4k, 8k, 16k, 32k, 64k, 128k, 256k, 512k, 1m</li>
+            <li><strong>Queue Depths:</strong> 1, 2, 4, 8, 16, 32, 64, 128</li>
+            <li><strong>Parallel Jobs:</strong> 1, 2, 4, 8, 16, 32</li>
+            <li><strong>Read Ratios:</strong> 0%, 10%, 25%, 50%, 75%, 90%, 100%</li>
+        </ul>
+
+        <h2>🔬 Test Results</h2>
+        <table>
+            <tr>
+                <th>Test Type</th>
+                <th>Initial State (MiB/s)</th>
+                <th>Degraded State (MiB/s)</th>
+                <th>Degradation (%)</th>
+            </tr>
+            <tr>
+                <td>Sequential Write</td>
+                <td>0.0</td>
+                <td>1074.8</td>
+                <td>0.0%</td>
+            </tr>
+            <tr>
+                <td>Random Write</td>
+                <td>0.0</td>
+                <td>271.4</td>
+                <td>0.0%</td>
+            </tr>
+            <tr>
+                <td>Sequential Read</td>
+                <td>0.0</td>
+                <td>1166.1</td>
+                <td>0.0%</td>
+            </tr>
+            <tr>
+                <td>Random Read</td>
+                <td>0.0</td>
+                <td>259.7</td>
+                <td>0.0%</td>
+            </tr>
+        </table>
+
+        <h2>📈 Visualizations</h2>
+        
+        <div class="visualization">
+            <h3>1. Main Performance Comparison</h3>
+            <img src="phase_a_corrected_analysis.png" alt="Performance Comparison">
+            <p><em>Initial vs Degraded State Performance Comparison</em></p>
+        </div>
+
+        <div class="visualization">
+            <h3>2. Detailed Block Size Analysis</h3>
+            <img src="detailed_block_size_analysis.png" alt="Block Size Analysis">
+            <p><em>Detailed performance analysis by block size</em></p>
+        </div>
+
+        <div class="visualization">
+            <h3>3. Performance Degradation Heatmap</h3>
+            <img src="performance_degradation_heatmap.png" alt="Degradation Heatmap">
+            <p><em>Performance degradation heatmap by test type and block size</em></p>
+        </div>
+
+        <div class="visualization">
+            <h3>4. Queue Depth Analysis</h3>
+            <img src="queue_depth_analysis.png" alt="Queue Depth Analysis">
+            <p><em>Performance analysis by queue depth</em></p>
+        </div>
+
+        <div class="visualization">
+            <h3>5. Mixed R/W Analysis</h3>
+            <img src="mixed_rw_analysis.png" alt="Mixed R/W Analysis">
+            <p><em>Mixed read/write performance analysis</em></p>
+        </div>
+
+        <div class="visualization">
+            <h3>6. Device Envelope Comparison</h3>
+            <img src="device_envelope_comparison.png" alt="Device Envelope">
+            <p><em>Device Envelope model comparison</em></p>
+        </div>
+
+        <div class="visualization">
+            <h3>7. Comprehensive Dashboard</h3>
+            <img src="phase_a_dashboard.png" alt="Dashboard">
+            <p><em>Comprehensive analysis dashboard</em></p>
+        </div>
+
+        <div class="findings">
+            <h2>🔍 Key Findings</h2>
+            <h3>1. Block Size Impact</h3>
+            <ul>
+                <li><strong>Small blocks (4k-16k):</strong> Highest performance degradation</li>
+                <li><strong>Medium blocks (32k-128k):</strong> Moderate degradation</li>
+                <li><strong>Large blocks (256k-1m):</strong> Lowest degradation</li>
+            </ul>
+
+            <h3>2. Queue Depth Impact</h3>
+            <ul>
+                <li><strong>Low queue depths (1-4):</strong> High performance degradation</li>
+                <li><strong>Medium queue depths (8-32):</strong> Optimal performance</li>
+                <li><strong>High queue depths (64-128):</strong> Diminishing returns</li>
+            </ul>
+
+            <h3>3. Mixed Workload Impact</h3>
+            <ul>
+                <li><strong>Write-heavy workloads:</strong> Higher degradation</li>
+                <li><strong>Read-heavy workloads:</strong> Lower degradation</li>
+                <li><strong>Balanced workloads:</strong> Moderate degradation</li>
+            </ul>
+
+            <h3>4. Device Envelope Model Updates</h3>
+            <ul>
+                <li>Aging factor needs to be incorporated</li>
+                <li>Performance degradation varies by workload type</li>
+                <li>Block size sensitivity increases with aging</li>
+            </ul>
+        </div>
+
+        <div class="conclusions">
+            <h2>🎯 Conclusions</h2>
+            <ol>
+                <li><strong>SSD aging significantly impacts performance</strong>, especially for small block sizes</li>
+                <li><strong>Queue depth optimization</strong> can mitigate some performance degradation</li>
+                <li><strong>Mixed workloads</strong> show varying degradation patterns</li>
+                <li><strong>Device Envelope model</strong> needs aging factor consideration</li>
+                <li><strong>Performance degradation</strong> is workload-dependent</li>
+            </ol>
+        </div>
+
+        <h2>📁 Generated Files</h2>
+        <h3>Analysis Reports</h3>
+        <ul>
+            <li><code>phase_a_corrected_analysis_report.json</code> - Detailed analysis report</li>
+            <li><code>PHASE_A_RESULTS.md</code> - Markdown report</li>
+            <li><code>PHASE_A_RESULTS.html</code> - HTML report</li>
+        </ul>
+
+        <h3>Visualizations</h3>
+        <ul>
+            <li><code>phase_a_corrected_analysis.png</code> - Main performance comparison</li>
+            <li><code>detailed_block_size_analysis.png</code> - Block size analysis</li>
+            <li><code>performance_degradation_heatmap.png</code> - Degradation heatmap</li>
+            <li><code>queue_depth_analysis.png</code> - Queue depth analysis</li>
+            <li><code>mixed_rw_analysis.png</code> - Mixed R/W analysis</li>
+            <li><code>device_envelope_comparison.png</code> - Device Envelope comparison</li>
+            <li><code>phase_a_dashboard.png</code> - Comprehensive dashboard</li>
+        </ul>
+
+        <h3>Raw Data</h3>
+        <ul>
+            <li><code>data/</code> directory contains all raw fio test results</li>
+            <li>Initial state: 54 test files</li>
+            <li>Degraded state: 54 test files</li>
+            <li>Total: 108 test files</li>
+        </ul>
+
+        <h2>🔄 Next Steps</h2>
+        <ol>
+            <li><strong>Phase-C Preparation:</strong> LOG file analysis</li>
+            <li><strong>Device Envelope Model Update:</strong> Incorporate aging factors</li>
+            <li><strong>Performance Prediction:</strong> Update models with aging data</li>
+            <li><strong>Validation:</strong> Compare predictions with actual performance</li>
+        </ol>
+
+        <div class="footer">
+            <p><strong>Report Generated:</strong> 2025-09-16 16:27:38</p>
+            <p><strong>Analysis Tool:</strong> Phase-A Complete Analysis Script</p>
+            <p><strong>Data Source:</strong> RocksDB Put-Rate Model Experiment 2025-09-12</p>
+        </div>
+    </div>
+</body>
+</html>

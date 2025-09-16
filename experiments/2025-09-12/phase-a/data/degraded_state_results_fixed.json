@@ -1,0 +1,37 @@
+{
+  "device": "/dev/nvme1n1",
+  "mount_point": "/rocksdb",
+  "test_date": "2025-09-12",
+  "test_type": "degraded_state_measurement",
+  "environment": "after_phase_b_fillrandom_experiment",
+  "tests": {
+    "seq_write_degraded": {
+      "write_bandwidth_mib_s": 1074.8408203125,
+      "read_bandwidth_mib_s": 0.0
+    },
+    "rand_write_degraded": {
+      "write_bandwidth_mib_s": 217.9072265625,
+      "read_bandwidth_mib_s": 0.0
+    },
+    "seq_read_degraded": {
+      "write_bandwidth_mib_s": 0.0,
+      "read_bandwidth_mib_s": 1166.05859375
+    },
+    "rand_read_degraded": {
+      "write_bandwidth_mib_s": 0.0,
+      "read_bandwidth_mib_s": 68.1123046875
+    },
+    "mixed_rw_degraded": {
+      "write_bandwidth_mib_s": 64.3408203125,
+      "read_bandwidth_mib_s": 64.4345703125
+    }
+  },
+  "summary": {
+    "max_write_bandwidth_mib_s": 1074.8408203125,
+    "max_read_bandwidth_mib_s": 1166.05859375,
+    "avg_write_bandwidth_mib_s": 271.4177734375,
+    "avg_read_bandwidth_mib_s": 259.72109375,
+    "mixed_bandwidth_mib_s": 128.775390625,
+    "environmental_factor": "degraded_state"
+  }
+}

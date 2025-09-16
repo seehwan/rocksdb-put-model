@@ -1,0 +1,22 @@
+{
+  "device": "/dev/nvme1n1",
+  "mount_point": "/rocksdb",
+  "test_date": "2025-09-12",
+  "test_type": "degraded_state_measurement",
+  "environment": "after_phase_b_fillrandom_experiment",
+  "tests": {
+    "sequential_write": null,
+    "random_write": null,
+    "sequential_read": null,
+    "random_read": null,
+    "mixed_rw": null
+  },
+  "summary": {
+    "max_write_bandwidth_mib_s": 0,
+    "max_read_bandwidth_mib_s": 0,
+    "avg_write_bandwidth_mib_s": 0,
+    "avg_read_bandwidth_mib_s": 0,
+    "mixed_bandwidth_mib_s": 0,
+    "environmental_factor": "degraded_state"
+  }
+}

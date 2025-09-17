@@ -1,0 +1,32 @@
+{
+  "model": "v3_enhanced",
+  "predicted_smax": 4.816,
+  "actual_qps_mean": 172.0,
+  "actual_qps_max": 184.0,
+  "actual_qps_min": 160.0,
+  "error_percent": 3471.4285714285716,
+  "error_abs": 3471.4285714285716,
+  "validation_status": "Poor",
+  "rocksdb_log_enhanced": true,
+  "enhancement_factors": {
+    "p_stall_enhanced": 0.5,
+    "B_read_enhanced": 95.19999999999999,
+    "B_write_enhanced": 96.6,
+    "compaction_factor": 0.8,
+    "stall_factor": 0.7,
+    "wa_factor": 0.48231759209406533,
+    "io_contention_factor": 0.7
+  },
+  "io_stats": {
+    "flush_frequency": 69426.0,
+    "compaction_frequency": 143942.5,
+    "stall_frequency": 348495,
+    "avg_flush_size": 60.73944105974377,
+    "avg_compaction_size": 0,
+    "write_amplification": 2.073322674502348,
+    "memtable_pressure": 5.000158442082217,
+    "compaction_intensity": 1.0,
+    "stall_duration": 1.0,
+    "io_contention": 1.0
+  }
+}

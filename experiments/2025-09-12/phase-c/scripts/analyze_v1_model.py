@@ -158,58 +158,58 @@ class V1ModelAnalyzer:
         # 그래프 설정
         plt.style.use('seaborn-v0_8')
         fig, axes = plt.subplots(2, 2, figsize=(15, 12))
-        fig.suptitle('v1 모델 분석 결과', fontsize=16, fontweight='bold')
+        fig.suptitle('v1 Model Analysis Results', fontsize=16, fontweight='bold')
         
-        # 1. Phase-B 성능 트렌드
+        # 1. Phase-B Performance Trend
         ax1 = axes[0, 0]
         ax1.plot(self.phase_b_data['secs_elapsed'], self.phase_b_data['interval_qps'], 
                 alpha=0.7, linewidth=1, color='blue')
         ax1.axhline(y=self.v1_predictions.get('smax', 0), color='red', linestyle='--', 
-                   linewidth=2, label=f'v1 예측: {self.v1_predictions.get("smax", 0):.0f}')
-        ax1.set_xlabel('시간 (초)')
+                   linewidth=2, label=f'v1 Prediction: {self.v1_predictions.get("smax", 0):.0f}')
+        ax1.set_xlabel('Time (seconds)')
         ax1.set_ylabel('QPS')
-        ax1.set_title('Phase-B 성능 트렌드 vs v1 예측')
+        ax1.set_title('Phase-B Performance Trend vs v1 Prediction')
         ax1.legend()
         ax1.grid(True, alpha=0.3)
         
-        # 2. 성능 분포
+        # 2. Performance Distribution
         ax2 = axes[0, 1]
         ax2.hist(self.phase_b_data['interval_qps'], bins=50, alpha=0.7, color='skyblue', edgecolor='black')
         ax2.axvline(x=self.v1_predictions.get('smax', 0), color='red', linestyle='--', 
-                   linewidth=2, label=f'v1 예측: {self.v1_predictions.get("smax", 0):.0f}')
+                   linewidth=2, label=f'v1 Prediction: {self.v1_predictions.get("smax", 0):.0f}')
         ax2.set_xlabel('QPS')
-        ax2.set_ylabel('빈도')
-        ax2.set_title('성능 분포 vs v1 예측')
+        ax2.set_ylabel('Frequency')
+        ax2.set_title('Performance Distribution vs v1 Prediction')
         ax2.legend()
         ax2.grid(True, alpha=0.3)
         
-        # 3. 모델 정확도
+        # 3. Model Accuracy
         ax3 = axes[1, 0]
-        models = ['v1 모델']
+        models = ['v1 Model']
         predictions = [self.v1_predictions.get('smax', 0)]
         actuals = [self.phase_b_data['interval_qps'].mean()]
         
         x = np.arange(len(models))
         width = 0.35
         
-        ax3.bar(x - width/2, predictions, width, label='예측값', color='red', alpha=0.7)
-        ax3.bar(x + width/2, actuals, width, label='실제값', color='blue', alpha=0.7)
-        ax3.set_xlabel('모델')
+        ax3.bar(x - width/2, predictions, width, label='Predicted', color='red', alpha=0.7)
+        ax3.bar(x + width/2, actuals, width, label='Actual', color='blue', alpha=0.7)
+        ax3.set_xlabel('Model')
         ax3.set_ylabel('QPS')
-        ax3.set_title('v1 모델 정확도')
+        ax3.set_title('v1 Model Accuracy')
         ax3.set_xticks(x)
         ax3.set_xticklabels(models)
         ax3.legend()
         ax3.grid(True, alpha=0.3)
         
-        # 4. 오류 분석
+        # 4. Error Analysis
         ax4 = axes[1, 1]
         error_percent = self.results.get('error_percent', 0)
         error_abs = self.results.get('error_abs', 0)
         
-        ax4.bar(['오류율 (%)'], [error_abs], color='orange', alpha=0.7)
-        ax4.set_ylabel('절대 오류율 (%)')
-        ax4.set_title(f'v1 모델 오류 분석\n절대 오류율: {error_abs:.2f}%')
+        ax4.bar(['Error Rate (%)'], [error_abs], color='orange', alpha=0.7)
+        ax4.set_ylabel('Absolute Error Rate (%)')
+        ax4.set_title(f'v1 Model Error Analysis\nAbsolute Error Rate: {error_abs:.2f}%')
         ax4.grid(True, alpha=0.3)
         
         plt.tight_layout()

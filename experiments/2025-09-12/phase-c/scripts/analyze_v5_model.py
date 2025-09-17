@@ -372,77 +372,77 @@ class V5ModelAnalyzer:
         # 그래프 설정
         plt.style.use('seaborn-v0_8')
         fig, axes = plt.subplots(2, 3, figsize=(18, 12))
-        fig.suptitle('v5 모델 분석 결과 (Real-time Adaptation Model)', fontsize=16, fontweight='bold')
+        fig.suptitle('v5 Model Analysis Results (Real-time Adaptation Model)', fontsize=16, fontweight='bold')
         
-        # 1. Phase-B 성능 트렌드
+        # 1. Phase-B Performance Trend
         ax1 = axes[0, 0]
         ax1.plot(self.phase_b_data['secs_elapsed'], self.phase_b_data['interval_qps'], 
                 alpha=0.7, linewidth=1, color='blue')
         ax1.axhline(y=self.v5_predictions.get('smax', 0), color='red', linestyle='--', 
-                   linewidth=2, label=f'v5 예측: {self.v5_predictions.get("smax", 0):.0f}')
-        ax1.set_xlabel('시간 (초)')
+                   linewidth=2, label=f'v5 Prediction: {self.v5_predictions.get("smax", 0):.0f}')
+        ax1.set_xlabel('Time (seconds)')
         ax1.set_ylabel('QPS')
-        ax1.set_title('Phase-B 성능 트렌드 vs v5 예측')
+        ax1.set_title('Phase-B Performance Trend vs v5 Prediction')
         ax1.legend()
         ax1.grid(True, alpha=0.3)
         
-        # 2. 성능 분포
+        # 2. Performance Distribution
         ax2 = axes[0, 1]
         ax2.hist(self.phase_b_data['interval_qps'], bins=50, alpha=0.7, color='skyblue', edgecolor='black')
         ax2.axvline(x=self.v5_predictions.get('smax', 0), color='red', linestyle='--', 
-                   linewidth=2, label=f'v5 예측: {self.v5_predictions.get("smax", 0):.0f}')
+                   linewidth=2, label=f'v5 Prediction: {self.v5_predictions.get("smax", 0):.0f}')
         ax2.set_xlabel('QPS')
-        ax2.set_ylabel('빈도')
-        ax2.set_title('성능 분포 vs v5 예측')
+        ax2.set_ylabel('Frequency')
+        ax2.set_title('Performance Distribution vs v5 Prediction')
         ax2.legend()
         ax2.grid(True, alpha=0.3)
         
-        # 3. 모델 정확도
+        # 3. Model Accuracy
         ax3 = axes[0, 2]
-        models = ['v5 모델']
+        models = ['v5 Model']
         predictions = [self.v5_predictions.get('smax', 0)]
         actuals = [self.phase_b_data['interval_qps'].mean()]
         
         x = np.arange(len(models))
         width = 0.35
         
-        ax3.bar(x - width/2, predictions, width, label='예측값', color='red', alpha=0.7)
-        ax3.bar(x + width/2, actuals, width, label='실제값', color='blue', alpha=0.7)
-        ax3.set_xlabel('모델')
+        ax3.bar(x - width/2, predictions, width, label='Predicted', color='red', alpha=0.7)
+        ax3.bar(x + width/2, actuals, width, label='Actual', color='blue', alpha=0.7)
+        ax3.set_xlabel('Model')
         ax3.set_ylabel('QPS')
-        ax3.set_title('v5 모델 정확도')
+        ax3.set_title('v5 Model Accuracy')
         ax3.set_xticks(x)
         ax3.set_xticklabels(models)
         ax3.legend()
         ax3.grid(True, alpha=0.3)
         
-        # 4. 적응 속도 분석
+        # 4. Adaptation Speed Analysis
         ax4 = axes[1, 0]
         adaptation_speed = self.v5_predictions.get('adaptation_speed', 0)
-        ax4.bar(['적응 속도 (초)'], [adaptation_speed], color='green', alpha=0.7)
-        ax4.set_ylabel('시간 (초)')
-        ax4.set_title(f'v5 모델 적응 속도\n{adaptation_speed:.2f} 초')
+        ax4.bar(['Adaptation Speed (sec)'], [adaptation_speed], color='green', alpha=0.7)
+        ax4.set_ylabel('Time (seconds)')
+        ax4.set_title(f'v5 Model Adaptation Speed\n{adaptation_speed:.2f} seconds')
         ax4.grid(True, alpha=0.3)
         
-        # 5. v5 모델 특징
+        # 5. v5 Model Features
         ax5 = axes[1, 1]
         v5_features = ['Real-time Adaptation', 'Dynamic Environment', 'Auto Tuning', 'ML Detection']
-        v5_values = [1, 1, 1, 1]  # v5 모델의 특징들
+        v5_values = [1, 1, 1, 1]  # v5 model features
         
         ax5.bar(v5_features, v5_values, color='purple', alpha=0.7)
-        ax5.set_ylabel('지원 여부')
-        ax5.set_title('v5 모델 특징')
+        ax5.set_ylabel('Support Status')
+        ax5.set_title('v5 Model Features')
         ax5.set_xticklabels(v5_features, rotation=45, ha='right')
         ax5.grid(True, alpha=0.3)
         
-        # 6. 오류 분석
+        # 6. Error Analysis
         ax6 = axes[1, 2]
         error_percent = self.results.get('error_percent', 0)
         error_abs = self.results.get('error_abs', 0)
         
-        ax6.bar(['오류율 (%)'], [error_abs], color='orange', alpha=0.7)
-        ax6.set_ylabel('절대 오류율 (%)')
-        ax6.set_title(f'v5 모델 오류 분석\n절대 오류율: {error_abs:.2f}%')
+        ax6.bar(['Error Rate (%)'], [error_abs], color='orange', alpha=0.7)
+        ax6.set_ylabel('Absolute Error Rate (%)')
+        ax6.set_title(f'v5 Model Error Analysis\nAbsolute Error Rate: {error_abs:.2f}%')
         ax6.grid(True, alpha=0.3)
         
         plt.tight_layout()

@@ -225,16 +225,16 @@ v2.1 모델 분석 중 오류가 발생했습니다.
         
         # 시각화 생성
         fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 12))
-        fig.suptitle('v2.1 모델 분석 결과', fontsize=16, fontweight='bold')
+        fig.suptitle('v2.1 Model Analysis Results', fontsize=16, fontweight='bold')
         
-        # 1. S_max 예측값
+        # 1. S_max Prediction
         smax = self.v21_predictions['smax']
         ax1.bar(['S_max'], [smax], color='skyblue', alpha=0.7)
-        ax1.set_title('v2.1 모델 S_max 예측')
+        ax1.set_title('v2.1 Model S_max Prediction')
         ax1.set_ylabel('ops/sec')
         ax1.text(0, smax + 1, f'{smax:.2f}', ha='center', va='bottom', fontweight='bold')
         
-        # 2. 레벨별 제약 조건
+        # 2. Level Constraints
         result = self.v21_predictions.get('result', {})
         level_constraints = result.get('level_constraints', {})
         
@@ -243,12 +243,12 @@ v2.1 모델 분석 중 오류가 발생했습니다.
             level_s_values = [level_constraints[level].get('level_s', 0) for level in levels]
             
             ax2.bar(levels, level_s_values, color='lightcoral', alpha=0.7)
-            ax2.set_title('레벨별 S_max 제약 조건')
+            ax2.set_title('Level-wise S_max Constraints')
             ax2.set_xlabel('Level')
             ax2.set_ylabel('ops/sec')
             ax2.set_xticks(levels)
         
-        # 3. 대역폭 효율성
+        # 3. Bandwidth Efficiency
         bandwidth_metrics = {
             'B_write': 138,
             'B_read': 136,
@@ -257,11 +257,11 @@ v2.1 모델 분석 중 오류가 발생했습니다.
         
         ax3.bar(bandwidth_metrics.keys(), bandwidth_metrics.values(), 
                 color=['lightgreen', 'lightblue', 'orange'], alpha=0.7)
-        ax3.set_title('대역폭 효율성 비교')
+        ax3.set_title('Bandwidth Efficiency Comparison')
         ax3.set_ylabel('MB/s')
         ax3.tick_params(axis='x', rotation=45)
         
-        # 4. 요구사항 분석
+        # 4. Requirements Analysis
         requirements = {
             'w_req': result.get('w_req', 0),
             'r_req': result.get('r_req', 0)
@@ -269,8 +269,8 @@ v2.1 모델 분석 중 오류가 발생했습니다.
         
         ax4.bar(requirements.keys(), requirements.values(), 
                 color=['purple', 'brown'], alpha=0.7)
-        ax4.set_title('I/O 요구사항 분석')
-        ax4.set_ylabel('요구사항')
+        ax4.set_title('I/O Requirements Analysis')
+        ax4.set_ylabel('Requirements')
         ax4.tick_params(axis='x', rotation=45)
         
         plt.tight_layout()

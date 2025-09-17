@@ -531,7 +531,7 @@ class V4ModelAnalyzer:
             plt.legend()
             plt.grid(True, linestyle='--', alpha=0.6)
         
-        # 2. 성능 열화 분석
+        # 2. Performance Degradation Analysis
         plt.subplot(2, 3, 2)
         degradation = device_envelope.get('degradation_analysis', {})
         if degradation:
@@ -544,13 +544,13 @@ class V4ModelAnalyzer:
             plt.ylabel('Degradation (%)')
             plt.grid(True, linestyle='--', alpha=0.6)
         
-        # 3. Phase-B 시간별 성능
+        # 3. Phase-B Time-series Performance
         plt.subplot(2, 3, 3)
         if not self.phase_b_data.empty:
             plt.plot(self.phase_b_data['secs_elapsed'], self.phase_b_data['interval_qps'], 
                     label='Phase-B Actual QPS', color='blue', alpha=0.7)
             
-            # v4 모델 예측값
+            # v4 Model Prediction
             dynamic_simulation = self.v4_predictions.get('dynamic_simulation', {})
             predicted_smax = dynamic_simulation.get('dynamic_smax', 0)
             if predicted_smax > 0:
@@ -583,7 +583,7 @@ class V4ModelAnalyzer:
             plt.xticks(rotation=45)
             plt.grid(True, linestyle='--', alpha=0.6)
         
-        # 5. Dynamic Simulation 성능 추세
+        # 5. Dynamic Simulation Performance Trend
         plt.subplot(2, 3, 5)
         dynamic_simulation = self.v4_predictions.get('dynamic_simulation', {})
         trend = dynamic_simulation.get('performance_trend', {})
@@ -602,7 +602,7 @@ class V4ModelAnalyzer:
             plt.xticks(rotation=45)
             plt.grid(True, linestyle='--', alpha=0.6)
         
-        # 6. 모델 비교 요약
+        # 6. Model Comparison Summary
         plt.subplot(2, 3, 6)
         comparison = self.v4_predictions.get('comparison', {})
         if comparison:

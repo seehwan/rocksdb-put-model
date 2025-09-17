@@ -321,24 +321,24 @@ class V3ModelAnalyzer:
         """v3 모델 분석 결과를 시각화합니다."""
         plt.figure(figsize=(15, 10))
         
-        # 1. 실제 QPS vs 예측 S_max
+        # 1. Actual QPS vs Predicted S_max
         plt.subplot(2, 2, 1)
         if not self.actual_qps_data.empty:
             plt.plot(self.actual_qps_data['secs_elapsed'], self.actual_qps_data['interval_qps'], 
-                    label='Phase-B 실제 QPS', color='blue', alpha=0.7)
+                    label='Phase-B Actual QPS', color='blue', alpha=0.7)
         
         smax_prediction = self.v3_predictions.get('smax')
         if smax_prediction is not None:
             plt.axhline(y=smax_prediction, color='red', linestyle='--', 
-                       label=f'v3 모델 예측 S_max ({smax_prediction:.2f} ops/sec)')
+                       label=f'v3 Model Prediction S_max ({smax_prediction:.2f} ops/sec)')
         
-        plt.title('v3 모델 예측 vs 실제 성능')
-        plt.xlabel('시간 (초)')
+        plt.title('v3 Model Prediction vs Actual Performance')
+        plt.xlabel('Time (seconds)')
         plt.ylabel('Put Rate (ops/sec)')
         plt.grid(True, linestyle='--', alpha=0.6)
         plt.legend()
         
-        # 2. 레벨별 분석
+        # 2. Level-wise Analysis
         plt.subplot(2, 2, 2)
         level_analysis = self.v3_predictions.get('level_analysis', {})
         if level_analysis:
@@ -352,14 +352,14 @@ class V3ModelAnalyzer:
             plt.bar(x - width/2, read_shares, width, label='Read Share', alpha=0.8)
             plt.bar(x + width/2, write_shares, width, label='Write Share', alpha=0.8)
             
-            plt.title('레벨별 Read/Write Share 분석')
+            plt.title('Level-wise Read/Write Share Analysis')
             plt.xlabel('Level')
             plt.ylabel('Share')
             plt.xticks(x, levels)
             plt.legend()
             plt.grid(True, linestyle='--', alpha=0.6)
         
-        # 3. Stall Dynamics 분석
+        # 3. Stall Dynamics Analysis
         plt.subplot(2, 2, 3)
         stall_factor = self.v3_predictions.get('stall_factor', 0)
         p_stall = self.v3_predictions.get('p_stall', 0)
@@ -369,28 +369,28 @@ class V3ModelAnalyzer:
         colors = ['green', 'red']
         
         plt.bar(labels, values, color=colors, alpha=0.7)
-        plt.title('Stall Dynamics 분석')
+        plt.title('Stall Dynamics Analysis')
         plt.ylabel('Value')
         plt.grid(True, linestyle='--', alpha=0.6)
         
-        # 4. 모델 특성 요약
+        # 4. Model Characteristics Summary
         plt.subplot(2, 2, 4)
         model_type = self.v3_predictions.get('model_type', 'Unknown')
         heuristic_based = self.v3_predictions.get('heuristic_based', False)
         under_prediction_error = self.v3_predictions.get('under_prediction_error', 0)
         
-        info_text = f"""v3 모델 특성:
-• 모델 타입: {model_type}
-• 휴리스틱 기반: {heuristic_based}
+        info_text = f"""v3 Model Characteristics:
+• Model Type: {model_type}
+• Heuristic Based: {heuristic_based}
 • Under-prediction Error: {under_prediction_error}%
-• 예측 S_max: {smax_prediction:.2f} ops/sec
-• 실제 평균 QPS: {self.actual_qps_data['interval_qps'].mean():.2f} ops/sec"""
+• Predicted S_max: {smax_prediction:.2f} ops/sec
+• Actual Mean QPS: {self.actual_qps_data['interval_qps'].mean():.2f} ops/sec"""
         
         plt.text(0.1, 0.5, info_text, transform=plt.gca().transAxes, 
                 fontsize=10, verticalalignment='center',
                 bbox=dict(boxstyle="round,pad=0.3", facecolor="lightblue", alpha=0.7))
         plt.axis('off')
-        plt.title('v3 모델 특성 요약')
+        plt.title('v3 Model Characteristics Summary')
         
         plt.tight_layout()
         plt.savefig(f"{self.results_dir}/v3_model_analysis.png", dpi=300, bbox_inches='tight')

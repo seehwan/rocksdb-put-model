@@ -1,0 +1,18 @@
+{
+  "model": "v4_1_enhanced",
+  "device_envelope_smax": 76788.02707692307,
+  "closed_ledger_smax": 95985.03384615383,
+  "dynamic_simulation_smax": 74973.49627126116,
+  "avg_prediction": 82582.18573144602,
+  "actual_qps_mean": 118394.0568178529,
+  "actual_qps_max": 337977.0,
+  "actual_qps_min": 160.0,
+  "error_percent": 30.248031065869117,
+  "error_abs": 30.248031065869117,
+  "accuracy": 69.75196893413089,
+  "r2_score": 0.6975196893413088,
+  "validation_status": "Good",
+  "rocksdb_log_enhanced": true,
+  "level_io_enhanced": true,
+  "model_version": "v4.1_enhanced"
+}

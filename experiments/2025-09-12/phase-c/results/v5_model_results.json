@@ -1,0 +1,16 @@
+{
+  "model": "v5",
+  "predicted_smax": 50015.94662173267,
+  "actual_qps_mean": 172.0,
+  "actual_qps_max": 184.0,
+  "actual_qps_min": 160.0,
+  "error_percent": -99.65610967777772,
+  "error_abs": 99.65610967777772,
+  "validation_status": "Poor",
+  "adaptation_speed": 5.0,
+  "accuracy": 85.0,
+  "stability": 90.0,
+  "model_type": "Real-time Adaptation Model",
+  "dynamic_environment": true,
+  "auto_tuning": true
+}

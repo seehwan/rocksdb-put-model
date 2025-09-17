@@ -1,0 +1,26 @@
+{
+    "smax": 6048.617890620508,
+    "stall_factor": 1.0,
+    "p_stall": 0.0,
+    "model_type": "Dynamic Compaction-Aware",
+    "heuristic_based": true,
+    "under_prediction_error": 95.0,
+    "actual_qps_mean": 120972.35781241015,
+    "actual_qps_max": 1946448.0,
+    "actual_qps_min": 160.0,
+    "prediction_ratio": 0.05,
+    "B_read_MBps": 136.0,
+    "B_write_MBps": 138.0,
+    "stall_count": 0,
+    "comparison": {
+        "model": "v3",
+        "predicted_smax": 6048.617890620508,
+        "actual_qps_mean": 120972.35781241015,
+        "actual_qps_max": 1946448.0,
+        "actual_qps_min": 160.0,
+        "error_percent": 1900.0,
+        "error_abs": 1900.0,
+        "under_prediction": false,
+        "validation_status": "Poor"
+    }
+}

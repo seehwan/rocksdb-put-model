@@ -21,8 +21,16 @@ import argparse
 import yaml
 from datetime import datetime
 
-from .envelope import EnvelopeModel
-from .closed_ledger import ClosedLedger
+try:
+    from .envelope import EnvelopeModel
+    from .closed_ledger import ClosedLedger
+except ImportError:
+    # Fallback for direct execution
+    import sys
+    import os
+    sys.path.append(os.path.dirname(__file__))
+    from envelope import EnvelopeModel
+    from closed_ledger import ClosedLedger
 
 
 class V4Simulator:

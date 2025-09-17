@@ -1,0 +1,10 @@
+{
+  "model": "v1",
+  "predicted_smax": 579.1346074294696,
+  "actual_qps_mean": 120972.35781241015,
+  "actual_qps_max": 1946448,
+  "actual_qps_min": 160,
+  "error_percent": 20788.469841122882,
+  "error_abs": 20788.469841122882,
+  "validation_status": "Poor"
+}

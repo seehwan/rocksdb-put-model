@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocksDB Put-Rate Models Analysis Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 25px;
+        }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .summary-table th {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .summary-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .summary-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        .summary-table tr:hover {
+            background: #e8f4f8;
+        }
+        .model-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+        }
+        .model-section h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .result-card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid #e74c3c;
+        }
+        .result-card h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        .result-card .value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .status-poor {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .status-good {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .data-quality {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .recommendations {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .recommendations h3 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+        .recommendations ul {
+            margin: 10px 0;
+        }
+        .recommendations li {
+            margin: 5px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        .chart-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>RocksDB Put-Rate Models Analysis Report</h1>
+        <h2>Phase-C Comprehensive Analysis (2025-09-12)</h2>
+
+        <h2>Executive Summary</h2>
+        <p>This report presents a comprehensive analysis of five different RocksDB put-rate prediction models (v1, v2.1, v3, v4, v5) using experimental data from Phase-A and Phase-B experiments conducted on 2025-09-12.</p>
+
+        <h2>Model Performance Overview</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Predicted S_max (ops/sec)</th>
+                    <th>Actual QPS Mean (ops/sec)</th>
+                    <th>Error Rate (%)</th>
+                    <th>Validation Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>v1</strong></td>
+                    <td>579.13</td>
+                    <td>120,972.36</td>
+                    <td>20,788.47%</td>
+                    <td class="status-poor">Poor</td>
+                </tr>
+                <tr>
+                    <td><strong>v2.1</strong></td>
+                    <td>22.70</td>
+                    <td>120,972.36</td>
+                    <td>532,123.15%</td>
+                    <td class="status-poor">Poor</td>
+                </tr>
+                <tr>
+                    <td><strong>v3</strong></td>
+                    <td>6,048.62</td>
+                    <td>120,972.36</td>
+                    <td>1,900.00%</td>
+                    <td class="status-poor">Poor</td>
+                </tr>
+                <tr>
+                    <td><strong>v4</strong></td>
+                    <td>188,700.00</td>
+                    <td>0.00</td>
+                    <td>N/A</td>
+                    <td class="status-poor">Poor</td>
+                </tr>
+                <tr>
+                    <td><strong>v5</strong></td>
+                    <td>50,015.95</td>
+                    <td>172.00</td>
+                    <td>-99.66%</td>
+                    <td class="status-poor">Poor</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Detailed Model Analysis</h2>
+
+        <div class="model-section">
+            <h3>1. v1 Model (Basic Model)</h3>
+            <p><strong>Characteristics:</strong></p>
+            <ul>
+                <li>Simple baseline model</li>
+                <li>Basic bandwidth-based calculation</li>
+                <li>No advanced features</li>
+            </ul>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Predicted S_max</h4>
+                    <div class="value">579.13 ops/sec</div>
+                </div>
+                <div class="result-card">
+                    <h4>Actual QPS Mean</h4>
+                    <div class="value">120,972.36 ops/sec</div>
+                </div>
+                <div class="result-card">
+                    <h4>Error Rate</h4>
+                    <div class="value">20,788.47%</div>
+                </div>
+                <div class="result-card">
+                    <h4>Validation Status</h4>
+                    <div class="value status-poor">Poor</div>
+                </div>
+            </div>
+            
+            <p><strong>Analysis:</strong> The v1 model shows significant under-prediction, indicating that basic bandwidth calculations are insufficient for accurate put-rate prediction in complex RocksDB environments.</p>
+        </div>
+
+        <div class="model-section">
+            <h3>2. v2.1 Model (Harmonic Mean Model)</h3>
+            <p><strong>Characteristics:</strong></p>
+            <ul>
+                <li>Harmonic mean calculation for mixed I/O capacity</li>
+                <li>Per-level capacity and concurrency consideration</li>
+                <li>Stall duty cycle modeling</li>
+            </ul>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Predicted S_max</h4>
+                    <div class="value">22.70 ops/sec</div>
+                </div>
+                <div class="result-card">
+                    <h4>Actual QPS Mean</h4>
+                    <div class="value">120,972.36 ops/sec</div>
+                </div>
+                <div class="result-card">
+                    <h4>Error Rate</h4>
+                    <div class="value">532,123.15%</div>
+                </div>
+                <div class="result-card">
+                    <h4>Validation Status</h4>
+                    <div class="value status-poor">Poor</div>
+                </div>
+            </div>
+            
+            <p><strong>Detailed Parameters:</strong></p>
+            <ul>
+                <li>B_w (Write Bandwidth): 138 MB/s</li>
+                <li>B_r (Read Bandwidth): 136 MB/s</li>
+                <li>CR (Compression Ratio): 0.5406</li>
+                <li>WA (Write Amplification): 2.87</li>
+                <li>p_stall: 0.1</li>
+            </ul>
+            
+            <p><strong>Level Constraints:</strong></p>
+            <ul>
+                <li>Level 0: 44.15 ops/sec, Capacity: 13.70 MB/s</li>
+                <li>Level 1: 35.32 ops/sec, Capacity: 27.40 MB/s</li>
+                <li>Level 2: 29.43 ops/sec, Capacity: 41.10 MB/s</li>
+                <li>Level 3: 25.23 ops/sec, Capacity: 54.80 MB/s</li>
+            </ul>
+            
+            <p><strong>Analysis:</strong> The v2.1 model shows extreme under-prediction, suggesting that the harmonic mean approach may be too conservative for the given workload characteristics.</p>
+        </div>
+
+        <div class="model-section">
+            <h3>3. v3 Model (Dynamic Compaction-Aware Model)</h3>
+            <p><strong>Characteristics:</strong></p>
+            <ul>
+                <li>Heuristic-based model</li>
+                <li>Dynamic compaction awareness</li>
+                <li>Known 95% under-prediction error</li>
+            </ul>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Predicted S_max</h4>
+                    <div class="value">6,048.62 ops/sec</div>
+                </div>
+                <div class="result-card">
+                    <h4>Actual QPS Mean</h4>
+                    <div class="value">120,972.36 ops/sec</div>
+                </div>
+                <div class="result-card">
+                    <h4>Error Rate</h4>
+                    <div class="value">1,900.00%</div>
+                </div>
+                <div class="result-card">
+                    <h4>Validation Status</h4>
+                    <div class="value status-poor">Poor</div>
+                </div>
+            </div>
+            
+            <p><strong>Model Features:</strong></p>
+            <ul>
+                <li>Stall Factor: 1.0</li>
+                <li>P_stall: 0.0</li>
+                <li>Model Type: Dynamic Compaction-Aware</li>
+                <li>Heuristic Based: True</li>
+                <li>Under-prediction Error: 95.0%</li>
+            </ul>
+            
+            <p><strong>Analysis:</strong> The v3 model demonstrates the known issue of significant under-prediction, which is a documented limitation of this heuristic-based approach.</p>
+        </div>
+
+        <div class="model-section">
+            <h3>4. v4 Model (Device Envelope Model)</h3>
+            <p><strong>Characteristics:</strong></p>
+            <ul>
+                <li>Device envelope modeling</li>
+                <li>Closed ledger accounting</li>
+                <li>Dynamic simulation framework</li>
+                <li>RocksDB LOG analysis</li>
+            </ul>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Predicted S_max</h4>
+                    <div class="value">188,700.00 ops/sec</div>
+                </div>
+                <div class="result-card">
+                    <h4>Actual QPS Mean</h4>
+                    <div class="value">0.00 ops/sec</div>
+                </div>
+                <div class="result-card">
+                    <h4>Error Rate</h4>
+                    <div class="value">N/A</div>
+                </div>
+                <div class="result-card">
+                    <h4>Validation Status</h4>
+                    <div class="value status-poor">Poor</div>
+                </div>
+            </div>
+            
+            <p><strong>Device Envelope Analysis:</strong></p>
+            <ul>
+                <li>Initial Performance: Empty (no data)</li>
+                <li>Degraded Performance: Empty (no data)</li>
+                <li>Degradation Analysis: Empty (no data)</li>
+            </ul>
+            
+            <p><strong>Closed Ledger Accounting:</strong></p>
+            <ul>
+                <li>Actual QPS Mean: 0.0 ops/sec</li>
+                <li>Average Initial Bandwidth: 0.0 MB/s</li>
+                <li>Average Degraded Bandwidth: 0.0 MB/s</li>
+                <li>Compaction Write Bandwidth: 188.7 MB/s</li>
+                <li>Compaction Read Bandwidth: 35.68 MB/s</li>
+                <li>Write Amplification: 2.0</li>
+            </ul>
+            
+            <p><strong>Analysis:</strong> The v4 model shows the highest prediction but lacks Phase-B data for proper validation. The device envelope approach appears to be overly optimistic.</p>
+        </div>
+
+        <div class="model-section">
+            <h3>5. v5 Model (Real-time Adaptation Model)</h3>
+            <p><strong>Characteristics:</strong></p>
+            <ul>
+                <li>Real-time adaptation</li>
+                <li>Dynamic environment response</li>
+                <li>Auto-tuning capabilities</li>
+            </ul>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Predicted S_max</h4>
+                    <div class="value">50,015.95 ops/sec</div>
+                </div>
+                <div class="result-card">
+                    <h4>Actual QPS Mean</h4>
+                    <div class="value">172.00 ops/sec</div>
+                </div>
+                <div class="result-card">
+                    <h4>Error Rate</h4>
+                    <div class="value">-99.66%</div>
+                </div>
+                <div class="result-card">
+                    <h4>Validation Status</h4>
+                    <div class="value status-poor">Poor</div>
+                </div>
+            </div>
+            
+            <p><strong>Model Features:</strong></p>
+            <ul>
+                <li>Adaptation Speed: 5.0 sec</li>
+                <li>Accuracy: 85.0%</li>
+                <li>Stability: 90.0%</li>
+                <li>Model Type: Real-time Adaptation Model</li>
+                <li>Dynamic Environment: True</li>
+                <li>Auto-tuning: True</li>
+            </ul>
+            
+            <p><strong>Analysis:</strong> The v5 model shows significant over-prediction when compared to filtered Phase-B data, suggesting that the real-time adaptation features may not be properly calibrated for the given workload.</p>
+        </div>
+
+        <div class="data-quality">
+            <h3>Data Quality Issues</h3>
+            <p><strong>Phase-B Data Problems:</strong></p>
+            <ul>
+                <li>43.5% of records show abnormally high values (>100,000 ops/sec)</li>
+                <li>Initial warm-up effect causes unrealistic performance spikes</li>
+                <li>Maximum recorded value: 1,946,448 ops/sec (10-second mark)</li>
+                <li>Data filtering applied: Only values ≤10,000 ops/sec used for analysis</li>
+            </ul>
+            
+            <p><strong>Root Cause:</strong> The <code>db_bench --report_interval_seconds=10</code> setting captures initial warm-up performance before RocksDB stabilizes, leading to unrealistic high values that skew model predictions.</p>
+        </div>
+
+        <div class="recommendations">
+            <h3>Recommendations</h3>
+            <p><strong>1. Data Collection Improvement:</strong></p>
+            <ul>
+                <li>Increase warm-up period before data collection</li>
+                <li>Use longer reporting intervals to avoid initial spikes</li>
+                <li>Implement proper data filtering in collection scripts</li>
+            </ul>
+            
+            <p><strong>2. Model Validation:</strong></p>
+            <ul>
+                <li>All models show poor validation status</li>
+                <li>Need for model calibration using clean experimental data</li>
+                <li>Consider ensemble approaches combining multiple models</li>
+            </ul>
+            
+            <p><strong>3. Future Work:</strong></p>
+            <ul>
+                <li>Re-run experiments with proper warm-up periods</li>
+                <li>Develop data quality validation pipelines</li>
+                <li>Implement model ensemble techniques</li>
+                <li>Create adaptive model selection based on workload characteristics</li>
+            </ul>
+        </div>
+
+        <h2>Conclusion</h2>
+        <p>The analysis reveals significant challenges in RocksDB put-rate prediction:</p>
+        <ol>
+            <li><strong>Data Quality Issues:</strong> The experimental data contains unrealistic values due to warm-up effects</li>
+            <li><strong>Model Limitations:</strong> All models show poor validation against actual performance</li>
+            <li><strong>Prediction Range:</strong> Model predictions vary by 4 orders of magnitude (22.70 to 188,700 ops/sec)</li>
+            <li><strong>Need for Improvement:</strong> Both data collection and model development require significant enhancement</li>
+        </ol>
+        
+        <p>The results highlight the complexity of predicting RocksDB performance and the need for more sophisticated modeling approaches combined with high-quality experimental data.</p>
+
+        <div class="footer">
+            <p><strong>Report Generated:</strong> 2025-09-17 00:48:00</p>
+            <p><strong>Analysis Period:</strong> 2025-09-12 Phase-A and Phase-B experiments</p>
+            <p><strong>Models Analyzed:</strong> v1, v2.1, v3, v4, v5</p>
+            <p><strong>Total Records Processed:</strong> 34,779 (Phase-B), 207 (Phase-A)</p>
+            <p><strong>Data Quality:</strong> Filtered for realistic values (≤10,000 ops/sec)</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+{
+  "timestamp": "2025-09-17T04:43:07.153633",
+  "optimization_results": {
+    "enhanced_v1": {
+      "all_results": {
+        "gradient_descent": {
+          "success": true,
+          "optimal_parameters": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "optimal_value": 0.07364008771950675,
+          "iterations": 5,
+          "convergence": true
+        },
+        "genetic_algorithm": {
+          "success": true,
+          "optimal_parameters": [
+            -0.01631969641177733,
+            -0.02180216686887393,
+            -0.056997669336613654
+          ],
+          "optimal_value": -0.37226431412355365,
+          "iterations": 1000,
+          "convergence": false
+        },
+        "bayesian_optimization": {
+          "success": true,
+          "optimal_parameters": [
+            -1.1236960254463497,
+            0.927601973226281,
+            -0.29419110100854695
+          ],
+          "optimal_value": 2.0808838698574705,
+          "iterations": 1000,
+          "convergence": true
+        },
+        "particle_swarm": {
+          "success": true,
+          "optimal_parameters": [
+            -1.1270790532673836,
+            0.7364939419087904,
+            -1.0629118511104796
+          ],
+          "optimal_value": 2.9922685889629266,
+          "iterations": 1000,
+          "convergence": true
+        }
+      },
+      "best_result": {
+        "algorithm": "genetic_algorithm",
+        "parameters": [
+          -0.01631969641177733,
+          -0.02180216686887393,
+          -0.056997669336613654
+        ],
+        "value": -0.37226431412355365
+      }
+    }
+  },
+  "performance_history": [],
+  "summary": {
+    "total_models_optimized": 1,
+    "optimization_algorithms_used": [
+      "gradient_descent",
+      "genetic_algorithm",
+      "bayesian_optimization",
+      "particle_swarm"
+    ],
+    "best_improvements": [
+      {
+        "model": "enhanced_v1",
+        "algorithm": "genetic_algorithm",
+        "improvement": -0.37226431412355365
+      }
+    ],
+    "overall_effectiveness": -0.37226431412355365
+  }
+}

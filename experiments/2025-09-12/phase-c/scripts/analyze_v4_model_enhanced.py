@@ -541,6 +541,7 @@ class V4ModelAnalyzerEnhanced:
             ax3.bar(stats_names, stats_values, alpha=0.7, color=['lightcoral', 'lightgreen', 'lightblue', 'orange'])
             ax3.set_title('Advanced RocksDB LOG Statistics')
             ax3.set_ylabel('Value')
+            ax3.set_xticks(range(len(stats_names)))
             ax3.set_xticklabels(stats_names, rotation=45, ha='right')
             ax3.grid(True, alpha=0.3)
         else:
@@ -560,6 +561,7 @@ class V4ModelAnalyzerEnhanced:
         ax4.bar(models, predictions, alpha=0.7, color=['lightblue', 'lightgreen', 'orange'])
         ax4.set_title('Enhanced v4 Model Components Comparison')
         ax4.set_ylabel('S_max (ops/sec)')
+        ax4.set_xticks(range(len(models)))
         ax4.set_xticklabels(models, rotation=45, ha='right')
         ax4.grid(True, alpha=0.3)
         

@@ -1,0 +1,94 @@
+{
+  "phase_d_summary": {
+    "phase": "Phase-D: Enhanced Models Production Integration",
+    "execution_time": "2025-09-17T04:28:14.315950",
+    "status": "completed",
+    "objectives_achieved": [
+      "Production Integration",
+      "Real-time Monitoring",
+      "Auto-tuning",
+      "Performance Validation"
+    ]
+  },
+  "performance_analysis": {
+    "total_loops": 24,
+    "time_span": {
+      "start": "2025-09-17T04:14:17.870433",
+      "end": "2025-09-17T04:28:00.120021"
+    },
+    "qps_analysis": {
+      "mean": 1001.5681572266795,
+      "std": 89.77479124335851,
+      "min": 818.0650914177224,
+      "max": 1164.0604524520677,
+      "trend": "stable"
+    },
+    "latency_analysis": {
+      "mean": 1.014263777524491,
+      "std": 0.07641977510116499,
+      "min": 0.844572539535487,
+      "max": 1.1496383191560573,
+      "trend": "stable"
+    },
+    "prediction_accuracy": {
+      "mean_prediction": 58.88039050825415,
+      "prediction_std": 2.735126543522929,
+      "prediction_consistency": "low"
+    }
+  },
+  "auto_tuning_analysis": {
+    "total_adjustments": 6,
+    "models_tuned": [
+      "v5_enhanced"
+    ],
+    "parameter_changes": {
+      "throughput_factor": {
+        "count": 6,
+        "mean": 0.7325780542797772,
+        "std": 0.12307911889896832,
+        "min": 0.5618604474442712,
+        "max": 0.8916815173289544,
+        "variability": "low"
+      },
+      "latency_factor": {
+        "count": 6,
+        "mean": 1.0972524412966045,
+        "std": 0.042420580008429035,
+        "min": 1.030287844236613,
+        "max": 1.1723094768902727,
+        "variability": "low"
+      },
+      "accuracy_factor": {
+        "count": 6,
+        "mean": 1.2427068099377845,
+        "std": 0.13886043175774213,
+        "min": 1.054448864840662,
+        "max": 1.409104851461939,
+        "variability": "low"
+      },
+      "scaling_factor": {
+        "count": 6,
+        "mean": 0.8249414612227955,
+        "std": 0.14581695770751552,
+        "min": 0.5894451144737385,
+        "max": 1.004967559052514,
+        "variability": "low"
+      }
+    },
+    "tuning_effectiveness": {
+      "trend": "degrading",
+      "improvement": 0.0,
+      "effectiveness": "low"
+    }
+  },
+  "key_findings": [
+    "QPS \uc131\ub2a5\uc774 stable \uc0c1\ud0dc\ub97c \uc720\uc9c0\ud588\uc2b5\ub2c8\ub2e4.",
+    "\ubaa8\ub378 \uc608\uce21\uc758 \uc77c\uad00\uc131\uc774 low \uc218\uc900\uc785\ub2c8\ub2e4.",
+    "\ucd1d 6 \ud68c\uc758 \uc790\ub3d9 \ud30c\ub77c\ubbf8\ud130 \uc870\uc815\uc774 \uc218\ud589\ub418\uc5c8\uc2b5\ub2c8\ub2e4.",
+    "\uc790\ub3d9 \ud29c\ub2dd\uc758 \ud6a8\uacfc\uc131\uc740 low \uc218\uc900\uc785\ub2c8\ub2e4."
+  ],
+  "recommendations": [
+    "\ud504\ub85c\ub355\uc158 \ud658\uacbd\uc5d0\uc11c\uc758 \uc7a5\uae30\uac04 \ubaa8\ub2c8\ud130\ub9c1\uc744 \ud1b5\ud574 \ubaa8\ub378 \uc131\ub2a5\uc744 \uc9c0\uc18d\uc801\uc73c\ub85c \uac80\uc99d\ud558\uc138\uc694.",
+    "\uc2e4\uc81c \uc6cc\ud06c\ub85c\ub4dc\uc5d0 \ub300\ud55c \ubaa8\ub378 \uc801\uc751\uc131\uc744 \ub354\uc6b1 \ud5a5\uc0c1\uc2dc\ud0a4\uae30 \uc704\ud55c \ucd94\uac00 \uc5f0\uad6c\uac00 \ud544\uc694\ud569\ub2c8\ub2e4."
+  ]
+}

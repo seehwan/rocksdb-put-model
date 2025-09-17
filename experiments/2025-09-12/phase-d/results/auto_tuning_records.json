@@ -1,0 +1,104 @@
+[
+  {
+    "timestamp": "2025-09-17T04:27:35.073227",
+    "model": "v5_enhanced",
+    "performance_data": {
+      "error_rate": 12.96266233379991,
+      "accuracy": 0.8,
+      "system_load": 0.5576892874840434,
+      "io_intensity": 0.45727034852590337
+    },
+    "adjusted_parameters": {
+      "throughput_factor": 0.8916815173289544,
+      "latency_factor": 1.030287844236613,
+      "accuracy_factor": 1.054448864840662,
+      "scaling_factor": 1.004967559052514
+    },
+    "tuning_active": true
+  },
+  {
+    "timestamp": "2025-09-17T04:27:40.080339",
+    "model": "v5_enhanced",
+    "performance_data": {
+      "error_rate": 16.372739748141587,
+      "accuracy": 0.8,
+      "system_load": 0.6295718038248173,
+      "io_intensity": 0.5663726565783814
+    },
+    "adjusted_parameters": {
+      "throughput_factor": 0.8111854099697287,
+      "latency_factor": 1.1723094768902727,
+      "accuracy_factor": 1.0781949537100355,
+      "scaling_factor": 0.8892038730221842
+    },
+    "tuning_active": true
+  },
+  {
+    "timestamp": "2025-09-17T04:27:45.088548",
+    "model": "v5_enhanced",
+    "performance_data": {
+      "error_rate": 16.216469968078453,
+      "accuracy": 0.8,
+      "system_load": 0.5830386200797306,
+      "io_intensity": 0.4130422743347889
+    },
+    "adjusted_parameters": {
+      "throughput_factor": 0.847656695214686,
+      "latency_factor": 1.0824427227819489,
+      "accuracy_factor": 1.21008001846056,
+      "scaling_factor": 0.9397438013155415
+    },
+    "tuning_active": true
+  },
+  {
+    "timestamp": "2025-09-17T04:27:50.098269",
+    "model": "v5_enhanced",
+    "performance_data": {
+      "error_rate": 15.052947967506746,
+      "accuracy": 0.8,
+      "system_load": 0.386579288511588,
+      "io_intensity": 0.45192109844876455
+    },
+    "adjusted_parameters": {
+      "throughput_factor": 0.6562919422623061,
+      "latency_factor": 1.0950843761514237,
+      "accuracy_factor": 1.409104851461939,
+      "scaling_factor": 0.8490527374123907
+    },
+    "tuning_active": true
+  },
+  {
+    "timestamp": "2025-09-17T04:27:55.108129",
+    "model": "v5_enhanced",
+    "performance_data": {
+      "error_rate": 17.32535849261262,
+      "accuracy": 0.8,
+      "system_load": 0.3107442992960075,
+      "io_intensity": 0.3825523908776954
+    },
+    "adjusted_parameters": {
+      "throughput_factor": 0.5618604474442712,
+      "latency_factor": 1.0872778525034068,
+      "accuracy_factor": 1.3371210956878357,
+      "scaling_factor": 0.6772356820604043
+    },
+    "tuning_active": true
+  },
+  {
+    "timestamp": "2025-09-17T04:28:00.118805",
+    "model": "v5_enhanced",
+    "performance_data": {
+      "error_rate": 15.319945275074843,
+      "accuracy": 0.8,
+      "system_load": 0.5415208820580409,
+      "io_intensity": 0.32418370111514555
+    },
+    "adjusted_parameters": {
+      "throughput_factor": 0.6267923134587164,
+      "latency_factor": 1.1161123752159616,
+      "accuracy_factor": 1.3672910754656742,
+      "scaling_factor": 0.5894451144737385
+    },
+    "tuning_active": true
+  }
+]

@@ -1,0 +1,506 @@
+[
+  {
+    "loop_count": 1,
+    "timestamp": "2025-09-17T04:14:17.870433",
+    "metrics": {
+      "timestamp": "2025-09-17T04:14:17.870181",
+      "qps": 1119.768815103223,
+      "latency": 1.125564356059918,
+      "cpu_usage": 43.08845592071336,
+      "memory_usage": 60.47277604999518,
+      "io_utilization": 32.7951256812056,
+      "compaction_activity": 28.259471673871968
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.8368172274288375,
+      "latency_factor": 1.1985490413116224,
+      "accuracy_factor": 1.1889391852948072,
+      "scaling_factor": 0.9400314613107547
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 2,
+    "timestamp": "2025-09-17T04:14:22.876643",
+    "metrics": {
+      "timestamp": "2025-09-17T04:14:22.875841",
+      "qps": 818.0650914177224,
+      "latency": 1.0401249651047673,
+      "cpu_usage": 52.87553190391735,
+      "memory_usage": 64.52187734637916,
+      "io_utilization": 54.380677617164174,
+      "compaction_activity": 23.219990191731192
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.0020662589522589,
+      "latency_factor": 1.377097469722664,
+      "accuracy_factor": 1.0484449560586877,
+      "scaling_factor": 0.9963403279852319
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 3,
+    "timestamp": "2025-09-17T04:14:27.883385",
+    "metrics": {
+      "timestamp": "2025-09-17T04:14:27.882158",
+      "qps": 1055.2477077654946,
+      "latency": 1.002108148359739,
+      "cpu_usage": 60.20786035189104,
+      "memory_usage": 65.17966639460819,
+      "io_utilization": 36.58477366947331,
+      "compaction_activity": 27.42901672860375
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.8490094452738753,
+      "latency_factor": 1.230454518368536,
+      "accuracy_factor": 0.9986588310154871,
+      "scaling_factor": 0.8599885211622802
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 4,
+    "timestamp": "2025-09-17T04:14:32.891149",
+    "metrics": {
+      "timestamp": "2025-09-17T04:14:32.889550",
+      "qps": 888.7874387979687,
+      "latency": 1.006851756920198,
+      "cpu_usage": 36.76061313861753,
+      "memory_usage": 57.96969786014029,
+      "io_utilization": 34.79390979921867,
+      "compaction_activity": 34.27507669242174
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.8445919906455288,
+      "latency_factor": 1.318673577867725,
+      "accuracy_factor": 1.0303874245973372,
+      "scaling_factor": 0.6907510997896371
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 5,
+    "timestamp": "2025-09-17T04:14:37.898899",
+    "metrics": {
+      "timestamp": "2025-09-17T04:14:37.897307",
+      "qps": 1164.0604524520677,
+      "latency": 0.9470765106403158,
+      "cpu_usage": 40.514719878535594,
+      "memory_usage": 63.08769946140459,
+      "io_utilization": 47.091840291692165,
+      "compaction_activity": 36.59803169924382
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.9006061329675004,
+      "latency_factor": 1.4202520188234835,
+      "accuracy_factor": 1.2129096337766867,
+      "scaling_factor": 0.5698917409069932
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 6,
+    "timestamp": "2025-09-17T04:14:42.907217",
+    "metrics": {
+      "timestamp": "2025-09-17T04:14:42.905600",
+      "qps": 1040.0265384650224,
+      "latency": 0.9804140819356634,
+      "cpu_usage": 57.11043769279461,
+      "memory_usage": 48.326558492927624,
+      "io_utilization": 36.36362753178861,
+      "compaction_activity": 29.128809931225298
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.7599551576530907,
+      "latency_factor": 1.5460335750321517,
+      "accuracy_factor": 1.216329689883132,
+      "scaling_factor": 0.5841301560820166
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 1,
+    "timestamp": "2025-09-17T04:20:20.104086",
+    "metrics": {
+      "timestamp": "2025-09-17T04:20:20.103416",
+      "qps": 1069.5614626759186,
+      "latency": 0.8706762982993871,
+      "cpu_usage": 45.846043184756894,
+      "memory_usage": 58.68520980690359,
+      "io_utilization": 43.89863511530081,
+      "compaction_activity": 25.053348326361327
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.1669596475647392,
+      "latency_factor": 1.0609815431702705,
+      "accuracy_factor": 0.9045618391166577,
+      "scaling_factor": 1.0688983628418152
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 2,
+    "timestamp": "2025-09-17T04:20:25.110412",
+    "metrics": {
+      "timestamp": "2025-09-17T04:20:25.109841",
+      "qps": 1053.7635178268276,
+      "latency": 1.0250524104817131,
+      "cpu_usage": 31.48568821790465,
+      "memory_usage": 60.2475757900539,
+      "io_utilization": 53.44132050616746,
+      "compaction_activity": 31.64768516331722
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.3611586656472308,
+      "latency_factor": 0.9246275626236999,
+      "accuracy_factor": 1.0339861344467995,
+      "scaling_factor": 0.9753727696257326
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 3,
+    "timestamp": "2025-09-17T04:20:30.117558",
+    "metrics": {
+      "timestamp": "2025-09-17T04:20:30.116503",
+      "qps": 993.1503483109834,
+      "latency": 0.9462328260014203,
+      "cpu_usage": 33.24154757395687,
+      "memory_usage": 60.525245664280824,
+      "io_utilization": 40.71106541523237,
+      "compaction_activity": 29.28574723407816
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.211249340111644,
+      "latency_factor": 1.0525799839570569,
+      "accuracy_factor": 1.1284427941496502,
+      "scaling_factor": 1.0220675241998272
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 4,
+    "timestamp": "2025-09-17T04:20:35.125668",
+    "metrics": {
+      "timestamp": "2025-09-17T04:20:35.124207",
+      "qps": 1140.956883467225,
+      "latency": 1.0925746054869303,
+      "cpu_usage": 55.830988326956955,
+      "memory_usage": 62.903003774975204,
+      "io_utilization": 32.506118424524345,
+      "compaction_activity": 23.64570020705503
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.325608317960861,
+      "latency_factor": 0.8817066553569202,
+      "accuracy_factor": 1.1711893598874275,
+      "scaling_factor": 1.0906023776832736
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 5,
+    "timestamp": "2025-09-17T04:20:40.135819",
+    "metrics": {
+      "timestamp": "2025-09-17T04:20:40.133833",
+      "qps": 1002.6439027718635,
+      "latency": 1.0009370239228694,
+      "cpu_usage": 66.03997328184388,
+      "memory_usage": 57.569035233830746,
+      "io_utilization": 47.72052719070276,
+      "compaction_activity": 34.94782251928429
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.142999786663895,
+      "latency_factor": 0.8584514680477441,
+      "accuracy_factor": 1.0421841168077965,
+      "scaling_factor": 1.2309765233765635
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 6,
+    "timestamp": "2025-09-17T04:20:45.146095",
+    "metrics": {
+      "timestamp": "2025-09-17T04:20:45.144153",
+      "qps": 946.6123455178594,
+      "latency": 1.0940328107510346,
+      "cpu_usage": 56.755191826459146,
+      "memory_usage": 56.90959872085978,
+      "io_utilization": 54.54628746203895,
+      "compaction_activity": 29.908939117770764
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.143405045695455,
+      "latency_factor": 0.9528695636101197,
+      "accuracy_factor": 0.905232091960119,
+      "scaling_factor": 1.3095997402318358
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 1,
+    "timestamp": "2025-09-17T04:20:59.401105",
+    "metrics": {
+      "timestamp": "2025-09-17T04:20:59.400682",
+      "qps": 999.9912071570212,
+      "latency": 1.0046830055172358,
+      "cpu_usage": 66.14922267840392,
+      "memory_usage": 64.0951473292572,
+      "io_utilization": 32.13581626155457,
+      "compaction_activity": 41.71688659953294
+    },
+    "prediction": 50.0,
+    "adjusted_parameters": {
+      "throughput_factor": 1.1866778762519659,
+      "latency_factor": 0.8800218184668006,
+      "accuracy_factor": 0.8637860309509781,
+      "scaling_factor": 0.9174798926584048
+    },
+    "active_model": "v3_enhanced"
+  },
+  {
+    "loop_count": 2,
+    "timestamp": "2025-09-17T04:21:04.408178",
+    "metrics": {
+      "timestamp": "2025-09-17T04:21:04.407222",
+      "qps": 957.0262004498265,
+      "latency": 1.1496383191560573,
+      "cpu_usage": 40.22259710702561,
+      "memory_usage": 57.52645727387614,
+      "io_utilization": 40.0846057686702,
+      "compaction_activity": 18.335668540785196
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.2657981059250427,
+      "latency_factor": 0.9924793671089251,
+      "accuracy_factor": 0.6935392730424196,
+      "scaling_factor": 1.084721569968596
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 3,
+    "timestamp": "2025-09-17T04:21:09.417482",
+    "metrics": {
+      "timestamp": "2025-09-17T04:21:09.416041",
+      "qps": 965.6102079007446,
+      "latency": 1.0777375772701567,
+      "cpu_usage": 52.37267548834102,
+      "memory_usage": 56.503169496248645,
+      "io_utilization": 38.86475707950582,
+      "compaction_activity": 31.986467620355903
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.3468208705018747,
+      "latency_factor": 1.1777924808329772,
+      "accuracy_factor": 0.841362581613075,
+      "scaling_factor": 0.9189580270511462
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 4,
+    "timestamp": "2025-09-17T04:21:14.427878",
+    "metrics": {
+      "timestamp": "2025-09-17T04:21:14.426634",
+      "qps": 1048.622524270707,
+      "latency": 0.844572539535487,
+      "cpu_usage": 51.3667544769581,
+      "memory_usage": 68.21079596935054,
+      "io_utilization": 39.11690121659306,
+      "compaction_activity": 44.843262883468604
+    },
+    "prediction": 50.0,
+    "adjusted_parameters": {
+      "throughput_factor": 1.5079586554568163,
+      "latency_factor": 1.1590919096859194,
+      "accuracy_factor": 0.9618637846648082,
+      "scaling_factor": 0.7234760972641525
+    },
+    "active_model": "v3_enhanced"
+  },
+  {
+    "loop_count": 5,
+    "timestamp": "2025-09-17T04:21:19.440871",
+    "metrics": {
+      "timestamp": "2025-09-17T04:21:19.437513",
+      "qps": 871.217686442957,
+      "latency": 1.0221769559557734,
+      "cpu_usage": 55.054126787853406,
+      "memory_usage": 60.83290841005403,
+      "io_utilization": 35.983902526916204,
+      "compaction_activity": 29.6078459883252
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.5535672738665065,
+      "latency_factor": 1.2370219930422368,
+      "accuracy_factor": 1.0844810913796217,
+      "scaling_factor": 0.6910850549620704
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 6,
+    "timestamp": "2025-09-17T04:21:24.450643",
+    "metrics": {
+      "timestamp": "2025-09-17T04:21:24.449270",
+      "qps": 978.511954616789,
+      "latency": 1.0840665430336789,
+      "cpu_usage": 44.7779273909735,
+      "memory_usage": 59.617307789263805,
+      "io_utilization": 34.346422081014055,
+      "compaction_activity": 27.073239322696725
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 1.5470709594516738,
+      "latency_factor": 1.1642419498126442,
+      "accuracy_factor": 1.0208209854070822,
+      "scaling_factor": 0.5414070256687425
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 1,
+    "timestamp": "2025-09-17T04:27:35.073531",
+    "metrics": {
+      "timestamp": "2025-09-17T04:27:35.073120",
+      "qps": 833.3991829362151,
+      "latency": 0.9393250070058273,
+      "cpu_usage": 55.76892874840435,
+      "memory_usage": 63.70662059235269,
+      "io_utilization": 45.727034852590336,
+      "compaction_activity": 18.510733644560375
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.8916815173289544,
+      "latency_factor": 1.030287844236613,
+      "accuracy_factor": 1.054448864840662,
+      "scaling_factor": 1.004967559052514
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 2,
+    "timestamp": "2025-09-17T04:27:40.080832",
+    "metrics": {
+      "timestamp": "2025-09-17T04:27:40.079993",
+      "qps": 1036.9388563108243,
+      "latency": 1.0351419743922388,
+      "cpu_usage": 62.95718038248173,
+      "memory_usage": 61.56062853552159,
+      "io_utilization": 56.63726565783814,
+      "compaction_activity": 28.205661818743444
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.8111854099697287,
+      "latency_factor": 1.1723094768902727,
+      "accuracy_factor": 1.0781949537100355,
+      "scaling_factor": 0.8892038730221842
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 3,
+    "timestamp": "2025-09-17T04:27:45.089338",
+    "metrics": {
+      "timestamp": "2025-09-17T04:27:45.088158",
+      "qps": 1027.6114727568317,
+      "latency": 0.988215965226844,
+      "cpu_usage": 58.303862007973066,
+      "memory_usage": 63.04377438034724,
+      "io_utilization": 41.30422743347889,
+      "compaction_activity": 36.060754940832666
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.847656695214686,
+      "latency_factor": 1.0824427227819489,
+      "accuracy_factor": 1.21008001846056,
+      "scaling_factor": 0.9397438013155415
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 4,
+    "timestamp": "2025-09-17T04:27:50.099027",
+    "metrics": {
+      "timestamp": "2025-09-17T04:27:50.098071",
+      "qps": 958.1635221136771,
+      "latency": 1.0345245088574873,
+      "cpu_usage": 38.6579288511588,
+      "memory_usage": 72.81113353712396,
+      "io_utilization": 45.192109844876455,
+      "compaction_activity": 26.07711139613494
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.6562919422623061,
+      "latency_factor": 1.0950843761514237,
+      "accuracy_factor": 1.409104851461939,
+      "scaling_factor": 0.8490527374123907
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 5,
+    "timestamp": "2025-09-17T04:27:55.109537",
+    "metrics": {
+      "timestamp": "2025-09-17T04:27:55.107767",
+      "qps": 1093.798476941342,
+      "latency": 0.9315006260215679,
+      "cpu_usage": 31.07442992960075,
+      "memory_usage": 67.97927095776407,
+      "io_utilization": 38.25523908776954,
+      "compaction_activity": 33.65274329064105
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.5618604474442712,
+      "latency_factor": 1.0872778525034068,
+      "accuracy_factor": 1.3371210956878357,
+      "scaling_factor": 0.6772356820604043
+    },
+    "active_model": "v2_1_enhanced"
+  },
+  {
+    "loop_count": 6,
+    "timestamp": "2025-09-17T04:28:00.120021",
+    "metrics": {
+      "timestamp": "2025-09-17T04:28:00.118412",
+      "qps": 974.0999769711989,
+      "latency": 1.0991018446514742,
+      "cpu_usage": 54.15208820580409,
+      "memory_usage": 53.41880164859174,
+      "io_utilization": 32.418370111514555,
+      "compaction_activity": 27.323210090924245
+    },
+    "prediction": 59.68769873627726,
+    "adjusted_parameters": {
+      "throughput_factor": 0.6267923134587164,
+      "latency_factor": 1.1161123752159616,
+      "accuracy_factor": 1.3672910754656742,
+      "scaling_factor": 0.5894451144737385
+    },
+    "active_model": "v2_1_enhanced"
+  }
+]

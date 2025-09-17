@@ -79,6 +79,7 @@ class EnhancedModelsSummaryGenerator:
         ax1.set_ylabel('ops/sec')
         ax1.set_title('Enhanced Models: Predicted vs Actual Performance')
         ax1.set_xticks(x)
+        ax1.set_xticks(range(len(models)))
         ax1.set_xticklabels(models, rotation=45, ha='right')
         ax1.legend()
         ax1.grid(True, alpha=0.3)
@@ -90,6 +91,7 @@ class EnhancedModelsSummaryGenerator:
         ax2.set_xlabel('Enhanced Models')
         ax2.set_ylabel('Absolute Error Rate (%)')
         ax2.set_title('Enhanced Models: Error Rate Comparison')
+        ax2.set_xticks(range(len(models)))
         ax2.set_xticklabels(models, rotation=45, ha='right')
         ax2.grid(True, alpha=0.3)
         
@@ -114,6 +116,7 @@ class EnhancedModelsSummaryGenerator:
         ax4.set_xlabel('Enhanced Models')
         ax4.set_ylabel('RocksDB LOG Enhanced (1=Yes, 0=No)')
         ax4.set_title('RocksDB LOG Enhancement Status')
+        ax4.set_xticks(range(len(models)))
         ax4.set_xticklabels(models, rotation=45, ha='right')
         ax4.set_ylim(0, 1.2)
         ax4.grid(True, alpha=0.3)

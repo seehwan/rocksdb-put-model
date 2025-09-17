@@ -366,6 +366,7 @@ class V1ModelAnalyzerEnhanced:
         ax3.set_ylabel('QPS')
         ax3.set_title('Enhanced v1 Model Accuracy')
         ax3.set_xticks(x)
+        ax3.set_xticks(range(len(models)))
         ax3.set_xticklabels(models)
         ax3.legend()
         ax3.grid(True, alpha=0.3)
@@ -385,6 +386,7 @@ class V1ModelAnalyzerEnhanced:
         ax4.bar(factors, values, color=colors, alpha=0.7)
         ax4.set_ylabel('Factor Value')
         ax4.set_title('RocksDB LOG Enhancement Factors')
+        ax4.set_xticks(range(len(factors)))
         ax4.set_xticklabels(factors, rotation=45, ha='right')
         ax4.grid(True, alpha=0.3)
         
@@ -404,6 +406,7 @@ class V1ModelAnalyzerEnhanced:
             ax5.bar(stats_names, stats_values, alpha=0.7, color='lightcoral')
             ax5.set_ylabel('Value')
             ax5.set_title('I/O Statistics from RocksDB LOG')
+            ax5.set_xticks(range(len(stats_names)))
             ax5.set_xticklabels(stats_names, rotation=45, ha='right')
             ax5.grid(True, alpha=0.3)
         else:

@@ -399,6 +399,7 @@ class V21ModelAnalyzerEnhanced:
             ax3.bar(factors, values, alpha=0.7, color=['lightgreen', 'lightblue', 'orange', 'purple', 'brown', 'red', 'pink'])
             ax3.set_title('RocksDB LOG Enhancement Factors')
             ax3.set_ylabel('Factor Value')
+            ax3.set_xticks(range(len(factors)))
             ax3.set_xticklabels(factors, rotation=45, ha='right')
             ax3.grid(True, alpha=0.3)
         
@@ -418,6 +419,7 @@ class V21ModelAnalyzerEnhanced:
             ax4.bar(stats_names, stats_values, alpha=0.7, color='lightcoral')
             ax4.set_title('I/O Statistics from RocksDB LOG')
             ax4.set_ylabel('Value')
+            ax4.set_xticks(range(len(stats_names)))
             ax4.set_xticklabels(stats_names, rotation=45, ha='right')
             ax4.grid(True, alpha=0.3)
         else:

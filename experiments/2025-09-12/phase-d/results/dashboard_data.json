@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-09-17T04:28:00.126482",
+  "current_metrics": {
+    "timestamp": "2025-09-17T04:28:00.123657",
+    "qps": 1066.5458885140056,
+    "latency": 0.9808821615194326,
+    "cpu_usage": 39.756818937144246,
+    "memory_usage": 67.34624298975824,
+    "io_utilization": 37.28140751158295,
+    "compaction_activity": 35.12041392334541,
+    "collection_count": 6
+  },
+  "system_status": "healthy",
+  "performance_trend": {
+    "trend": "insufficient_data"
+  }
+}

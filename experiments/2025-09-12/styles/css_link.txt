@@ -1,0 +1,7 @@
+/* CSS Link for HTML Files */
+/* This file contains the relative path to project.css */
+
+/* To use this CSS in HTML files, add the following line in the <head> section: */
+/* <link rel="stylesheet" href="styles/project.css"> */
+
+/* Or use the relative path from your HTML file location to this CSS file */

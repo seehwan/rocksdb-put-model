@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="../styles/project.css">
+
+    <link rel="stylesheet" href="../styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phase-B: FillRandom 성능 분석 및 컴팩션 모니터링</title>
+    <title><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span>: FillRandom 성능 분석 및 컴팩션 모니터링</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>📊 Phase-B: FillRandom 성능 분석 및 컴팩션 모니터링</h1>
+        <h1>📊 <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span>: FillRandom 성능 분석 및 컴팩션 모니터링</h1>
 
         <div class="header">
             <h2>🎯 목표</h2>
@@ -54,7 +58,7 @@
                 <h5>2.3 성능 메트릭 로깅</h5>
                 <ul>
                     <li><strong>처리량</strong>: ops/sec, MiB/s 실시간 기록</li>
-                    <li><strong>지연시간</strong>: 평균, 95%, 99% 지연시간</li>
+                    <li><strong>지연시간</strong>: 평균, <span class="performance-excellent"><span class="performance-excellent">95%</span></span>, <span class="performance-excellent"><span class="performance-excellent">99%</span></span> 지연시간</li>
                     <li><strong>큐 길이</strong>: 쓰기 큐 길이, 컴팩션 큐 길이</li>
                     <li><strong>리소스 사용량</strong>: CPU, 메모리, I/O 사용률</li>
                 </ul>
@@ -340,7 +344,7 @@ plot_stabilization_analysis()
             <h3>성능 메트릭 로깅</h3>
             <ul>
                 <li><strong>처리량</strong>: ops/sec, MiB/s 실시간 기록</li>
-                <li><strong>지연시간</strong>: 평균, 95%, 99% 지연시간</li>
+                <li><strong>지연시간</strong>: 평균, <span class="performance-excellent"><span class="performance-excellent">95%</span></span>, <span class="performance-excellent"><span class="performance-excellent">99%</span></span> 지연시간</li>
                 <li><strong>큐 길이</strong>: 쓰기 큐 길이, 컴팩션 큐 길이</li>
                 <li><strong>리소스 사용량</strong>: CPU, 메모리, I/O 사용률</li>
             </ul>
@@ -353,7 +357,7 @@ plot_stabilization_analysis()
                 <h3>1. 성능 트렌드</h3>
                 <ul>
                     <li><strong>처리량 변화</strong>: 시간별 ops/sec, MiB/s 변화</li>
-                    <li><strong>지연시간 변화</strong>: 평균, 95%, 99% 지연시간 변화</li>
+                    <li><strong>지연시간 변화</strong>: 평균, <span class="performance-excellent"><span class="performance-excellent">95%</span></span>, <span class="performance-excellent"><span class="performance-excellent">99%</span></span> 지연시간 변화</li>
                     <li><strong>성능 안정성</strong>: 시간에 따른 성능 변동</li>
                     <li><strong>안정화 지점</strong>: 성능이 안정화되는 시점</li>
                 </ul>
@@ -383,7 +387,7 @@ plot_stabilization_analysis()
             <li><strong>초기 처리량</strong>: 30,000-40,000 ops/sec</li>
             <li><strong>안정적 처리량</strong>: 25,000-35,000 ops/sec</li>
             <li><strong>안정화 시간</strong>: 24-48시간</li>
-            <li><strong>L2 컴팩션 비율</strong>: 40% 이상</li>
+            <li><strong>L2 컴팩션 비율</strong>: <span class="performance-fair"><span class="performance-fair">40%</span></span> 이상</li>
         </ul>
 
         <h2>📁 출력 파일</h2>
@@ -457,11 +461,11 @@ logs/
                         <p>단계별 실험 실행 방법</p>
                     </a>
                     <a href="../phase-a/PHASE_A_PLAN.html" class="link-card">
-                        <h4>🔧 Phase-A</h4>
+                        <h4>🔧 <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span></h4>
                         <p>Device Envelope 모델 구축</p>
                     </a>
                     <a href="../phase-b/PHASE_B_PLAN.html" class="link-card">
-                        <h4>📊 Phase-B</h4>
+                        <h4>📊 <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span></h4>
                         <p>FillRandom 성능 분석</p>
                     </a>
                     <a href="../phase-d/PHASE_D_PLAN.html" class="link-card">
@@ -473,11 +477,11 @@ logs/
                         <p>보고서 생성</p>
                     </a>
                     <a href="../scripts/run_phase_a.py" class="link-card">
-                        <h4>🔧 Phase-A 실행</h4>
+                        <h4>🔧 <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 실행</h4>
                         <p>Device Envelope 모델 구축 스크립트</p>
                     </a>
                     <a href="../scripts/run_phase_b.py" class="link-card">
-                        <h4>📊 Phase-B 실행</h4>
+                        <h4>📊 <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실행</h4>
                         <p>FillRandom 성능 분석 스크립트</p>
                     </a>
                 </div>
@@ -485,7 +489,7 @@ logs/
         </div>
 
         <div class="footer">
-            <p><strong>Phase-B</strong>: FillRandom 성능 분석 및 컴팩션 모니터링</p>
+            <p><strong><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span></strong>: FillRandom 성능 분석 및 컴팩션 모니터링</p>
             <p><strong>예상 소요 시간</strong>: 48-96시간 (2-4일)</p>
             <p><strong>주요 목표</strong>: LOG 파일 저장 및 시간별 FillRandom 성능/레벨별 컴팩션 분석</p>
         </div>

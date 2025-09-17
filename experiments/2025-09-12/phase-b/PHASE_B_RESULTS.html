@@ -1,115 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="../styles/project.css">
+
+    <link rel="stylesheet" href="../styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phase-B 실험 결과 보고서</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            margin-top: 30px;
-            border-left: 4px solid #3498db;
-            padding-left: 15px;
-        }
-        h3 {
-            color: #7f8c8d;
-            margin-top: 25px;
-        }
-        .summary-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        .metric {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 10px 15px;
-            margin: 5px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        .success {
-            color: #27ae60;
-            font-weight: bold;
-        }
-        .warning {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-        .info {
-            color: #3498db;
-            font-weight: bold;
-        }
-        .chart-container {
-            text-align: center;
-            margin: 20px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-        .chart-container img {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        .data-table th, .data-table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        .data-table th {
-            background-color: #3498db;
-            color: white;
-        }
-        .data-table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 15px;
-            border-left: 4px solid #ffc107;
-            margin: 15px 0;
-        }
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #ecf0f1;
-            color: #7f8c8d;
-            text-align: center;
-        }
-    </style>
+    <title><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실험 결과 보고서</title>
+    
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Phase-B 실험 결과 보고서</h1>
+        <h1>🚀 <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실험 결과 보고서</h1>
         <p><strong>실험 일시:</strong> 2025-09-12 ~ 2025-09-16 (4일간)</p>
         <p><strong>실험 목적:</strong> RocksDB FillRandom 워크로드 성능 분석 및 Compaction 패턴 연구</p>
 
@@ -117,14 +20,14 @@
             <h2>📊 실험 결과 요약</h2>
             <div class="metric">목표: 10억 ops</div>
             <div class="metric">완료: 420억 ops</div>
-            <div class="metric">초과율: 4,200%</div>
+            <div class="metric">초과율: 4,<span class="performance-excellent"><span class="performance-excellent">200%</span></span></div>
             <div class="metric">데이터: 843GB</div>
             <div class="metric">로그: 2.5GB</div>
             <div class="metric">시간: 96.4시간</div>
         </div>
 
         <h2>🎯 실험 개요</h2>
-        <p>Phase-B는 RocksDB의 FillRandom 워크로드를 사용하여 대규모 데이터 처리 성능을 분석하는 실험이었습니다. 
+        <p><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span>는 RocksDB의 FillRandom 워크로드를 사용하여 대규모 데이터 처리 성능을 분석하는 실험이었습니다. 
         4일간의 연속 실행을 통해 420억 ops를 처리하며, RocksDB의 내부 동작과 Compaction 패턴을 상세히 분석했습니다.</p>
 
         <div class="highlight">
@@ -143,7 +46,7 @@
             <tr>
                 <td>총 처리 ops</td>
                 <td class="success">42,006,039,730</td>
-                <td>목표 대비 4,200% 달성</td>
+                <td>목표 대비 4,<span class="performance-excellent"><span class="performance-excellent">200%</span></span> 달성</td>
             </tr>
             <tr>
                 <td>평균 처리 속도</td>
@@ -169,7 +72,7 @@
 
         <h3>시간별 성능 변화</h3>
         <div class="chart-container">
-            <img src="phase_b_performance_trend.png" alt="Phase-B 성능 트렌드">
+            <img src="phase_b_performance_trend.png" alt="<span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 성능 트렌드">
             <p><em>시간별 처리 속도 변화 (4일간)</em></p>
         </div>
 
@@ -270,10 +173,10 @@
         </table>
 
         <h2>🎯 다음 단계</h2>
-        <p>Phase-B 실험을 통해 수집된 데이터는 다음과 같은 후속 연구에 활용됩니다:</p>
+        <p><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실험을 통해 수집된 데이터는 다음과 같은 후속 연구에 활용됩니다:</p>
         <ul>
-            <li><strong>Phase-A 재실행:</strong> Aging된 SSD 상태에서 Device Envelope 모델 추가 측정</li>
-            <li><strong>Phase-C:</strong> LOG 파일 상세 분석 및 Compaction 패턴 연구</li>
+            <li><strong><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 재실행:</strong> Aging된 SSD 상태에서 Device Envelope 모델 추가 측정</li>
+            <li><strong><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span>:</strong> LOG 파일 상세 분석 및 Compaction 패턴 연구</li>
             <li><strong>v4 모델 검증:</strong> 실제 데이터 기반 모델 정확도 검증</li>
         </ul>
 
@@ -284,7 +187,7 @@
 
         <div class="footer">
             <p><strong>RocksDB Put-Rate Model 프로젝트</strong></p>
-            <p>Phase-B 실험 결과 보고서 | 생성일: 2025-09-16</p>
+            <p><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실험 결과 보고서 | 생성일: 2025-09-16</p>
         </div>
     </div>
 </body>

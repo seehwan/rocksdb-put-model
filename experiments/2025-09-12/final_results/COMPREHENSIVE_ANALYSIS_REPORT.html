@@ -1,129 +1,41 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="../styles/project.css">
+
+    <link rel="stylesheet" href="../styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
-            margin-top: 30px;
-        }
-        h3 {
-            color: #7f8c8d;
-            margin-top: 25px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .success {
-            background-color: #d4edda;
-            padding: 10px;
-            border-left: 4px solid #28a745;
-            margin: 10px 0;
-        }
-        .info {
-            background-color: #d1ecf1;
-            padding: 10px;
-            border-left: 4px solid #17a2b8;
-            margin: 10px 0;
-        }
-        .warning {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            text-align: center;
-            color: #7f8c8d;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container">
         <h1>🚀 RocksDB Put-Rate Model Comprehensive Analysis Report</h1>
 <h2>📋 Executive Summary</h2>
-<p>This comprehensive report presents the complete analysis of RocksDB Put-Rate Models from Phase-A through Phase-E, demonstrating significant improvements in model accuracy, optimization efficiency, and production readiness.</p>
+<p>This comprehensive report presents the complete analysis of RocksDB Put-Rate Models from <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> through <span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span>, demonstrating significant improvements in model accuracy, optimization efficiency, and production readiness.</p>
 <p><strong>Report Generated</strong>: 2025-09-17 04:59:49</p>
 <hr />
 <h2>🎯 Project Overview</h2>
 <h3>Phase Completion Status</h3>
 <ul>
-<li><strong>Phase-A</strong>: Device Performance Analysis ✅ (100%)</li>
-<li><strong>Phase-B</strong>: Experimental Data Collection ✅ (100%)</li>
-<li><strong>Phase-C</strong>: Enhanced Model Development ✅ (100%)</li>
-<li><strong>Phase-D</strong>: Production Integration ✅ (100%)</li>
-<li><strong>Phase-E</strong>: Advanced Optimization ✅ (100%)</li>
+<li><strong><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span></strong>: Device Performance Analysis ✅ (<span class="performance-excellent"><span class="performance-excellent">100%</span></span>)</li>
+<li><strong><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span></strong>: Experimental Data Collection ✅ (<span class="performance-excellent"><span class="performance-excellent">100%</span></span>)</li>
+<li><strong><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span></strong>: Enhanced Model Development ✅ (<span class="performance-excellent"><span class="performance-excellent">100%</span></span>)</li>
+<li><strong><span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span></strong>: Production Integration ✅ (<span class="performance-excellent"><span class="performance-excellent">100%</span></span>)</li>
+<li><strong><span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span></strong>: Advanced Optimization ✅ (<span class="performance-excellent"><span class="performance-excellent">100%</span></span>)</li>
 </ul>
 <h3>Key Achievements</h3>
 <ul>
-<li><strong>Model Accuracy</strong>: 95% (Enhanced Models)</li>
-<li><strong>Optimization Efficiency</strong>: 98%</li>
-<li><strong>Production Readiness</strong>: 92%</li>
-<li><strong>Cost Reduction</strong>: 25%</li>
-<li><strong>Performance Improvement</strong>: 30%</li>
+<li><strong>Model Accuracy</strong>: <span class="performance-excellent"><span class="performance-excellent">95%</span></span> (Enhanced Models)</li>
+<li><strong>Optimization Efficiency</strong>: <span class="performance-excellent"><span class="performance-excellent">98%</span></span></li>
+<li><strong>Production Readiness</strong>: <span class="performance-excellent"><span class="performance-excellent">92%</span></span></li>
+<li><strong>Cost Reduction</strong>: <span class="performance-poor"><span class="performance-poor">25%</span></span></li>
+<li><strong>Performance Improvement</strong>: <span class="performance-poor"><span class="performance-poor">30%</span></span></li>
 </ul>
 <hr />
-<h2>📊 Phase-A: Device Performance Analysis</h2>
+<h2>📊 <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span>: Device Performance Analysis</h2>
 <h3>Objectives</h3>
 <ul>
 <li>Analyze device performance characteristics</li>
@@ -134,7 +46,7 @@
 <ul>
 <li><strong>Device I/O Capacity</strong>: Comprehensive analysis of read/write bandwidth</li>
 <li><strong>Performance Bottlenecks</strong>: Identification of critical performance constraints</li>
-<li><strong>Optimization Opportunities</strong>: 20% potential improvement identified</li>
+<li><strong>Optimization Opportunities</strong>: <span class="performance-poor"><span class="performance-poor">20%</span></span> potential improvement identified</li>
 </ul>
 <h3>Deliverables</h3>
 <ul>
@@ -143,7 +55,7 @@
 <li>Performance baseline establishment</li>
 </ul>
 <hr />
-<h2>🧪 Phase-B: Experimental Data Collection</h2>
+<h2>🧪 <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span>: Experimental Data Collection</h2>
 <h3>Objectives</h3>
 <ul>
 <li>Collect comprehensive experimental data using db_bench</li>
@@ -163,7 +75,7 @@
 <li>Performance baseline data</li>
 </ul>
 <hr />
-<h2>🔬 Phase-C: Enhanced Model Development</h2>
+<h2>🔬 <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span>: Enhanced Model Development</h2>
 <h3>Objectives</h3>
 <ul>
 <li>Develop and enhance RocksDB Put-Rate Models (v1-v5)</li>
@@ -183,33 +95,33 @@
 <tbody>
 <tr>
 <td>v1</td>
-<td>85%</td>
-<td>95%</td>
-<td>+10%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">85%</span></span></td>
+<td><span class="performance-excellent"><span class="performance-excellent">95%</span></span></td>
+<td>+<span class="performance-poor"><span class="performance-poor">10%</span></span></td>
 </tr>
 <tr>
 <td>v2.1</td>
-<td>88%</td>
-<td>93%</td>
-<td>+5%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">88%</span></span></td>
+<td><span class="performance-excellent"><span class="performance-excellent">93%</span></span></td>
+<td>+<span class="performance-poor"><span class="performance-poor">5%</span></span></td>
 </tr>
 <tr>
 <td>v3</td>
-<td>82%</td>
-<td>91%</td>
-<td>+9%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">82%</span></span></td>
+<td><span class="performance-excellent"><span class="performance-excellent">91%</span></span></td>
+<td>+<span class="performance-poor"><span class="performance-poor">9%</span></span></td>
 </tr>
 <tr>
 <td>v4</td>
-<td>90%</td>
-<td>94%</td>
-<td>+4%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">90%</span></span></td>
+<td><span class="performance-excellent"><span class="performance-excellent">94%</span></span></td>
+<td>+<span class="performance-poor"><span class="performance-poor">4%</span></span></td>
 </tr>
 <tr>
 <td>v5</td>
-<td>87%</td>
-<td>92%</td>
-<td>+5%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">87%</span></span></td>
+<td><span class="performance-excellent"><span class="performance-excellent">92%</span></span></td>
+<td>+<span class="performance-poor"><span class="performance-poor">5%</span></span></td>
 </tr>
 </tbody>
 </table>
@@ -226,7 +138,7 @@
 <li>Detailed performance analysis</li>
 </ul>
 <hr />
-<h2>🏭 Phase-D: Production Integration</h2>
+<h2>🏭 <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span>: Production Integration</h2>
 <h3>Objectives</h3>
 <ul>
 <li>Develop production-ready model management system</li>
@@ -241,9 +153,9 @@
 </ul>
 <h3>Production Readiness Metrics</h3>
 <ul>
-<li><strong>Model Deployment</strong>: 100% success rate</li>
-<li><strong>Auto-tuning Effectiveness</strong>: 90% improvement</li>
-<li><strong>Monitoring Coverage</strong>: 95% system coverage</li>
+<li><strong>Model Deployment</strong>: <span class="performance-excellent"><span class="performance-excellent">100%</span></span> success rate</li>
+<li><strong>Auto-tuning Effectiveness</strong>: <span class="performance-excellent"><span class="performance-excellent">90%</span></span> improvement</li>
+<li><strong>Monitoring Coverage</strong>: <span class="performance-excellent"><span class="performance-excellent">95%</span></span> system coverage</li>
 </ul>
 <h3>Deliverables</h3>
 <ul>
@@ -252,7 +164,7 @@
 <li>Real-time monitoring framework</li>
 </ul>
 <hr />
-<h2>🚀 Phase-E: Advanced Optimization</h2>
+<h2>🚀 <span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span>: Advanced Optimization</h2>
 <h3>Objectives</h3>
 <ul>
 <li>Implement advanced optimization algorithms</li>
@@ -263,10 +175,10 @@
 <h3>Optimization Results</h3>
 <h4>Advanced Optimization Framework</h4>
 <ul>
-<li><strong>Gradient Descent</strong>: 85% efficiency</li>
-<li><strong>Genetic Algorithm</strong>: 98% efficiency (Best)</li>
-<li><strong>Bayesian Optimization</strong>: 92% efficiency</li>
-<li><strong>Particle Swarm</strong>: 94% efficiency</li>
+<li><strong>Gradient Descent</strong>: <span class="performance-excellent"><span class="performance-excellent">85%</span></span> efficiency</li>
+<li><strong>Genetic Algorithm</strong>: <span class="performance-excellent"><span class="performance-excellent">98%</span></span> efficiency (Best)</li>
+<li><strong>Bayesian Optimization</strong>: <span class="performance-excellent"><span class="performance-excellent">92%</span></span> efficiency</li>
+<li><strong>Particle Swarm</strong>: <span class="performance-excellent"><span class="performance-excellent">94%</span></span> efficiency</li>
 </ul>
 <h4>Machine Learning Integration</h4>
 <ul>
@@ -277,17 +189,17 @@
 </ul>
 <h4>Cloud-Native Optimization</h4>
 <ul>
-<li><strong>Scaling Efficiency</strong>: 95%</li>
-<li><strong>Resource Optimization</strong>: 25% improvement</li>
-<li><strong>Cost Optimization</strong>: 25% reduction</li>
-<li><strong>Performance Improvement</strong>: 20% gain</li>
+<li><strong>Scaling Efficiency</strong>: <span class="performance-excellent"><span class="performance-excellent">95%</span></span></li>
+<li><strong>Resource Optimization</strong>: <span class="performance-poor"><span class="performance-poor">25%</span></span> improvement</li>
+<li><strong>Cost Optimization</strong>: <span class="performance-poor"><span class="performance-poor">25%</span></span> reduction</li>
+<li><strong>Performance Improvement</strong>: <span class="performance-poor"><span class="performance-poor">20%</span></span> gain</li>
 </ul>
 <h4>Real-time Learning System</h4>
 <ul>
 <li><strong>Learning Rate</strong>: 0.01</li>
 <li><strong>Adaptation Speed</strong>: 5 seconds</li>
-<li><strong>Feedback Effectiveness</strong>: 90%</li>
-<li><strong>Improvement Rate</strong>: 20%</li>
+<li><strong>Feedback Effectiveness</strong>: <span class="performance-excellent"><span class="performance-excellent">90%</span></span></li>
+<li><strong>Improvement Rate</strong>: <span class="performance-poor"><span class="performance-poor">20%</span></span></li>
 </ul>
 <h3>Deliverables</h3>
 <ul>
@@ -299,38 +211,38 @@
 <hr />
 <h2>📈 Key Performance Indicators</h2>
 <h3>Model Accuracy Evolution</h3>
-<pre class="codehilite"><code>Original Models: 85-90% accuracy
-Enhanced Models: 91-95% accuracy
-Improvement: +6-10% across all models
+<pre class="codehilite"><code>Original Models: 85-<span class="performance-excellent"><span class="performance-excellent">90%</span></span> accuracy
+Enhanced Models: 91-<span class="performance-excellent"><span class="performance-excellent">95%</span></span> accuracy
+Improvement: +6-<span class="performance-poor"><span class="performance-poor">10%</span></span> across all models
 </code></pre>
 
 <h3>Optimization Efficiency</h3>
-<pre class="codehilite"><code>Advanced Algorithms: 85-98% efficiency
-ML Integration: 91-94% R² score
-Cloud Optimization: 95% scaling efficiency
-Real-time Learning: 90% feedback effectiveness
+<pre class="codehilite"><code>Advanced Algorithms: 85-<span class="performance-excellent"><span class="performance-excellent">98%</span></span> efficiency
+ML Integration: 91-<span class="performance-excellent"><span class="performance-excellent">94%</span></span> R² score
+Cloud Optimization: <span class="performance-excellent"><span class="performance-excellent">95%</span></span> scaling efficiency
+Real-time Learning: <span class="performance-excellent"><span class="performance-excellent">90%</span></span> feedback effectiveness
 </code></pre>
 
 <h3>Production Readiness</h3>
-<pre class="codehilite"><code>Model Deployment: 100% success
-Auto-tuning: 90% effectiveness
-Monitoring: 95% coverage
-Cost Reduction: 25% achieved
+<pre class="codehilite"><code>Model Deployment: <span class="performance-excellent"><span class="performance-excellent">100%</span></span> success
+Auto-tuning: <span class="performance-excellent"><span class="performance-excellent">90%</span></span> effectiveness
+Monitoring: <span class="performance-excellent"><span class="performance-excellent">95%</span></span> coverage
+Cost Reduction: <span class="performance-poor"><span class="performance-poor">25%</span></span> achieved
 </code></pre>
 
 <hr />
 <h2>🔮 Future Development Directions</h2>
 <h3>Immediate Opportunities</h3>
 <ol>
-<li><strong>Auto-scaling Integration</strong>: 90% readiness</li>
-<li><strong>Predictive Analytics</strong>: 85% readiness</li>
-<li><strong>Edge Computing</strong>: 80% readiness</li>
+<li><strong>Auto-scaling Integration</strong>: <span class="performance-excellent"><span class="performance-excellent">90%</span></span> readiness</li>
+<li><strong>Predictive Analytics</strong>: <span class="performance-excellent"><span class="performance-excellent">85%</span></span> readiness</li>
+<li><strong>Edge Computing</strong>: <span class="performance-excellent"><span class="performance-excellent">80%</span></span> readiness</li>
 </ol>
 <h3>Long-term Vision</h3>
 <ol>
-<li><strong>Multi-cloud Deployment</strong>: 75% readiness</li>
-<li><strong>AI Integration</strong>: 70% readiness</li>
-<li><strong>Autonomous Optimization</strong>: 65% readiness</li>
+<li><strong>Multi-cloud Deployment</strong>: <span class="performance-good"><span class="performance-good">75%</span></span> readiness</li>
+<li><strong>AI Integration</strong>: <span class="performance-good"><span class="performance-good">70%</span></span> readiness</li>
+<li><strong>Autonomous Optimization</strong>: <span class="performance-good"><span class="performance-good">65%</span></span> readiness</li>
 </ol>
 <hr />
 <h2>📊 Technical Innovations</h2>
@@ -344,7 +256,7 @@ Cost Reduction: 25% achieved
 <ul>
 <li><strong>Genetic Algorithm</strong>: Best performing optimization</li>
 <li><strong>Machine Learning</strong>: Gradient Boosting optimal</li>
-<li><strong>Cloud-Native</strong>: 95% scaling efficiency</li>
+<li><strong>Cloud-Native</strong>: <span class="performance-excellent"><span class="performance-excellent">95%</span></span> scaling efficiency</li>
 <li><strong>Real-time Learning</strong>: Continuous improvement</li>
 </ul>
 <h3>Production Integration</h3>
@@ -357,11 +269,11 @@ Cost Reduction: 25% achieved
 <h2>🎉 Conclusion</h2>
 <p>The comprehensive RocksDB Put-Rate Model analysis has successfully achieved:</p>
 <ol>
-<li><strong>Model Accuracy</strong>: 95% with enhanced models</li>
-<li><strong>Optimization Efficiency</strong>: 98% with advanced algorithms</li>
-<li><strong>Production Readiness</strong>: 92% with full integration</li>
-<li><strong>Cost Reduction</strong>: 25% through cloud optimization</li>
-<li><strong>Performance Improvement</strong>: 30% overall enhancement</li>
+<li><strong>Model Accuracy</strong>: <span class="performance-excellent"><span class="performance-excellent">95%</span></span> with enhanced models</li>
+<li><strong>Optimization Efficiency</strong>: <span class="performance-excellent"><span class="performance-excellent">98%</span></span> with advanced algorithms</li>
+<li><strong>Production Readiness</strong>: <span class="performance-excellent"><span class="performance-excellent">92%</span></span> with full integration</li>
+<li><strong>Cost Reduction</strong>: <span class="performance-poor"><span class="performance-poor">25%</span></span> through cloud optimization</li>
+<li><strong>Performance Improvement</strong>: <span class="performance-poor"><span class="performance-poor">30%</span></span> overall enhancement</li>
 </ol>
 <h3>Key Success Factors</h3>
 <ul>
@@ -380,31 +292,31 @@ Cost Reduction: 25% achieved
 </ul>
 <hr />
 <h2>📁 Deliverables Summary</h2>
-<h3>Phase-A Deliverables</h3>
+<h3><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> Deliverables</h3>
 <ul>
 <li>Device performance analysis</li>
 <li>I/O capacity characterization</li>
 <li>Performance baseline data</li>
 </ul>
-<h3>Phase-B Deliverables</h3>
+<h3><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> Deliverables</h3>
 <ul>
 <li>Experimental data collection</li>
 <li>RocksDB LOG analysis</li>
 <li>Performance metrics database</li>
 </ul>
-<h3>Phase-C Deliverables</h3>
+<h3><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> Deliverables</h3>
 <ul>
 <li>Enhanced model implementations</li>
 <li>Model comparison framework</li>
 <li>Comprehensive validation results</li>
 </ul>
-<h3>Phase-D Deliverables</h3>
+<h3><span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> Deliverables</h3>
 <ul>
 <li>Production model manager</li>
 <li>Auto-tuning system</li>
 <li>Real-time monitoring framework</li>
 </ul>
-<h3>Phase-E Deliverables</h3>
+<h3><span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> Deliverables</h3>
 <ul>
 <li>Advanced optimization framework</li>
 <li>Machine learning integration</li>
@@ -420,8 +332,8 @@ Cost Reduction: 25% achieved
 </ul>
 <hr />
 <p><strong>Report Generated</strong>: 2025-09-17 04:59:49
-<strong>Total Phases Completed</strong>: 5/5 (100%)
-<strong>Overall Project Success</strong>: 95%</p>
+<strong>Total Phases Completed</strong>: 5/5 (<span class="performance-excellent"><span class="performance-excellent">100%</span></span>)
+<strong>Overall Project Success</strong>: <span class="performance-excellent"><span class="performance-excellent">95%</span></span></p>
         <div class="footer">
             <p>Report Generated: 2025-09-17 05:26:59</p>
             <p>RocksDB Put-Rate Model Comprehensive Analysis</p>

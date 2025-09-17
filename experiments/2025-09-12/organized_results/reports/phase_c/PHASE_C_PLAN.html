@@ -1,106 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="../../../styles/project.css">
+
+    <link rel="stylesheet" href="../../../styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
-            margin-top: 30px;
-        }
-        h3 {
-            color: #7f8c8d;
-            margin-top: 25px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .success {
-            background-color: #d4edda;
-            padding: 10px;
-            border-left: 4px solid #28a745;
-            margin: 10px 0;
-        }
-        .info {
-            background-color: #d1ecf1;
-            padding: 10px;
-            border-left: 4px solid #17a2b8;
-            margin: 10px 0;
-        }
-        .warning {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            text-align: center;
-            color: #7f8c8d;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container">
-        <h1>Phase-C: 실시간 적응 모델링</h1>
+        <h1><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span>: 실시간 적응 모델링</h1>
 <h2>🎯 목표</h2>
 <p>동적 환경 변화에 대한 실시간 적응 모델 개발</p>
 <h2>📊 실험 설계</h2>
@@ -313,7 +225,7 @@
 <h2>📊 예상 결과</h2>
 <h3>1. 실시간 적응 모델</h3>
 <ul>
-<li><strong>정확도</strong>: 동적 환경에서 5% 이하 오차</li>
+<li><strong>정확도</strong>: 동적 환경에서 <span class="performance-poor"><span class="performance-poor">5%</span></span> 이하 오차</li>
 <li><strong>적응 속도</strong>: 1분 이내 적응 완료</li>
 <li><strong>안정성</strong>: 다양한 환경 변화에 안정적 대응</li>
 </ul>
@@ -333,8 +245,8 @@
 <h3>정량적 지표</h3>
 <ul>
 <li><strong>적응 속도</strong>: 1분 이내 적응 완료</li>
-<li><strong>적응 정확도</strong>: 5% 이하 오차</li>
-<li><strong>안정성</strong>: 95% 이상 안정적 동작</li>
+<li><strong>적응 정확도</strong>: <span class="performance-poor"><span class="performance-poor">5%</span></span> 이하 오차</li>
+<li><strong>안정성</strong>: <span class="performance-excellent"><span class="performance-excellent">95%</span></span> 이상 안정적 동작</li>
 </ul>
 <h3>정성적 지표</h3>
 <ul>
@@ -357,8 +269,8 @@
 </ul>
 <h3>보고서</h3>
 <ul>
-<li><code>phase_c_report.md</code>: Phase-C 실험 보고서</li>
-<li><code>phase_c_report.html</code>: Phase-C 실험 보고서 (HTML)</li>
+<li><code>phase_c_report.md</code>: <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 실험 보고서</li>
+<li><code>phase_c_report.html</code>: <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 실험 보고서 (HTML)</li>
 <li><code>phase_c_visualizations/</code>: 시각화 파일들</li>
 </ul>
 <hr />

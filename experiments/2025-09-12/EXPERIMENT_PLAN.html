@@ -1,102 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="styles/project.css">
+
+    <link rel="stylesheet" href="styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
-            margin-top: 30px;
-        }
-        h3 {
-            color: #7f8c8d;
-            margin-top: 25px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .success {
-            background-color: #d4edda;
-            padding: 10px;
-            border-left: 4px solid #28a745;
-            margin: 10px 0;
-        }
-        .info {
-            background-color: #d1ecf1;
-            padding: 10px;
-            border-left: 4px solid #17a2b8;
-            margin: 10px 0;
-        }
-        .warning {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            text-align: center;
-            color: #7f8c8d;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container">
@@ -114,20 +26,20 @@
 <h2>📊 09-09 실험 성과 분석</h2>
 <h3>핵심 성과</h3>
 <ul>
-<li><strong>v4 모델</strong>: 5.7% 오차 달성 (목표 10% 이하)</li>
-<li><strong>연구 목표</strong>: 100% 달성 (5/5)</li>
+<li><strong>v4 모델</strong>: <span class="performance-poor"><span class="performance-poor">5.7%</span></span> 오차 달성 (목표 <span class="performance-poor"><span class="performance-poor">10%</span></span> 이하)</li>
+<li><strong>연구 목표</strong>: <span class="performance-excellent"><span class="performance-excellent">100%</span></span> 달성 (5/5)</li>
 <li><strong>핵심 발견</strong>: L2 컴팩션 병목, FillRandom 역설, 장치 열화 패턴</li>
 </ul>
 <h3>개선 필요 영역</h3>
 <ol>
-<li><strong>FillRandom 성능</strong>: 13.8% 오차 (가장 예측하기 어려운 워크로드)</li>
+<li><strong>FillRandom 성능</strong>: <span class="performance-poor"><span class="performance-poor">13.8%</span></span> 오차 (가장 예측하기 어려운 워크로드)</li>
 <li><strong>시간 의존성</strong>: 실험 중간 성능 변화 미반영</li>
 <li><strong>환경 일반화</strong>: 다양한 시스템 환경에서의 검증 부족</li>
 <li><strong>실시간 적응</strong>: 동적 환경 변화에 대한 적응 부족</li>
 </ol>
 <h2>🚀 2025-09-12 실험 설계</h2>
-<h3>Phase-A: FillRandom 특화 모델 개발</h3>
-<p><strong>목적</strong>: FillRandom 워크로드의 13.8% 오차를 5% 이하로 개선</p>
+<h3><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span>: FillRandom 특화 모델 개발</h3>
+<p><strong>목적</strong>: FillRandom 워크로드의 <span class="performance-poor"><span class="performance-poor">13.8%</span></span> 오차를 <span class="performance-poor"><span class="performance-poor">5%</span></span> 이하로 개선</p>
 <h4>실험 내용</h4>
 <ol>
 <li><strong>FillRandom 특성 분석</strong></li>
@@ -157,7 +69,7 @@
 <li>시간 의존적 성능 변화 모델</li>
 <li>L2 컴팩션 최적화 전략</li>
 </ul>
-<h3>Phase-B: 다중 환경 검증</h3>
+<h3><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span>: 다중 환경 검증</h3>
 <p><strong>목적</strong>: 다양한 시스템 환경에서의 모델 일반화 성능 검증</p>
 <h4>실험 환경</h4>
 <ol>
@@ -188,7 +100,7 @@
 <li>일반화 성능 지표</li>
 <li>환경별 최적 설정 가이드</li>
 </ul>
-<h3>Phase-C: 실시간 적응 모델링</h3>
+<h3><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span>: 실시간 적응 모델링</h3>
 <p><strong>목적</strong>: 동적 환경 변화에 대한 실시간 적응 모델 개발</p>
 <h4>실험 내용</h4>
 <ol>
@@ -219,7 +131,7 @@
 <li>동적 환경 변화 대응 전략</li>
 <li>자동 튜닝 알고리즘</li>
 </ul>
-<h3>Phase-D: 통합 모델 검증</h3>
+<h3><span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span>: 통합 모델 검증</h3>
 <p><strong>목적</strong>: 모든 개선사항을 통합한 최종 모델 검증</p>
 <h4>실험 내용</h4>
 <ol>
@@ -251,7 +163,7 @@
 <li>실용성 평가</li>
 <li>배포 가능성 검증</li>
 </ul>
-<h3>Phase-E: 산업 적용성 평가</h3>
+<h3><span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span>: 산업 적용성 평가</h3>
 <p><strong>목적</strong>: 실제 운영 환경에서의 적용 가능성 평가</p>
 <h4>실험 내용</h4>
 <ol>
@@ -316,33 +228,33 @@
 <h2>📅 실험 일정</h2>
 <h3>Week 1 (2025-09-12 ~ 2025-09-18)</h3>
 <ul>
-<li><strong>Day 1-2</strong>: Phase-A 실험 설계 및 준비</li>
-<li><strong>Day 3-5</strong>: Phase-A 실험 실행</li>
-<li><strong>Day 6-7</strong>: Phase-A 결과 분석</li>
+<li><strong>Day 1-2</strong>: <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 실험 설계 및 준비</li>
+<li><strong>Day 3-5</strong>: <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 실험 실행</li>
+<li><strong>Day 6-7</strong>: <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 결과 분석</li>
 </ul>
 <h3>Week 2 (2025-09-19 ~ 2025-09-25)</h3>
 <ul>
-<li><strong>Day 1-2</strong>: Phase-B 실험 설계 및 준비</li>
-<li><strong>Day 3-5</strong>: Phase-B 실험 실행</li>
-<li><strong>Day 6-7</strong>: Phase-B 결과 분석</li>
+<li><strong>Day 1-2</strong>: <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실험 설계 및 준비</li>
+<li><strong>Day 3-5</strong>: <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실험 실행</li>
+<li><strong>Day 6-7</strong>: <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 결과 분석</li>
 </ul>
 <h3>Week 3 (2025-09-26 ~ 2025-10-02)</h3>
 <ul>
-<li><strong>Day 1-2</strong>: Phase-C 실험 설계 및 준비</li>
-<li><strong>Day 3-5</strong>: Phase-C 실험 실행</li>
-<li><strong>Day 6-7</strong>: Phase-C 결과 분석</li>
+<li><strong>Day 1-2</strong>: <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 실험 설계 및 준비</li>
+<li><strong>Day 3-5</strong>: <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 실험 실행</li>
+<li><strong>Day 6-7</strong>: <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 결과 분석</li>
 </ul>
 <h3>Week 4 (2025-10-03 ~ 2025-10-09)</h3>
 <ul>
-<li><strong>Day 1-2</strong>: Phase-D 실험 설계 및 준비</li>
-<li><strong>Day 3-5</strong>: Phase-D 실험 실행</li>
-<li><strong>Day 6-7</strong>: Phase-D 결과 분석</li>
+<li><strong>Day 1-2</strong>: <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> 실험 설계 및 준비</li>
+<li><strong>Day 3-5</strong>: <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> 실험 실행</li>
+<li><strong>Day 6-7</strong>: <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> 결과 분석</li>
 </ul>
 <h3>Week 5 (2025-10-10 ~ 2025-10-16)</h3>
 <ul>
-<li><strong>Day 1-2</strong>: Phase-E 실험 설계 및 준비</li>
-<li><strong>Day 3-5</strong>: Phase-E 실험 실행</li>
-<li><strong>Day 6-7</strong>: Phase-E 결과 분석</li>
+<li><strong>Day 1-2</strong>: <span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> 실험 설계 및 준비</li>
+<li><strong>Day 3-5</strong>: <span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> 실험 실행</li>
+<li><strong>Day 6-7</strong>: <span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> 결과 분석</li>
 </ul>
 <h3>Week 6 (2025-10-17 ~ 2025-10-23)</h3>
 <ul>
@@ -351,9 +263,9 @@
 <h2>🎯 성공 지표</h2>
 <h3>정량적 지표</h3>
 <ul>
-<li><strong>FillRandom 모델 정확도</strong>: 5% 이하 오차</li>
-<li><strong>전체 모델 정확도</strong>: 3% 이하 오차</li>
-<li><strong>환경별 일반화 성능</strong>: 90% 이상</li>
+<li><strong>FillRandom 모델 정확도</strong>: <span class="performance-poor"><span class="performance-poor">5%</span></span> 이하 오차</li>
+<li><strong>전체 모델 정확도</strong>: <span class="performance-poor"><span class="performance-poor">3%</span></span> 이하 오차</li>
+<li><strong>환경별 일반화 성능</strong>: <span class="performance-excellent"><span class="performance-excellent">90%</span></span> 이상</li>
 <li><strong>실시간 적응 속도</strong>: 1분 이내</li>
 </ul>
 <h3>정성적 지표</h3>
@@ -375,7 +287,7 @@
 <ol>
 <li><strong>운영 환경 적용</strong>: 실제 데이터베이스 운영에 직접 활용</li>
 <li><strong>자동 튜닝</strong>: 시스템 관리자의 개입 없이 자동 최적화</li>
-<li><strong>예측 정확도</strong>: 3% 이하의 높은 예측 정확도</li>
+<li><strong>예측 정확도</strong>: <span class="performance-poor"><span class="performance-poor">3%</span></span> 이하의 높은 예측 정확도</li>
 <li><strong>확장성</strong>: 다양한 LSM-tree 기반 시스템에 적용 가능</li>
 </ol>
 <h2>🔧 실험 환경 및 도구</h2>

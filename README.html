@@ -4,466 +4,732 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RocksDB Put-Rate Model</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/project.css">
     <style>
-        .nav-links {
-            background: #34495e;
+        /* 추가 스타일링 */
+        .toc {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .toc ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .toc li {
+            margin: 5px 0;
+        }
+        
+        .toc a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+        
+        /* 코드 블록 스타일링 */
+        pre {
+            background-color: #2c3e50;
+            color: #ecf0f1;
             padding: 20px;
             border-radius: 8px;
-            margin: 30px 0;
-            text-align: center;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
         }
         
-        .nav-links a {
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+            font-size: 0.9em;
+        }
+        
+        /* 테이블 스타일링 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            padding: 10px 20px;
-            background: #3498db;
-            border-radius: 5px;
+            font-weight: bold;
+            padding: 15px 12px;
+            text-align: left;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ecf0f1;
+            transition: background-color 0.3s ease;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:nth-child(even):hover {
+            background-color: #e8f4f8;
+        }
+        
+        /* 순위별 색상 */
+        .rank-1 {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .rank-2 {
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .rank-3 {
+            background: linear-gradient(135deg, #cd7f32, #daa520);
+            font-weight: bold;
+            color: white;
+        }
+        
+        /* 성능 지표 색상 */
+        .performance-excellent {
+            color: #27ae60;
+            font-weight: bold;
+            background-color: #d5f4e6;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .performance-good {
+            color: #2980b9;
+            font-weight: bold;
+            background-color: #d6eaf8;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .performance-fair {
+            color: #f39c12;
+            font-weight: bold;
+            background-color: #fef9e7;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .performance-poor {
+            color: #e74c3c;
+            font-weight: bold;
+            background-color: #fadbd8;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        /* Phase 표시 */
+        .phase-indicator {
             display: inline-block;
-            margin-bottom: 10px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 5px;
         }
         
-        .nav-links a:hover {
-            background: #2980b9;
+        .phase-a {
+            background-color: #e8f4f8;
+            color: #2980b9;
+            border: 2px solid #3498db;
         }
         
+        .phase-b {
+            background-color: #d5f4e6;
+            color: #27ae60;
+            border: 2px solid #2ecc71;
+        }
+        
+        .phase-c {
+            background-color: #fef9e7;
+            color: #f39c12;
+            border: 2px solid #f1c40f;
+        }
+        
+        .phase-d {
+            background-color: #fadbd8;
+            color: #e74c3c;
+            border: 2px solid #e67e22;
+        }
+        
+        .phase-e {
+            background-color: #e8daef;
+            color: #8e44ad;
+            border: 2px solid #9b59b6;
+        }
+        
+        /* 모델 타입 표시 */
+        .model-enhanced {
+            background-color: #d6eaf8;
+            color: #2980b9;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .model-temporal {
+            background-color: #e8daef;
+            color: #8e44ad;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .model-standard {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        /* 반응형 디자인 */
         @media (max-width: 768px) {
-            .nav-links a {
-                display: block;
-                margin: 5px 0;
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+            
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+        
+        /* 인쇄 스타일 */
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+            }
+            
+            .container {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            
+            table {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            
+            .rank-1, .rank-2, .rank-3 {
+                background: none;
+                color: black;
+                font-weight: bold;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>RocksDB Put-Rate Model</h1>
-            <div class="subtitle">
-                RocksDB의 쓰기 경로(put, flush, compaction)를 정량 모델로 기술하고, steady state에서 가능한 지속 put rate와 레벨별 I/O 대역폭을 계산하는 방법을 정리합니다. 이론적 모델을 실제 RocksDB 시스템에서 검증할 수 있는 체계적인 실험 계획도 포함합니다.
-            </div>
-        </div>
-
-        <div class="nav-links">
-            <a href="index.html">메인 페이지</a>
-            <a href="PutModel_v4_Documentation.html">v4 모델 문서</a>
-            <a href="PROJECT_STATUS.html">프로젝트 현황</a>
-            <a href="models.html">모델 버전별</a>
-            <a href="experiments.html">실험 디렉토리</a>
-            <a href="validation.html">검증 계획</a>
-        </div>
-
-        <!-- 연구 목적 -->
-        <div class="section">
-            <div class="section-header">🎯 연구 목적</div>
-            <div class="section-content">
-                <ul>
-                    <li><strong>RocksDB의 Steady-State Put Rate (S_max) 정량적 모델링</strong>: LSM-tree 구조에서 지속 가능한 최대 쓰기 성능을 수학적으로 예측</li>
-                    <li><strong>실제 운영 환경에서의 모델 검증</strong>: 이론적 모델과 실제 RocksDB 성능의 일치도 검증</li>
-                    <li><strong>성능 병목 지점 식별</strong>: Write Amplification, 압축률, 디바이스 대역폭 등이 성능에 미치는 영향 정량화</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- 주요 기여점 -->
-        <div class="section">
-            <div class="section-header">🚀 주요 기여점</div>
-            <div class="section-content">
-                <div class="contribution-grid">
-                    <div class="contribution-card">
-                        <h3>이론적 기여</h3>
-                        <ul>
-                            <li><strong>v1 모델</strong>: 기본 Steady-State S_max 공식 및 레벨별 I/O 분해</li>
-                            <li><strong>v2.1 모델</strong>: Harmonic Mean 혼합 I/O, Per-Level 제약, Stall Duty Cycle 모델링</li>
-                            <li><strong>v3 모델</strong>: 시간가변 혼합비, 동적 스톨 함수, 비선형 동시성, 과도기 동역학을 포함한 동적 시뮬레이터</li>
-                            <li><strong>v4 모델</strong>: 실제 데이터 기반 Device Envelope 모델링, Closed Ledger Accounting, 완전한 Python 구현</li>
-                        </ul>
-                    </div>
-                    <div class="contribution-card">
-                        <h3>실험적 기여</h3>
-                        <ul>
-                            <li><strong>6단계 체계적 검증 프로세스</strong>: 디바이스 캘리브레이션부터 v4 모델 검증까지</li>
-                            <li><strong>실제 데이터 기반 검증</strong>: 200MB+ RocksDB LOG 파일에서 추출한 정확한 파라미터</li>
-                            <li><strong>자동화된 분석</strong>: LOG 파일 자동 파싱으로 정확한 파라미터 추출</li>
-                        </ul>
-                    </div>
-                    <div class="contribution-card">
-                        <h3>도구적 기여</h3>
-                        <ul>
-                            <li><strong>계산 도구</strong>: v1, v2.1, v3 모델 계산기 및 WAF 분석기</li>
-                            <li><strong>동적 시뮬레이터</strong>: Self-contained HTML 시뮬레이터</li>
-                            <li><strong>종합 시각화</strong>: 모델 성능 비교, 파라미터 민감도 분석 등 4개 시각화 도구</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 최신 성과 -->
-        <div class="section">
-            <div class="section-header">🎯 최신 성과 (2025-09-05)</div>
-            <div class="section-content">
-                <div class="achievement-grid">
-                    <div class="achievement-card">
-                        <h3>v4 모델 정확도</h3>
-                        <div class="metric-value">5.0%</div>
-                        <div class="metric-description">오류율 (Excellent 등급)</div>
-                    </div>
-                    <div class="achievement-card">
-                        <h3>모델 정확도 개선</h3>
-                        <div class="metric-value">97.6%p</div>
-                        <div class="metric-description">v1 → v4 모델 개선도</div>
-                    </div>
-                    <div class="achievement-card">
-                        <h3>검증 완성도</h3>
-                        <div class="metric-value">100%</div>
-                        <div class="metric-description">Phase-A~E 완료</div>
-                    </div>
-                    <div class="achievement-card">
-                        <h3>실제 데이터</h3>
-                        <div class="metric-value">200MB+</div>
-                        <div class="metric-description">RocksDB LOG 파일</div>
-                    </div>
-                </div>
-                
-                <div class="highlight-box">
-                    <h4>주요 발견사항</h4>
-                    <ul>
-                        <li><strong>v4 모델의 우수성</strong>: 실제 데이터 기반으로 5% 오류율 달성</li>
-                        <li><strong>Device Envelope의 중요성</strong>: 실제 fio 데이터가 정확도 향상의 핵심</li>
-                        <li><strong>Closed Ledger의 효과</strong>: 정확한 WA/RA 계산으로 현실적 예측</li>
-                        <li><strong>완전한 구현의 가치</strong>: Python 모듈이 HTML 시뮬레이터보다 정확</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Repo Layout -->
-        <div class="section">
-            <div class="section-header">📁 프로젝트 구조</div>
-            <div class="section-content">
-                <div class="file-tree">
-rocksdb-put-model/
+        <h1 id="rocksdb-put-rate-model">RocksDB Put-Rate Model</h1>
+<p>RocksDB의 쓰기 경로(put, flush, compaction)를 정량 모델로 기술하고, steady state에서 가능한 지속 put rate와 레벨별 I/O 대역폭을 계산하는 방법을 정리합니다. 이론적 모델을 실제 RocksDB 시스템에서 검증할 수 있는 체계적인 실험 계획도 포함합니다.</p>
+<h2 id="_1">🎯 연구 목적</h2>
+<ul>
+<li><strong>RocksDB의 Steady-State Put Rate (S_max) 정량적 모델링</strong>: LSM-tree 구조에서 지속 가능한 최대 쓰기 성능을 수학적으로 예측</li>
+<li><strong>실제 운영 환경에서의 모델 검증</strong>: 이론적 모델과 실제 RocksDB 성능의 일치도 검증</li>
+<li><strong>성능 병목 지점 식별</strong>: Write Amplification, 압축률, 디바이스 대역폭 등이 성능에 미치는 영향 정량화</li>
+</ul>
+<h2 id="_2">🚀 주요 기여점</h2>
+<h3 id="_3">이론적 기여</h3>
+<ul>
+<li><strong>v1 모델</strong>: 기본 Steady-State S_max 공식 및 레벨별 I/O 분해</li>
+<li><strong>v2.1 모델</strong>: Harmonic Mean 혼합 I/O, Per-Level 제약, Stall Duty Cycle 모델링</li>
+<li><strong>v3 모델</strong>: 시간가변 혼합비, 동적 스톨 함수, 비선형 동시성, 과도기 동역학을 포함한 동적 시뮬레이터</li>
+<li><strong>v4 모델</strong>: 실제 데이터 기반 Device Envelope 모델링, Closed Ledger Accounting, 완전한 Python 구현 ✅</li>
+<li><strong>v4.1 모델</strong>: 레벨별 컴팩션 I/O 분석 및 시기별 세분화 모델링 ⭐</li>
+<li><strong>v5 모델</strong>: 실시간 적응형 모델링 및 자동 튜닝 시스템</li>
+</ul>
+<h3 id="_4">실험적 기여</h3>
+<ul>
+<li><strong>6단계 체계적 검증 프로세스</strong>: 디바이스 캘리브레이션부터 v5 모델 검증까지</li>
+<li><strong>실제 데이터 기반 검증</strong>: 200MB+ RocksDB LOG 파일에서 추출한 정확한 파라미터</li>
+<li><strong>자동화된 분석</strong>: LOG 파일 자동 파싱으로 정확한 파라미터 추출</li>
+<li><strong>시기별 세분화</strong>: 초기-중기-후기 성능 진화 분석</li>
+</ul>
+<h3 id="_5">도구적 기여</h3>
+<ul>
+<li><strong>계산 도구</strong>: v1, v2.1, v3, v4, v4.1, v5 모델 계산기 및 WAF 분석기</li>
+<li><strong>동적 시뮬레이터</strong>: Self-contained HTML 시뮬레이터</li>
+<li><strong>종합 시각화</strong>: 모델 성능 비교, 파라미터 민감도 분석 등 4개 시각화 도구</li>
+<li><strong>통일된 CSS</strong>: 모든 HTML 파일에 적용된 전문적인 스타일링</li>
+</ul>
+<h2 id="2025-09-12">🎯 최신 성과 (2025-09-12)</h2>
+<h3 id="_6">모델 정확도 개선</h3>
+<ul>
+<li><strong>v1 모델</strong>: 0.0% 정확도 (기본 모델)</li>
+<li><strong>v2.1 모델</strong>: <strong>88.9% 정확도</strong> (최고 성능) ⭐</li>
+<li><strong>v3 모델</strong>: 0.0% 정확도 (휴리스틱 기반)</li>
+<li><strong>v4 모델</strong>: 7.5% 정확도 (Device Envelope)</li>
+<li><strong>v4.1 모델</strong>: <strong>69.8% 정확도</strong> (시기별 세분화) ⭐</li>
+<li><strong>v5 모델</strong>: 0.0% 정확도 (실시간 적응형)</li>
+</ul>
+<h3 id="v41-temporal">v4.1 Temporal 모델 혁신</h3>
+<ul>
+<li><strong>시기별 세분화</strong>: 초기(48.3%) → 중기(67.8%) → 후기(97.7%) 정확도</li>
+<li><strong>컴팩션 진화 분석</strong>: 시간에 따른 컴팩션 패턴 변화 모델링</li>
+<li><strong>RocksDB LOG 통합</strong>: 2,631,490개 이벤트 분석</li>
+<li><strong>성능 최적화</strong>: 후기 시기 97.7% 정확도 달성</li>
+</ul>
+<h3 id="_7">주요 혁신사항</h3>
+<ul>
+<li><strong>Device Envelope Modeling</strong>: fio 그리드 스윕 기반 실제 장치 특성 반영</li>
+<li><strong>Closed Ledger Accounting</strong>: 물리적 검증을 통한 회계 폐곡선</li>
+<li><strong>Dynamic Simulation Framework</strong>: 시간가변 시스템 동작 모델링</li>
+<li><strong>Temporal Phase-wise Modeling</strong>: 시기별 성능 진화 분석</li>
+<li><strong>Level-wise Compaction I/O</strong>: 레벨별 컴팩션 I/O 세분화 분석</li>
+</ul>
+<h3 id="_8">성능 특성</h3>
+<ul>
+<li><strong>최고 정확도</strong>: 88.9% (v2.1 모델)</li>
+<li><strong>혁신 모델</strong>: v4.1 Temporal (시기별 세분화)</li>
+<li><strong>평균 정확도</strong>: 향상된 모델들의 성능 개선</li>
+<li><strong>시뮬레이션 속도</strong>: 1000+ steps/sec</li>
+</ul>
+<h2 id="2025-09-12_1">📊 실험 결과 요약 (2025-09-12)</h2>
+<h3 id="_9">모델 성능 순위</h3>
+<table>
+<thead>
+<tr>
+<th>순위</th>
+<th>모델</th>
+<th>정확도 (%)</th>
+<th>R² Score</th>
+<th>모델 타입</th>
+<th>핵심 특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1위</strong></td>
+<td><strong>v2_1</strong></td>
+<td><strong>88.9%</strong></td>
+<td><strong>0.889</strong></td>
+<td>enhanced</td>
+<td>최고 성능</td>
+</tr>
+<tr>
+<td><strong>2위</strong></td>
+<td><strong>v4_1_temporal</strong></td>
+<td><strong>69.8%</strong></td>
+<td><strong>0.698</strong></td>
+<td>temporal_enhanced</td>
+<td><strong>시기별 세분화</strong></td>
+</tr>
+<tr>
+<td>3위</td>
+<td>v4</td>
+<td>7.5%</td>
+<td>0.075</td>
+<td>enhanced</td>
+<td>기본 모델</td>
+</tr>
+<tr>
+<td>4위</td>
+<td>v1</td>
+<td>0.0%</td>
+<td>0.000</td>
+<td>enhanced</td>
+<td>LOG Enhanced</td>
+</tr>
+<tr>
+<td>5위</td>
+<td>v3</td>
+<td>0.0%</td>
+<td>0.000</td>
+<td>enhanced</td>
+<td>LOG Enhanced</td>
+</tr>
+<tr>
+<td>6위</td>
+<td>v5</td>
+<td>0.0%</td>
+<td>0.000</td>
+<td>enhanced</td>
+<td>LOG Enhanced</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_10">실험 데이터</h3>
+<ul>
+<li><strong>총 실험 시간</strong>: 347,784초 (약 96.6시간)</li>
+<li><strong>총 레코드</strong>: 34,778개</li>
+<li><strong>평균 QPS</strong>: 120,920 ops/sec</li>
+<li><strong>최대 QPS</strong>: 663,287 ops/sec</li>
+<li><strong>최소 QPS</strong>: 160 ops/sec</li>
+</ul>
+<h2 id="repo-layout">Repo Layout</h2>
+<p><code>rocksdb-put-model/
 ├── README.md                    # 이 파일 (사용법, 요구사항, 빠른 시작)
+├── README.html                  # HTML 버전 (통일된 CSS 스타일 적용)
 ├── PutModel.md                  # 전체 모델, 수식, 시뮬레이션 코드
-├── PutModel.html                # HTML 버전 (MathJax 수식 렌더링)
-├── ValidationPlan.html          # 검증 계획 HTML 버전
-├── ValidationGuide.html         # 검증 실행 가이드 HTML 버전
+├── [PutModel.html](PutModel.html)                # HTML 버전 (MathJax 수식 렌더링)
+├── [PutModel_v4_Documentation.html](PutModel_v4_Documentation.html)  # v4 모델 완전 문서화 ⭐
+├── [ValidationPlan.html](ValidationPlan.html)          # 검증 계획 HTML 버전 (MathJax 수식 렌더링)
+├── [ValidationGuide.html](ValidationGuide.html)         # 검증 실행 가이드 HTML 버전 (MathJax 수식 렌더링)
 ├── VALIDATION_GUIDE.md          # 검증 실행 가이드 (단계별 실행 방법)
-├── styles.css                   # HTML 스타일시트
+├── styles/                      # CSS 스타일 파일들
+│   ├── project.css              # 통일된 프로젝트 CSS 스타일
+│   └── css_link.txt             # CSS 링크 가이드
 ├── rocksdb_validation_plan.md   # 실제 시스템 검증 계획서
 ├── rocksdb_bench_templates/     # RocksDB 및 fio 설정 템플릿
 │   ├── db/                      # RocksDB 옵션 파일들
+│   │   ├── options-leveled.ini  # Leveled compaction 설정
+│   │   ├── options-leveled-wal-separate.ini  # WAL 분리 설정
+│   │   └── options-universal.ini  # Universal compaction 설정
 │   └── fio/                     # fio 벤치마크 템플릿들
+│       ├── write.job            # 쓰기 대역폭 측정
+│       ├── read.job             # 읽기 대역폭 측정
+│       └── mix50.job            # 혼합 I/O 측정
 ├── figs/                        # 생성된 그래프들
+│   ├── depth_summary.png        # 초기 버스트 vs Steady State
+│   ├── per_level_reads.png      # 레벨별 읽기 I/O
+│   ├── per_level_writes.png     # 레벨별 쓰기 I/O
+│   └── smax_vs_WA.png          # S_max vs Write Amplification
 ├── scripts/                     # Python 스크립트들
-│   ├── rocksdb_put_viz.py      # 그래프 생성 (matplotlib)
-│   ├── steady_state_put_estimator.py  # S_max 계산기 (v1)
-│   ├── per_level_breakdown.py   # 레벨별 I/O 분해
-│   ├── transient_depth_analysis.py     # 초기 버스트 분석
-│   ├── waf_analyzer.py         # RocksDB LOG WAF 분석기
-│   ├── smax_calc.py            # S_max 계산기 v1 (검증용)
-│   └── smax_calc_v2.py         # S_max 계산기 v2.1 (개선된 모델)
-└── experiments/                 # 실험 결과 관리
-    ├── YYYY-MM-DD/             # 날짜별 실험 디렉토리
+    ├── rocksdb_put_viz.py      # 그래프 생성 (matplotlib)
+    ├── steady_state_put_estimator.py  # S_max 계산기 (v1)
+    ├── per_level_breakdown.py   # 레벨별 I/O 분해
+    ├── transient_depth_analysis.py     # 초기 버스트 분석
+    ├── waf_analyzer.py         # RocksDB LOG WAF 분석기
+    ├── smax_calc.py            # S_max 계산기 v1 (검증용)
+    └── smax_calc_v2.py         # S_max 계산기 v2.1 (개선된 모델)
+├── experiments/                 # 실험 결과 관리
+    ├── 2025-09-12/             # 최신 실험 디렉토리 ⭐
     │   ├── phase-a/            # 디바이스 캘리브레이션
     │   ├── phase-b/            # RocksDB 벤치마크
-    │   ├── phase-c/            # Per-Level WAF 분석
-    │   ├── phase-d/            # v1 모델 검증
-    │   ├── phase-e/            # v2.1 모델 검증
-    │   ├── phase-f/            # v3 모델 검증
-    │   └── reports/            # 종합 보고서들
-    └── templates/              # 실험 템플릿들
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Start -->
-        <div class="section">
-            <div class="section-header">🚀 빠른 시작</div>
-            <div class="section-content">
-                <h3>1) 실험 실행</h3>
-                <div class="code-block">
-# 가상환경 활성화
-source .venv/bin/activate  # macOS/Linux
-# 또는
-.venv\Scripts\activate     # Windows
-
-# 그래프 생성
-python3 scripts/rocksdb_put_viz.py --run
-
-# S_max 계산
-python3 scripts/steady_state_put_estimator.py
-
-# 레벨별 I/O 분해
-python3 scripts/per_level_breakdown.py
-
-# 초기 버스트 분석
-python3 scripts/transient_depth_analysis.py
-                </div>
-
-                <h3>2) 결과 확인</h3>
-                <div class="link-grid">
-                    <a href="PutModel.html" class="link-card">
-                        <h4>PutModel.html</h4>
-                        <p>v1 이론 모델 (MathJax 수식 렌더링)</p>
-                    </a>
-                    <a href="PutModel_v2_1.html" class="link-card">
-                        <h4>PutModel_v2_1.html</h4>
-                        <p>v2.1 모델 (개선된 모델)</p>
-                    </a>
-                    <a href="PutModel_v3.html" class="link-card">
-                        <h4>PutModel_v3.html</h4>
-                        <p>v3 동적 시뮬레이터</p>
-                    </a>
-                    <a href="ValidationPlan.html" class="link-card">
-                        <h4>ValidationPlan.html</h4>
-                        <p>검증 계획 (이론적 방법론)</p>
-                    </a>
-                    <a href="ValidationGuide.html" class="link-card">
-                        <h4>ValidationGuide.html</h4>
-                        <p>검증 실행 가이드 (단계별 실행법)</p>
-                    </a>
-                </div>
-
-                <h3>3) 실험 보고서</h3>
-                <div class="link-grid">
-                    <a href="experiments/2025-09-05/v3_report.md" class="link-card">
-                        <h4>v3_report.md</h4>
-                        <p>v3 모델 최종 보고서</p>
-                    </a>
-                    <a href="experiments/2025-09-05/experiment_results.html" class="link-card">
-                        <h4>experiment_results.html</h4>
-                        <p>v1 모델 실험 결과 보고서</p>
-                    </a>
-                    <a href="experiments/2025-09-05/v2_model_analysis_results.html" class="link-card">
-                        <h4>v2_model_analysis_results.html</h4>
-                        <p>v2.1 모델 분석 결과</p>
-                    </a>
-                    <a href="experiments/2025-09-05/v3_model_validation.html" class="link-card">
-                        <h4>v3_model_validation.html</h4>
-                        <p>v3 모델 검증 가이드</p>
-                    </a>
-                    <a href="experiments/2025-09-05/model_validation_comprehensive.html" class="link-card">
-                        <h4>model_validation_comprehensive.html</h4>
-                        <p>모델 검증 종합 보고서</p>
-                    </a>
-                    <a href="experiments/2025-09-05/validation_report_with_log_data.html" class="link-card">
-                        <h4>validation_report_with_log_data.html</h4>
-                        <p>LOG 데이터 기반 검증 보고서</p>
-                    </a>
-                    <a href="experiments/2025-09-05/visualization_report.html" class="link-card">
-                        <h4>visualization_report.html</h4>
-                        <p>시각화 보고서</p>
-                    </a>
-                    <a href="experiments/2025-09-05/parameter_validation_visualization.html" class="link-card">
-                        <h4>parameter_validation_visualization.html</h4>
-                        <p>파라미터 검증 시각화 보고서</p>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Model Validation -->
-        <div class="section">
-            <div class="section-header">🔬 모델 검증</div>
-            <div class="section-content">
-                <p>이 프로젝트는 이론적 모델을 실제 RocksDB 시스템에서 검증할 수 있는 체계적인 계획을 제공합니다.</p>
-                
-                <h3>6단계 검증 프로세스</h3>
-                <div class="achievement-grid">
-                    <div class="achievement-card">
-                        <h3>Phase-A</h3>
-                        <div class="metric-value">Device</div>
-                        <div class="metric-description">fio를 통한 B_w, B_r, B_eff 측정</div>
-                    </div>
-                    <div class="achievement-card">
-                        <h3>Phase-B</h3>
-                        <div class="metric-value">Benchmark</div>
-                        <div class="metric-description">RocksDB 벤치마크 실행</div>
-                    </div>
-                    <div class="achievement-card">
-                        <h3>Phase-C</h3>
-                        <div class="metric-value">WAF</div>
-                        <div class="metric-description">Per-Level WAF 분석</div>
-                    </div>
-                    <div class="achievement-card">
-                        <h3>Phase-D</h3>
-                        <div class="metric-value">v1</div>
-                        <div class="metric-description">v1 모델 검증</div>
-                    </div>
-                    <div class="achievement-card">
-                        <h3>Phase-E</h3>
-                        <div class="metric-value">v2.1</div>
-                        <div class="metric-description">v2.1 모델 검증</div>
-                    </div>
-                    <div class="achievement-card">
-                        <h3>Phase-F</h3>
-                        <div class="metric-value">v3</div>
-                        <div class="metric-description">v3 모델 검증</div>
-                    </div>
-                </div>
-
-                <h3>성공 기준</h3>
-                <div class="highlight-box">
-                    <h4>정량적 기준</h4>
-                    <ul>
-                        <li><strong>v1 Model</strong>: |S_max^meas - S_max^pred| / S_max^pred ≤ <strong>10%</strong> (목표)</li>
-                        <li><strong>v2.1 Model</strong>: |S_max^meas - S_max^pred| / S_max^pred ≤ <strong>20%</strong> (개선)</li>
-                        <li><strong>v3 Model</strong>: |S_max^meas - S_max^pred| / S_max^pred ≤ <strong>15%</strong> (달성)</li>
-                        <li><strong>Mass-balance error</strong>: |∑Write_i - CR×WA×user_MB| / (CR×WA×user_MB) ≤ <strong>10%</strong></li>
-                        <li><strong>Stabilization</strong>: pending_compaction_bytes의 장기 기울기 ≤ 0</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- 연구의 독창성 -->
-        <div class="section">
-            <div class="section-header">💡 연구의 독창성</div>
-            <div class="section-content">
-                <div class="contribution-grid">
-                    <div class="contribution-card">
-                        <h3>이론적 독창성</h3>
-                        <ul>
-                            <li>LSM-tree 성능 모델링</li>
-                            <li>동적 시뮬레이터</li>
-                            <li>파라미터 민감도 분석</li>
-                        </ul>
-                    </div>
-                    <div class="contribution-card">
-                        <h3>실험적 독창성</h3>
-                        <ul>
-                            <li>6단계 검증 프로세스</li>
-                            <li>실제 데이터 활용</li>
-                            <li>자동화된 분석</li>
-                        </ul>
-                    </div>
-                    <div class="contribution-card">
-                        <h3>도구적 독창성</h3>
-                        <ul>
-                            <li>Self-contained 시뮬레이터</li>
-                            <li>종합 시각화</li>
-                            <li>인터랙티브 보고서</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 연구의 의의 -->
-        <div class="section">
-            <div class="section-header">🌟 연구의 의의</div>
-            <div class="section-content">
-                <div class="contribution-grid">
-                    <div class="contribution-card">
-                        <h3>학술적 의의</h3>
-                        <ul>
-                            <li>LSM-tree 성능 모델링 분야 기여</li>
-                            <li>재현 가능한 성능 검증 방법론 제시</li>
-                            <li>성능에 영향을 미치는 요인들의 정확한 정량화</li>
-                        </ul>
-                    </div>
-                    <div class="contribution-card">
-                        <h3>실용적 의의</h3>
-                        <ul>
-                            <li>실제 RocksDB 운영 환경에서의 성능 최적화 도구 제공</li>
-                            <li>새로운 워크로드나 환경에서의 성능 예측 가능</li>
-                            <li>성능 문제의 원인을 정확히 식별할 수 있는 도구</li>
-                        </ul>
-                    </div>
-                    <div class="contribution-card">
-                        <h3>기술적 의의</h3>
-                        <ul>
-                            <li>RocksDB 커뮤니티에 실용적인 도구 제공</li>
-                            <li>다른 연구자들이 동일한 실험을 재현할 수 있는 완전한 도구와 문서 제공</li>
-                            <li>다른 LSM-tree 기반 데이터베이스에도 적용 가능한 일반적인 방법론</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Requirements -->
-        <div class="section">
-            <div class="section-header">📋 요구사항</div>
-            <div class="section-content">
-                <h3>모델 분석용</h3>
-                <ul>
-                    <li>Python 3.8+</li>
-                    <li>matplotlib</li>
-                </ul>
-                
-                <h3>실제 시스템 검증용</h3>
-                <ul>
-                    <li>RocksDB (최신 릴리스)</li>
-                    <li>fio (디바이스 캘리브레이션용)</li>
-                    <li>Linux (5.x+), ext4 또는 XFS</li>
-                    <li>NVMe SSD (권장)</li>
-                    <li><strong>템플릿</strong>: <code>rocksdb_bench_templates/</code> 디렉토리의 설정 파일들 사용</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Installation -->
-        <div class="section">
-            <div class="section-header">⚙️ 설치</div>
-            <div class="section-content">
-                <div class="code-block">
-# 가상환경 생성
-python3 -m venv .venv
-
-# 가상환경 활성화
-source .venv/bin/activate  # macOS/Linux
-# 또는
-.venv\Scripts\activate     # Windows
-
-# 의존성 설치
-pip install matplotlib
-                </div>
-            </div>
-        </div>
-
-        <!-- Tuning Checklist -->
-        <div class="section">
-            <div class="section-header">✅ 성능 튜닝 체크리스트</div>
-            <div class="section-content">
-                <div class="checklist">
-                    <h4>성능 분석</h4>
-                    <ul>
-                        <li>fio로 B_w, B_r, B_eff 측정 (지속 부하)</li>
-                        <li>rocksdb.stats 델타로 CR, WA 산정</li>
-                        <li>계산기로 S_max 산출 및 헤드룸 20–30% 반영</li>
-                        <li>레벨별 I/O 분해로 읽기 서비스 여유 확인</li>
-                    </ul>
-                </div>
-                
-                <div class="checklist">
-                    <h4>쓰기 제어</h4>
-                    <ul>
-                        <li>RateLimiter와 delayed_write_rate로 S_acc ≤ S_max 보장</li>
-                        <li>트리거/리밋 파라미터 히스테리시스 적용 (플래핑 방지)</li>
-                        <li>Write Bandwidth 초과 여부 확인</li>
-                        <li>압축률 최적화로 WA 증가에 대한 저항력 향상</li>
-                    </ul>
-                </div>
-                
-                <div class="checklist">
-                    <h4>운영 계획</h4>
-                    <ul>
-                        <li>초기 버스트 효과를 고려한 운영 계획 수립</li>
-                        <li>성능 모니터링 및 자동 튜닝 시스템 구현</li>
-                        <li>정기적인 성능 지표 분석 및 최적화</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p><strong>License:</strong> MIT — <code>LICENSE</code> 참조</p>
-            <p><strong>Generated:</strong> 2025-09-05 | <strong>Status:</strong> ✅ 완료</p>
+    │   ├── phase-c/            # Enhanced Models 개발
+    │   ├── phase-d/            # 프로덕션 통합
+    │   ├── phase-e/            # 고급 최적화
+    │   ├── styles/             # CSS 스타일 파일
+    │   ├── scripts/            # 분석 스크립트
+    │   ├── 09_12_EXPERIMENT_SUMMARY.html  # 실험 요약 보고서
+    │   ├── COMPREHENSIVE_ANALYSIS_REPORT.html  # 종합 분석 보고서
+    │   └── COMPREHENSIVE_FINAL_ANALYSIS_WITH_V4_1_TEMPORAL.html  # v4.1 Temporal 포함 최종 보고서
+    ├── 2025-09-09/             # 이전 실험 디렉토리
+    ├── 2025-09-08/             # 이전 실험 디렉토리
+    ├── 2025-09-05/             # 이전 실험 디렉토리
+    └── templates/              # 실험 템플릿들</code></p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="1-run-experiments">1) Run experiments</h3>
+<p>```bash</p>
+<h1 id="_11">가상환경 활성화</h1>
+<p>source .venv/bin/activate  # macOS/Linux</p>
+<h1 id="_12">또는</h1>
+<p>.venv\Scripts\activate     # Windows</p>
+<h1 id="_13">그래프 생성</h1>
+<p>python3 scripts/rocksdb_put_viz.py --run</p>
+<h1 id="s_max">S_max 계산</h1>
+<p>python3 scripts/steady_state_put_estimator.py</p>
+<h1 id="io">레벨별 I/O 분해</h1>
+<p>python3 scripts/per_level_breakdown.py</p>
+<h1 id="_14">초기 버스트 분석</h1>
+<p>python3 scripts/transient_depth_analysis.py
+```</p>
+<h3 id="2-view-results">2) View results</h3>
+<ul>
+<li><strong>HTML</strong>: </li>
+<li><a href="PutModel.html">PutModel.html</a> - v1 이론 모델 (MathJax 수식 렌더링)</li>
+<li><a href="PutModel_v2_1.html">PutModel_v2_1.html</a> - v2.1 모델 (개선된 모델)</li>
+<li><a href="PutModel_v3.html">PutModel_v3.html</a> - v3 동적 시뮬레이터</li>
+<li><a href="ValidationPlan.html">ValidationPlan.html</a> - 검증 계획 (이론적 방법론)</li>
+<li><a href="ValidationGuide.html">ValidationGuide.html</a> - 검증 실행 가이드 (단계별 실행법)</li>
+<li><strong>최신 실험 보고서</strong>:</li>
+<li><a href="experiments/2025-09-12/09_12_EXPERIMENT_SUMMARY.html">experiments/2025-09-12/09_12_EXPERIMENT_SUMMARY.html</a> - 2025-09-12 실험 요약 보고서 ⭐</li>
+<li><a href="experiments/2025-09-12/COMPREHENSIVE_ANALYSIS_REPORT.html">experiments/2025-09-12/COMPREHENSIVE_ANALYSIS_REPORT.html</a> - 종합 분석 보고서</li>
+<li><a href="experiments/2025-09-12/COMPREHENSIVE_FINAL_ANALYSIS_WITH_V4_1_TEMPORAL.html">experiments/2025-09-12/COMPREHENSIVE_FINAL_ANALYSIS_WITH_V4_1_TEMPORAL.html</a> - v4.1 Temporal 포함 최종 보고서</li>
+<li><strong>그래프</strong>: <code>figs/</code> 폴더의 PNG 파일들</li>
+<li><strong>수치</strong>: 각 스크립트의 콘솔 출력</li>
+</ul>
+<h3 id="3-validate-with-real-rocksdb">3) Validate with real RocksDB</h3>
+<p>```bash</p>
+<h1 id="rocksdb">실제 RocksDB 시스템에서 모델 검증</h1>
+<h1 id="validationguidehtml">자세한 절차는 ValidationGuide.html 참조</h1>
+<h1 id="1-device-calibration-fio-">1. Device calibration (fio) - 템플릿 사용</h1>
+<p>fio rocksdb_bench_templates/fio/write.job
+fio rocksdb_bench_templates/fio/read.job
+fio rocksdb_bench_templates/fio/mix50.job</p>
+<h1 id="2-rocksdb-benchmark-rocksdb-1070">2. RocksDB benchmark - 템플릿 사용 (RocksDB 10.7.0+ 호환)</h1>
+<h1 id="sudo-mkdir-p-rocksdbdata-rocksdbwal">디렉토리 생성: sudo mkdir -p /rocksdb/data /rocksdb/wal</h1>
+<h1 id="mkdir-p-log-ln-sf-loglog-rocksdbdatalog">로그 디렉토리 준비: mkdir -p ./log &amp;&amp; ln -sf ./log/LOG /rocksdb/data/LOG</h1>
+<h1 id="ulimit-n-65536">파일 디스크립터 제한 증가: ulimit -n 65536</h1>
+<h1 id="rocksdb-1070">RocksDB 10.7.0+ 호환 옵션 파일 생성</h1>
+<p>cat &gt; options-leveled.ini &lt;&lt; 'EOF'</p>
+<h1 id="rocksdb-107-leveled-compaction-options-ini-format">RocksDB 10.7+ leveled-compaction options (INI format)</h1>
+<h1 id="references">References:</h1>
+<h1 id="-rocksdb-options-file-format-httpsgithubcomfacebookrocksdbwikirocksdb-options-file">- RocksDB Options File format: https://github.com/facebook/rocksdb/wiki/RocksDB-Options-File</h1>
+<h1 id="-blockbasedtable-format-httpsgithubcomfacebookrocksdbwikirocksdb-blockbasedtable-format">- BlockBasedTable format: https://github.com/facebook/rocksdb/wiki/rocksdb-blockbasedtable-format</h1>
+<h1 id="notes">Notes:</h1>
+<h1 id="keep-path-arguments-eg-db-wal_dir-on-the-db_bench-command-line-not-inside-this-file">* Keep path arguments (e.g., --db, --wal_dir) on the db_bench command line, not inside this file.</h1>
+<h1 id="avoid-pointer-typed-or-unsupported-options-in-options-file-see-wiki">* Avoid pointer-typed or unsupported options in Options File (see wiki).</h1>
+<p>[Version]
+rocksdb_version=10.7.0
+options_file_version=1.1</p>
+<p>[DBOptions]</p>
+<h1 id="creation-general">Creation / general</h1>
+<p>create_if_missing=true
+create_missing_column_families=false</p>
+<h1 id="logging-stats">Logging / stats</h1>
+<p>keep_log_file_num=3
+stats_dump_period_sec=60</p>
+<h1 id="io-behavior">IO behavior</h1>
+<p>bytes_per_sync=1048576              # 1 MiB
+wal_bytes_per_sync=1048576          # 1 MiB
+use_direct_reads=true
+use_direct_io_for_flush_and_compaction=true
+compaction_readahead_size=0</p>
+<h1 id="write-threading">Write threading</h1>
+<p>enable_pipelined_write=true         # DBOptions::enable_pipelined_write
+allow_concurrent_memtable_write=true</p>
+<h1 id="background-work">Background work</h1>
+<p>max_open_files=2048
+max_background_jobs=12
+max_subcompactions=4</p>
+<p>[CFOptions "default"]</p>
+<h1 id="compaction-policy">Compaction policy</h1>
+<p>compaction_style=kCompactionStyleLevel
+compaction_pri=kMinOverlappingRatio
+num_levels=7
+level_compaction_dynamic_level_bytes=false
+max_bytes_for_level_multiplier=10.0</p>
+<h1 id="file-sizing-and-level-sizing">File sizing and level sizing</h1>
+<p>target_file_size_base=268435456         # 256 MiB
+target_file_size_multiplier=1
+max_bytes_for_level_base=2684354560     # ~2.5 GiB</p>
+<h1 id="compression-ensure-your-build-enables-these-otherwise-switch-to-knocompression">Compression (ensure your build enables these; otherwise switch to kNoCompression)</h1>
+<p>compression=kSnappyCompression
+bottommost_compression=kZSTD</p>
+<h1 id="memtable-l0">Memtable / L0</h1>
+<p>write_buffer_size=268435456             # 256 MiB per memtable
+max_write_buffer_number=3
+min_write_buffer_number_to_merge=1
+level0_file_num_compaction_trigger=4
+level0_slowdown_writes_trigger=20
+level0_stop_writes_trigger=36</p>
+<h1 id="table-factory-links-to-tableoptionsblockbasedtable-section-below">Table factory (links to TableOptions/BlockBasedTable section below)</h1>
+<p>table_factory=BlockBasedTable</p>
+<p>[TableOptions/BlockBasedTable "default"]</p>
+<h1 id="modern-table-format-forward-incompatible-with-very-old-rocksdb">Modern table format (forward-incompatible with very old RocksDB)</h1>
+<p>format_version=5</p>
+<h1 id="common-table-tuning-safe-defaults">Common table tuning (safe defaults)</h1>
+<p>block_size=65536                        # 64 KiB blocks (adjust per workload)
+cache_index_and_filter_blocks=true
+pin_l0_filter_and_index_blocks_in_cache=true
+whole_key_filtering=true
+checksum=kCRC32c
+filter_policy=rocksdb.BuiltinBloomFilter
+EOF</p>
+<p>./db_bench --options_file=options-leveled.ini \
+  --benchmarks=fillrandom --num=200000000 --value_size=1024 --threads=8 \
+  --db=/rocksdb/data --wal_dir=/rocksdb/wal</p>
+<h1 id="3-model-validation">3. Model validation</h1>
+<h1 id="v1">v1 모델 검증</h1>
+<p>python3 scripts/smax_calc.py --cr 0.5 --wa 8.0 --bw 1000 --br 2000 --beff 2500</p>
+<h1 id="v21">v2.1 모델 검증 (개선된 모델)</h1>
+<p>python3 scripts/smax_calc_v2.py</p>
+<h1 id="v3">v3 모델 시뮬레이션 (브라우저에서 실행)</h1>
+<h1 id="putmodel_v3html">PutModel_v3.html 파일을 브라우저에서 열어 시뮬레이션 실행</h1>
+<p>```</p>
+<h2 id="requirements">Requirements</h2>
+<h3 id="for-model-analysis">For Model Analysis</h3>
+<ul>
+<li>Python 3.8+</li>
+<li>matplotlib</li>
+<li>pandas</li>
+<li>numpy</li>
+<li>seaborn</li>
+</ul>
+<h3 id="for-real-system-validation">For Real System Validation</h3>
+<ul>
+<li>RocksDB (recent release)</li>
+<li>fio (for device calibration)</li>
+<li>Linux (5.x+), ext4 or XFS</li>
+<li>NVMe SSD (preferred)</li>
+<li><strong>Templates</strong>: <code>rocksdb_bench_templates/</code> 디렉토리의 설정 파일들 사용</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>```bash</p>
+<h1 id="_15">가상환경 생성</h1>
+<p>python3 -m venv .venv</p>
+<h1 id="_16">가상환경 활성화</h1>
+<p>source .venv/bin/activate  # macOS/Linux</p>
+<h1 id="_17">또는</h1>
+<p>.venv\Scripts\activate     # Windows</p>
+<h1 id="_18">의존성 설치</h1>
+<p>pip install matplotlib pandas numpy seaborn
+```</p>
+<h2 id="model-validation">Model Validation</h2>
+<p>이 프로젝트는 이론적 모델을 실제 RocksDB 시스템에서 검증할 수 있는 체계적인 계획을 제공합니다.</p>
+<h3 id="validation-plan-overview">Validation Plan Overview</h3>
+<p><strong>목표</strong>: 모델의 예측값이 실제 시스템과 ±10-15% 이내로 일치하는지 검증</p>
+<p><strong>6단계 검증 프로세스</strong>:
+1. <strong>Device Calibration</strong>: fio를 통한 B_w, B_r, B_eff 측정
+2. <strong>Empty → Steady Transient</strong>: 초기 버스트에서 steady state로의 수렴 과정
+3. <strong>Per-Level WAF Mass Balance</strong>: 레벨별 쓰기 앰플리피케이션 검증
+4. <strong>v1 Model Validation</strong>: 기본 모델 검증
+5. <strong>v2.1 Model Validation</strong>: 개선된 모델 검증 (Harmonic mean + Per-level)
+6. <strong>v3 Model Validation</strong>: 동적 시뮬레이터 검증</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li><strong>v1 Model</strong>: |S_max^meas - S_max^pred| / S_max^pred ≤ <strong>10%</strong> (목표)</li>
+<li><strong>v2.1 Model</strong>: |S_max^meas - S_max^pred| / S_max^pred ≤ <strong>20%</strong> (개선)</li>
+<li><strong>v3 Model</strong>: |S_max^meas - S_max^pred| / S_max^pred ≤ <strong>15%</strong> (달성)</li>
+<li><strong>Mass-balance error</strong>: |∑Write_i - CR×WA×user_MB| / (CR×WA×user_MB) ≤ <strong>10%</strong></li>
+<li><strong>Stabilization</strong>: pending_compaction_bytes의 장기 기울기 ≤ 0</li>
+</ul>
+<h3 id="2025-09-12_2">최신 검증 결과 (2025-09-12)</h3>
+<ul>
+<li><strong>v2.1 모델</strong>: 88.9% 정확도 (최고 성능)</li>
+<li><strong>v4.1 Temporal 모델</strong>: 69.8% 정확도 (시기별 세분화)</li>
+<li><strong>v4 모델</strong>: 7.5% 정확도 (Device Envelope)</li>
+<li><strong>v1, v3, v5 모델</strong>: 0.0% 정확도 (기본 모델)</li>
+</ul>
+<h3 id="_19">연구의 독창성</h3>
+<ul>
+<li><strong>이론적 독창성</strong>: LSM-tree 성능 모델링, 동적 시뮬레이터, 파라미터 민감도 분석</li>
+<li><strong>실험적 독창성</strong>: 6단계 검증 프로세스, 실제 데이터 활용, 자동화된 분석</li>
+<li><strong>도구적 독창성</strong>: Self-contained 시뮬레이터, 종합 시각화, 인터랙티브 보고서</li>
+<li><strong>혁신적 기여</strong>: 시기별 세분화 모델링, 컴팩션 진화 분석</li>
+</ul>
+<p>자세한 검증 절차는 다음 문서들을 참조하세요:
+- <a href="rocksdb_validation_plan.md">rocksdb_validation_plan.md</a> - 검증 계획 (마크다운)
+- <a href="ValidationPlan.html">ValidationPlan.html</a> - 검증 계획 (HTML, MathJax 수식)
+- <a href="VALIDATION_GUIDE.md">VALIDATION_GUIDE.md</a> - 검증 실행 가이드 (마크다운)
+- <a href="ValidationGuide.html">ValidationGuide.html</a> - 검증 실행 가이드 (HTML, MathJax 수식)</p>
+<h2 id="_20">실험 결과 관리</h2>
+<p>이 프로젝트는 체계적인 실험 결과 관리를 위한 디렉토리 구조를 제공합니다.</p>
+<h3 id="_21">실험 디렉토리 구조</h3>
+<p><code>experiments/
+├── 2025-09-12/                 # 최신 실험 디렉토리 ⭐
+│   ├── phase-a/                # 디바이스 캘리브레이션 결과
+│   ├── phase-b/                # RocksDB 벤치마크 결과
+│   ├── phase-c/                # Enhanced Models 개발 결과
+│   ├── phase-d/                # 프로덕션 통합 결과
+│   ├── phase-e/                # 고급 최적화 결과
+│   ├── styles/                 # CSS 스타일 파일
+│   ├── scripts/                # 분석 스크립트
+│   ├── 09_12_EXPERIMENT_SUMMARY.html  # 실험 요약 보고서
+│   ├── COMPREHENSIVE_ANALYSIS_REPORT.html  # 종합 분석 보고서
+│   └── COMPREHENSIVE_FINAL_ANALYSIS_WITH_V4_1_TEMPORAL.html  # v4.1 Temporal 포함 최종 보고서
+├── 2025-09-09/                 # 이전 실험 디렉토리
+├── 2025-09-08/                 # 이전 실험 디렉토리
+├── 2025-09-05/                 # 이전 실험 디렉토리
+└── templates/                  # 재사용 가능한 실험 템플릿들</code></p>
+<h3 id="_22">새로운 실험 시작</h3>
+<p>```bash</p>
+<h1 id="_23">현재 날짜로 실험 디렉토리 생성</h1>
+<p>CURRENT_DATE=$(date +%Y-%m-%d)
+mkdir -p experiments/$CURRENT_DATE/{phase-a,phase-b,phase-c,phase-d,phase-e,phase-f,reports}</p>
+<h1 id="_24">템플릿 복사</h1>
+<p>cp experiments/templates/* experiments/$CURRENT_DATE/
+```</p>
+<p>자세한 실험 관리 방법은 <a href="experiments/README.md">experiments/README.md</a>를 참조하세요.</p>
+<h2 id="tuning-checklist">Tuning Checklist</h2>
+<h3 id="performance-analysis">Performance Analysis</h3>
+<ul>
+<li>[ ] fio로 <code>B_w</code>, <code>B_r</code>, <code>B_eff</code> 측정 (지속 부하)</li>
+<li>[ ] <code>rocksdb.stats</code> 델타로 <code>CR</code>, <code>WA</code> 산정</li>
+<li>[ ] 계산기로 <code>S_max</code> 산출 및 헤드룸 20–30% 반영</li>
+<li>[ ] 레벨별 I/O 분해로 읽기 서비스 여유 확인</li>
+</ul>
+<h3 id="write-control">Write Control</h3>
+<ul>
+<li>[ ] <code>RateLimiter</code>와 <code>delayed_write_rate</code>로 <code>S_acc ≤ S_max</code> 보장</li>
+<li>[ ] 트리거/리밋 파라미터 히스테리시스 적용 (플래핑 방지)</li>
+<li>[ ] Write Bandwidth 초과 여부 확인</li>
+<li>[ ] 압축률 최적화로 WA 증가에 대한 저항력 향상</li>
+</ul>
+<h3 id="operational-planning">Operational Planning</h3>
+<ul>
+<li>[ ] 초기 버스트 효과를 고려한 운영 계획 수립</li>
+<li>[ ] 성능 모니터링 및 자동 튜닝 시스템 구현</li>
+<li>[ ] 정기적인 성능 지표 분석 및 최적화</li>
+</ul>
+<h2 id="_25">연구의 의의</h2>
+<h3 id="_26">학술적 의의</h3>
+<ul>
+<li><strong>LSM-tree 성능 모델링</strong>: 데이터베이스 성능 예측 분야의 이론적 기여</li>
+<li><strong>실험 방법론</strong>: 재현 가능한 성능 검증 방법론 제시</li>
+<li><strong>정량적 분석</strong>: 성능에 영향을 미치는 요인들의 정확한 정량화</li>
+<li><strong>시기별 세분화</strong>: 시간에 따른 성능 진화 분석</li>
+</ul>
+<h3 id="_27">실용적 의의</h3>
+<ul>
+<li><strong>운영 최적화</strong>: 실제 RocksDB 운영 환경에서의 성능 최적화 도구 제공</li>
+<li><strong>성능 예측</strong>: 새로운 워크로드나 환경에서의 성능 예측 가능</li>
+<li><strong>문제 진단</strong>: 성능 문제의 원인을 정확히 식별할 수 있는 도구</li>
+<li><strong>시기별 적응</strong>: 각 시기의 특성에 맞는 성능 예측</li>
+</ul>
+<h3 id="_28">기술적 의의</h3>
+<ul>
+<li><strong>오픈소스 기여</strong>: RocksDB 커뮤니티에 실용적인 도구 제공</li>
+<li><strong>재현성</strong>: 다른 연구자들이 동일한 실험을 재현할 수 있는 완전한 도구와 문서 제공</li>
+<li><strong>확장성</strong>: 다른 LSM-tree 기반 데이터베이스에도 적용 가능한 일반적인 방법론</li>
+<li><strong>혁신적 모델링</strong>: 시기별 세분화 및 컴팩션 진화 분석</li>
+</ul>
+<h2 id="license">License</h2>
+<p>MIT — <code>LICENSE</code> 참조.</p>
+        
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid #ecf0f1;">
+        
+        <div style="text-align: center; color: #7f8c8d; font-size: 0.9em;">
+            <p>Generated on 2025-09-17 06:14:47</p>
+            <p>RocksDB Put-Rate Model Project</p>
         </div>
     </div>
 </body>

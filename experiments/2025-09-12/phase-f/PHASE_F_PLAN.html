@@ -1,102 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="../styles/project.css">
+
+    <link rel="stylesheet" href="../styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
-            margin-top: 30px;
-        }
-        h3 {
-            color: #7f8c8d;
-            margin-top: 25px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .success {
-            background-color: #d4edda;
-            padding: 10px;
-            border-left: 4px solid #28a745;
-            margin: 10px 0;
-        }
-        .info {
-            background-color: #d1ecf1;
-            padding: 10px;
-            border-left: 4px solid #17a2b8;
-            margin: 10px 0;
-        }
-        .warning {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            text-align: center;
-            color: #7f8c8d;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container">
@@ -107,11 +19,11 @@
 <h3>1. 연구 성과 정리</h3>
 <h4>1.1 모든 실험 결과 종합</h4>
 <ul>
-<li><strong>Phase-A 결과</strong>: FillRandom 특화 모델 개발 결과</li>
-<li><strong>Phase-B 결과</strong>: 다중 환경 검증 결과</li>
-<li><strong>Phase-C 결과</strong>: 실시간 적응 모델링 결과</li>
-<li><strong>Phase-D 결과</strong>: 통합 모델 검증 결과</li>
-<li><strong>Phase-E 결과</strong>: 산업 적용성 평가 결과</li>
+<li><strong><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 결과</strong>: FillRandom 특화 모델 개발 결과</li>
+<li><strong><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 결과</strong>: 다중 환경 검증 결과</li>
+<li><strong><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 결과</strong>: 실시간 적응 모델링 결과</li>
+<li><strong><span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> 결과</strong>: 통합 모델 검증 결과</li>
+<li><strong><span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> 결과</strong>: 산업 적용성 평가 결과</li>
 </ul>
 <h4>1.2 모델 성능 비교 분석</h4>
 <ul>
@@ -191,12 +103,12 @@
 <h3>Day 1: 연구 성과 정리</h3>
 <ol>
 <li><strong>모든 실험 결과 종합</strong></li>
-<li>Phase-A 결과 종합</li>
-<li>Phase-B 결과 종합</li>
-<li>Phase-C 결과 종합</li>
-<li>Phase-D 결과 종합</li>
+<li><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 결과 종합</li>
+<li><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 결과 종합</li>
+<li><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 결과 종합</li>
+<li><span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> 결과 종합</li>
 <li>
-<p>Phase-E 결과 종합</p>
+<p><span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> 결과 종합</p>
 </li>
 <li>
 <p><strong>모델 성능 비교 분석</strong></p>
@@ -327,9 +239,9 @@
 <h2>🎯 성공 지표</h2>
 <h3>정량적 지표</h3>
 <ul>
-<li><strong>논문 완성도</strong>: 90% 이상 완성</li>
-<li><strong>코드 품질</strong>: 95% 이상 테스트 통과</li>
-<li><strong>문서화 완성도</strong>: 100% 문서화 완료</li>
+<li><strong>논문 완성도</strong>: <span class="performance-excellent"><span class="performance-excellent">90%</span></span> 이상 완성</li>
+<li><strong>코드 품질</strong>: <span class="performance-excellent"><span class="performance-excellent">95%</span></span> 이상 테스트 통과</li>
+<li><strong>문서화 완성도</strong>: <span class="performance-excellent"><span class="performance-excellent">100%</span></span> 문서화 완료</li>
 </ul>
 <h3>정성적 지표</h3>
 <ul>

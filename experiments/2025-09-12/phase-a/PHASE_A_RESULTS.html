@@ -1,116 +1,28 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="../styles/project.css">
+
+    <link rel="stylesheet" href="../styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
-            margin-top: 30px;
-        }
-        h3 {
-            color: #7f8c8d;
-            margin-top: 25px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .success {
-            background-color: #d4edda;
-            padding: 10px;
-            border-left: 4px solid #28a745;
-            margin: 10px 0;
-        }
-        .info {
-            background-color: #d1ecf1;
-            padding: 10px;
-            border-left: 4px solid #17a2b8;
-            margin: 10px 0;
-        }
-        .warning {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            text-align: center;
-            color: #7f8c8d;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container">
-        <h1>Phase-A: Device Envelope Model Analysis Results</h1>
+        <h1><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span>: Device Envelope Model Analysis Results</h1>
 <h2>📋 Executive Summary</h2>
 <p><strong>Analysis Date:</strong> 2025-09-16T16:20:34.674692<br />
-<strong>Phase:</strong> Phase-A Corrected Analysis<br />
+<strong>Phase:</strong> <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> Corrected Analysis<br />
 <strong>Total Tests:</strong> 108<br />
 <strong>Initial State Tests:</strong> 54<br />
 <strong>Degraded State Tests:</strong> 54  </p>
 <h3>🎯 Objectives</h3>
 <ul>
 <li>Measure device performance in initial (fresh) state</li>
-<li>Measure device performance in degraded (aged) state after Phase-B</li>
+<li>Measure device performance in degraded (aged) state after <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span></li>
 <li>Compare performance characteristics between states</li>
 <li>Update Device Envelope model with aging factors</li>
 </ul>
@@ -128,7 +40,7 @@
 <li><strong>Block Sizes:</strong> 4k, 8k, 16k, 32k, 64k, 128k, 256k, 512k, 1m</li>
 <li><strong>Queue Depths:</strong> 1, 2, 4, 8, 16, 32, 64, 128</li>
 <li><strong>Parallel Jobs:</strong> 1, 2, 4, 8, 16, 32</li>
-<li><strong>Read Ratios:</strong> 0%, 10%, 25%, 50%, 75%, 90%, 100%</li>
+<li><strong>Read Ratios:</strong> <span class="performance-poor"><span class="performance-poor">0%</span></span>, <span class="performance-poor"><span class="performance-poor">10%</span></span>, <span class="performance-poor"><span class="performance-poor">25%</span></span>, <span class="performance-fair"><span class="performance-fair">50%</span></span>, <span class="performance-good"><span class="performance-good">75%</span></span>, <span class="performance-excellent"><span class="performance-excellent">90%</span></span>, <span class="performance-excellent"><span class="performance-excellent">100%</span></span></li>
 </ul>
 <h2>🔬 Test Results</h2>
 <h3>Initial State Performance</h3>
@@ -147,8 +59,8 @@
 </ul>
 <h3>Performance Degradation Analysis</h3>
 <ul>
-<li><strong>Write Performance Degradation:</strong> 0.0%</li>
-<li><strong>Read Performance Degradation:</strong> 0.0%</li>
+<li><strong>Write Performance Degradation:</strong> <span class="performance-poor"><span class="performance-poor">0.0%</span></span></li>
+<li><strong>Read Performance Degradation:</strong> <span class="performance-poor"><span class="performance-poor">0.0%</span></span></li>
 </ul>
 <h2>📈 Visualizations</h2>
 <h3>1. Main Performance Comparison</h3>
@@ -202,7 +114,7 @@
 <li><strong>Initial State Files:</strong> 54</li>
 <li><strong>Degraded State Files:</strong> 54</li>
 <li><strong>Comparison Possible:</strong> True</li>
-<li><strong>Data Completeness:</strong> 100%</li>
+<li><strong>Data Completeness:</strong> <span class="performance-excellent"><span class="performance-excellent">100%</span></span></li>
 </ul>
 <h2>🎯 Conclusions</h2>
 <ol>
@@ -238,14 +150,14 @@
 </ul>
 <h2>🔄 Next Steps</h2>
 <ol>
-<li><strong>Phase-C Preparation:</strong> LOG file analysis</li>
+<li><strong><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> Preparation:</strong> LOG file analysis</li>
 <li><strong>Device Envelope Model Update:</strong> Incorporate aging factors</li>
 <li><strong>Performance Prediction:</strong> Update models with aging data</li>
 <li><strong>Validation:</strong> Compare predictions with actual performance</li>
 </ol>
 <hr />
 <p><strong>Report Generated:</strong> 2025-09-16 16:27:38<br />
-<strong>Analysis Tool:</strong> Phase-A Complete Analysis Script<br />
+<strong>Analysis Tool:</strong> <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> Complete Analysis Script<br />
 <strong>Data Source:</strong> RocksDB Put-Rate Model Experiment 2025-09-12</p>
         <div class="footer">
             <p>Report Generated: 2025-09-17 05:26:59</p>

@@ -1,102 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="styles/project.css">
+
+    <link rel="stylesheet" href="styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
-            margin-top: 30px;
-        }
-        h3 {
-            color: #7f8c8d;
-            margin-top: 25px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .success {
-            background-color: #d4edda;
-            padding: 10px;
-            border-left: 4px solid #28a745;
-            margin: 10px 0;
-        }
-        .info {
-            background-color: #d1ecf1;
-            padding: 10px;
-            border-left: 4px solid #17a2b8;
-            margin: 10px 0;
-        }
-        .warning {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            text-align: center;
-            color: #7f8c8d;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container">
@@ -111,9 +23,9 @@
 <li><strong>장치 열화가 FillRandom 성능에 미치는 영향은?</strong></li>
 </ol>
 <h2>📋 실험 실행 순서</h2>
-<h3>Phase-A: Device Envelope 모델 구축</h3>
+<h3><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span>: Device Envelope 모델 구축</h3>
 <h4>목적</h4>
-<p>초기상태 장치 성능과 Phase-B 이후 열화된 상태에서의 장치 성능을 측정하여 Device Envelope 모델 구축</p>
+<p>초기상태 장치 성능과 <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 이후 열화된 상태에서의 장치 성능을 측정하여 Device Envelope 모델 구축</p>
 <h4>실행 방법</h4>
 <pre class="codehilite"><code class="language-bash">cd /home/sslab/rocksdb-put-model/experiments/2025-09-12
 python3 scripts/run_phase_a.py
@@ -123,8 +35,8 @@ python3 scripts/run_phase_a.py
 <ol>
 <li><strong>SSD 완전 초기화</strong>: <code>umount</code>, <code>blkdiscard</code>, <code>mkfs.f2fs</code></li>
 <li><strong>초기 상태 장치 성능 측정</strong>: fio 그리드 벤치마크 (364개 측정점)</li>
-<li><strong>Phase-B 실험 진행 안내</strong>: FillRandom 실험 실행 요청</li>
-<li><strong>열화 상태 장치 성능 측정</strong>: Phase-B 완료 후 동일한 fio 벤치마크</li>
+<li><strong><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실험 진행 안내</strong>: FillRandom 실험 실행 요청</li>
+<li><strong>열화 상태 장치 성능 측정</strong>: <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 완료 후 동일한 fio 벤치마크</li>
 <li><strong>Device Envelope 모델 구축</strong>: 4D Grid Interpolation + 시간 의존성</li>
 </ol>
 <h4>예상 소요 시간</h4>
@@ -133,7 +45,7 @@ python3 scripts/run_phase_a.py
 <li><strong>열화 상태 측정</strong>: 약 2-3시간</li>
 <li><strong>총 소요 시간</strong>: 약 4-6시간</li>
 </ul>
-<h3>Phase-B: FillRandom 성능 분석 및 컴팩션 모니터링</h3>
+<h3><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span>: FillRandom 성능 분석 및 컴팩션 모니터링</h3>
 <h4>목적</h4>
 <p>LOG 파일을 저장하고, 시간에 따라 FillRandom 성능과 레벨별 컴팩션량을 분석할 수 있도록 충분한 로그를 사용하고, 시각화를 포함</p>
 <h4>실행 방법</h4>
@@ -191,13 +103,13 @@ df -h /rocksdb
 </code></pre>
 
 <h2>📊 실험 설정</h2>
-<h3>Phase-A 설정</h3>
+<h3><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 설정</h3>
 <ul>
 <li><strong>fio 벤치마크</strong>: 4K~1M 블록 크기, 1~64 큐 깊이</li>
 <li><strong>측정점</strong>: 364개 (9×7×5×5 = 1575개 중 중복 제거)</li>
 <li><strong>테스트 시간</strong>: 각 측정점당 5분 + 1분 워밍업</li>
 </ul>
-<h3>Phase-B 설정</h3>
+<h3><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 설정</h3>
 <ul>
 <li><strong>데이터 크기</strong>: 10억 키 (약 1TB)</li>
 <li><strong>값 크기</strong>: 1024 bytes (1KB)</li>
@@ -206,7 +118,7 @@ df -h /rocksdb
 <li><strong>로깅</strong>: 1분 간격 성능 통계, 상세한 컴팩션 로그</li>
 </ul>
 <h2>📁 출력 파일 구조</h2>
-<h3>Phase-A 출력</h3>
+<h3><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 출력</h3>
 <pre class="codehilite"><code>phase-a/
 ├── data/
 │   ├── fio_grid_initial_results.csv      # 초기 상태 fio 결과
@@ -217,7 +129,7 @@ df -h /rocksdb
 └── phase_a_YYYYMMDD_HHMMSS.log          # 실행 로그
 </code></pre>
 
-<h3>Phase-B 출력</h3>
+<h3><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 출력</h3>
 <pre class="codehilite"><code>phase-b/
 ├── data/
 │   ├── fillrandom_uniform_output.log     # Uniform 분포 실험 출력
@@ -241,9 +153,9 @@ df -h /rocksdb
 <h2>⚠️ 주의사항</h2>
 <h3>1. 실험 순서</h3>
 <ul>
-<li><strong>Phase-A를 먼저 실행</strong>하여 초기 상태 측정</li>
-<li><strong>Phase-B 실험 진행</strong> (FillRandom 실험)</li>
-<li><strong>Phase-A 재실행</strong>하여 열화 상태 측정</li>
+<li><strong><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span>를 먼저 실행</strong>하여 초기 상태 측정</li>
+<li><strong><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실험 진행</strong> (FillRandom 실험)</li>
+<li><strong><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 재실행</strong>하여 열화 상태 측정</li>
 </ul>
 <h3>2. 데이터 백업</h3>
 <pre class="codehilite"><code class="language-bash"># 중요한 데이터는 백업
@@ -265,13 +177,13 @@ du -sh /rocksdb/data/LOG*
 
 <h2>🚀 실행 예시</h2>
 <h3>전체 실험 실행</h3>
-<pre class="codehilite"><code class="language-bash"># 1. Phase-A 시작 (초기 상태 측정)
+<pre class="codehilite"><code class="language-bash"># 1. <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 시작 (초기 상태 측정)
 python3 scripts/run_phase_a.py
 
-# 2. Phase-B 실행 (FillRandom 실험)
+# 2. <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실행 (FillRandom 실험)
 python3 scripts/run_phase_b.py
 
-# 3. Phase-A 재실행 (열화 상태 측정)
+# 3. <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 재실행 (열화 상태 측정)
 python3 scripts/run_phase_a.py
 
 # 4. 결과 분석
@@ -280,10 +192,10 @@ python3 scripts/generate_report.py
 </code></pre>
 
 <h3>개별 실험 실행</h3>
-<pre class="codehilite"><code class="language-bash"># Phase-A만 실행
+<pre class="codehilite"><code class="language-bash"># <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span>만 실행
 python3 scripts/run_phase_a.py
 
-# Phase-B만 실행
+# <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span>만 실행
 python3 scripts/run_phase_b.py
 
 # 로그 분석만 실행
@@ -294,13 +206,13 @@ python3 scripts/generate_report.py
 </code></pre>
 
 <h2>📈 예상 결과</h2>
-<h3>Phase-A 결과</h3>
+<h3><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 결과</h3>
 <ul>
 <li><strong>Device Envelope 모델</strong>: 4D Grid Interpolation + 시간 의존성</li>
 <li><strong>성능 열화 분석</strong>: 초기 대비 성능 저하율</li>
-<li><strong>예상 열화율</strong>: 쓰기 성능 15-20% 저하</li>
+<li><strong>예상 열화율</strong>: 쓰기 성능 15-<span class="performance-poor"><span class="performance-poor">20%</span></span> 저하</li>
 </ul>
-<h3>Phase-B 결과</h3>
+<h3><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 결과</h3>
 <ul>
 <li><strong>성능 트렌드</strong>: 시간별 처리량, 지연시간 변화</li>
 <li><strong>컴팩션 패턴</strong>: 레벨별 컴팩션 빈도, 크기</li>

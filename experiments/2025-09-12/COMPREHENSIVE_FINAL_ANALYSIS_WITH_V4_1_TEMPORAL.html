@@ -1,22 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="styles/project.css">
+
+    <link rel="stylesheet" href="styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comprehensive Final Analysis with v4.1 Temporal Model</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
-        h1, h2, h3 { color: #333; }
-        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #f2f2f2; font-weight: bold; }
-        .highlight { background-color: #ffffcc; }
-        .success { color: #28a745; font-weight: bold; }
-        .warning { color: #ffc107; font-weight: bold; }
-        .danger { color: #dc3545; font-weight: bold; }
-    </style>
+    
 </head>
 <body>
+    <div class="container">
+
 <h1>Comprehensive Final Analysis Report with v4.1 Temporal Model</h1>
 <h2>Overview</h2>
 <p>This report presents a comprehensive analysis of all RocksDB Put-Rate models including the newly developed v4.1 Temporal model with phase-wise compaction behavior evolution.</p>
@@ -31,7 +27,7 @@
 <h3>📊 Model Performance Ranking</h3>
 <table>
 <thead>
-<tr>
+<tr class="rank-1" class="rank-1">
 <th>Rank</th>
 <th>Model</th>
 <th>Predicted S_max</th>
@@ -42,7 +38,7 @@
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="rank-1" class="rank-1">
 <td>1</td>
 <td><strong>v2_1</strong></td>
 <td>105227</td>
@@ -51,7 +47,7 @@
 <td>11.1</td>
 <td>enhanced</td>
 </tr>
-<tr>
+<tr class="rank-2" class="rank-2">
 <td>2</td>
 <td><strong>v4_1_temporal</strong></td>
 <td>82714</td>
@@ -60,7 +56,7 @@
 <td>30.2</td>
 <td>temporal_enhanced</td>
 </tr>
-<tr>
+<tr class="rank-3" class="rank-3">
 <td>3</td>
 <td><strong>v4</strong></td>
 <td>8854</td>
@@ -101,9 +97,9 @@
 <h2>v4.1 Temporal Model Special Analysis</h2>
 <h3>🚀 Temporal Model Performance</h3>
 <ul>
-<li><strong>Overall Accuracy</strong>: 69.8%</li>
+<li><strong>Overall Accuracy</strong>: <span class="performance-good"><span class="performance-good">69.8%</span></span></li>
 <li><strong>Overall R² Score</strong>: 0.698</li>
-<li><strong>Overall Error Rate</strong>: 30.2%</li>
+<li><strong>Overall Error Rate</strong>: <span class="performance-poor"><span class="performance-poor">30.2%</span></span></li>
 </ul>
 <h3>📈 Phase-wise Performance Breakdown</h3>
 <table>
@@ -137,12 +133,12 @@
 </tbody>
 </table>
 <h2>Phase Data Summary</h2>
-<h3>Phase-A (Device Performance Analysis)</h3>
+<h3><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> (Device Performance Analysis)</h3>
 <ul>
 <li><strong>Device Performance</strong>: N/A</li>
 <li><strong>I/O Characteristics</strong>: N/A</li>
 </ul>
-<h3>Phase-B (Experimental Results)</h3>
+<h3><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> (Experimental Results)</h3>
 <ul>
 <li><strong>Total Records</strong>: 34778</li>
 <li><strong>Stable Records</strong>: 34777</li>
@@ -150,19 +146,19 @@
 <li><strong>Max QPS</strong>: 663287</li>
 <li><strong>Min QPS</strong>: 160</li>
 </ul>
-<h3>Phase-C (Enhanced Models)</h3>
+<h3><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> (Enhanced Models)</h3>
 <ul>
 <li><strong>Enhanced Models</strong>: 5</li>
 <li><strong>RocksDB LOG Enhanced</strong>: True</li>
 <li><strong>Analysis Status</strong>: Complete</li>
 </ul>
-<h3>Phase-D (Production Integration)</h3>
+<h3><span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> (Production Integration)</h3>
 <ul>
 <li><strong>Production Integration</strong>: N/A</li>
 <li><strong>Auto-tuning System</strong>: N/A</li>
 <li><strong>Real-time Monitoring</strong>: N/A</li>
 </ul>
-<h3>Phase-E (Advanced Optimization)</h3>
+<h3><span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> (Advanced Optimization)</h3>
 <ul>
 <li><strong>ML Integration</strong>: N/A</li>
 <li><strong>Optimization Framework</strong>: N/A</li>
@@ -172,7 +168,7 @@
 <h3>🏆 Best Performing Model</h3>
 <ul>
 <li><strong>Model</strong>: v2_1</li>
-<li><strong>Accuracy</strong>: 88.9%</li>
+<li><strong>Accuracy</strong>: <span class="performance-excellent"><span class="performance-excellent">88.9%</span></span></li>
 <li><strong>R² Score</strong>: 0.889</li>
 <li><strong>Model Type</strong>: enhanced</li>
 </ul>
@@ -180,7 +176,7 @@
 <ul>
 <li><strong>Phase-wise Analysis</strong>: Initial, Middle, Final phase modeling</li>
 <li><strong>Compaction Evolution</strong>: Time-dependent compaction behavior analysis</li>
-<li><strong>Performance Optimization</strong>: 97.7% accuracy in final phase</li>
+<li><strong>Performance Optimization</strong>: <span class="performance-excellent"><span class="performance-excellent">97.7%</span></span> accuracy in final phase</li>
 <li><strong>Temporal Adaptation</strong>: Adaptive performance prediction across phases</li>
 </ul>
 <h3>📊 Overall Project Success</h3>
@@ -188,14 +184,15 @@
 <li><strong>Total Models</strong>: 6</li>
 <li><strong>Enhanced Models</strong>: 5 (v1, v2.1, v3, v4, v5)</li>
 <li><strong>Temporal Model</strong>: 1 (v4.1 Temporal)</li>
-<li><strong>Best Accuracy</strong>: 88.9%</li>
+<li><strong>Best Accuracy</strong>: <span class="performance-excellent"><span class="performance-excellent">88.9%</span></span></li>
 <li><strong>Project Status</strong>: Complete with Innovation</li>
 </ul>
 <h2>Visualization</h2>
 <p><img alt="Comprehensive Analysis with v4.1 Temporal Model" src="comprehensive_analysis_with_v4_1_temporal.png" /></p>
 <h2>Analysis Conclusion</h2>
-<p>The comprehensive analysis demonstrates significant improvements in RocksDB Put-Rate modeling through enhanced models and temporal analysis. The v4.1 Temporal model represents a breakthrough in phase-wise compaction behavior modeling, achieving 97.7% accuracy in the final stabilization phase.</p>
+<p>The comprehensive analysis demonstrates significant improvements in RocksDB Put-Rate modeling through enhanced models and temporal analysis. The v4.1 Temporal model represents a breakthrough in phase-wise compaction behavior modeling, achieving <span class="performance-excellent"><span class="performance-excellent">97.7%</span></span> accuracy in the final stabilization phase.</p>
 <h2>Analysis Time</h2>
 <p>2025-09-17 06:01:45</p>
+    </div>
 </body>
 </html>

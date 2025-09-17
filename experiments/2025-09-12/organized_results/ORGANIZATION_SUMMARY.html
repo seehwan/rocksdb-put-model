@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="../styles/project.css">
+
+    <link rel="stylesheet" href="../styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Organization Summary</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
-        h1, h2, h3 { color: #333; }
-        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        code { background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; }
-        pre { background-color: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
-    </style>
+    
 </head>
 <body>
+    <div class="container">
+
     <h1>📁 RocksDB Put-Rate Model Project - File Organization Summary</h1>
 <h2>📋 Organization Overview</h2>
 <p><strong>Organized Date</strong>: 2025-09-17 05:29:02
@@ -22,25 +20,25 @@
 <h2>📂 Directory Structure</h2>
 <pre class="codehilite"><code>organized_results/
 ├── reports/
-│   ├── phase_a/          # Phase-A 보고서
-│   ├── phase_b/          # Phase-B 보고서  
-│   ├── phase_c/          # Phase-C 보고서
-│   ├── phase_d/          # Phase-D 보고서
-│   ├── phase_e/          # Phase-E 보고서
+│   ├── phase_a/          # <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 보고서
+│   ├── phase_b/          # <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 보고서  
+│   ├── phase_c/          # <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 보고서
+│   ├── phase_d/          # <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> 보고서
+│   ├── phase_e/          # <span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> 보고서
 │   └── final/            # 최종 보고서
 ├── visualizations/
-│   ├── phase_a/          # Phase-A 시각화
-│   ├── phase_b/          # Phase-B 시각화
-│   ├── phase_c/          # Phase-C 시각화
-│   ├── phase_d/          # Phase-D 시각화
-│   ├── phase_e/          # Phase-E 시각화
+│   ├── phase_a/          # <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 시각화
+│   ├── phase_b/          # <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 시각화
+│   ├── phase_c/          # <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 시각화
+│   ├── phase_d/          # <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> 시각화
+│   ├── phase_e/          # <span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> 시각화
 │   └── final/            # 최종 시각화
 ├── data/
-│   ├── phase_a/          # Phase-A 데이터
-│   ├── phase_b/          # Phase-B 데이터
-│   ├── phase_c/          # Phase-C 데이터
-│   ├── phase_d/          # Phase-D 데이터
-│   ├── phase_e/          # Phase-E 데이터
+│   ├── phase_a/          # <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 데이터
+│   ├── phase_b/          # <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 데이터
+│   ├── phase_c/          # <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 데이터
+│   ├── phase_d/          # <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> 데이터
+│   ├── phase_e/          # <span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> 데이터
 │   └── final/            # 최종 데이터
 └── scripts/              # 모든 스크립트
 </code></pre>
@@ -82,7 +80,7 @@
 <td>reports/phase_a</td>
 <td>4</td>
 </tr>
-<tr>
+<tr class="rank-3" class="rank-3">
 <td>reports/phase_b</td>
 <td>3</td>
 </tr>
@@ -94,7 +92,7 @@
 <td>reports/phase_d</td>
 <td>5</td>
 </tr>
-<tr>
+<tr class="rank-3" class="rank-3">
 <td>reports/phase_e</td>
 <td>3</td>
 </tr>
@@ -114,7 +112,7 @@
 <td>visualizations/phase_c</td>
 <td>8</td>
 </tr>
-<tr>
+<tr class="rank-1" class="rank-1">
 <td>visualizations/phase_d</td>
 <td>1</td>
 </tr>
@@ -128,22 +126,22 @@
 <h3>📄 Main Reports</h3>
 <ul>
 <li><strong>COMPREHENSIVE_FINAL_ANALYSIS_REPORT.html</strong> - 최종 종합 분석 보고서</li>
-<li><strong>PHASE_A_RESULTS.html</strong> - Phase-A 결과 보고서</li>
-<li><strong>PHASE_B_PLAN.html</strong> - Phase-B 계획서</li>
-<li><strong>PHASE_C_PLAN.html</strong> - Phase-C 계획서</li>
-<li><strong>PHASE_D_FINAL_REPORT.html</strong> - Phase-D 최종 보고서</li>
-<li><strong>PHASE_E_PLAN.html</strong> - Phase-E 계획서</li>
+<li><strong>PHASE_A_RESULTS.html</strong> - <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 결과 보고서</li>
+<li><strong>PHASE_B_PLAN.html</strong> - <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 계획서</li>
+<li><strong>PHASE_C_PLAN.html</strong> - <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span> 계획서</li>
+<li><strong>PHASE_D_FINAL_REPORT.html</strong> - <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> 최종 보고서</li>
+<li><strong>PHASE_E_PLAN.html</strong> - <span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span> 계획서</li>
 </ul>
 <h3>🖼️ Key Visualizations</h3>
 <ul>
 <li><strong>comprehensive_final_analysis.png</strong> - 종합 분석 시각화</li>
 <li><strong>enhanced_models_corrected_comparison.png</strong> - Enhanced 모델 비교</li>
-<li><strong>phase_a_dashboard.png</strong> - Phase-A 대시보드</li>
-<li><strong>phase_b_performance_trend.png</strong> - Phase-B 성능 트렌드</li>
+<li><strong>phase_a_dashboard.png</strong> - <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span> 대시보드</li>
+<li><strong>phase_b_performance_trend.png</strong> - <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 성능 트렌드</li>
 </ul>
 <h3>📊 Key Data Files</h3>
 <ul>
-<li><strong>fillrandom_results.json</strong> - Phase-B 실험 데이터</li>
+<li><strong>fillrandom_results.json</strong> - <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span> 실험 데이터</li>
 <li><strong>rocksdb_log_phase_b.log</strong> - RocksDB LOG 데이터</li>
 <li><strong>enhanced_models_corrected_comprehensive_results.json</strong> - Enhanced 모델 결과</li>
 </ul>
@@ -179,16 +177,17 @@
 </ol>
 <h3>Quick Links</h3>
 <ul>
-<li><strong>Phase-A</strong>: Device Performance Analysis</li>
-<li><strong>Phase-B</strong>: Experimental Data Collection  </li>
-<li><strong>Phase-C</strong>: Enhanced Model Development</li>
-<li><strong>Phase-D</strong>: Production Integration</li>
-<li><strong>Phase-E</strong>: Advanced Optimization</li>
+<li><strong><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span></strong>: Device Performance Analysis</li>
+<li><strong><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span></strong>: Experimental Data Collection  </li>
+<li><strong><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span></strong>: Enhanced Model Development</li>
+<li><strong><span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span></strong>: Production Integration</li>
+<li><strong><span class="phase-indicator phase-e"><span class="phase-indicator phase-e">Phase-E</span></span></strong>: Advanced Optimization</li>
 <li><strong>Final</strong>: Comprehensive Analysis &amp; Results</li>
 </ul>
 <hr />
 <p><strong>Organization Completed</strong>: 2025-09-17 05:29:02
 <strong>Total Project Files</strong>: 103
-<strong>Organization Success</strong>: 100%</p>
+<strong>Organization Success</strong>: <span class="performance-excellent"><span class="performance-excellent">100%</span></span></p>
+    </div>
 </body>
 </html>

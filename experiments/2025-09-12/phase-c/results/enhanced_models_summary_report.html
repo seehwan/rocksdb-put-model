@@ -1,102 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="../../styles/project.css">
+
+    <link rel="stylesheet" href="../../styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
-            margin-top: 30px;
-        }
-        h3 {
-            color: #7f8c8d;
-            margin-top: 25px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .success {
-            background-color: #d4edda;
-            padding: 10px;
-            border-left: 4px solid #28a745;
-            margin: 10px 0;
-        }
-        .info {
-            background-color: #d1ecf1;
-            padding: 10px;
-            border-left: 4px solid #17a2b8;
-            margin: 10px 0;
-        }
-        .warning {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            text-align: center;
-            color: #7f8c8d;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container">
@@ -123,7 +35,7 @@
 <td>Enhanced v1</td>
 <td>4166.57</td>
 <td>172.00</td>
-<td>95.87%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">95.87%</span></span></td>
 <td>Poor</td>
 <td>Yes</td>
 </tr>
@@ -131,7 +43,7 @@
 <td>Enhanced v2_1</td>
 <td>15.69</td>
 <td>172.00</td>
-<td>996.50%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">996.50%</span></span></td>
 <td>Poor</td>
 <td>Yes</td>
 </tr>
@@ -139,7 +51,7 @@
 <td>Enhanced v3</td>
 <td>4.82</td>
 <td>172.00</td>
-<td>3471.43%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">3471.43%</span></span></td>
 <td>Poor</td>
 <td>Yes</td>
 </tr>
@@ -147,7 +59,7 @@
 <td>Enhanced v4</td>
 <td>0.00</td>
 <td>172.00</td>
-<td>99.72%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">99.72%</span></span></td>
 <td>Poor</td>
 <td>Yes</td>
 </tr>
@@ -155,7 +67,7 @@
 <td>Enhanced v5</td>
 <td>53140.90</td>
 <td>172.00</td>
-<td>99.68%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">99.68%</span></span></td>
 <td>Poor</td>
 <td>Yes</td>
 </tr>
@@ -166,7 +78,7 @@
 <ul>
 <li><strong>Predicted S_max</strong>: 4166.57 ops/sec</li>
 <li><strong>Actual QPS Mean</strong>: 172.00 ops/sec</li>
-<li><strong>Error Rate</strong>: -95.87%</li>
+<li><strong>Error Rate</strong>: -<span class="performance-excellent"><span class="performance-excellent">95.87%</span></span></li>
 <li><strong>Validation Status</strong>: Poor</li>
 <li><strong>RocksDB LOG Enhanced</strong>: Yes</li>
 </ul>
@@ -174,7 +86,7 @@
 <ul>
 <li><strong>Predicted S_max</strong>: 15.69 ops/sec</li>
 <li><strong>Actual QPS Mean</strong>: 172.00 ops/sec</li>
-<li><strong>Error Rate</strong>: 996.50%</li>
+<li><strong>Error Rate</strong>: <span class="performance-excellent"><span class="performance-excellent">996.50%</span></span></li>
 <li><strong>Validation Status</strong>: Poor</li>
 <li><strong>RocksDB LOG Enhanced</strong>: Yes</li>
 </ul>
@@ -182,7 +94,7 @@
 <ul>
 <li><strong>Predicted S_max</strong>: 4.82 ops/sec</li>
 <li><strong>Actual QPS Mean</strong>: 172.00 ops/sec</li>
-<li><strong>Error Rate</strong>: 3471.43%</li>
+<li><strong>Error Rate</strong>: <span class="performance-excellent"><span class="performance-excellent">3471.43%</span></span></li>
 <li><strong>Validation Status</strong>: Poor</li>
 <li><strong>RocksDB LOG Enhanced</strong>: Yes</li>
 </ul>
@@ -190,7 +102,7 @@
 <ul>
 <li><strong>Predicted S_max</strong>: 0.00 ops/sec</li>
 <li><strong>Actual QPS Mean</strong>: 172.00 ops/sec</li>
-<li><strong>Error Rate</strong>: -99.72%</li>
+<li><strong>Error Rate</strong>: -<span class="performance-excellent"><span class="performance-excellent">99.72%</span></span></li>
 <li><strong>Validation Status</strong>: Poor</li>
 <li><strong>RocksDB LOG Enhanced</strong>: Yes</li>
 </ul>
@@ -198,7 +110,7 @@
 <ul>
 <li><strong>Predicted S_max</strong>: 53140.90 ops/sec</li>
 <li><strong>Actual QPS Mean</strong>: 172.00 ops/sec</li>
-<li><strong>Error Rate</strong>: -99.68%</li>
+<li><strong>Error Rate</strong>: -<span class="performance-excellent"><span class="performance-excellent">99.68%</span></span></li>
 <li><strong>Validation Status</strong>: Poor</li>
 <li><strong>RocksDB LOG Enhanced</strong>: Yes</li>
 </ul>

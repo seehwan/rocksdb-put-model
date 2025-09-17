@@ -1,113 +1,25 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="styles/project.css">
+
+    <link rel="stylesheet" href="styles/project.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
-            margin-top: 30px;
-        }
-        h3 {
-            color: #7f8c8d;
-            margin-top: 25px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .success {
-            background-color: #d4edda;
-            padding: 10px;
-            border-left: 4px solid #28a745;
-            margin: 10px 0;
-        }
-        .info {
-            background-color: #d1ecf1;
-            padding: 10px;
-            border-left: 4px solid #17a2b8;
-            margin: 10px 0;
-        }
-        .warning {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 10px 0;
-        }
-        .footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            text-align: center;
-            color: #7f8c8d;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container">
         <h1>RocksDB Put-Rate Models: Comprehensive Analysis Report</h1>
 <h2>Enhanced Models Development &amp; Production Integration</h2>
 <p><strong>실행 기간</strong>: 2025-09-12 ~ 2025-09-17<br />
-<strong>분석 범위</strong>: Phase-A, Phase-B, Phase-C, Phase-D<br />
+<strong>분석 범위</strong>: <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span>, <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span>, <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span>, <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span><br />
 <strong>상태</strong>: ✅ 완료</p>
 <hr />
 <h2>📋 Executive Summary</h2>
-<p>본 연구는 RocksDB의 Put-Rate 예측을 위한 Enhanced 모델들(v1-v5)을 개발하고, 실제 프로덕션 환경에서의 통합 및 최적화를 수행한 종합적인 분석입니다. 총 4단계(Phase-A, B, C, D)에 걸쳐 모델 개발, 검증, 향상, 프로덕션 통합을 완료했습니다.</p>
+<p>본 연구는 RocksDB의 Put-Rate 예측을 위한 Enhanced 모델들(v1-v5)을 개발하고, 실제 프로덕션 환경에서의 통합 및 최적화를 수행한 종합적인 분석입니다. 총 4단계(<span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span>, B, C, D)에 걸쳐 모델 개발, 검증, 향상, 프로덕션 통합을 완료했습니다.</p>
 <h3>🎯 주요 성과</h3>
 <ul>
 <li><strong>5개 Enhanced 모델 개발</strong> (v1-v5)</li>
@@ -117,7 +29,7 @@
 <li><strong>19개 시각화 자료</strong> 생성</li>
 </ul>
 <hr />
-<h2>🔬 Phase-A: Device Performance Analysis</h2>
+<h2>🔬 <span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span>: Device Performance Analysis</h2>
 <h3>목표</h3>
 <p>RocksDB의 기본 성능 특성과 디바이스 성능 분석</p>
 <h3>주요 발견사항</h3>
@@ -145,7 +57,7 @@
 <li>향후 모델 개발을 위한 기초 데이터 확보</li>
 </ul>
 <hr />
-<h2>📊 Phase-B: Experimental Data Collection</h2>
+<h2>📊 <span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span>: Experimental Data Collection</h2>
 <h3>목표</h3>
 <p>실제 RocksDB 성능 데이터 수집 및 분석</p>
 <h3>주요 발견사항</h3>
@@ -169,7 +81,7 @@
 <li>모델 검증을 위한 기준 데이터 확보</li>
 </ul>
 <hr />
-<h2>🚀 Phase-C: Enhanced Models Development</h2>
+<h2>🚀 <span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span>: Enhanced Models Development</h2>
 <h3>목표</h3>
 <p>RocksDB LOG 데이터를 활용한 Enhanced 모델들 개발</p>
 <h3>개발된 Enhanced 모델들</h3>
@@ -235,7 +147,7 @@
 <li>향후 프로덕션 통합을 위한 기반 구축</li>
 </ul>
 <hr />
-<h2>🏭 Phase-D: Production Integration &amp; Real-time Optimization</h2>
+<h2>🏭 <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span>: Production Integration &amp; Real-time Optimization</h2>
 <h3>목표</h3>
 <p>Enhanced 모델들의 프로덕션 환경 통합 및 실시간 최적화</p>
 <h3>구현된 시스템</h3>
@@ -304,35 +216,35 @@
 <td>Enhanced v1</td>
 <td>4,166.57</td>
 <td>172.00</td>
-<td>-95.87%</td>
+<td>-<span class="performance-excellent"><span class="performance-excellent">95.87%</span></span></td>
 <td>Poor</td>
 </tr>
 <tr>
 <td>Enhanced v2.1</td>
 <td>15.69</td>
 <td>172.00</td>
-<td>996.50%</td>
+<td><span class="performance-excellent"><span class="performance-excellent">996.50%</span></span></td>
 <td>Poor</td>
 </tr>
 <tr>
 <td>Enhanced v3</td>
 <td>4.82</td>
 <td>172.00</td>
-<td>3,471.43%</td>
+<td>3,<span class="performance-excellent"><span class="performance-excellent">471.43%</span></span></td>
 <td>Poor</td>
 </tr>
 <tr>
 <td>Enhanced v4</td>
 <td>61,249.38</td>
 <td>172.00</td>
-<td>-99.72%</td>
+<td>-<span class="performance-excellent"><span class="performance-excellent">99.72%</span></span></td>
 <td>Poor</td>
 </tr>
 <tr>
 <td>Enhanced v5</td>
 <td>53,140.90</td>
 <td>172.00</td>
-<td>-99.68%</td>
+<td>-<span class="performance-excellent"><span class="performance-excellent">99.68%</span></span></td>
 <td>Poor</td>
 </tr>
 </tbody>
@@ -356,10 +268,10 @@
 <h3>기술적 성과</h3>
 <h4>1. 데이터 처리</h4>
 <ul>
-<li><strong>Phase-A</strong>: 디바이스 성능 특성 분석</li>
-<li><strong>Phase-B</strong>: 실제 성능 데이터 수집</li>
-<li><strong>Phase-C</strong>: RocksDB LOG 데이터 통합 (1.3M+ 이벤트)</li>
-<li><strong>Phase-D</strong>: 실시간 프로덕션 데이터 처리</li>
+<li><strong><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span></strong>: 디바이스 성능 특성 분석</li>
+<li><strong><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span></strong>: 실제 성능 데이터 수집</li>
+<li><strong><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span></strong>: RocksDB LOG 데이터 통합 (1.3M+ 이벤트)</li>
+<li><strong><span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span></strong>: 실시간 프로덕션 데이터 처리</li>
 </ul>
 <h4>2. 모델 개발</h4>
 <ul>
@@ -396,10 +308,10 @@
 <h2>📁 생성된 결과물</h2>
 <h3>시각화 자료 (19개 PNG 파일)</h3>
 <ul>
-<li><strong>Phase-A</strong>: 9개 파일 (디바이스 성능 분석)</li>
-<li><strong>Phase-B</strong>: 4개 파일 (실험 데이터 분석)</li>
-<li><strong>Phase-C</strong>: 6개 파일 (Enhanced 모델 분석)</li>
-<li><strong>Phase-D</strong>: 1개 파일 (프로덕션 통합 분석)</li>
+<li><strong><span class="phase-indicator phase-a"><span class="phase-indicator phase-a">Phase-A</span></span></strong>: 9개 파일 (디바이스 성능 분석)</li>
+<li><strong><span class="phase-indicator phase-b"><span class="phase-indicator phase-b">Phase-B</span></span></strong>: 4개 파일 (실험 데이터 분석)</li>
+<li><strong><span class="phase-indicator phase-c"><span class="phase-indicator phase-c">Phase-C</span></span></strong>: 6개 파일 (Enhanced 모델 분석)</li>
+<li><strong><span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span></strong>: 1개 파일 (프로덕션 통합 분석)</li>
 </ul>
 <h3>보고서 파일</h3>
 <ul>
@@ -410,7 +322,7 @@
 <h3>소스 코드</h3>
 <ul>
 <li><strong>Enhanced 모델 스크립트</strong>: 5개 모델 분석 스크립트</li>
-<li><strong>프로덕션 통합 시스템</strong>: Phase-D 통합 스크립트</li>
+<li><strong>프로덕션 통합 시스템</strong>: <span class="phase-indicator phase-d"><span class="phase-indicator phase-d">Phase-D</span></span> 통합 스크립트</li>
 <li><strong>시각화 생성</strong>: 자동화된 시각화 생성 시스템</li>
 </ul>
 <hr />

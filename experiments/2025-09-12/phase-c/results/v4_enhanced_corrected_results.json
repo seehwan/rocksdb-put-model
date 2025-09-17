@@ -1,0 +1,9 @@
+{
+  "model": "v4_enhanced_corrected",
+  "predicted_smax": 8854.002768191702,
+  "actual_qps_mean": 118394.0568178529,
+  "error_percent": 92.52158173630842,
+  "accuracy": 7.47841826369158,
+  "r2_score": 0.07478418263691577,
+  "validation_status": "Poor"
+}

@@ -3,211 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025-09-12 실험 실행 가이드</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
     <style>
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #2c3e50 !important;
-            border-bottom-color: #3498db !important;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
         }
         h2 {
-            border-left-color: #3498db !important;
+            color: #34495e;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+            margin-top: 30px;
         }
-        .achievement-card, .contribution-card {
-            border-left-color: #007bff !important;
+        h3 {
+            color: #7f8c8d;
+            margin-top: 25px;
         }
-        .section-header {
-            background: #007bff !important;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            padding: 10px;
+            border-left: 4px solid #28a745;
+            margin: 10px 0;
+        }
+        .info {
+            background-color: #d1ecf1;
+            padding: 10px;
+            border-left: 4px solid #17a2b8;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🚀 2025-09-12 실험 실행 가이드</h1>
-            <div class="subtitle">
-                SSD 장치 상태 변화와 시간대별 컴팩션 동작을 관찰하여 RocksDB 안정화 가능성 및 안정적 Put 속도 구하기
-            </div>
-        </div>
-
-        <h2>🔍 핵심 연구 질문</h2>
-        <div class="achievement-grid">
-            <div class="achievement-card">
-                <h3>1. 초기화된 SSD에서 시작한 RocksDB가 안정화될 수 있는가?</h3>
-            </div>
-            <div class="achievement-card">
-                <h3>2. 안정화된다면 안정적으로 처리할 수 있는 Put 속도는?</h3>
-            </div>
-            <div class="achievement-card">
-                <h3>3. 시간에 따른 컴팩션 동작과 레벨별 성능 변화는 어떻게 나타나는가?</h3>
-            </div>
-            <div class="achievement-card">
-                <h3>4. 장치 열화가 FillRandom 성능에 미치는 영향은?</h3>
-            </div>
-        </div>
-
-        <h2>📋 실험 실행 순서</h2>
-        
-        <div class="link-grid">
-            <div class="link-card">
-                <div class="step-number">1</div>
-                <h3>Phase-A</h3>
-                <p>Device Envelope 모델 구축</p>
-                <small>초기 상태 측정</small>
-            </div>
-            <div class="link-card">
-                <div class="step-number">2</div>
-                <h3>Phase-B</h3>
-                <p>FillRandom 실험</p>
-                <small>성능 분석 및 로그 수집</small>
-            </div>
-            <div class="link-card">
-                <div class="step-number">3</div>
-                <h3>Phase-A</h3>
-                <p>열화 상태 측정</p>
-                <small>Device Envelope 완성</small>
-            </div>
-            <div class="link-card">
-                <div class="step-number">4</div>
-                <h3>분석</h3>
-                <p>결과 분석</p>
-                <small>보고서 생성</small>
-            </div>
-        </div>
-
-        <div class="phase-section phase-a">
-            <h3>Phase-A: Device Envelope 모델 구축</h3>
-            
-            <h3>목적</h3>
-            <p>초기상태 장치 성능과 Phase-B 이후 열화된 상태에서의 장치 성능을 측정하여 Device Envelope 모델 구축</p>
-            
-            <h3>실행 방법</h3>
-            <div class="code-block">
-cd /home/sslab/rocksdb-put-model/experiments/2025-09-12
+        <h1>2025-09-12 실험 실행 가이드</h1>
+<h2>🎯 실험 개요</h2>
+<p><strong>SSD 장치 상태 변화와 시간대별 컴팩션 동작을 관찰하여 RocksDB 안정화 가능성 및 안정적 Put 속도 구하기</strong></p>
+<h3>핵심 연구 질문</h3>
+<ol>
+<li><strong>초기화된 SSD에서 시작한 RocksDB가 안정화될 수 있는가?</strong></li>
+<li><strong>안정화된다면 안정적으로 처리할 수 있는 Put 속도는?</strong></li>
+<li><strong>시간에 따른 컴팩션 동작과 레벨별 성능 변화는 어떻게 나타나는가?</strong></li>
+<li><strong>장치 열화가 FillRandom 성능에 미치는 영향은?</strong></li>
+</ol>
+<h2>📋 실험 실행 순서</h2>
+<h3>Phase-A: Device Envelope 모델 구축</h3>
+<h4>목적</h4>
+<p>초기상태 장치 성능과 Phase-B 이후 열화된 상태에서의 장치 성능을 측정하여 Device Envelope 모델 구축</p>
+<h4>실행 방법</h4>
+<pre class="codehilite"><code class="language-bash">cd /home/sslab/rocksdb-put-model/experiments/2025-09-12
 python3 scripts/run_phase_a.py
-            </div>
-            
-            <h3>실행 과정</h3>
-            <div class="highlight-box">
-                <h3>1. SSD 완전 초기화</h3>
-                <p><code>umount</code>, <code>blkdiscard</code>, <code>mkfs.f2fs</code></p>
-            </div>
-            <div class="highlight-box">
-                <h3>2. 초기 상태 장치 성능 측정</h3>
-                <p>fio 그리드 벤치마크 (364개 측정점)</p>
-            </div>
-            <div class="highlight-box">
-                <h3>3. Phase-B 실험 진행 안내</h3>
-                <p>FillRandom 실험 실행 요청</p>
-            </div>
-            <div class="highlight-box">
-                <h3>4. 열화 상태 장치 성능 측정</h3>
-                <p>Phase-B 완료 후 동일한 fio 벤치마크</p>
-            </div>
-            <div class="highlight-box">
-                <h3>5. Device Envelope 모델 구축</h3>
-                <p>4D Grid Interpolation + 시간 의존성</p>
-            </div>
-            
-            <h3>예상 소요 시간</h3>
-            <ul>
-                <li><strong>초기 상태 측정</strong>: 약 2-3시간</li>
-                <li><strong>열화 상태 측정</strong>: 약 2-3시간</li>
-                <li><strong>총 소요 시간</strong>: 약 4-6시간</li>
-            </ul>
-        </div>
+</code></pre>
 
-        <div class="phase-section phase-b">
-            <h3>Phase-B: FillRandom 성능 분석 및 컴팩션 모니터링</h3>
-            
-            <h3>목적</h3>
-            <p>LOG 파일을 저장하고, 시간에 따라 FillRandom 성능과 레벨별 컴팩션량을 분석할 수 있도록 충분한 로그를 사용하고, 시각화를 포함</p>
-            
-            <h3>실행 방법</h3>
-            <div class="code-block">
+<h4>실행 과정</h4>
+<ol>
+<li><strong>SSD 완전 초기화</strong>: <code>umount</code>, <code>blkdiscard</code>, <code>mkfs.f2fs</code></li>
+<li><strong>초기 상태 장치 성능 측정</strong>: fio 그리드 벤치마크 (364개 측정점)</li>
+<li><strong>Phase-B 실험 진행 안내</strong>: FillRandom 실험 실행 요청</li>
+<li><strong>열화 상태 장치 성능 측정</strong>: Phase-B 완료 후 동일한 fio 벤치마크</li>
+<li><strong>Device Envelope 모델 구축</strong>: 4D Grid Interpolation + 시간 의존성</li>
+</ol>
+<h4>예상 소요 시간</h4>
+<ul>
+<li><strong>초기 상태 측정</strong>: 약 2-3시간</li>
+<li><strong>열화 상태 측정</strong>: 약 2-3시간</li>
+<li><strong>총 소요 시간</strong>: 약 4-6시간</li>
+</ul>
+<h3>Phase-B: FillRandom 성능 분석 및 컴팩션 모니터링</h3>
+<h4>목적</h4>
+<p>LOG 파일을 저장하고, 시간에 따라 FillRandom 성능과 레벨별 컴팩션량을 분석할 수 있도록 충분한 로그를 사용하고, 시각화를 포함</p>
+<h4>실행 방법</h4>
+<pre class="codehilite"><code class="language-bash">cd /home/sslab/rocksdb-put-model/experiments/2025-09-12
 python3 scripts/run_phase_b.py
-            </div>
-            
-            <h3>실행 과정</h3>
-            <div class="highlight-box">
-                <h3>1. RocksDB 로깅 설정</h3>
-                <p>상세한 로그 설정</p>
-            </div>
-            <div class="highlight-box">
-                <h3>2. Uniform Random FillRandom 실험</h3>
-                <p>균등 분포로 FillRandom 실행</p>
-            </div>
-            <div class="highlight-box">
-                <h3>3. Zipfian Random FillRandom 실험</h3>
-                <p>지프 분포로 FillRandom 실행</p>
-            </div>
-            <div class="highlight-box">
-                <h3>4. LOG 파일 복사</h3>
-                <p>모든 로그 파일을 실험 디렉토리로 복사</p>
-            </div>
-            <div class="highlight-box">
-                <h3>5. 성능 트렌드 분석</h3>
-                <p>시간별 성능 변화 분석</p>
-            </div>
-            <div class="highlight-box">
-                <h3>6. 컴팩션 통계 분석</h3>
-                <p>레벨별 컴팩션 패턴 분석</p>
-            </div>
-            <div class="highlight-box">
-                <h3>7. 시각화 생성</h3>
-                <p>성능, 컴팩션, 안정화 분석 차트</p>
-            </div>
-            
-            <h3>예상 소요 시간</h3>
-            <ul>
-                <li><strong>Uniform 분포 실험</strong>: 약 24-48시간</li>
-                <li><strong>Zipfian 분포 실험</strong>: 약 24-48시간</li>
-                <li><strong>분석 및 시각화</strong>: 약 1-2시간</li>
-                <li><strong>총 소요 시간</strong>: 약 48-96시간 (2-4일)</li>
-            </ul>
-        </div>
+</code></pre>
 
-        <h2>🔧 사전 준비사항</h2>
-        
-        <h3>1. 시스템 요구사항</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>구성 요소</th>
-                    <th>사양</th>
-                    <th>비고</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>CPU</td>
-                    <td>Intel i9-12900K (16 cores, 24 threads)</td>
-                    <td>고성능 멀티코어</td>
-                </tr>
-                <tr>
-                    <td>Memory</td>
-                    <td>64GB DDR4-3200</td>
-                    <td>대용량 메모리</td>
-                </tr>
-                <tr>
-                    <td>Storage</td>
-                    <td>Samsung 980 PRO 2TB NVMe SSD</td>
-                    <td>고성능 NVMe</td>
-                </tr>
-                <tr>
-                    <td>OS</td>
-                    <td>Ubuntu 22.04 LTS</td>
-                    <td>안정적 리눅스</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h3>2. 소프트웨어 요구사항</h3>
-        <div class="code-block">
-# Python 패키지 설치
+<h4>실행 과정</h4>
+<ol>
+<li><strong>RocksDB 로깅 설정</strong>: 상세한 로그 설정</li>
+<li><strong>Uniform Random FillRandom 실험</strong>: 균등 분포로 FillRandom 실행</li>
+<li><strong>Zipfian Random FillRandom 실험</strong>: 지프 분포로 FillRandom 실행</li>
+<li><strong>LOG 파일 복사</strong>: 모든 로그 파일을 실험 디렉토리로 복사</li>
+<li><strong>성능 트렌드 분석</strong>: 시간별 성능 변화 분석</li>
+<li><strong>컴팩션 통계 분석</strong>: 레벨별 컴팩션 패턴 분석</li>
+<li><strong>시각화 생성</strong>: 성능, 컴팩션, 안정화 분석 차트</li>
+</ol>
+<h4>예상 소요 시간</h4>
+<ul>
+<li><strong>Uniform 분포 실험</strong>: 약 24-48시간</li>
+<li><strong>Zipfian 분포 실험</strong>: 약 24-48시간</li>
+<li><strong>분석 및 시각화</strong>: 약 1-2시간</li>
+<li><strong>총 소요 시간</strong>: 약 48-96시간 (2-4일)</li>
+</ul>
+<h2>🔧 사전 준비사항</h2>
+<h3>1. 시스템 요구사항</h3>
+<ul>
+<li><strong>CPU</strong>: Intel i9-12900K (16 cores, 24 threads)</li>
+<li><strong>Memory</strong>: 64GB DDR4-3200</li>
+<li><strong>Storage</strong>: Samsung 980 PRO 2TB NVMe SSD</li>
+<li><strong>OS</strong>: Ubuntu 22.04 LTS</li>
+</ul>
+<h3>2. 소프트웨어 요구사항</h3>
+<pre class="codehilite"><code class="language-bash"># Python 패키지 설치
 pip3 install numpy pandas matplotlib seaborn scipy jinja2
 
 # RocksDB 빌드 (이미 완료되어 있다고 가정)
@@ -215,46 +175,39 @@ pip3 install numpy pandas matplotlib seaborn scipy jinja2
 
 # fio 설치 (이미 설치되어 있다고 가정)
 # sudo apt install fio
-        </div>
+</code></pre>
 
-        <h3>3. 권한 설정</h3>
-        <div class="code-block">
-# sudo 권한이 필요 (SSD 초기화용)
+<h3>3. 권한 설정</h3>
+<pre class="codehilite"><code class="language-bash"># sudo 권한이 필요 (SSD 초기화용)
 sudo visudo  # 필요한 경우 사용자 추가
 
 # RocksDB 데이터 디렉토리 권한
 sudo chown -R $USER:$USER /rocksdb
-        </div>
+</code></pre>
 
-        <h3>4. 디스크 공간 확인</h3>
-        <div class="code-block">
-# 최소 500GB 여유 공간 필요
+<h3>4. 디스크 공간 확인</h3>
+<pre class="codehilite"><code class="language-bash"># 최소 500GB 여유 공간 필요
 df -h /rocksdb
-        </div>
+</code></pre>
 
-        <h2>📊 실험 설정</h2>
-        
-        <h3>Phase-A 설정</h3>
-        <ul>
-            <li><strong>fio 벤치마크</strong>: 4K~1M 블록 크기, 1~64 큐 깊이</li>
-            <li><strong>측정점</strong>: 364개 (9×7×5×5 = 1575개 중 중복 제거)</li>
-            <li><strong>테스트 시간</strong>: 각 측정점당 5분 + 1분 워밍업</li>
-        </ul>
-
-        <h3>Phase-B 설정</h3>
-        <ul>
-            <li><strong>데이터 크기</strong>: 10억 키 (약 1TB)</li>
-            <li><strong>값 크기</strong>: 1024 bytes (1KB)</li>
-            <li><strong>동시성</strong>: 16 threads</li>
-            <li><strong>분포</strong>: Uniform Random, Zipfian Random (α=0.99)</li>
-            <li><strong>로깅</strong>: 1분 간격 성능 통계, 상세한 컴팩션 로그</li>
-        </ul>
-
-        <h2>📁 출력 파일 구조</h2>
-        
-        <h3>Phase-A 출력</h3>
-        <div class="code-block">
-phase-a/
+<h2>📊 실험 설정</h2>
+<h3>Phase-A 설정</h3>
+<ul>
+<li><strong>fio 벤치마크</strong>: 4K~1M 블록 크기, 1~64 큐 깊이</li>
+<li><strong>측정점</strong>: 364개 (9×7×5×5 = 1575개 중 중복 제거)</li>
+<li><strong>테스트 시간</strong>: 각 측정점당 5분 + 1분 워밍업</li>
+</ul>
+<h3>Phase-B 설정</h3>
+<ul>
+<li><strong>데이터 크기</strong>: 10억 키 (약 1TB)</li>
+<li><strong>값 크기</strong>: 1024 bytes (1KB)</li>
+<li><strong>동시성</strong>: 16 threads</li>
+<li><strong>분포</strong>: Uniform Random, Zipfian Random (α=0.99)</li>
+<li><strong>로깅</strong>: 1분 간격 성능 통계, 상세한 컴팩션 로그</li>
+</ul>
+<h2>📁 출력 파일 구조</h2>
+<h3>Phase-A 출력</h3>
+<pre class="codehilite"><code>phase-a/
 ├── data/
 │   ├── fio_grid_initial_results.csv      # 초기 상태 fio 결과
 │   └── fio_grid_degraded_results.csv     # 열화 상태 fio 결과
@@ -262,11 +215,10 @@ phase-a/
 │   ├── device_envelope_model.json        # Device Envelope 모델
 │   └── phase_a_summary_report.json       # 요약 보고서
 └── phase_a_YYYYMMDD_HHMMSS.log          # 실행 로그
-        </div>
+</code></pre>
 
-        <h3>Phase-B 출력</h3>
-        <div class="code-block">
-phase-b/
+<h3>Phase-B 출력</h3>
+<pre class="codehilite"><code>phase-b/
 ├── data/
 │   ├── fillrandom_uniform_output.log     # Uniform 분포 실험 출력
 │   └── fillrandom_zipfian_output.log     # Zipfian 분포 실험 출력
@@ -277,59 +229,43 @@ phase-b/
 │   ├── compaction_patterns.png           # 컴팩션 패턴 차트
 │   └── stabilization_analysis.png        # 안정화 분석 차트
 └── phase_b_YYYYMMDD_HHMMSS.log          # 실행 로그
-        </div>
+</code></pre>
 
-        <h3>공통 출력</h3>
-        <div class="code-block">
-logs/
+<h3>공통 출력</h3>
+<pre class="codehilite"><code>logs/
 ├── LOG_YYYYMMDD_HHMMSS                   # RocksDB 메인 로그
 ├── LOG.old.1_YYYYMMDD_HHMMSS            # 롤링된 로그들
 └── ...
-        </div>
+</code></pre>
 
-        <h2>⚠️ 주의사항</h2>
-        
-        <div class="warning-box">
-            <h3>1. 실험 순서</h3>
-            <ul>
-                <li><strong>Phase-A를 먼저 실행</strong>하여 초기 상태 측정</li>
-                <li><strong>Phase-B 실험 진행</strong> (FillRandom 실험)</li>
-                <li><strong>Phase-A 재실행</strong>하여 열화 상태 측정</li>
-            </ul>
-        </div>
-
-        <div class="warning-box">
-            <h3>2. 데이터 백업</h3>
-            <div class="code-block">
-# 중요한 데이터는 백업
+<h2>⚠️ 주의사항</h2>
+<h3>1. 실험 순서</h3>
+<ul>
+<li><strong>Phase-A를 먼저 실행</strong>하여 초기 상태 측정</li>
+<li><strong>Phase-B 실험 진행</strong> (FillRandom 실험)</li>
+<li><strong>Phase-A 재실행</strong>하여 열화 상태 측정</li>
+</ul>
+<h3>2. 데이터 백업</h3>
+<pre class="codehilite"><code class="language-bash"># 중요한 데이터는 백업
 cp -r /rocksdb/data /rocksdb/data.backup
-            </div>
-        </div>
+</code></pre>
 
-        <div class="warning-box">
-            <h3>3. 시스템 모니터링</h3>
-            <div class="code-block">
-# 실험 중 시스템 상태 모니터링
+<h3>3. 시스템 모니터링</h3>
+<pre class="codehilite"><code class="language-bash"># 실험 중 시스템 상태 모니터링
 htop                    # CPU, 메모리 사용률
 iotop                   # I/O 사용률
 nvidia-smi              # GPU 사용률 (있는 경우)
-            </div>
-        </div>
+</code></pre>
 
-        <div class="warning-box">
-            <h3>4. 로그 관리</h3>
-            <div class="code-block">
-# 로그 파일 크기 확인
+<h3>4. 로그 관리</h3>
+<pre class="codehilite"><code class="language-bash"># 로그 파일 크기 확인
 du -sh logs/
 du -sh /rocksdb/data/LOG*
-            </div>
-        </div>
+</code></pre>
 
-        <h2>🚀 실행 예시</h2>
-        
-        <h3>전체 실험 실행</h3>
-        <div class="code-block">
-# 1. Phase-A 시작 (초기 상태 측정)
+<h2>🚀 실행 예시</h2>
+<h3>전체 실험 실행</h3>
+<pre class="codehilite"><code class="language-bash"># 1. Phase-A 시작 (초기 상태 측정)
 python3 scripts/run_phase_a.py
 
 # 2. Phase-B 실행 (FillRandom 실험)
@@ -341,11 +277,10 @@ python3 scripts/run_phase_a.py
 # 4. 결과 분석
 python3 scripts/analyze_logs.py
 python3 scripts/generate_report.py
-        </div>
+</code></pre>
 
-        <h3>개별 실험 실행</h3>
-        <div class="code-block">
-# Phase-A만 실행
+<h3>개별 실험 실행</h3>
+<pre class="codehilite"><code class="language-bash"># Phase-A만 실행
 python3 scripts/run_phase_a.py
 
 # Phase-B만 실행
@@ -356,55 +291,41 @@ python3 scripts/analyze_logs.py
 
 # 보고서 생성만 실행
 python3 scripts/generate_report.py
-        </div>
+</code></pre>
 
-        <h2>📈 예상 결과</h2>
-        
-        <div class="contribution-grid">
-            <div class="contribution-card">
-                <h3>Phase-A 결과</h3>
-                <ul>
-                    <li><strong>Device Envelope 모델</strong>: 4D Grid Interpolation + 시간 의존성</li>
-                    <li><strong>성능 열화 분석</strong>: 초기 대비 성능 저하율</li>
-                    <li><strong>예상 열화율</strong>: 쓰기 성능 15-20% 저하</li>
-                </ul>
-            </div>
-            <div class="contribution-card">
-                <h3>Phase-B 결과</h3>
-                <ul>
-                    <li><strong>성능 트렌드</strong>: 시간별 처리량, 지연시간 변화</li>
-                    <li><strong>컴팩션 패턴</strong>: 레벨별 컴팩션 빈도, 크기</li>
-                    <li><strong>안정화 분석</strong>: 안정화 가능성, 안정화 시점, 안정적 Put 속도</li>
-                    <li><strong>예상 안정적 Put 속도</strong>: 25,000-35,000 ops/sec</li>
-                </ul>
-            </div>
-        </div>
-
-        <h2>🆘 문제 해결</h2>
-        
-        <div class="warning-box">
-            <h3>일반적인 문제</h3>
-            <ul>
-                <li><strong>권한 오류</strong>: <code>sudo</code> 권한 확인</li>
-                <li><strong>디스크 공간 부족</strong>: 여유 공간 확인</li>
-                <li><strong>RocksDB 빌드 오류</strong>: db_bench 실행 파일 확인</li>
-                <li><strong>fio 설치 오류</strong>: <code>sudo apt install fio</code></li>
-            </ul>
-        </div>
-
-        <h3>로그 확인</h3>
-        <div class="code-block">
-# 실험 로그 확인
+<h2>📈 예상 결과</h2>
+<h3>Phase-A 결과</h3>
+<ul>
+<li><strong>Device Envelope 모델</strong>: 4D Grid Interpolation + 시간 의존성</li>
+<li><strong>성능 열화 분석</strong>: 초기 대비 성능 저하율</li>
+<li><strong>예상 열화율</strong>: 쓰기 성능 15-20% 저하</li>
+</ul>
+<h3>Phase-B 결과</h3>
+<ul>
+<li><strong>성능 트렌드</strong>: 시간별 처리량, 지연시간 변화</li>
+<li><strong>컴팩션 패턴</strong>: 레벨별 컴팩션 빈도, 크기</li>
+<li><strong>안정화 분석</strong>: 안정화 가능성, 안정화 시점, 안정적 Put 속도</li>
+<li><strong>예상 안정적 Put 속도</strong>: 25,000-35,000 ops/sec</li>
+</ul>
+<h2>🆘 문제 해결</h2>
+<h3>일반적인 문제</h3>
+<ol>
+<li><strong>권한 오류</strong>: <code>sudo</code> 권한 확인</li>
+<li><strong>디스크 공간 부족</strong>: 여유 공간 확인</li>
+<li><strong>RocksDB 빌드 오류</strong>: db_bench 실행 파일 확인</li>
+<li><strong>fio 설치 오류</strong>: <code>sudo apt install fio</code></li>
+</ol>
+<h3>로그 확인</h3>
+<pre class="codehilite"><code class="language-bash"># 실험 로그 확인
 tail -f phase-a/phase_a_*.log
 tail -f phase-b/phase_b_*.log
 
 # RocksDB 로그 확인
 tail -f /rocksdb/data/LOG
-        </div>
+</code></pre>
 
-        <h3>실험 중단 및 재시작</h3>
-        <div class="code-block">
-# 프로세스 확인
+<h3>실험 중단 및 재시작</h3>
+<pre class="codehilite"><code class="language-bash"># 프로세스 확인
 ps aux | grep db_bench
 ps aux | grep fio
 
@@ -413,42 +334,13 @@ kill -9 &lt;PID&gt;
 
 # 실험 재시작
 python3 scripts/run_phase_a.py  # 또는 run_phase_b.py
-        </div>
+</code></pre>
 
-        <div class="section">
-            <div class="section-header">📁 관련 파일 및 링크</div>
-            <div class="section-content">
-                <div class="link-grid">
-                    <a href="README.html" class="link-card">
-                        <h4>📖 실험 개요</h4>
-                        <p>전체 실험 개요 및 목표</p>
-                    </a>
-                    <a href="ENHANCED_EXPERIMENT_PLAN.html" class="link-card">
-                        <h4>🚀 향상된 실험 계획서</h4>
-                        <p>상세한 실험 설계 및 계획서</p>
-                    </a>
-                    <a href="phase-a/PHASE_A_PLAN.html" class="link-card">
-                        <h4>🔧 Phase-A</h4>
-                        <p>Device Envelope 모델 구축</p>
-                    </a>
-                    <a href="phase-b/PHASE_B_PLAN.html" class="link-card">
-                        <h4>📊 Phase-B</h4>
-                        <p>FillRandom 성능 분석</p>
-                    </a>
-                    <a href="scripts/run_phase_a.py" class="link-card">
-                        <h4>🔧 Phase-A 실행</h4>
-                        <p>Device Envelope 모델 구축 스크립트</p>
-                    </a>
-                    <a href="scripts/run_phase_b.py" class="link-card">
-                        <h4>📊 Phase-B 실행</h4>
-                        <p>FillRandom 성능 분석 스크립트</p>
-                    </a>
-                </div>
-            </div>
-        </div>
-
+<hr />
+<p><strong>실험 시작 전 이 가이드를 숙지하고, 각 단계를 차근차근 진행하세요.</strong></p>
         <div class="footer">
-            <p><strong>실험 시작 전 이 가이드를 숙지하고, 각 단계를 차근차근 진행하세요.</strong></p>
+            <p>Report Generated: 2025-09-17 05:26:59</p>
+            <p>RocksDB Put-Rate Model Comprehensive Analysis</p>
         </div>
     </div>
 </body>

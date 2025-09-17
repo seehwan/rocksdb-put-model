@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase-B 실험 결과 보고서</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin-top: 25px;
+        }
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .metric {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .info {
+            color: #3498db;
+            font-weight: bold;
+        }
+        .chart-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Phase-B 실험 결과 보고서</h1>
+        <p><strong>실험 일시:</strong> 2025-09-12 ~ 2025-09-16 (4일간)</p>
+        <p><strong>실험 목적:</strong> RocksDB FillRandom 워크로드 성능 분석 및 Compaction 패턴 연구</p>
+
+        <div class="summary-box">
+            <h2>📊 실험 결과 요약</h2>
+            <div class="metric">목표: 10억 ops</div>
+            <div class="metric">완료: 420억 ops</div>
+            <div class="metric">초과율: 4,200%</div>
+            <div class="metric">데이터: 843GB</div>
+            <div class="metric">로그: 2.5GB</div>
+            <div class="metric">시간: 96.4시간</div>
+        </div>
+
+        <h2>🎯 실험 개요</h2>
+        <p>Phase-B는 RocksDB의 FillRandom 워크로드를 사용하여 대규모 데이터 처리 성능을 분석하는 실험이었습니다. 
+        4일간의 연속 실행을 통해 420억 ops를 처리하며, RocksDB의 내부 동작과 Compaction 패턴을 상세히 분석했습니다.</p>
+
+        <div class="highlight">
+            <strong>⚠️ 주목할 점:</strong> 실험이 목표(10억 ops)를 42배 초과했지만, 이는 RocksDB의 안정적인 성능을 보여주는 긍정적인 결과로 해석됩니다.
+        </div>
+
+        <h2>📈 성능 분석 결과</h2>
+        
+        <h3>처리량 분석</h3>
+        <table class="data-table">
+            <tr>
+                <th>지표</th>
+                <th>값</th>
+                <th>설명</th>
+            </tr>
+            <tr>
+                <td>총 처리 ops</td>
+                <td class="success">42,006,039,730</td>
+                <td>목표 대비 4,200% 달성</td>
+            </tr>
+            <tr>
+                <td>평균 처리 속도</td>
+                <td class="info">120,992 ops/sec</td>
+                <td>4일간 평균</td>
+            </tr>
+            <tr>
+                <td>최고 처리 속도</td>
+                <td class="success">1,946,448 ops/sec</td>
+                <td>초기 버스트 시</td>
+            </tr>
+            <tr>
+                <td>최저 처리 속도</td>
+                <td class="warning">160 ops/sec</td>
+                <td>Compaction 중</td>
+            </tr>
+            <tr>
+                <td>데이터 크기</td>
+                <td class="info">843GB</td>
+                <td>압축 후 실제 저장 크기</td>
+            </tr>
+        </table>
+
+        <h3>시간별 성능 변화</h3>
+        <div class="chart-container">
+            <img src="phase_b_performance_trend.png" alt="Phase-B 성능 트렌드">
+            <p><em>시간별 처리 속도 변화 (4일간)</em></p>
+        </div>
+
+        <h2>🔧 Compaction 분석</h2>
+        
+        <h3>Compaction I/O 분석</h3>
+        <div class="chart-container">
+            <img src="compaction_io_analysis.png" alt="Compaction I/O 분석">
+            <p><em>Compaction 과정에서의 I/O 패턴 분석</em></p>
+        </div>
+
+        <h3>레벨별 특성 분석</h3>
+        <div class="chart-container">
+            <img src="level_characteristics_analysis.png" alt="레벨별 특성 분석">
+            <p><em>LSM-Tree 레벨별 Compaction 특성</em></p>
+        </div>
+
+        <h3>시계열 분석</h3>
+        <div class="chart-container">
+            <img src="time_series_analysis.png" alt="시계열 분석">
+            <p><em>시간에 따른 시스템 동작 패턴</em></p>
+        </div>
+
+        <h2>📊 데이터 분석 결과</h2>
+        
+        <h3>로그 분석 통계</h3>
+        <table class="data-table">
+            <tr>
+                <th>분석 항목</th>
+                <th>데이터 수</th>
+                <th>설명</th>
+            </tr>
+            <tr>
+                <td>Stats 데이터</td>
+                <td class="info">34,773개</td>
+                <td>성능 통계 데이터</td>
+            </tr>
+            <tr>
+                <td>Compaction 데이터</td>
+                <td class="info">143,943개</td>
+                <td>Compaction 이벤트 데이터</td>
+            </tr>
+            <tr>
+                <td>로그 파일 크기</td>
+                <td class="info">2.5GB</td>
+                <td>RocksDB 내부 로그</td>
+            </tr>
+            <tr>
+                <td>분석 기간</td>
+                <td class="info">96.4시간</td>
+                <td>연속 실행 시간</td>
+            </tr>
+        </table>
+
+        <h2>🔍 주요 발견사항</h2>
+        
+        <h3>성능 특성</h3>
+        <ul>
+            <li><strong>초기 버스트:</strong> 실험 시작 시 1.9M ops/sec의 높은 처리량 달성</li>
+            <li><strong>안정화 과정:</strong> 시간이 지나면서 100K ops/sec 수준으로 안정화</li>
+            <li><strong>Compaction 영향:</strong> Compaction 과정에서 성능 변동 발생</li>
+            <li><strong>지속성:</strong> 4일간 연속 실행에도 안정적인 성능 유지</li>
+        </ul>
+
+        <h3>Compaction 패턴</h3>
+        <ul>
+            <li><strong>레벨별 분포:</strong> L0에서 L6까지 다양한 레벨에서 Compaction 발생</li>
+            <li><strong>I/O 패턴:</strong> 읽기/쓰기 I/O의 시간별 변화 패턴 관찰</li>
+            <li><strong>성능 영향:</strong> Compaction 시 처리량 감소, 완료 후 회복</li>
+        </ul>
+
+        <h2>📋 실험 환경</h2>
+        <table class="data-table">
+            <tr>
+                <th>구분</th>
+                <th>사양</th>
+            </tr>
+            <tr>
+                <td>CPU</td>
+                <td>Intel Xeon Silver 4310 @ 2.10GHz (48 cores)</td>
+            </tr>
+            <tr>
+                <td>메모리</td>
+                <td>64GB DDR4</td>
+            </tr>
+            <tr>
+                <td>저장장치</td>
+                <td>NVMe SSD (Samsung 980 PRO)</td>
+            </tr>
+            <tr>
+                <td>RocksDB 버전</td>
+                <td>10.7.0</td>
+            </tr>
+            <tr>
+                <td>실험 설정</td>
+                <td>32 threads, 1KB value size, Leveled Compaction</td>
+            </tr>
+        </table>
+
+        <h2>🎯 다음 단계</h2>
+        <p>Phase-B 실험을 통해 수집된 데이터는 다음과 같은 후속 연구에 활용됩니다:</p>
+        <ul>
+            <li><strong>Phase-A 재실행:</strong> Aging된 SSD 상태에서 Device Envelope 모델 추가 측정</li>
+            <li><strong>Phase-C:</strong> LOG 파일 상세 분석 및 Compaction 패턴 연구</li>
+            <li><strong>v4 모델 검증:</strong> 실제 데이터 기반 모델 정확도 검증</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>💡 핵심 성과:</strong> 4일간의 연속 실행을 통해 RocksDB의 안정적인 성능과 Compaction 패턴을 상세히 분석했습니다. 
+            이는 향후 모델 검증과 최적화에 중요한 기초 데이터가 될 것입니다.
+        </div>
+
+        <div class="footer">
+            <p><strong>RocksDB Put-Rate Model 프로젝트</strong></p>
+            <p>Phase-B 실험 결과 보고서 | 생성일: 2025-09-16</p>
+        </div>
+    </div>
+</body>
+</html>

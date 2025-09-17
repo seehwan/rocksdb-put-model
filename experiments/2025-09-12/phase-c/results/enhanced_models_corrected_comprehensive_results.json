@@ -1,0 +1,83 @@
+{
+  "timestamp": "2025-09-17T05:19:26.687980",
+  "total_models": 5,
+  "models": [
+    {
+      "model": "v1_enhanced_corrected",
+      "predicted_smax": 1781.2573068362576,
+      "actual_qps_mean": 118394.0568178529,
+      "error_percent": 98.49548418669639,
+      "accuracy": 1.5045158133036125,
+      "r2_score": 0.015045158133036085,
+      "validation_status": "Poor"
+    },
+    {
+      "model": "v2_1_enhanced_corrected",
+      "predicted_smax": 105226.96272101998,
+      "actual_qps_mean": 118394.0568178529,
+      "error_percent": 11.121414748960126,
+      "accuracy": 88.87858525103988,
+      "r2_score": 0.8887858525103988,
+      "validation_status": "Good"
+    },
+    {
+      "model": "v3_enhanced_corrected",
+      "predicted_smax": 6735.963800206636,
+      "actual_qps_mean": 118394.0568178529,
+      "error_percent": 94.31055579878492,
+      "accuracy": 5.689444201215082,
+      "r2_score": 0.05689444201215077,
+      "validation_status": "Poor"
+    },
+    {
+      "model": "v4_enhanced_corrected",
+      "predicted_smax": 8854.002768191702,
+      "actual_qps_mean": 118394.0568178529,
+      "error_percent": 92.52158173630842,
+      "accuracy": 7.47841826369158,
+      "r2_score": 0.07478418263691577,
+      "validation_status": "Poor"
+    },
+    {
+      "model": "v5_enhanced_corrected",
+      "predicted_smax": 4873.310760822682,
+      "actual_qps_mean": 118394.0568178529,
+      "error_percent": 95.88382145877459,
+      "accuracy": 4.116178541225409,
+      "r2_score": 0.041161785412254126,
+      "validation_status": "Poor"
+    }
+  ],
+  "summary": {
+    "best_accuracy": {
+      "model": "v2_1_enhanced_corrected",
+      "predicted_smax": 105226.96272101998,
+      "actual_qps_mean": 118394.0568178529,
+      "error_percent": 11.121414748960126,
+      "accuracy": 88.87858525103988,
+      "r2_score": 0.8887858525103988,
+      "validation_status": "Good"
+    },
+    "best_r2_score": {
+      "model": "v2_1_enhanced_corrected",
+      "predicted_smax": 105226.96272101998,
+      "actual_qps_mean": 118394.0568178529,
+      "error_percent": 11.121414748960126,
+      "accuracy": 88.87858525103988,
+      "r2_score": 0.8887858525103988,
+      "validation_status": "Good"
+    },
+    "lowest_error": {
+      "model": "v2_1_enhanced_corrected",
+      "predicted_smax": 105226.96272101998,
+      "actual_qps_mean": 118394.0568178529,
+      "error_percent": 11.121414748960126,
+      "accuracy": 88.87858525103988,
+      "r2_score": 0.8887858525103988,
+      "validation_status": "Good"
+    },
+    "average_accuracy": 21.533428414095113,
+    "average_r2_score": 0.21533428414095113,
+    "average_error": 78.46657158590489
+  }
+}

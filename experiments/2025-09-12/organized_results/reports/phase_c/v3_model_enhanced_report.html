@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin-top: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            padding: 10px;
+            border-left: 4px solid #28a745;
+            margin: 10px 0;
+        }
+        .info {
+            background-color: #d1ecf1;
+            padding: 10px;
+            border-left: 4px solid #17a2b8;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enhanced v3 Model Analysis Report</h1>
+<h2>Overview</h2>
+<p>This report presents the enhanced v3 model analysis using RocksDB LOG data for improved accuracy.</p>
+<h2>Model Enhancement</h2>
+<ul>
+<li><strong>Base Model</strong>: v3 (Dynamic Compaction-Aware Model)</li>
+<li><strong>Enhancement</strong>: RocksDB LOG integration</li>
+<li><strong>Enhancement Factors</strong>: Compaction intensity, Stall analysis, I/O contention, Write amplification</li>
+</ul>
+<h2>Results</h2>
+<ul>
+<li><strong>Predicted S_max</strong>: 4.82 ops/sec</li>
+<li><strong>Actual QPS Mean</strong>: 172.00 ops/sec</li>
+<li><strong>Error Rate</strong>: 3471.43%</li>
+<li><strong>Validation Status</strong>: Poor</li>
+</ul>
+<h2>Enhancement Factors</h2>
+<ul>
+<li><strong>p_stall_enhanced</strong>: 0.500</li>
+<li><strong>B_read_enhanced</strong>: 95.200</li>
+<li><strong>B_write_enhanced</strong>: 96.600</li>
+<li><strong>compaction_factor</strong>: 0.800</li>
+<li><strong>stall_factor</strong>: 0.700</li>
+<li><strong>wa_factor</strong>: 0.482</li>
+<li><strong>io_contention_factor</strong>: 0.700</li>
+</ul>
+<h2>RocksDB LOG Statistics</h2>
+<ul>
+<li><strong>flush_frequency</strong>: 69426.00</li>
+<li><strong>compaction_frequency</strong>: 143942.50</li>
+<li><strong>stall_frequency</strong>: 348495.00</li>
+<li><strong>avg_flush_size</strong>: 60.74</li>
+<li><strong>avg_compaction_size</strong>: 0.00</li>
+<li><strong>write_amplification</strong>: 2.07</li>
+<li><strong>memtable_pressure</strong>: 5.00</li>
+<li><strong>compaction_intensity</strong>: 1.00</li>
+<li><strong>stall_duration</strong>: 1.00</li>
+<li><strong>io_contention</strong>: 1.00</li>
+</ul>
+<h2>Visualization</h2>
+<p><img alt="Enhanced v3 Model Analysis" src="v3_model_enhanced_analysis.png" /></p>
+<h2>Analysis Time</h2>
+<p>2025-09-17 05:04:25</p>
+        <div class="footer">
+            <p>Report Generated: 2025-09-17 05:26:59</p>
+            <p>RocksDB Put-Rate Model Comprehensive Analysis</p>
+        </div>
+    </div>
+</body>
+</html>

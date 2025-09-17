@@ -1,0 +1,22 @@
+{
+  "model": "v1_enhanced_corrected",
+  "predicted_smax": 1781.2573068362576,
+  "actual_qps_mean": 118394.0568178529,
+  "actual_qps_max": 337977.0,
+  "actual_qps_min": 160.0,
+  "error_percent": 98.49548418669639,
+  "error_abs": 98.49548418669639,
+  "accuracy": 1.5045158133036125,
+  "r2_score": 0.015045158133036085,
+  "validation_status": "Poor",
+  "rocksdb_log_enhanced": true,
+  "enhancement_factors": {
+    "flush_factor": 0.21930071167070464,
+    "stall_factor": 0.5504076391674748,
+    "wa_factor": 0.22734135871299108,
+    "memtable_factor": 0.548269152407456,
+    "log_adjustment": 0.38632971548965667
+  },
+  "basic_bandwidth": 121235514.18148138,
+  "adjusted_bandwidth": 1824007.4822003278
+}

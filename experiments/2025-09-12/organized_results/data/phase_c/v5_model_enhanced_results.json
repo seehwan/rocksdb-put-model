@@ -1,0 +1,39 @@
+{
+  "model": "v5_enhanced",
+  "predicted_smax": 53140.89571419505,
+  "actual_qps_mean": 172.0,
+  "actual_qps_max": 184.0,
+  "actual_qps_min": 160.0,
+  "error_percent": -99.67633213989268,
+  "error_abs": 99.67633213989268,
+  "validation_status": "Poor",
+  "rocksdb_log_enhanced": true,
+  "enhancement_factors": {
+    "throughput_factor": 0.7557806568243447,
+    "latency_factor": 1.1964073516119313,
+    "accuracy_factor": 0.77,
+    "scaling_factor": 1.15
+  },
+  "io_stats": {
+    "flush_frequency": 69426.0,
+    "compaction_frequency": 143942.5,
+    "stall_frequency": 348495,
+    "avg_flush_size": 60.73944105974377,
+    "write_amplification": 2.073322674502348,
+    "memtable_pressure": 5.000158442082217
+  },
+  "real_time_stats": {
+    "response_time": 1.0,
+    "throughput_variance": 1.0,
+    "load_balancing": 0.5176824079059347,
+    "resource_utilization": 1.0,
+    "performance_stability": 0.39843326303103344
+  },
+  "adaptation_stats": {
+    "learning_rate": 1.0,
+    "adaptation_speed": 0.39843326303103344,
+    "environment_response": 1.0,
+    "auto_tuning_capability": 0,
+    "dynamic_scaling": 1.0
+  }
+}

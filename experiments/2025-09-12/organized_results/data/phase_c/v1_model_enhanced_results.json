@@ -1,0 +1,18 @@
+{
+  "model": "v1_enhanced",
+  "predicted_smax": 4166.574336156985,
+  "actual_qps_mean": 172.0,
+  "actual_qps_max": 184.0,
+  "actual_qps_min": 160.0,
+  "error_percent": -95.8719085242904,
+  "error_abs": 95.8719085242904,
+  "validation_status": "Poor",
+  "rocksdb_log_enhanced": true,
+  "enhancement_factors": {
+    "flush_factor": 0.5,
+    "stall_factor": 0.3,
+    "wa_factor": 0.48231759209406533,
+    "memtable_factor": 0.6,
+    "log_adjustment": 0.7
+  }
+}

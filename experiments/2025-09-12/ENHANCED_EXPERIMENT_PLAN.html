@@ -3,168 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025-09-12 향상된 실험 계획서</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
     <style>
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #2c3e50 !important;
-            border-bottom-color: #3498db !important;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
         }
         h2 {
-            border-left-color: #3498db !important;
+            color: #34495e;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+            margin-top: 30px;
         }
-        .achievement-card, .contribution-card {
-            border-left-color: #007bff !important;
+        h3 {
+            color: #7f8c8d;
+            margin-top: 25px;
         }
-        .section-header {
-            background: #007bff !important;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
         }
-        .phase-a .contribution-card { border-left-color: #e74c3c !important; }
-        .phase-b .contribution-card { border-left-color: #f39c12 !important; }
-        .phase-c .contribution-card { border-left-color: #27ae60 !important; }
-        .phase-d .contribution-card { border-left-color: #9b59b6 !important; }
-        .phase-e .contribution-card { border-left-color: #e67e22 !important; }
-        .phase-f .contribution-card { border-left-color: #34495e !important; }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            padding: 10px;
+            border-left: 4px solid #28a745;
+            margin: 10px 0;
+        }
+        .info {
+            background-color: #d1ecf1;
+            padding: 10px;
+            border-left: 4px solid #17a2b8;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🚀 2025-09-12 향상된 실험 계획서</h1>
-            <div class="subtitle">
-                SSD 장치 상태 변화와 시간대별 컴팩션 동작을 관찰하여 RocksDB 안정화 가능성 및 안정적 Put 속도 구하기
-            </div>
-        </div>
-
-        <h2>🔍 핵심 연구 질문</h2>
-        <div class="achievement-grid">
-            <div class="achievement-card">
-                <h3>1. 초기화된 SSD에서 시작한 RocksDB가 안정화될 수 있는가?</h3>
-                <p>완전히 초기화된 SSD에서 시작하여 장기간 FillRandom 워크로드를 실행했을 때 RocksDB가 안정적인 상태에 도달할 수 있는지 분석합니다.</p>
-            </div>
-            <div class="achievement-card">
-                <h3>2. 안정화된다면 안정적으로 처리할 수 있는 Put 속도는?</h3>
-                <p>안정화가 달성된다면, 그 상태에서 지속적으로 유지할 수 있는 최대 Put 처리 속도를 측정합니다.</p>
-            </div>
-            <div class="achievement-card">
-                <h3>3. 시간에 따른 컴팩션 동작과 레벨별 성능 변화는 어떻게 나타나는가?</h3>
-                <p>실험 진행에 따라 L0, L1, L2, L3+ 레벨에서의 컴팩션 패턴과 성능 변화를 상세히 분석합니다.</p>
-            </div>
-            <div class="achievement-card">
-                <h3>4. 장치 열화가 FillRandom 성능에 미치는 영향은?</h3>
-                <p>SSD 장치의 초기화 상태에서 열화 상태로 변화하는 과정에서 FillRandom 성능이 어떻게 변화하는지 분석합니다.</p>
-            </div>
-        </div>
-
-        <h2>📊 실험 설계</h2>
-        
-        <div class="contribution-grid">
-            <div class="contribution-card">
-                <h3>1. SSD 장치 상태 관리</h3>
-                <h5>초기화 상태 설정</h5>
-                <ul>
-                    <li><strong>완전 초기화</strong>: <code>umount</code>, <code>blkdiscard</code>, <code>mkfs.f2fs</code></li>
-                    <li><strong>초기 성능 측정</strong>: 초기화 직후 장치 성능 측정</li>
-                    <li><strong>기준선 설정</strong>: 초기 상태를 기준선으로 설정</li>
-                </ul>
-                <h5>열화 상태 모니터링</h5>
-                <ul>
-                    <li><strong>실시간 모니터링</strong>: 실험 진행 중 장치 성능 지속 모니터링</li>
-                    <li><strong>주기적 측정</strong>: 1시간 간격으로 장치 성능 측정</li>
-                    <li><strong>열화 지표</strong>: 쓰기 성능, 읽기 성능, 지연시간 변화 추적</li>
-                </ul>
-            </div>
-            <div class="experiment-card phase-b">
-                <h3>2. FillRandom 워크로드 설계</h3>
-                <h5>키 분포 실험</h5>
-                <ul>
-                    <li><strong>Uniform Random</strong>: 균등 분포 키 생성</li>
-                    <li><strong>Zipfian Random</strong>: 지프 분포 키 생성 (s=0.99)</li>
-                    <li><strong>비교 분석</strong>: 두 분포에서의 성능 차이 분석</li>
-                </ul>
-                <h5>실험 설정</h5>
-                <ul>
-                    <li><strong>키 크기</strong>: 16 bytes (기본)</li>
-                    <li><strong>값 크기</strong>: 1024 bytes (1KB)</li>
-                    <li><strong>데이터 크기</strong>: 100GB (충분한 데이터로 장기간 실험)</li>
-                    <li><strong>동시성</strong>: 16 threads (적절한 동시성)</li>
-                </ul>
-            </div>
-            <div class="experiment-card phase-c">
-                <h3>3. 시간대별 컴팩션 동작 분석</h3>
-                <h5>컴팩션 상태 추적</h5>
-                <ul>
-                    <li><strong>L0 → L1 컴팩션</strong>: MemTable flush 및 L0 컴팩션</li>
-                    <li><strong>L1 → L2 컴팩션</strong>: L1에서 L2로의 컴팩션</li>
-                    <li><strong>L2+ 컴팩션</strong>: L2 이상 레벨의 컴팩션</li>
-                    <li><strong>컴팩션 주기</strong>: 각 레벨별 컴팩션 주기 측정</li>
-                </ul>
-                <h5>성능 지표 모니터링</h5>
-                <ul>
-                    <li><strong>WAF</strong>: 시간에 따른 WAF 변화</li>
-                    <li><strong>RA</strong>: 읽기 증폭 변화</li>
-                    <li><strong>I/O 분포</strong>: 레벨별 I/O 사용량 분포</li>
-                    <li><strong>지연시간</strong>: 컴팩션으로 인한 지연시간</li>
-                </ul>
-            </div>
-            <div class="experiment-card phase-d">
-                <h3>4. 레벨별 FillRandom 성능 변화</h3>
-                <h5>레벨별 성능 측정</h5>
-                <ul>
-                    <li><strong>L0 성능</strong>: MemTable flush 성능</li>
-                    <li><strong>L1 성능</strong>: L1 컴팩션 성능</li>
-                    <li><strong>L2 성능</strong>: L2 컴팩션 성능 (주요 병목)</li>
-                    <li><strong>L3+ 성능</strong>: 상위 레벨 컴팩션 성능</li>
-                </ul>
-                <h5>성능 변화 패턴</h5>
-                <ul>
-                    <li><strong>초기 성능</strong>: 실험 시작 직후 성능</li>
-                    <li><strong>전환 성능</strong>: 레벨 전환 시 성능</li>
-                    <li><strong>안정 성능</strong>: 안정화된 상태에서의 성능</li>
-                </ul>
-            </div>
-        </div>
-
-        <h2>🔧 실험 환경 및 설정</h2>
-        
-        <h3>하드웨어 환경</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>구성 요소</th>
-                    <th>사양</th>
-                    <th>비고</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>CPU</td>
-                    <td>Intel i9-12900K (16 cores, 24 threads)</td>
-                    <td>고성능 멀티코어</td>
-                </tr>
-                <tr>
-                    <td>Memory</td>
-                    <td>64GB DDR4-3200</td>
-                    <td>대용량 메모리</td>
-                </tr>
-                <tr>
-                    <td>Storage</td>
-                    <td>Samsung 980 PRO 2TB NVMe SSD</td>
-                    <td>고성능 NVMe</td>
-                </tr>
-                <tr>
-                    <td>OS</td>
-                    <td>Ubuntu 22.04 LTS</td>
-                    <td>안정적 리눅스</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h3>RocksDB 설정</h3>
-        <div class="code-block">
+        <h1>2025-09-12 향상된 실험 계획서</h1>
+<h2>🎯 실험 목표</h2>
+<p><strong>SSD 장치 상태 변화와 시간대별 컴팩션 동작을 관찰하여 RocksDB 안정화 가능성 및 안정적 Put 속도 구하기</strong></p>
+<h3>핵심 연구 질문</h3>
+<ol>
+<li><strong>초기화된 SSD에서 시작한 RocksDB가 안정화될 수 있는가?</strong></li>
+<li><strong>안정화된다면 안정적으로 처리할 수 있는 Put 속도는?</strong></li>
+<li><strong>시간에 따른 컴팩션 동작과 레벨별 성능 변화는 어떻게 나타나는가?</strong></li>
+<li><strong>장치 열화가 FillRandom 성능에 미치는 영향은?</strong></li>
+</ol>
+<h2>📊 실험 설계</h2>
+<h3>1. SSD 장치 상태 관리</h3>
+<h4>1.1 초기화 상태 설정</h4>
+<ul>
+<li><strong>완전 초기화</strong>: <code>umount</code>, <code>blkdiscard</code>, <code>mkfs.f2fs</code></li>
+<li><strong>초기 성능 측정</strong>: 초기화 직후 장치 성능 측정</li>
+<li><strong>기준선 설정</strong>: 초기 상태를 기준선으로 설정</li>
+</ul>
+<h4>1.2 열화 상태 모니터링</h4>
+<ul>
+<li><strong>실시간 모니터링</strong>: 실험 진행 중 장치 성능 지속 모니터링</li>
+<li><strong>주기적 측정</strong>: 1시간 간격으로 장치 성능 측정</li>
+<li><strong>열화 지표</strong>: 쓰기 성능, 읽기 성능, 지연시간 변화 추적</li>
+</ul>
+<h3>2. FillRandom 워크로드 설계</h3>
+<h4>2.1 키 분포 실험</h4>
+<ul>
+<li><strong>Uniform Random</strong>: 균등 분포 키 생성</li>
+<li><strong>Zipfian Random</strong>: 지프 분포 키 생성 (s=0.99)</li>
+<li><strong>비교 분석</strong>: 두 분포에서의 성능 차이 분석</li>
+</ul>
+<h4>2.2 실험 설정</h4>
+<ul>
+<li><strong>키 크기</strong>: 16 bytes (기본)</li>
+<li><strong>값 크기</strong>: 1024 bytes (1KB)</li>
+<li><strong>데이터 크기</strong>: 100GB (충분한 데이터로 장기간 실험)</li>
+<li><strong>동시성</strong>: 16 threads (적절한 동시성)</li>
+</ul>
+<h3>3. 시간대별 컴팩션 동작 분석</h3>
+<h4>3.1 컴팩션 상태 추적</h4>
+<ul>
+<li><strong>L0 → L1 컴팩션</strong>: MemTable flush 및 L0 컴팩션</li>
+<li><strong>L1 → L2 컴팩션</strong>: L1에서 L2로의 컴팩션</li>
+<li><strong>L2+ 컴팩션</strong>: L2 이상 레벨의 컴팩션</li>
+<li><strong>컴팩션 주기</strong>: 각 레벨별 컴팩션 주기 측정</li>
+</ul>
+<h4>3.2 성능 지표 모니터링</h4>
+<ul>
+<li><strong>WAF (Write Amplification Factor)</strong>: 시간에 따른 WAF 변화</li>
+<li><strong>RA (Read Amplification)</strong>: 읽기 증폭 변화</li>
+<li><strong>I/O 분포</strong>: 레벨별 I/O 사용량 분포</li>
+<li><strong>지연시간</strong>: 컴팩션으로 인한 지연시간</li>
+</ul>
+<h3>4. 레벨별 FillRandom 성능 변화</h3>
+<h4>4.1 레벨별 성능 측정</h4>
+<ul>
+<li><strong>L0 성능</strong>: MemTable flush 성능</li>
+<li><strong>L1 성능</strong>: L1 컴팩션 성능</li>
+<li><strong>L2 성능</strong>: L2 컴팩션 성능 (주요 병목)</li>
+<li><strong>L3+ 성능</strong>: 상위 레벨 컴팩션 성능</li>
+</ul>
+<h4>4.2 성능 변화 패턴</h4>
+<ul>
+<li><strong>초기 성능</strong>: 실험 시작 직후 성능</li>
+<li><strong>전환 성능</strong>: 레벨 전환 시 성능</li>
+<li><strong>안정 성능</strong>: 안정화된 상태에서의 성능</li>
+</ul>
+<h2>🔧 실험 환경 및 설정</h2>
+<h3>하드웨어 환경</h3>
+<ul>
+<li><strong>CPU</strong>: Intel i9-12900K (16 cores, 24 threads)</li>
+<li><strong>Memory</strong>: 64GB DDR4-3200</li>
+<li><strong>Storage</strong>: Samsung 980 PRO 2TB NVMe SSD</li>
+<li><strong>OS</strong>: Ubuntu 22.04 LTS</li>
+</ul>
+<h3>RocksDB 설정</h3>
+<pre class="codehilite"><code class="language-bash"># 기본 설정
 --db=/rocksdb/data
 --num=1000000000  # 10억 키
 --value_size=1024
@@ -181,17 +193,18 @@
 # 로깅 설정
 --log_file_time_to_roll=3600  # 1시간마다 로그 롤링
 --max_log_file_size=10485760  # 10MB
-        </div>
+</code></pre>
 
-        <h2>📋 실험 절차</h2>
-        
-        <div class="toc">
-            <div class="toc">
-                <div class="toc">
-                    <h3>Phase 1: 초기 설정 및 기준선 측정 (Day 1)</h3>
-                    <h5>1.1 SSD 완전 초기화</h5>
-                    <div class="code-block">
-# 1. 기존 파티션 언마운트
+<h3>모니터링 설정</h3>
+<ul>
+<li><strong>시스템 모니터링</strong>: CPU, 메모리, I/O 사용률</li>
+<li><strong>RocksDB 모니터링</strong>: 컴팩션 상태, 레벨별 통계</li>
+<li><strong>장치 모니터링</strong>: SSD 성능, 온도, 마모도</li>
+</ul>
+<h2>📋 실험 절차</h2>
+<h3>Phase 1: 초기 설정 및 기준선 측정 (Day 1)</h3>
+<h4>1.1 SSD 완전 초기화</h4>
+<pre class="codehilite"><code class="language-bash"># 1. 기존 파티션 언마운트
 sudo umount /dev/nvme1n1p1  # WAL 파티션
 sudo umount /dev/nvme1n1p2  # Data 파티션
 sudo umount /dev/nvme1n1    # 전체 장치
@@ -207,21 +220,23 @@ sudo mkfs.f2fs /dev/nvme1n1
 
 # 5. 마운트
 sudo mount /dev/nvme1n1 /rocksdb
-                    </div>
-                    <h5>1.2 초기 장치 성능 측정</h5>
-                    <div class="code-block">
-# fio 벤치마크로 초기 성능 측정
+</code></pre>
+
+<h4>1.2 초기 장치 성능 측정</h4>
+<pre class="codehilite"><code class="language-bash"># fio 벤치마크로 초기 성능 측정
 fio --name=initial_write --rw=write --bs=4k --size=10g --numjobs=16
 fio --name=initial_read --rw=read --bs=4k --size=10g --numjobs=16
-                    </div>
-                </div>
-            </div>
-            
-            <div class="toc">
-                <div class="toc">
-                    <h3>Phase 2: FillRandom 실험 실행 (Day 2-4)</h3>
-                    <h5>2.1 Uniform Random 실험</h5>
-                    <div class="code-block">
+</code></pre>
+
+<h4>1.3 실험 환경 준비</h4>
+<ul>
+<li>RocksDB 빌드 및 설치</li>
+<li>모니터링 도구 설정</li>
+<li>실험 스크립트 준비</li>
+</ul>
+<h3>Phase 2: FillRandom 실험 실행 (Day 2-4)</h3>
+<h4>2.1 Uniform Random 실험</h4>
+<pre class="codehilite"><code class="language-bash"># Uniform Random FillRandom 실행
 ./db_bench --benchmarks=fillrandom \
   --db=/rocksdb/data \
   --num=1000000000 \
@@ -232,9 +247,10 @@ fio --name=initial_read --rw=read --bs=4k --size=10g --numjobs=16
   --stats_interval=1000000 \
   --stats_interval_seconds=60 \
   --report_interval_seconds=60
-                    </div>
-                    <h5>2.2 Zipfian Random 실험</h5>
-                    <div class="code-block">
+</code></pre>
+
+<h4>2.2 Zipfian Random 실험</h4>
+<pre class="codehilite"><code class="language-bash"># Zipfian Random FillRandom 실행
 ./db_bench --benchmarks=fillrandom \
   --db=/rocksdb/data \
   --num=1000000000 \
@@ -246,136 +262,107 @@ fio --name=initial_read --rw=read --bs=4k --size=10g --numjobs=16
   --stats_interval=1000000 \
   --stats_interval_seconds=60 \
   --report_interval_seconds=60
-                    </div>
-                </div>
-            </div>
-            
-            <div class="toc">
-                <div class="toc">
-                    <h3>Phase 3: 컴팩션 완료 대기 (Day 5)</h3>
-                    <h5>3.1 남은 컴팩션 완료 대기</h5>
-                    <div class="code-block">
-# 컴팩션 상태 확인
+</code></pre>
+
+<h4>2.3 실시간 모니터링</h4>
+<ul>
+<li>1시간 간격 성능 측정</li>
+<li>컴팩션 상태 추적</li>
+<li>장치 성능 모니터링</li>
+</ul>
+<h3>Phase 3: 컴팩션 완료 대기 (Day 5)</h3>
+<h4>3.1 남은 컴팩션 완료 대기</h4>
+<pre class="codehilite"><code class="language-bash"># 컴팩션 상태 확인
 ./db_bench --benchmarks=compact --db=/rocksdb/data
 
 # 컴팩션 완료까지 대기
-while [ $(./db_bench --benchmarks=compact --db=/rocksdb/data | grep "Compaction" | wc -l) -gt 0 ]; do
-  echo "Waiting for compaction to complete..."
+while [ $(./db_bench --benchmarks=compact --db=/rocksdb/data | grep &quot;Compaction&quot; | wc -l) -gt 0 ]; do
+  echo &quot;Waiting for compaction to complete...&quot;
   sleep 60
 done
-                    </div>
-                </div>
-            </div>
-            
-            <div class="toc">
-                <div class="toc">
-                    <h3>Phase 4: 데이터 분석 및 모델링 (Day 6-7)</h3>
-                    <h5>4.1 로그 분석</h5>
-                    <ul>
-                        <li>LOG 파일 분석</li>
-                        <li>컴팩션 패턴 분석</li>
-                        <li>성능 변화 패턴 분석</li>
-                    </ul>
-                    <h5>4.2 모델 개발</h5>
-                    <ul>
-                        <li>v4 모델 기반 분석</li>
-                        <li>v5 모델 개발 (필요시)</li>
-                        <li>안정화 모델 개발</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+</code></pre>
 
-        <h2>📊 데이터 수집 및 관리</h2>
-        
-        <div class="info-box">
-            <h3>로그 파일 관리</h3>
-            <div class="code-block">
-# LOG 파일을 실험 디렉토리로 복사
+<h4>3.2 최종 상태 측정</h4>
+<ul>
+<li>최종 장치 성능 측정</li>
+<li>최종 RocksDB 상태 측정</li>
+<li>안정화 여부 판단</li>
+</ul>
+<h3>Phase 4: 데이터 분석 및 모델링 (Day 6-7)</h3>
+<h4>4.1 로그 분석</h4>
+<ul>
+<li>LOG 파일 분석</li>
+<li>컴팩션 패턴 분석</li>
+<li>성능 변화 패턴 분석</li>
+</ul>
+<h4>4.2 모델 개발</h4>
+<ul>
+<li>v4 모델 기반 분석</li>
+<li>v5 모델 개발 (필요시)</li>
+<li>안정화 모델 개발</li>
+</ul>
+<h2>📊 데이터 수집 및 관리</h2>
+<h3>로그 파일 관리</h3>
+<pre class="codehilite"><code class="language-bash"># LOG 파일을 실험 디렉토리로 복사
 cp /rocksdb/data/LOG /home/sslab/rocksdb-put-model/experiments/2025-09-12/logs/
 cp /rocksdb/data/LOG.old.* /home/sslab/rocksdb-put-model/experiments/2025-09-12/logs/
-            </div>
-        </div>
+</code></pre>
 
-        <h3>수집 데이터</h3>
-        <ul>
-            <li><strong>LOG 파일</strong>: RocksDB 실행 로그</li>
-            <li><strong>성능 지표</strong>: ops/sec, MiB/s, 지연시간</li>
-            <li><strong>컴팩션 통계</strong>: 레벨별 컴팩션 정보</li>
-            <li><strong>장치 성능</strong>: fio 벤치마크 결과</li>
-            <li><strong>시스템 리소스</strong>: CPU, 메모리, I/O 사용률</li>
-        </ul>
-
-        <h2>🎯 예상 결과</h2>
-        
-        <div class="contribution-grid">
-            <div class="contribution-card">
-                <h3>1. SSD 장치 상태 변화</h3>
-                <ul>
-                    <li><strong>초기 성능</strong>: 최고 성능 상태</li>
-                    <li><strong>열화 성능</strong>: 사용 시간에 따른 성능 저하</li>
-                    <li><strong>열화 패턴</strong>: 성능 저하 패턴 및 원인</li>
-                </ul>
-            </div>
-            <div class="contribution-card">
-                <h3>2. 컴팩션 동작 패턴</h3>
-                <ul>
-                    <li><strong>초기 컴팩션</strong>: 빠른 컴팩션 (빈 레벨)</li>
-                    <li><strong>전환 컴팩션</strong>: 레벨 전환 시 컴팩션 패턴</li>
-                    <li><strong>안정 컴팩션</strong>: 안정화된 상태에서의 컴팩션</li>
-                </ul>
-            </div>
-            <div class="contribution-card">
-                <h3>3. 안정화 가능성</h3>
-                <ul>
-                    <li><strong>안정화 조건</strong>: 안정화에 필요한 조건</li>
-                    <li><strong>안정화 시간</strong>: 안정화까지 소요 시간</li>
-                    <li><strong>안정화 지표</strong>: 안정화를 판단할 수 있는 지표</li>
-                </ul>
-            </div>
-            <div class="contribution-card">
-                <h3>4. 안정적 Put 속도</h3>
-                <ul>
-                    <li><strong>최대 처리 속도</strong>: 안정화된 상태에서의 최대 속도</li>
-                    <li><strong>지속 가능 속도</strong>: 장기간 유지 가능한 속도</li>
-                    <li><strong>성능 예측</strong>: 다양한 조건에서의 성능 예측</li>
-                </ul>
-            </div>
-        </div>
-
-        <h2>🚀 모델링 접근법</h2>
-        
-        <div class="contribution-grid">
-            <div class="contribution-card">
-                <h3>v4 모델 활용</h3>
-                <ul>
-                    <li>기존 v4 모델의 Device Envelope Modeling 활용</li>
-                    <li>4D Grid Interpolation 기반 장치 성능 모델링</li>
-                    <li>Dynamic Simulation Framework 활용</li>
-                </ul>
-            </div>
-            <div class="contribution-card">
-                <h3>v5 모델 개발 (필요시)</h3>
-                <ul>
-                    <li>시간 의존적 성능 변화 모델</li>
-                    <li>레벨별 컴팩션 모델</li>
-                    <li>안정화 모델</li>
-                </ul>
-            </div>
-        </div>
-
-        <h3>핵심 모델 파라미터</h3>
-        <ul>
-            <li><strong>장치 상태</strong>: 초기화/열화 상태</li>
-            <li><strong>시간</strong>: 실험 진행 시간</li>
-            <li><strong>컴팩션 상태</strong>: 레벨별 컴팩션 상태</li>
-            <li><strong>성능 지표</strong>: WAF, RA, I/O 분포</li>
-        </ul>
-
-        <h2>📁 출력 파일 구조</h2>
-        
-        <div class="code-block">
-2025-09-12/
+<h3>수집 데이터</h3>
+<ul>
+<li><strong>LOG 파일</strong>: RocksDB 실행 로그</li>
+<li><strong>성능 지표</strong>: ops/sec, MiB/s, 지연시간</li>
+<li><strong>컴팩션 통계</strong>: 레벨별 컴팩션 정보</li>
+<li><strong>장치 성능</strong>: fio 벤치마크 결과</li>
+<li><strong>시스템 리소스</strong>: CPU, 메모리, I/O 사용률</li>
+</ul>
+<h2>🎯 예상 결과</h2>
+<h3>1. SSD 장치 상태 변화</h3>
+<ul>
+<li><strong>초기 성능</strong>: 최고 성능 상태</li>
+<li><strong>열화 성능</strong>: 사용 시간에 따른 성능 저하</li>
+<li><strong>열화 패턴</strong>: 성능 저하 패턴 및 원인</li>
+</ul>
+<h3>2. 컴팩션 동작 패턴</h3>
+<ul>
+<li><strong>초기 컴팩션</strong>: 빠른 컴팩션 (빈 레벨)</li>
+<li><strong>전환 컴팩션</strong>: 레벨 전환 시 컴팩션 패턴</li>
+<li><strong>안정 컴팩션</strong>: 안정화된 상태에서의 컴팩션</li>
+</ul>
+<h3>3. 안정화 가능성</h3>
+<ul>
+<li><strong>안정화 조건</strong>: 안정화에 필요한 조건</li>
+<li><strong>안정화 시간</strong>: 안정화까지 소요 시간</li>
+<li><strong>안정화 지표</strong>: 안정화를 판단할 수 있는 지표</li>
+</ul>
+<h3>4. 안정적 Put 속도</h3>
+<ul>
+<li><strong>최대 처리 속도</strong>: 안정화된 상태에서의 최대 속도</li>
+<li><strong>지속 가능 속도</strong>: 장기간 유지 가능한 속도</li>
+<li><strong>성능 예측</strong>: 다양한 조건에서의 성능 예측</li>
+</ul>
+<h2>🚀 모델링 접근법</h2>
+<h3>v4 모델 활용</h3>
+<ul>
+<li>기존 v4 모델의 Device Envelope Modeling 활용</li>
+<li>4D Grid Interpolation 기반 장치 성능 모델링</li>
+<li>Dynamic Simulation Framework 활용</li>
+</ul>
+<h3>v5 모델 개발 (필요시)</h3>
+<ul>
+<li>시간 의존적 성능 변화 모델</li>
+<li>레벨별 컴팩션 모델</li>
+<li>안정화 모델</li>
+</ul>
+<h3>핵심 모델 파라미터</h3>
+<ul>
+<li><strong>장치 상태</strong>: 초기화/열화 상태</li>
+<li><strong>시간</strong>: 실험 진행 시간</li>
+<li><strong>컴팩션 상태</strong>: 레벨별 컴팩션 상태</li>
+<li><strong>성능 지표</strong>: WAF, RA, I/O 분포</li>
+</ul>
+<h2>📁 출력 파일 구조</h2>
+<pre class="codehilite"><code>2025-09-12/
 ├── logs/                          # 로그 파일
 │   ├── LOG                        # 메인 로그 파일
 │   ├── LOG.old.*                  # 롤링된 로그 파일
@@ -394,69 +381,16 @@ cp /rocksdb/data/LOG.old.* /home/sslab/rocksdb-put-model/experiments/2025-09-12/
     ├── monitor_device.py          # 장치 모니터링 스크립트
     ├── analyze_logs.py            # 로그 분석 스크립트
     └── generate_model.py          # 모델 생성 스크립트
-        </div>
+</code></pre>
 
-        <div class="section">
-            <div class="section-header">📁 관련 파일 및 링크</div>
-            <div class="section-content">
-                <div class="link-grid">
-                    <a href="README.html" class="link-card">
-                        <h4>📖 실험 개요</h4>
-                        <p>전체 실험 개요 및 목표</p>
-                    </a>
-                    <a href="EXECUTION_GUIDE.html" class="link-card">
-                        <h4>📋 실행 가이드</h4>
-                        <p>단계별 실험 실행 방법</p>
-                    </a>
-                    <a href="phase-a/PHASE_A_PLAN.html" class="link-card">
-                        <h4>🔧 Phase-A</h4>
-                        <p>Device Envelope 모델 구축</p>
-                    </a>
-                    <a href="phase-b/PHASE_B_PLAN.html" class="link-card">
-                        <h4>📊 Phase-B</h4>
-                        <p>FillRandom 성능 분석</p>
-                    </a>
-                    <a href="phase-c/PHASE_c_PLAN.html" class="link-card">
-                        <h4>🔍 Phase-C</h4>
-                        <p>컴팩션 분석</p>
-                    </a>
-                    <a href="phase-d/PHASE_d_PLAN.html" class="link-card">
-                        <h4>✅ Phase-D</h4>
-                        <p>모델 검증</p>
-                    </a>
-                    <a href="phase-e/PHASE_e_PLAN.html" class="link-card">
-                        <h4>📈 Phase-E</h4>
-                        <p>결과 종합</p>
-                    </a>
-                    <a href="phase-f/PHASE_f_PLAN.html" class="link-card">
-                        <h4>📄 Phase-F</h4>
-                        <p>보고서 생성</p>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-header">🛠️ 실행 스크립트</div>
-            <div class="section-content">
-                <div class="link-grid">
-                    <a href="scripts/run_phase_a.py" class="link-card">
-                        <h4>🔧 Phase-A 실행</h4>
-                        <p>Device Envelope 모델 구축 스크립트</p>
-                    </a>
-                    <a href="scripts/run_phase_b.py" class="link-card">
-                        <h4>📊 Phase-B 실행</h4>
-                        <p>FillRandom 성능 분석 스크립트</p>
-                    </a>
-                </div>
-            </div>
-        </div>
-
+<hr />
+<p><strong>실험 시작일</strong>: 2025-09-12<br />
+<strong>예상 완료일</strong>: 2025-09-18<br />
+<strong>총 기간</strong>: 7일<br />
+<strong>주요 목표</strong>: SSD 장치 상태 변화 및 RocksDB 안정화 가능성 분석</p>
         <div class="footer">
-            <p><strong>실험 시작일</strong>: 2025-09-12</p>
-            <p><strong>예상 완료일</strong>: 2025-09-18</p>
-            <p><strong>총 기간</strong>: 7일</p>
-            <p><strong>주요 목표</strong>: SSD 장치 상태 변화 및 RocksDB 안정화 가능성 분석</p>
+            <p>Report Generated: 2025-09-17 05:26:59</p>
+            <p>RocksDB Put-Rate Model Comprehensive Analysis</p>
         </div>
     </div>
 </body>

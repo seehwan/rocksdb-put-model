@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocksDB Put-Rate Model Comprehensive Analysis Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin-top: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            padding: 10px;
+            border-left: 4px solid #28a745;
+            margin: 10px 0;
+        }
+        .info {
+            background-color: #d1ecf1;
+            padding: 10px;
+            border-left: 4px solid #17a2b8;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enhanced v4 Model Analysis Report</h1>
+<h2>Overview</h2>
+<p>This report presents the enhanced v4 model analysis using advanced RocksDB LOG data integration.</p>
+<h2>Model Enhancement</h2>
+<ul>
+<li><strong>Base Model</strong>: v4 (Device Envelope + Closed Ledger + Dynamic Simulation)</li>
+<li><strong>Enhancement</strong>: Advanced RocksDB LOG integration</li>
+<li><strong>Enhancement Features</strong>: Performance degradation analysis, I/O contention modeling, temporal patterns</li>
+</ul>
+<h2>Results</h2>
+<ul>
+<li><strong>Device Envelope S_max</strong>: 76788.03 ops/sec</li>
+<li><strong>Closed Ledger S_max</strong>: 66136.10 ops/sec</li>
+<li><strong>Dynamic Simulation S_max</strong>: 40824.00 ops/sec</li>
+<li><strong>Average Prediction</strong>: 61249.38 ops/sec</li>
+<li><strong>Actual QPS Mean</strong>: 172.00 ops/sec</li>
+<li><strong>Error Rate</strong>: -99.72%</li>
+<li><strong>Validation Status</strong>: Poor</li>
+</ul>
+<h2>Advanced Statistics</h2>
+<ul>
+<li><strong>compaction_intensity</strong>: 1.000</li>
+<li><strong>stall_duration</strong>: 1.000</li>
+<li><strong>io_contention</strong>: 1.000</li>
+<li><strong>performance_degradation</strong>: 1.000</li>
+</ul>
+<h3>workload_characteristics:</h3>
+<ul>
+<li><strong>write_intensive</strong>: True</li>
+<li><strong>compaction_heavy</strong>: True</li>
+<li><strong>stall_prone</strong>: True</li>
+</ul>
+<h3>temporal_patterns:</h3>
+<ul>
+<li><strong>event_frequency</strong>: 5.5831532855126325</li>
+<li><strong>burst_pattern</strong>: True</li>
+<li><strong>steady_state</strong>: False</li>
+</ul>
+<h2>Visualization</h2>
+<p><img alt="Enhanced v4 Model Analysis" src="v4_model_enhanced_analysis.png" /></p>
+<h2>Analysis Time</h2>
+<p>2025-09-17 05:05:12</p>
+        <div class="footer">
+            <p>Report Generated: 2025-09-17 05:26:59</p>
+            <p>RocksDB Put-Rate Model Comprehensive Analysis</p>
+        </div>
+    </div>
+</body>
+</html>

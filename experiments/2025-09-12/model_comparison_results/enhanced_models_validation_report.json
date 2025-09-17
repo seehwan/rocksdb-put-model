@@ -1,0 +1,86 @@
+{
+  "timestamp": "2025-09-17T05:09:39.415325",
+  "total_models": 5,
+  "best_model": {
+    "name": "enhanced_1",
+    "accuracy": 4.128091475709596,
+    "s_max": 4166.574336156985,
+    "r2_score": 0.04128091475709594
+  },
+  "worst_model": {
+    "name": "enhanced_2_1",
+    "accuracy": 0,
+    "s_max": 15.686244073916589,
+    "r2_score": 0
+  },
+  "performance_statistics": {
+    "accuracy": {
+      "mean": 0.9465157047596506,
+      "std": 1.5965775668628122,
+      "min": 0.0,
+      "max": 4.128091475709596
+    },
+    "r2_score": {
+      "mean": 0.009465157047596517,
+      "std": 0.01596577566862811,
+      "min": 0.0,
+      "max": 0.04128091475709594
+    },
+    "relative_error": {
+      "mean": 952.6396240868987,
+      "std": 1306.54446987881,
+      "min": 95.8719085242904,
+      "max": 3471.4285714285716
+    }
+  },
+  "model_rankings": [
+    {
+      "rank": 1,
+      "model": "enhanced_1",
+      "composite_score": 4.128091475709596,
+      "accuracy": 4.128091475709596,
+      "r2_score": 0.04128091475709594,
+      "relative_error": 95.8719085242904
+    },
+    {
+      "rank": 2,
+      "model": "enhanced_5",
+      "composite_score": 0.3236678601073221,
+      "accuracy": 0.32366786010732085,
+      "r2_score": 0.0032366786010732396,
+      "relative_error": 99.67633213989268
+    },
+    {
+      "rank": 3,
+      "model": "enhanced_4",
+      "composite_score": 0.28081918798133804,
+      "accuracy": 0.2808191879813364,
+      "r2_score": 0.0028081918798134042,
+      "relative_error": 99.71918081201866
+    },
+    {
+      "rank": 4,
+      "model": "enhanced_2_1",
+      "composite_score": -179.30042550594396,
+      "accuracy": 0,
+      "r2_score": 0,
+      "relative_error": 996.5021275297198
+    },
+    {
+      "rank": 5,
+      "model": "enhanced_3",
+      "composite_score": -674.2857142857143,
+      "accuracy": 0,
+      "r2_score": 0,
+      "relative_error": 3471.4285714285716
+    }
+  ],
+  "validation_summary": {
+    "total_models_validated": 5,
+    "high_accuracy_models": 0,
+    "high_r2_models": 0,
+    "low_error_models": 0,
+    "validation_success_rate": 0.0,
+    "overall_quality": "Good"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "model": "v4_enhanced",
+  "device_envelope_smax": 76788.02707692307,
+  "closed_ledger_smax": 66136.10057392041,
+  "dynamic_simulation_smax": 40824.0,
+  "avg_prediction": 61249.37588361449,
+  "actual_qps_mean": 172.0,
+  "actual_qps_max": 184.0,
+  "actual_qps_min": 160.0,
+  "error_percent": -99.71918081201866,
+  "error_abs": 99.71918081201866,
+  "validation_status": "Poor",
+  "rocksdb_log_enhanced": true,
+  "advanced_stats": {
+    "compaction_intensity": 1.0,
+    "stall_duration": 1.0,
+    "io_contention": 1.0,
+    "performance_degradation": 1.0,
+    "workload_characteristics": {
+      "write_intensive": true,
+      "compaction_heavy": true,
+      "stall_prone": true
+    },
+    "temporal_patterns": {
+      "event_frequency": 5.5831532855126325,
+      "burst_pattern": true,
+      "steady_state": false
+    }
+  }
+}

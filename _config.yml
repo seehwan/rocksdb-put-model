@@ -1,0 +1,85 @@
+# Jekyll configuration for GitHub Pages
+title: RocksDB Put-Rate Model
+description: A comprehensive model and analysis framework for RocksDB put-rate performance optimization
+url: "https://seehwan.github.io"
+baseurl: "/rocksdb-put-model"
+
+# Theme
+theme: jekyll-theme-primer
+
+# Plugins
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+  - jekyll-coffeescript
+
+# Markdown processor
+markdown: kramdown
+highlighter: rouge
+
+# Kramdown settings
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# GitHub Flavored Markdown settings
+gfm_quirks: paragraph_end
+
+# Enable syntax highlighting
+syntax_highlighter_opts:
+  default_lang: html
+
+# File processing
+include:
+  - _pages
+  - _data
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - scripts/
+  - test_*
+  - manual_test.json
+  - fio_temp*.json
+  - *.log
+  - *.fls
+  - .DS_Store
+  - experiments/*/logs/
+
+# Collections
+collections:
+  experiments:
+    output: true
+    permalink: /:collection/:name/
+
+# Default layouts
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "experiments"
+    values:
+      layout: "default"
+
+# SEO settings
+author: Seehwan Yoo
+twitter:
+  username: seehwan
+social:
+  name: Seehwan Yoo
+  links:
+    - https://github.com/seehwan

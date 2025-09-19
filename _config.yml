@@ -43,13 +43,13 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - scripts/
-  - test_*
+  - "test_*"
   - manual_test.json
-  - fio_temp*.json
-  - *.log
-  - *.fls
+  - "fio_temp*.json"
+  - "*.log"
+  - "*.fls"
   - .DS_Store
-  - experiments/*/logs/
+  - "experiments/*/logs/"
 
 # Collections
 collections:

@@ -1,0 +1,21 @@
+name: Pages Build and Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create missing LOG file
+        run: |
+          mkdir -p experiments/2025-09-12/logs
+          touch experiments/2025-09-12/logs/LOG
+
+      - name: Placeholder build step
+        run: echo "This is a placeholder for the build step."

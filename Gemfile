@@ -1,4 +1,2 @@
-gem "jekyll-github-metadata"
-gem "jekyll-seo-tag"
-gem "jekyll-coffeescript"
-gem "jekyll-theme-primer"
+source 'https://rubygems.org'
+gem 'github-pages', group: :jekyll_plugins

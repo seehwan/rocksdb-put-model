@@ -1,5 +1,11 @@
 plugins:
-  - jekyll-github-metadata
   - jekyll-seo-tag
 
 theme: jekyll-theme-primer
+
+# Exclude files/directories that may cause build issues  
+exclude:
+  - vendor
+  - Gemfile
+  - Gemfile.lock
+  - experiments/2025-09-12/phase-b/logs/LOG

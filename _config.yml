@@ -1,0 +1,51 @@
+title: RocksDB Put-Rate Model
+description: Theoretical and experimental analysis of RocksDB put rate performance
+author: Seehwan Yoo
+
+# Theme
+theme: jekyll-theme-primer
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Plugins
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+
+# Exclude directories that cause build issues
+exclude:
+  - vendor/
+  - .bundle/
+  - .git/
+  - .gitignore
+  - node_modules/
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - experiments/2025-09-12/phase-b/logs/
+  - "*.log"
+
+# Repository information for github-metadata
+repository: seehwan/rocksdb-put-model
+
+# SEO settings
+url: "https://seehwan.github.io"
+baseurl: "/rocksdb-put-model"
+
+# Navigation
+collections:
+  models:
+    output: true
+    permalink: /:collection/:name/
+
+# Site settings
+timezone: Asia/Seoul
+encoding: utf-8
+
+# GitHub Pages settings
+github:
+  is_project_page: true
+  repository_name: rocksdb-put-model
+  repository_url: https://github.com/seehwan/rocksdb-put-model

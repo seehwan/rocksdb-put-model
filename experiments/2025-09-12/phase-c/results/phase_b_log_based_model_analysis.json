@@ -1,0 +1,84 @@
+{
+  "analysis_date": "2025-09-17T09:22:16.594969",
+  "phase_b_log_data": {
+    "initial_performance": 286904.3,
+    "final_performance": 12349.4,
+    "performance_degradation": 95.7,
+    "total_compactions": 287885,
+    "total_flushes": 138852,
+    "compaction_by_level": {
+      "Level 0": 13242,
+      "Level 1": 54346,
+      "Level 2": 82735,
+      "Level 3": 80094,
+      "Level 4": 47965,
+      "Level 5": 9503
+    }
+  },
+  "model_predictions": {
+    "v1": {
+      "predicted_final_performance": 95000.0,
+      "actual_final_performance": 12349.4,
+      "error_percent": 669.2681425818259,
+      "accuracy": 0,
+      "r2_score": 0
+    },
+    "v2": {
+      "predicted_final_performance": 76000.0,
+      "actual_final_performance": 12349.4,
+      "error_percent": 515.4145140654607,
+      "accuracy": 0,
+      "r2_score": 0
+    },
+    "v2_1": {
+      "predicted_final_performance": 71250.0,
+      "actual_final_performance": 12349.4,
+      "error_percent": 476.9511069363694,
+      "accuracy": 0,
+      "r2_score": 0
+    },
+    "v3": {
+      "predicted_final_performance": 57000.0,
+      "actual_final_performance": 12349.4,
+      "error_percent": 361.5608855490955,
+      "accuracy": 0,
+      "r2_score": 0
+    },
+    "v4": {
+      "predicted_final_performance": 66500.0,
+      "actual_final_performance": 12349.4,
+      "error_percent": 438.4876998072781,
+      "accuracy": 0,
+      "r2_score": 0
+    },
+    "v5": {
+      "predicted_final_performance": 61750.0,
+      "actual_final_performance": 12349.4,
+      "error_percent": 400.02429267818684,
+      "accuracy": 0,
+      "r2_score": 0
+    }
+  },
+  "compaction_analysis": {
+    "total_compactions": 287885,
+    "total_flushes": 138852,
+    "compaction_flush_ratio": 2.073322674502348,
+    "most_active_levels": [
+      "Level 2",
+      "Level 3"
+    ],
+    "compaction_flow": {
+      "Level 0 \u2192 Level 1": 13242,
+      "Level 1 \u2192 Level 2": 54346,
+      "Level 2 \u2192 Level 3": 82735,
+      "Level 3 \u2192 Level 4": 80094,
+      "Level 4 \u2192 Level 5": 47965
+    }
+  },
+  "summary": {
+    "best_model": "v3",
+    "worst_model": "v1",
+    "average_accuracy": 0.0,
+    "performance_degradation_actual": 95.7
+  }
+}

@@ -1,104 +1,360 @@
-[
-  {
-    "timestamp": "2025-09-17T05:20:03.625716",
-    "model": "v5_enhanced",
-    "performance_data": {
-      "error_rate": 17.46650272807274,
-      "accuracy": 0.8,
-      "system_load": 0.33841583136495773,
-      "io_intensity": 0.45425831134395894
+{
+  "tuning_records": [
+    {
+      "timestamp": "2025-09-17T09:25:29.848109",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.2999999908733368
+      },
+      "performance_impact": 0.2999999908733368
     },
-    "adjusted_parameters": {
-      "throughput_factor": 0.8338376096129162,
-      "latency_factor": 1.1460210613518558,
-      "accuracy_factor": 0.8007875242770377,
-      "scaling_factor": 1.0102357018445038
+    {
+      "timestamp": "2025-09-17T09:25:30.849294",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.29041954540729525
+      },
+      "performance_impact": 0.29041954540729525
     },
-    "tuning_active": true
-  },
-  {
-    "timestamp": "2025-09-17T05:20:08.633600",
-    "model": "v5_enhanced",
-    "performance_data": {
-      "error_rate": 17.2914928956425,
-      "accuracy": 0.8,
-      "system_load": 0.6191025188487803,
-      "io_intensity": 0.46746583932325997
+    {
+      "timestamp": "2025-09-17T09:25:31.850430",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.2808380595016479
+      },
+      "performance_impact": 0.2808380595016479
     },
-    "adjusted_parameters": {
-      "throughput_factor": 0.7219564169745717,
-      "latency_factor": 1.2759447061704112,
-      "accuracy_factor": 0.9379588732392896,
-      "scaling_factor": 1.0267090324665955
+    {
+      "timestamp": "2025-09-17T09:25:32.851600",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3616761920166016,
+        "performance_impact": 0.45209524002075197
+      },
+      "performance_impact": 0.45209524002075197
     },
-    "tuning_active": true
-  },
-  {
-    "timestamp": "2025-09-17T05:20:13.641749",
-    "model": "v5_enhanced",
-    "performance_data": {
-      "error_rate": 16.325919188735394,
-      "accuracy": 0.8,
-      "system_load": 0.7406182699609765,
-      "io_intensity": 0.35362381102562557
+    {
+      "timestamp": "2025-09-17T09:25:33.852766",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3489012851333618,
+        "performance_impact": 0.43612660641670226
+      },
+      "performance_impact": 0.43612660641670226
     },
-    "adjusted_parameters": {
-      "throughput_factor": 0.531960792068982,
-      "latency_factor": 1.2176032024660524,
-      "accuracy_factor": 0.8543066453428336,
-      "scaling_factor": 1.2207913371554704
+    {
+      "timestamp": "2025-09-17T09:25:34.854193",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.33612652123451237,
+        "performance_impact": 0.4201581515431404
+      },
+      "performance_impact": 0.4201581515431404
     },
-    "tuning_active": true
-  },
-  {
-    "timestamp": "2025-09-17T05:20:18.654988",
-    "model": "v5_enhanced",
-    "performance_data": {
-      "error_rate": 15.299837095613794,
-      "accuracy": 0.8,
-      "system_load": 0.41174068356553717,
-      "io_intensity": 0.5354366763573861
+    {
+      "timestamp": "2025-09-17T09:25:35.855360",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3233481827259064,
+        "performance_impact": 0.40418522840738297
+      },
+      "performance_impact": 0.40418522840738297
     },
-    "adjusted_parameters": {
-      "throughput_factor": 0.7222184356526917,
-      "latency_factor": 1.0438257029996583,
-      "accuracy_factor": 0.7835952502551765,
-      "scaling_factor": 1.3343019570923338
+    {
+      "timestamp": "2025-09-17T09:25:36.856539",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.31057313285827637,
+        "performance_impact": 0.38821641607284546
+      },
+      "performance_impact": 0.38821641607284546
     },
-    "tuning_active": true
-  },
-  {
-    "timestamp": "2025-09-17T05:20:23.669121",
-    "model": "v5_enhanced",
-    "performance_data": {
-      "error_rate": 15.785368870860768,
-      "accuracy": 0.8,
-      "system_load": 0.574734763081888,
-      "io_intensity": 0.1883773145813605
+    {
+      "timestamp": "2025-09-17T09:25:37.857716",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.37224766077995297
+      },
+      "performance_impact": 0.37224766077995297
     },
-    "adjusted_parameters": {
-      "throughput_factor": 0.6237864080463948,
-      "latency_factor": 1.0190466078291296,
-      "accuracy_factor": 0.8488961155365027,
-      "scaling_factor": 1.4202312748042112
+    {
+      "timestamp": "2025-09-17T09:25:38.858887",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.35627922111749644
+      },
+      "performance_impact": 0.35627922111749644
     },
-    "tuning_active": true
-  },
-  {
-    "timestamp": "2025-09-17T05:20:28.683575",
-    "model": "v5_enhanced",
-    "performance_data": {
-      "error_rate": 13.839761088215937,
-      "accuracy": 0.8,
-      "system_load": 0.5243370781351796,
-      "io_intensity": 0.36391153983644925
+    {
+      "timestamp": "2025-09-17T09:25:39.860048",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.3403104506134987
+      },
+      "performance_impact": 0.3403104506134987
     },
-    "adjusted_parameters": {
-      "throughput_factor": 0.6890753579755089,
-      "latency_factor": 1.1496121170017704,
-      "accuracy_factor": 0.8287312321248799,
-      "scaling_factor": 1.4430371547051473
+    {
+      "timestamp": "2025-09-17T09:25:40.861217",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.32434206418991085
+      },
+      "performance_impact": 0.32434206418991085
     },
-    "tuning_active": true
+    {
+      "timestamp": "2025-09-17T09:25:41.862416",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.30837303889989853
+      },
+      "performance_impact": 0.30837303889989853
+    },
+    {
+      "timestamp": "2025-09-17T09:25:42.863630",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.29240342417955395
+      },
+      "performance_impact": 0.29240342417955395
+    },
+    {
+      "timestamp": "2025-09-17T09:25:43.864815",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.27643450917005535
+      },
+      "performance_impact": 0.27643450917005535
+    },
+    {
+      "timestamp": "2025-09-17T09:25:44.866000",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.36465186909198755
+      },
+      "performance_impact": 0.36465186909198755
+    },
+    {
+      "timestamp": "2025-09-17T09:25:45.867174",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.3422956329774856
+      },
+      "performance_impact": 0.3422956329774856
+    },
+    {
+      "timestamp": "2025-09-17T09:25:46.868391",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.319938843178749
+      },
+      "performance_impact": 0.319938843178749
+    },
+    {
+      "timestamp": "2025-09-17T09:25:47.869570",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.29758214388608933
+      },
+      "performance_impact": 0.29758214388608933
+    },
+    {
+      "timestamp": "2025-09-17T09:25:48.870750",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.2752257640266418
+      },
+      "performance_impact": 0.2752257640266418
+    },
+    {
+      "timestamp": "2025-09-17T09:25:49.871962",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.25286907538175574
+      },
+      "performance_impact": 0.25286907538175574
+    },
+    {
+      "timestamp": "2025-09-17T09:25:50.873133",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.23051242932796476
+      },
+      "performance_impact": 0.23051242932796476
+    },
+    {
+      "timestamp": "2025-09-17T09:25:51.874307",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.2081563422822952
+      },
+      "performance_impact": 0.2081563422822952
+    },
+    {
+      "timestamp": "2025-09-17T09:25:52.875521",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.18579990386009215
+      },
+      "performance_impact": 0.18579990386009215
+    },
+    {
+      "timestamp": "2025-09-17T09:25:53.876725",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.1634427680087089
+      },
+      "performance_impact": 0.1634427680087089
+    },
+    {
+      "timestamp": "2025-09-17T09:25:54.877910",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.14108592497110364
+      },
+      "performance_impact": 0.14108592497110364
+    },
+    {
+      "timestamp": "2025-09-17T09:25:55.879106",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.11872958770275106
+      },
+      "performance_impact": 0.11872958770275106
+    },
+    {
+      "timestamp": "2025-09-17T09:25:56.880287",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.09637281387567513
+      },
+      "performance_impact": 0.09637281387567513
+    },
+    {
+      "timestamp": "2025-09-17T09:25:57.881514",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.07401651919841759
+      },
+      "performance_impact": 0.07401651919841759
+    },
+    {
+      "timestamp": "2025-09-17T09:25:58.882696",
+      "parameters": {
+        "throughput_factor": 0.5,
+        "latency_factor": 2.0,
+        "accuracy_factor": 0.5,
+        "scaling_factor": 0.3,
+        "performance_impact": 0.051659047942161494
+      },
+      "performance_impact": 0.051659047942161494
+    }
+  ],
+  "summary": {
+    "throughput_factor": {
+      "mean": 0.5,
+      "std": 0.0,
+      "min": 0.5,
+      "max": 0.5
+    },
+    "latency_factor": {
+      "mean": 2.0,
+      "std": 0.0,
+      "min": 2.0,
+      "max": 2.0
+    },
+    "accuracy_factor": {
+      "mean": 0.5,
+      "std": 0.0,
+      "min": 0.5,
+      "max": 0.5
+    },
+    "scaling_factor": {
+      "mean": 0.3060208437989554,
+      "std": 0.01535124952500531,
+      "min": 0.3,
+      "max": 0.3616761920166016
+    }
   }
-]
+}

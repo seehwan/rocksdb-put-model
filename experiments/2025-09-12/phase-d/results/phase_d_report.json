@@ -1,55 +1,17 @@
 {
-  "phase": "Phase-D",
-  "timestamp": "2025-09-17T05:20:33.699406",
-  "objectives": [
-    "Production Integration",
-    "Real-time Monitoring",
-    "Auto-tuning",
-    "Performance Validation"
-  ],
-  "results": {
-    "performance_stats": {
-      "total_records": 7,
-      "time_range": {
-        "start": "2025-09-17T05:20:03.625510",
-        "end": "2025-09-17T05:20:33.688859"
-      },
-      "qps_stats": {
-        "mean": 1051.2824163703115,
-        "std": 164.27842661589006,
-        "min": 825.6343000122282,
-        "max": 1286.6395873398665
-      },
-      "latency_stats": {
-        "mean": 0.9464131363102963,
-        "std": 0.30323550392042264,
-        "min": 0.506488983982623,
-        "max": 1.4836004916235954
-      }
-    },
-    "tuning_summary": {
-      "total_adjustments": 6,
-      "current_model": "v5_enhanced",
-      "tuning_active": false,
-      "recent_adjustments": 6,
-      "current_parameters": {
-        "throughput_factor": 0.6890753579755089,
-        "latency_factor": 1.1496121170017704,
-        "accuracy_factor": 0.8287312321248799,
-        "scaling_factor": 1.4430371547051473
-      }
-    },
-    "model_summary": {
-      "total_records": 6,
-      "active_model": "v2_1_enhanced",
-      "recent_predictions": {
-        "mean": 59.68769873627726,
-        "std": 0.0,
-        "min": 59.68769873627726,
-        "max": 59.68769873627726
-      },
-      "monitoring_status": "inactive"
-    }
+  "timestamp": "2025-09-17T09:25:29.848085",
+  "simulation_metrics": {
+    "simulation_duration": 30,
+    "initial_qps": 286904.3,
+    "final_qps": 12349.4,
+    "degradation_rate": 0.9570000000000001,
+    "compaction_intensity": 287.885,
+    "flush_intensity": 138.852
   },
-  "status": "completed"
+  "summary": {
+    "total_loops": 30,
+    "final_qps": 14821.202988512283,
+    "final_latency": 10.0,
+    "performance_degradation": 95.7
+  }
 }

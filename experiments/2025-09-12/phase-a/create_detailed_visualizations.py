@@ -17,8 +17,8 @@ from datetime import datetime
 import glob
 from mpl_toolkits.mplot3d import Axes3D
 
-# 한글 폰트 설정
-plt.rcParams['font.family'] = 'DejaVu Sans'
+# Liberation Serif 폰트 설정 (Times 스타일)
+plt.rcParams['font.family'] = 'Liberation Serif'
 plt.rcParams['axes.unicode_minus'] = False
 
 def load_fio_results(directory, pattern):

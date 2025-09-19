@@ -14,6 +14,10 @@ from pathlib import Path
 from datetime import datetime
 import seaborn as sns
 
+# Liberation Serif 폰트 설정 (Times 스타일)
+plt.rcParams['font.family'] = 'Liberation Serif'
+plt.rcParams['axes.unicode_minus'] = False
+
 def load_phase_a_results():
     """Phase-A 결과 파일들을 로드합니다."""
     data_dir = Path("data")

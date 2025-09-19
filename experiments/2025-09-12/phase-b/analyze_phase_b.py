@@ -12,6 +12,10 @@ from pathlib import Path
 from datetime import datetime
 import numpy as np
 
+# Liberation Serif 폰트 설정 (Times 스타일)
+plt.rcParams['font.family'] = 'Liberation Serif'
+plt.rcParams['axes.unicode_minus'] = False
+
 def parse_log_file(log_file):
     """LOG 파일 파싱"""
     print(f"📖 LOG 파일 분석 중: {log_file}")
@@ -283,8 +287,31 @@ def generate_summary_report(stats_df, compaction_df):
         }
     
     # 요약 저장
+    # JSON 저장 (numpy 타입 변환)
+    def convert_numpy_types(obj):
+        if isinstance(obj, np.bool_):
+            return bool(obj)
+        elif isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return obj
+    
+    # 재귀적으로 numpy 타입 변환
+    def clean_dict(d):
+        if isinstance(d, dict):
+            return {k: clean_dict(v) for k, v in d.items()}
+        elif isinstance(d, list):
+            return [clean_dict(item) for item in d]
+        else:
+            return convert_numpy_types(d)
+    
+    summary_clean = clean_dict(summary)
+    
     with open('phase_b_summary.json', 'w') as f:
-        json.dump(summary, f, indent=2)
+        json.dump(summary_clean, f, indent=2)
     
     print("✅ 종합 요약 보고서 저장: phase_b_summary.json")
     
@@ -309,8 +336,8 @@ def main():
     """메인 함수"""
     print("🚀 Phase-B FillRandom 분석 시작...")
     
-    # LOG 파일 찾기
-    log_files = list(Path('.').glob('LOG*'))
+    # LOG 파일 찾기 (현재 디렉토리와 logs 디렉토리에서)
+    log_files = list(Path('.').glob('LOG*')) + list(Path('logs').glob('LOG*'))
     
     if not log_files:
         print("❌ LOG 파일을 찾을 수 없습니다!")

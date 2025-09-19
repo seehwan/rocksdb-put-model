@@ -15,6 +15,10 @@ import seaborn as sns
 from datetime import datetime
 import glob
 
+# Liberation Serif 폰트 설정 (Times 스타일)
+plt.rcParams['font.family'] = 'Liberation Serif'
+plt.rcParams['axes.unicode_minus'] = False
+
 def load_fio_results(directory, pattern):
     """fio 결과 파일들을 로드"""
     results = {}

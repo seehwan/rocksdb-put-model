@@ -1,0 +1,26 @@
+{
+  "experiment_type": "Phase-B FillRandom Analysis",
+  "analysis_date": "2025-09-17T08:49:29.777926",
+  "performance_summary": {
+    "initial_put_rate": 280.18,
+    "final_put_rate": 12.06,
+    "max_put_rate": 280.18,
+    "min_put_rate": 12.06,
+    "performance_degradation_percent": 95.695624241559,
+    "total_writes": 0,
+    "experiment_duration_minutes": 5796.436334566666
+  },
+  "compaction_summary": {
+    "total_compactions": 143943,
+    "compactions_by_level": {
+      "level_-1": 143943
+    },
+    "most_active_level": -1
+  },
+  "stability_analysis": {
+    "stability_coefficient_of_variation": 0.32143204910806916,
+    "is_stable": true,
+    "final_stability_mean": 12.125760713258558,
+    "final_stability_std": 0.038976081130568205
+  }
+}

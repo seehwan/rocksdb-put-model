@@ -1,0 +1,889 @@
+{
+  "analysis_type": "Hourly Flush and Compaction Throughput Analysis",
+  "total_hours_analyzed": 97,
+  "total_flush_size_mb": 4216896.435013771,
+  "total_compaction_size_mb": 45696072.63251877,
+  "total_combined_size_mb": 49912969.06753254,
+  "average_flush_size_mb": 43473.15912385331,
+  "average_compaction_size_mb": 471093.53229400795,
+  "flush_compaction_ratio": 0.09228137544610113,
+  "max_flush_hour": "2025/09/12-10",
+  "max_flush_size_mb": 89600.94737434387,
+  "max_compaction_hour": "2025/09/12-13",
+  "max_compaction_size_mb": 518769.07268333435,
+  "hourly_breakdown": {
+    "2025/09/12-10": {
+      "flush_count": 1473,
+      "flush_size_mb": 89600.94737434387,
+      "compaction_count": 985,
+      "compaction_size_mb": 377585.20910453796,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-11": {
+      "flush_count": 1230,
+      "flush_size_mb": 74779.96864128113,
+      "compaction_count": 1633,
+      "compaction_size_mb": 518474.75140571594,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-12": {
+      "flush_count": 1147,
+      "flush_size_mb": 69743.19094371796,
+      "compaction_count": 1486,
+      "compaction_size_mb": 513557.5507516861,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-13": {
+      "flush_count": 924,
+      "flush_size_mb": 56180.1234254837,
+      "compaction_count": 1794,
+      "compaction_size_mb": 518769.07268333435,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-14": {
+      "flush_count": 917,
+      "flush_size_mb": 55759.22768211365,
+      "compaction_count": 1799,
+      "compaction_size_mb": 515393.543343544,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-15": {
+      "flush_count": 863,
+      "flush_size_mb": 52450.640840530396,
+      "compaction_count": 1693,
+      "compaction_size_mb": 497057.12596416473,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-16": {
+      "flush_count": 824,
+      "flush_size_mb": 50076.40095329285,
+      "compaction_count": 1656,
+      "compaction_size_mb": 485843.2549209595,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-17": {
+      "flush_count": 795,
+      "flush_size_mb": 48306.23929691315,
+      "compaction_count": 1571,
+      "compaction_size_mb": 476760.8970403671,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-18": {
+      "flush_count": 796,
+      "flush_size_mb": 48309.24422740936,
+      "compaction_count": 1548,
+      "compaction_size_mb": 485803.5470685959,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-19": {
+      "flush_count": 761,
+      "flush_size_mb": 46212.51839160919,
+      "compaction_count": 1516,
+      "compaction_size_mb": 486142.540848732,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-20": {
+      "flush_count": 749,
+      "flush_size_mb": 45486.32251167297,
+      "compaction_count": 1491,
+      "compaction_size_mb": 483418.83345890045,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-21": {
+      "flush_count": 740,
+      "flush_size_mb": 44959.329067230225,
+      "compaction_count": 1480,
+      "compaction_size_mb": 484968.40514469147,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-22": {
+      "flush_count": 705,
+      "flush_size_mb": 42831.991629600525,
+      "compaction_count": 1400,
+      "compaction_size_mb": 470935.2272834778,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/12-23": {
+      "flush_count": 723,
+      "flush_size_mb": 43915.45650577545,
+      "compaction_count": 1418,
+      "compaction_size_mb": 487322.582444191,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-00": {
+      "flush_count": 748,
+      "flush_size_mb": 45424.05991077423,
+      "compaction_count": 1482,
+      "compaction_size_mb": 508619.21423625946,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-01": {
+      "flush_count": 763,
+      "flush_size_mb": 46313.89821147919,
+      "compaction_count": 1505,
+      "compaction_size_mb": 505845.21857738495,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-02": {
+      "flush_count": 763,
+      "flush_size_mb": 46313.13845920563,
+      "compaction_count": 1513,
+      "compaction_size_mb": 502504.65389060974,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-03": {
+      "flush_count": 763,
+      "flush_size_mb": 46281.43433761597,
+      "compaction_count": 1515,
+      "compaction_size_mb": 507234.5976514816,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-04": {
+      "flush_count": 768,
+      "flush_size_mb": 46581.19068813324,
+      "compaction_count": 1524,
+      "compaction_size_mb": 506797.6875190735,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-05": {
+      "flush_count": 766,
+      "flush_size_mb": 46498.67437458038,
+      "compaction_count": 1521,
+      "compaction_size_mb": 506359.43096637726,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-06": {
+      "flush_count": 752,
+      "flush_size_mb": 45675.18910884857,
+      "compaction_count": 1506,
+      "compaction_size_mb": 503218.0694284439,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-07": {
+      "flush_count": 756,
+      "flush_size_mb": 45889.156598091125,
+      "compaction_count": 1485,
+      "compaction_size_mb": 498888.67366695404,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-08": {
+      "flush_count": 759,
+      "flush_size_mb": 46086.14793395996,
+      "compaction_count": 1493,
+      "compaction_size_mb": 500282.6378183365,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-09": {
+      "flush_count": 750,
+      "flush_size_mb": 45540.942485809326,
+      "compaction_count": 1497,
+      "compaction_size_mb": 496557.54683303833,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-10": {
+      "flush_count": 741,
+      "flush_size_mb": 44996.77543258667,
+      "compaction_count": 1476,
+      "compaction_size_mb": 495264.1328792572,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-11": {
+      "flush_count": 745,
+      "flush_size_mb": 45262.692737579346,
+      "compaction_count": 1472,
+      "compaction_size_mb": 495605.54428577423,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-12": {
+      "flush_count": 751,
+      "flush_size_mb": 45616.534830093384,
+      "compaction_count": 1471,
+      "compaction_size_mb": 498307.24302101135,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-13": {
+      "flush_count": 753,
+      "flush_size_mb": 45720.05458545685,
+      "compaction_count": 1489,
+      "compaction_size_mb": 496580.24569892883,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-14": {
+      "flush_count": 740,
+      "flush_size_mb": 44939.0733499527,
+      "compaction_count": 1442,
+      "compaction_size_mb": 492428.50357055664,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-15": {
+      "flush_count": 732,
+      "flush_size_mb": 44458.3506231308,
+      "compaction_count": 1445,
+      "compaction_size_mb": 488847.548125267,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-16": {
+      "flush_count": 749,
+      "flush_size_mb": 45519.21938419342,
+      "compaction_count": 1473,
+      "compaction_size_mb": 488607.7595157623,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-17": {
+      "flush_count": 740,
+      "flush_size_mb": 44898.793449401855,
+      "compaction_count": 1444,
+      "compaction_size_mb": 487887.75191116333,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-18": {
+      "flush_count": 744,
+      "flush_size_mb": 45170.360785484314,
+      "compaction_count": 1443,
+      "compaction_size_mb": 490346.2437734604,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-19": {
+      "flush_count": 738,
+      "flush_size_mb": 44812.143602371216,
+      "compaction_count": 1464,
+      "compaction_size_mb": 491445.1789560318,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-20": {
+      "flush_count": 739,
+      "flush_size_mb": 44917.738142967224,
+      "compaction_count": 1461,
+      "compaction_size_mb": 492606.8519716263,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-21": {
+      "flush_count": 745,
+      "flush_size_mb": 45284.71152114868,
+      "compaction_count": 1450,
+      "compaction_size_mb": 489255.597741127,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-22": {
+      "flush_count": 733,
+      "flush_size_mb": 44526.76942253113,
+      "compaction_count": 1458,
+      "compaction_size_mb": 486895.45262622833,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/13-23": {
+      "flush_count": 727,
+      "flush_size_mb": 44156.32503890991,
+      "compaction_count": 1436,
+      "compaction_size_mb": 483258.81161499023,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-00": {
+      "flush_count": 733,
+      "flush_size_mb": 44514.5562543869,
+      "compaction_count": 1414,
+      "compaction_size_mb": 484288.91912174225,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-01": {
+      "flush_count": 727,
+      "flush_size_mb": 44138.089982032776,
+      "compaction_count": 1453,
+      "compaction_size_mb": 485511.59890937805,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-02": {
+      "flush_count": 699,
+      "flush_size_mb": 42468.605525016785,
+      "compaction_count": 1527,
+      "compaction_size_mb": 478794.43733787537,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-03": {
+      "flush_count": 692,
+      "flush_size_mb": 42050.537302970886,
+      "compaction_count": 1552,
+      "compaction_size_mb": 479966.0808439255,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-04": {
+      "flush_count": 689,
+      "flush_size_mb": 41840.54197502136,
+      "compaction_count": 1532,
+      "compaction_size_mb": 474573.8516969681,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-05": {
+      "flush_count": 679,
+      "flush_size_mb": 41251.4432926178,
+      "compaction_count": 1517,
+      "compaction_size_mb": 469999.8234395981,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-06": {
+      "flush_count": 674,
+      "flush_size_mb": 40944.528431892395,
+      "compaction_count": 1510,
+      "compaction_size_mb": 466740.82826423645,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-07": {
+      "flush_count": 676,
+      "flush_size_mb": 41055.141547203064,
+      "compaction_count": 1516,
+      "compaction_size_mb": 467709.7627000809,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-08": {
+      "flush_count": 665,
+      "flush_size_mb": 40374.06974029541,
+      "compaction_count": 1490,
+      "compaction_size_mb": 461472.6732902527,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-09": {
+      "flush_count": 666,
+      "flush_size_mb": 40430.06388378143,
+      "compaction_count": 1488,
+      "compaction_size_mb": 461297.96180057526,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-10": {
+      "flush_count": 668,
+      "flush_size_mb": 40586.98680686951,
+      "compaction_count": 1517,
+      "compaction_size_mb": 464185.347615242,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-11": {
+      "flush_count": 665,
+      "flush_size_mb": 40404.61218261719,
+      "compaction_count": 1499,
+      "compaction_size_mb": 461878.6248474121,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-12": {
+      "flush_count": 662,
+      "flush_size_mb": 40216.38405799866,
+      "compaction_count": 1491,
+      "compaction_size_mb": 461124.8494539261,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-13": {
+      "flush_count": 659,
+      "flush_size_mb": 40045.94195461273,
+      "compaction_count": 1461,
+      "compaction_size_mb": 459877.67234802246,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-14": {
+      "flush_count": 661,
+      "flush_size_mb": 40140.19634056091,
+      "compaction_count": 1479,
+      "compaction_size_mb": 460284.7771539688,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-15": {
+      "flush_count": 656,
+      "flush_size_mb": 39836.88479042053,
+      "compaction_count": 1459,
+      "compaction_size_mb": 456980.3013534546,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-16": {
+      "flush_count": 657,
+      "flush_size_mb": 39917.900643348694,
+      "compaction_count": 1469,
+      "compaction_size_mb": 458139.0762720108,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-17": {
+      "flush_count": 657,
+      "flush_size_mb": 39885.43175792694,
+      "compaction_count": 1466,
+      "compaction_size_mb": 458120.55819511414,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-18": {
+      "flush_count": 661,
+      "flush_size_mb": 40143.750537872314,
+      "compaction_count": 1474,
+      "compaction_size_mb": 462055.04210948944,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-19": {
+      "flush_count": 658,
+      "flush_size_mb": 39961.141372680664,
+      "compaction_count": 1490,
+      "compaction_size_mb": 456959.81328964233,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-20": {
+      "flush_count": 644,
+      "flush_size_mb": 39120.056515693665,
+      "compaction_count": 1461,
+      "compaction_size_mb": 450025.29474544525,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-21": {
+      "flush_count": 646,
+      "flush_size_mb": 39234.59668827057,
+      "compaction_count": 1444,
+      "compaction_size_mb": 451908.51849746704,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-22": {
+      "flush_count": 650,
+      "flush_size_mb": 39485.91231632233,
+      "compaction_count": 1454,
+      "compaction_size_mb": 452766.7514152527,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/14-23": {
+      "flush_count": 651,
+      "flush_size_mb": 39524.31789398193,
+      "compaction_count": 1465,
+      "compaction_size_mb": 451265.4193344116,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-00": {
+      "flush_count": 649,
+      "flush_size_mb": 39431.73135471344,
+      "compaction_count": 1431,
+      "compaction_size_mb": 455488.7587442398,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-01": {
+      "flush_count": 650,
+      "flush_size_mb": 39475.27277755737,
+      "compaction_count": 1447,
+      "compaction_size_mb": 451461.66774845123,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-02": {
+      "flush_count": 649,
+      "flush_size_mb": 39398.57688808441,
+      "compaction_count": 1457,
+      "compaction_size_mb": 451292.4316558838,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-03": {
+      "flush_count": 651,
+      "flush_size_mb": 39530.55026817322,
+      "compaction_count": 1460,
+      "compaction_size_mb": 452614.60719680786,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-04": {
+      "flush_count": 652,
+      "flush_size_mb": 39609.964426994324,
+      "compaction_count": 1465,
+      "compaction_size_mb": 454482.4505472183,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-05": {
+      "flush_count": 652,
+      "flush_size_mb": 39601.13907241821,
+      "compaction_count": 1456,
+      "compaction_size_mb": 453580.637216568,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-06": {
+      "flush_count": 650,
+      "flush_size_mb": 39466.88844013214,
+      "compaction_count": 1480,
+      "compaction_size_mb": 455127.4371814728,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-07": {
+      "flush_count": 655,
+      "flush_size_mb": 39797.650300979614,
+      "compaction_count": 1482,
+      "compaction_size_mb": 457203.20662784576,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-08": {
+      "flush_count": 659,
+      "flush_size_mb": 40004.782024383545,
+      "compaction_count": 1500,
+      "compaction_size_mb": 456895.57668685913,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-09": {
+      "flush_count": 657,
+      "flush_size_mb": 39903.505442619324,
+      "compaction_count": 1496,
+      "compaction_size_mb": 458429.671705246,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-10": {
+      "flush_count": 661,
+      "flush_size_mb": 40098.2355632782,
+      "compaction_count": 1488,
+      "compaction_size_mb": 457869.46800231934,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-11": {
+      "flush_count": 658,
+      "flush_size_mb": 39953.05271720886,
+      "compaction_count": 1500,
+      "compaction_size_mb": 458694.58296871185,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-12": {
+      "flush_count": 660,
+      "flush_size_mb": 40068.02889537811,
+      "compaction_count": 1507,
+      "compaction_size_mb": 459631.9075689316,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-13": {
+      "flush_count": 652,
+      "flush_size_mb": 39594.26922798157,
+      "compaction_count": 1478,
+      "compaction_size_mb": 455096.7424354553,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-14": {
+      "flush_count": 658,
+      "flush_size_mb": 39971.639585494995,
+      "compaction_count": 1497,
+      "compaction_size_mb": 456443.00158691406,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-15": {
+      "flush_count": 655,
+      "flush_size_mb": 39775.2827129364,
+      "compaction_count": 1482,
+      "compaction_size_mb": 456559.25233078003,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-16": {
+      "flush_count": 656,
+      "flush_size_mb": 39847.0061340332,
+      "compaction_count": 1475,
+      "compaction_size_mb": 459250.19456863403,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-17": {
+      "flush_count": 655,
+      "flush_size_mb": 39787.41770076752,
+      "compaction_count": 1472,
+      "compaction_size_mb": 456028.77652931213,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-18": {
+      "flush_count": 652,
+      "flush_size_mb": 39599.71378517151,
+      "compaction_count": 1465,
+      "compaction_size_mb": 454067.16360378265,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-19": {
+      "flush_count": 649,
+      "flush_size_mb": 39404.63686466217,
+      "compaction_count": 1451,
+      "compaction_size_mb": 451330.6119194031,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-20": {
+      "flush_count": 650,
+      "flush_size_mb": 39484.76567173004,
+      "compaction_count": 1462,
+      "compaction_size_mb": 451567.0607652664,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-21": {
+      "flush_count": 643,
+      "flush_size_mb": 39070.0461730957,
+      "compaction_count": 1458,
+      "compaction_size_mb": 449151.7530155182,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-22": {
+      "flush_count": 650,
+      "flush_size_mb": 39488.96134853363,
+      "compaction_count": 1473,
+      "compaction_size_mb": 454143.50601387024,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/15-23": {
+      "flush_count": 658,
+      "flush_size_mb": 39976.04173851013,
+      "compaction_count": 1484,
+      "compaction_size_mb": 456751.8746576309,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-00": {
+      "flush_count": 653,
+      "flush_size_mb": 39661.485253334045,
+      "compaction_count": 1475,
+      "compaction_size_mb": 454946.71038627625,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-01": {
+      "flush_count": 646,
+      "flush_size_mb": 39223.008962631226,
+      "compaction_count": 1467,
+      "compaction_size_mb": 452467.3316268921,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-02": {
+      "flush_count": 644,
+      "flush_size_mb": 39104.498633384705,
+      "compaction_count": 1460,
+      "compaction_size_mb": 449053.44069862366,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-03": {
+      "flush_count": 645,
+      "flush_size_mb": 39168.30780124664,
+      "compaction_count": 1465,
+      "compaction_size_mb": 451105.9309577942,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-04": {
+      "flush_count": 645,
+      "flush_size_mb": 39188.86220741272,
+      "compaction_count": 1466,
+      "compaction_size_mb": 449973.3661375046,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-05": {
+      "flush_count": 644,
+      "flush_size_mb": 39112.01597118378,
+      "compaction_count": 1476,
+      "compaction_size_mb": 451340.4385795593,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-06": {
+      "flush_count": 647,
+      "flush_size_mb": 39292.720744132996,
+      "compaction_count": 1482,
+      "compaction_size_mb": 451499.3215942383,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-07": {
+      "flush_count": 649,
+      "flush_size_mb": 39457.530858039856,
+      "compaction_count": 1471,
+      "compaction_size_mb": 455827.01173877716,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-08": {
+      "flush_count": 651,
+      "flush_size_mb": 39557.14460468292,
+      "compaction_count": 1486,
+      "compaction_size_mb": 455256.14310741425,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-09": {
+      "flush_count": 646,
+      "flush_size_mb": 39230.93724822998,
+      "compaction_count": 1467,
+      "compaction_size_mb": 452203.62694072723,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    },
+    "2025/09/16-10": {
+      "flush_count": 568,
+      "flush_size_mb": 34494.09531497955,
+      "compaction_count": 1298,
+      "compaction_size_mb": 397631.8476963043,
+      "total_ops_per_sec": 0.0,
+      "stats_count": 0,
+      "avg_ops_per_sec": 0.0
+    }
+  }
+}

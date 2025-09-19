@@ -33,12 +33,19 @@ RocksDB의 쓰기 경로(put, flush, compaction)를 정량 모델로 기술하�
 ## 🎯 최신 성과 (2025-09-12)
 
 ### 모델 정확도 개선
-- **v1 모델**: 0.0% 정확도 (기본 모델)
+- **v1 모델**: 1.5% 정확도 (기본 모델)
 - **v2.1 모델**: **88.9% 정확도** (최고 성능) ⭐
-- **v3 모델**: 0.0% 정확도 (휴리스틱 기반)
+- **v3 모델**: 5.7% 정확도 (Dynamic Simulation)
 - **v4 모델**: 7.5% 정확도 (Device Envelope)
-- **v4.1 모델**: **69.8% 정확도** (시기별 세분화) ⭐
-- **v5 모델**: 0.0% 정확도 (실시간 적응형)
+- **v4.1 Temporal 모델**: **69.8% 정확도** (시기별 세분화) ⭐
+- **v5 모델**: 4.1% 정확도 (실시간 적응형)
+
+### 대규모 실험 성과
+- **총 실험 시간**: 347,784초 (약 96.6시간)
+- **처리된 ops**: 420억 ops (목표 10억 ops 대비 4,200% 초과)
+- **분석된 이벤트**: 1,266,316개 RocksDB LOG 이벤트
+- **데이터 크기**: 843GB (압축 후)
+- **로그 크기**: 2.5GB
 
 ### v4.1 Temporal 모델 혁신
 - **시기별 세분화**: 초기(48.3%) → 중기(67.8%) → 후기(97.7%) 정확도
@@ -66,10 +73,10 @@ RocksDB의 쓰기 경로(put, flush, compaction)를 정량 모델로 기술하�
 |------|------|-----------|----------|-----------|-----------|
 | **1위** | **v2_1** | **88.9%** | **0.889** | enhanced | 최고 성능 |
 | **2위** | **v4_1_temporal** | **69.8%** | **0.698** | temporal_enhanced | **시기별 세분화** |
-| 3위 | v4 | 7.5% | 0.075 | enhanced | 기본 모델 |
-| 4위 | v1 | 0.0% | 0.000 | enhanced | LOG Enhanced |
-| 5위 | v3 | 0.0% | 0.000 | enhanced | LOG Enhanced |
-| 6위 | v5 | 0.0% | 0.000 | enhanced | LOG Enhanced |
+| 3위 | v4 | 7.5% | 0.075 | enhanced | Device Envelope |
+| 4위 | v3 | 5.7% | 0.057 | enhanced | Dynamic Simulation |
+| 5위 | v5 | 4.1% | 0.041 | enhanced | Real-time Adaptation |
+| 6위 | v1 | 1.5% | 0.015 | enhanced | LOG Enhanced |
 
 ### 실험 데이터
 - **총 실험 시간**: 347,784초 (약 96.6시간)
@@ -77,6 +84,14 @@ RocksDB의 쓰기 경로(put, flush, compaction)를 정량 모델로 기술하�
 - **평균 QPS**: 120,920 ops/sec
 - **최대 QPS**: 663,287 ops/sec
 - **최소 QPS**: 160 ops/sec
+
+### 실험 단계별 성과
+- **Phase-A**: 디바이스 성능 분석 (364개 측정점)
+- **Phase-B**: 대규모 FillRandom 실험 (420억 ops)
+- **Phase-C**: 6개 Enhanced 모델 개발 및 검증
+- **Phase-D**: 프로덕션 통합 및 실시간 최적화
+- **Phase-E**: 고급 최적화 및 향후 연구 방향
+- **Phase-F**: 연구 성과 정리 및 학술 발표 준비
 
 ## Repo Layout
 
@@ -87,6 +102,10 @@ rocksdb-put-model/
 ├── PutModel.md                  # 전체 모델, 수식, 시뮬레이션 코드
 ├── [PutModel.html](PutModel.html)                # HTML 버전 (MathJax 수식 렌더링)
 ├── [PutModel_v4_Documentation.html](PutModel_v4_Documentation.html)  # v4 모델 완전 문서화 ⭐
+├── [V4_1_TEMPORAL_MODEL_COMPREHENSIVE_GUIDE.html](experiments/2025-09-12/phase-c/results/V4_1_TEMPORAL_MODEL_COMPREHENSIVE_GUIDE.html)  # v4.1 Temporal 모델 완전 가이드 ⭐
+├── [09_12_EXPERIMENT_SUMMARY.html](experiments/2025-09-12/09_12_EXPERIMENT_SUMMARY.html)  # 실험 요약 보고서
+├── [COMPREHENSIVE_ANALYSIS_REPORT.html](experiments/2025-09-12/COMPREHENSIVE_ANALYSIS_REPORT.html)  # 종합 분석 보고서
+├── [EXPERIMENT_DIRECTORY_STRUCTURE.html](experiments/2025-09-12/EXPERIMENT_DIRECTORY_STRUCTURE.html)  # 실험 디렉토리 구조
 ├── [ValidationPlan.html](ValidationPlan.html)          # 검증 계획 HTML 버전 (MathJax 수식 렌더링)
 ├── [ValidationGuide.html](ValidationGuide.html)         # 검증 실행 가이드 HTML 버전 (MathJax 수식 렌더링)
 ├── VALIDATION_GUIDE.md          # 검증 실행 가이드 (단계별 실행 방법)
@@ -119,10 +138,17 @@ rocksdb-put-model/
 ├── experiments/                 # 실험 결과 관리
     ├── 2025-09-12/             # 최신 실험 디렉토리 ⭐
     │   ├── phase-a/            # 디바이스 캘리브레이션
+    │   │   └── [PHASE_A_RESULTS.html](experiments/2025-09-12/phase-a/PHASE_A_RESULTS.html)
     │   ├── phase-b/            # RocksDB 벤치마크
+    │   │   └── [PHASE_B_RESULTS.html](experiments/2025-09-12/phase-b/PHASE_B_RESULTS.html)
     │   ├── phase-c/            # Enhanced Models 개발
+    │   │   └── [enhanced_models_summary_report.html](experiments/2025-09-12/phase-c/results/enhanced_models_summary_report.html)
     │   ├── phase-d/            # 프로덕션 통합
+    │   │   └── [PHASE_D_FINAL_REPORT.html](experiments/2025-09-12/phase-d/PHASE_D_FINAL_REPORT.html)
     │   ├── phase-e/            # 고급 최적화
+    │   │   └── [PHASE_E_PLAN.html](experiments/2025-09-12/phase-e/PHASE_E_PLAN.html)
+    │   ├── phase-f/            # 연구 성과 정리
+    │   │   └── [PHASE_F_PLAN.html](experiments/2025-09-12/phase-f/PHASE_F_PLAN.html)
     │   ├── styles/             # CSS 스타일 파일
     │   ├── scripts/            # 분석 스크립트
     │   ├── 09_12_EXPERIMENT_SUMMARY.html  # 실험 요약 보고서
@@ -167,6 +193,7 @@ python3 scripts/transient_depth_analysis.py
   - [experiments/2025-09-12/09_12_EXPERIMENT_SUMMARY.html](experiments/2025-09-12/09_12_EXPERIMENT_SUMMARY.html) - 2025-09-12 실험 요약 보고서 ⭐
   - [experiments/2025-09-12/COMPREHENSIVE_ANALYSIS_REPORT.html](experiments/2025-09-12/COMPREHENSIVE_ANALYSIS_REPORT.html) - 종합 분석 보고서
   - [experiments/2025-09-12/COMPREHENSIVE_FINAL_ANALYSIS_WITH_V4_1_TEMPORAL.html](experiments/2025-09-12/COMPREHENSIVE_FINAL_ANALYSIS_WITH_V4_1_TEMPORAL.html) - v4.1 Temporal 포함 최종 보고서
+  - [experiments/2025-09-12/phase-c/results/V4_1_TEMPORAL_MODEL_COMPREHENSIVE_GUIDE.html](experiments/2025-09-12/phase-c/results/V4_1_TEMPORAL_MODEL_COMPREHENSIVE_GUIDE.html) - v4.1 Temporal 모델 완전 가이드 ⭐
 - **그래프**: `figs/` 폴더의 PNG 파일들
 - **수치**: 각 스크립트의 콘솔 출력
 
@@ -340,7 +367,9 @@ pip install matplotlib pandas numpy seaborn
 - **v2.1 모델**: 88.9% 정확도 (최고 성능)
 - **v4.1 Temporal 모델**: 69.8% 정확도 (시기별 세분화)
 - **v4 모델**: 7.5% 정확도 (Device Envelope)
-- **v1, v3, v5 모델**: 0.0% 정확도 (기본 모델)
+- **v3 모델**: 5.7% 정확도 (Dynamic Simulation)
+- **v5 모델**: 4.1% 정확도 (Real-time Adaptation)
+- **v1 모델**: 1.5% 정확도 (기본 모델)
 
 ### 연구의 독창성
 

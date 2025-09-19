@@ -312,12 +312,21 @@
 <h2 id="2025-09-12">🎯 최신 성과 (2025-09-12)</h2>
 <h3 id="_6">모델 정확도 개선</h3>
 <ul>
-<li><strong>v1 모델</strong>: 0.0% 정확도 (기본 모델)</li>
-<li><strong>v2.1 모델</strong>: <strong>88.9% 정확도</strong> (최고 성능) ⭐</li>
-<li><strong>v3 모델</strong>: 0.0% 정확도 (휴리스틱 기반)</li>
-<li><strong>v4 모델</strong>: 7.5% 정확도 (Device Envelope)</li>
-<li><strong>v4.1 모델</strong>: <strong>69.8% 정확도</strong> (시기별 세분화) ⭐</li>
-<li><strong>v5 모델</strong>: 0.0% 정확도 (실시간 적응형)</li>
+        <li><strong>v1 모델</strong>: 1.5% 정확도 (기본 모델)</li>
+        <li><strong>v2.1 모델</strong>: <strong>88.9% 정확도</strong> (최고 성능) ⭐</li>
+        <li><strong>v3 모델</strong>: 5.7% 정확도 (Dynamic Simulation)</li>
+        <li><strong>v4 모델</strong>: 7.5% 정확도 (Device Envelope)</li>
+        <li><strong>v4.1 Temporal 모델</strong>: <strong>69.8% 정확도</strong> (시기별 세분화) ⭐</li>
+        <li><strong>v5 모델</strong>: 4.1% 정확도 (실시간 적응형)</li>
+    </ul>
+    
+    <h3>대규모 실험 성과</h3>
+    <ul>
+        <li><strong>총 실험 시간</strong>: 347,784초 (약 96.6시간)</li>
+        <li><strong>처리된 ops</strong>: 420억 ops (목표 10억 ops 대비 4,200% 초과)</li>
+        <li><strong>분석된 이벤트</strong>: 1,266,316개 RocksDB LOG 이벤트</li>
+        <li><strong>데이터 크기</strong>: 843GB (압축 후)</li>
+        <li><strong>로그 크기</strong>: 2.5GB</li>
 </ul>
 <h3 id="v41-temporal">v4.1 Temporal 모델 혁신</h3>
 <ul>
@@ -411,8 +420,18 @@
 <li><strong>총 레코드</strong>: 34,778개</li>
 <li><strong>평균 QPS</strong>: 120,920 ops/sec</li>
 <li><strong>최대 QPS</strong>: 663,287 ops/sec</li>
-<li><strong>최소 QPS</strong>: 160 ops/sec</li>
-</ul>
+        <li><strong>최소 QPS</strong>: 160 ops/sec</li>
+    </ul>
+    
+    <h3>실험 단계별 성과</h3>
+    <ul>
+        <li><strong>Phase-A</strong>: 디바이스 성능 분석 (364개 측정점)</li>
+        <li><strong>Phase-B</strong>: 대규모 FillRandom 실험 (420억 ops)</li>
+        <li><strong>Phase-C</strong>: 6개 Enhanced 모델 개발 및 검증</li>
+        <li><strong>Phase-D</strong>: 프로덕션 통합 및 실시간 최적화</li>
+        <li><strong>Phase-E</strong>: 고급 최적화 및 향후 연구 방향</li>
+        <li><strong>Phase-F</strong>: 연구 성과 정리 및 학술 발표 준비</li>
+    </ul>
 <h2 id="repo-layout">Repo Layout</h2>
 <p><code>rocksdb-put-model/
 ├── README.md                    # 이 파일 (사용법, 요구사항, 빠른 시작)
@@ -452,10 +471,17 @@
 ├── experiments/                 # 실험 결과 관리
     ├── 2025-09-12/             # 최신 실험 디렉토리 ⭐
     │   ├── phase-a/            # 디바이스 캘리브레이션
+    │   │   └── <a href="experiments/2025-09-12/phase-a/PHASE_A_RESULTS.html">PHASE_A_RESULTS.html</a>
     │   ├── phase-b/            # RocksDB 벤치마크
+    │   │   └── <a href="experiments/2025-09-12/phase-b/PHASE_B_RESULTS.html">PHASE_B_RESULTS.html</a>
     │   ├── phase-c/            # Enhanced Models 개발
+    │   │   └── <a href="experiments/2025-09-12/phase-c/results/enhanced_models_summary_report.html">enhanced_models_summary_report.html</a>
     │   ├── phase-d/            # 프로덕션 통합
+    │   │   └── <a href="experiments/2025-09-12/phase-d/PHASE_D_FINAL_REPORT.html">PHASE_D_FINAL_REPORT.html</a>
     │   ├── phase-e/            # 고급 최적화
+    │   │   └── <a href="experiments/2025-09-12/phase-e/PHASE_E_PLAN.html">PHASE_E_PLAN.html</a>
+    │   ├── phase-f/            # 연구 성과 정리
+    │   │   └── <a href="experiments/2025-09-12/phase-f/PHASE_F_PLAN.html">PHASE_F_PLAN.html</a>
     │   ├── styles/             # CSS 스타일 파일
     │   ├── scripts/            # 분석 스크립트
     │   ├── 09_12_EXPERIMENT_SUMMARY.html  # 실험 요약 보고서
@@ -493,6 +519,10 @@
 <li><a href="experiments/2025-09-12/09_12_EXPERIMENT_SUMMARY.html">experiments/2025-09-12/09_12_EXPERIMENT_SUMMARY.html</a> - 2025-09-12 실험 요약 보고서 ⭐</li>
 <li><a href="experiments/2025-09-12/COMPREHENSIVE_ANALYSIS_REPORT.html">experiments/2025-09-12/COMPREHENSIVE_ANALYSIS_REPORT.html</a> - 종합 분석 보고서</li>
 <li><a href="experiments/2025-09-12/COMPREHENSIVE_FINAL_ANALYSIS_WITH_V4_1_TEMPORAL.html">experiments/2025-09-12/COMPREHENSIVE_FINAL_ANALYSIS_WITH_V4_1_TEMPORAL.html</a> - v4.1 Temporal 포함 최종 보고서</li>
+        <li><a href="experiments/2025-09-12/phase-c/results/V4_1_TEMPORAL_MODEL_COMPREHENSIVE_GUIDE.html">experiments/2025-09-12/phase-c/results/V4_1_TEMPORAL_MODEL_COMPREHENSIVE_GUIDE.html</a> - v4.1 Temporal 모델 완전 가이드 ⭐</li>
+        <li><a href="experiments/2025-09-12/09_12_EXPERIMENT_SUMMARY.html">experiments/2025-09-12/09_12_EXPERIMENT_SUMMARY.html</a> - 실험 요약 보고서</li>
+        <li><a href="experiments/2025-09-12/COMPREHENSIVE_ANALYSIS_REPORT.html">experiments/2025-09-12/COMPREHENSIVE_ANALYSIS_REPORT.html</a> - 종합 분석 보고서</li>
+        <li><a href="experiments/2025-09-12/EXPERIMENT_DIRECTORY_STRUCTURE.html">experiments/2025-09-12/EXPERIMENT_DIRECTORY_STRUCTURE.html</a> - 실험 디렉토리 구조</li>
 <li><strong>그래프</strong>: <code>figs/</code> 폴더의 PNG 파일들</li>
 <li><strong>수치</strong>: 각 스크립트의 콘솔 출력</li>
 </ul>
@@ -637,7 +667,9 @@ EOF</p>
 <li><strong>v2.1 모델</strong>: 88.9% 정확도 (최고 성능)</li>
 <li><strong>v4.1 Temporal 모델</strong>: 69.8% 정확도 (시기별 세분화)</li>
 <li><strong>v4 모델</strong>: 7.5% 정확도 (Device Envelope)</li>
-<li><strong>v1, v3, v5 모델</strong>: 0.0% 정확도 (기본 모델)</li>
+<li><strong>v3 모델</strong>: 5.7% 정확도 (Dynamic Simulation)</li>
+<li><strong>v5 모델</strong>: 4.1% 정확도 (Real-time Adaptation)</li>
+<li><strong>v1 모델</strong>: 1.5% 정확도 (기본 모델)</li>
 </ul>
 <h3 id="_19">연구의 독창성</h3>
 <ul>
@@ -666,6 +698,7 @@ EOF</p>
 │   ├── 09_12_EXPERIMENT_SUMMARY.html  # 실험 요약 보고서
 │   ├── COMPREHENSIVE_ANALYSIS_REPORT.html  # 종합 분석 보고서
 │   └── COMPREHENSIVE_FINAL_ANALYSIS_WITH_V4_1_TEMPORAL.html  # v4.1 Temporal 포함 최종 보고서
+│   └── V4_1_TEMPORAL_MODEL_COMPREHENSIVE_GUIDE.html  # v4.1 Temporal 모델 완전 가이드 ⭐
 ├── 2025-09-09/                 # 이전 실험 디렉토리
 ├── 2025-09-08/                 # 이전 실험 디렉토리
 ├── 2025-09-05/                 # 이전 실험 디렉토리

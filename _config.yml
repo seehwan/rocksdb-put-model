@@ -1,0 +1,6 @@
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+  - jekyll-coffeescript
+
+theme: jekyll-theme-primer

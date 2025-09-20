@@ -1,0 +1,272 @@
+{
+  "evaluation_results": {
+    "phase_results": {
+      "initial_phase": {
+        "predicted_s_max": 158354.9558897428,
+        "actual_qps": 138769,
+        "accuracy": 85.88592849286023,
+        "error_rate": 14.114071507139775,
+        "prediction_details": {
+          "predicted_s_max": 158354.9558897428,
+          "model_type": "Device Performance Focused",
+          "key_factors": {
+            "device_write_bw": 4116.6,
+            "volatility_penalty": 0.8386,
+            "trend_adjustment": 0.861
+          },
+          "calculation_details": {
+            "base_s_max": 4150546.1169230775,
+            "device_factor": 2905382.281846154,
+            "volatility_factor": 696129.5947303385,
+            "trend_factor": 357362.020667077,
+            "empirical_adjustment": 0.04
+          },
+          "detected_phase": "initial",
+          "model_version": "v5.0_adaptive",
+          "prediction_time": "2025-09-20T05:13:02.420415",
+          "confidence_score": 0.85
+        },
+        "input_data": {
+          "device_write_bw": 4116.6,
+          "cv": 0.538,
+          "trend_slope": -1.39
+        }
+      },
+      "middle_phase": {
+        "predicted_s_max": 27829.9084645282,
+        "actual_qps": 114472,
+        "accuracy": 24.311542092850825,
+        "error_rate": 75.68845790714917,
+        "prediction_details": {
+          "predicted_s_max": 27829.9084645282,
+          "model_type": "Degradation + Amplification Focused",
+          "key_factors": {
+            "effective_write_bw": 280.5227999999999,
+            "wa_penalty": 1.6,
+            "compaction_penalty": 1.4,
+            "degradation_factor": 0.06814429383471794
+          },
+          "calculation_details": {
+            "base_s_max": 282836.03416615375,
+            "degradation_component": 9636.830909632352,
+            "wa_component": 53031.75640615382,
+            "compaction_component": 40405.147738021966,
+            "empirical_adjustment": 0.27
+          },
+          "detected_phase": "middle",
+          "model_version": "v5.0_adaptive",
+          "prediction_time": "2025-09-20T05:13:02.420488",
+          "confidence_score": 0.85
+        },
+        "input_data": {
+          "device_write_bw": 1074.8,
+          "wa": 2.5,
+          "compaction_intensity": 3.0,
+          "device_degradation": 73.9
+        }
+      },
+      "final_phase": {
+        "predicted_s_max": 133985.01608389104,
+        "actual_qps": 109678,
+        "accuracy": 77.83783795848662,
+        "error_rate": 22.162162041513373,
+        "prediction_details": {
+          "predicted_s_max": 133985.01608389104,
+          "model_type": "Amplification + Stability Focused",
+          "key_factors": {
+            "combined_amplification": 4.300000000000001,
+            "amplification_penalty": 1.6900000000000002,
+            "stability_bonus": 1.1918,
+            "level_penalty": 1.25,
+            "conservative_factor": 0.6
+          },
+          "calculation_details": {
+            "base_s_max": 1083662.9661538461,
+            "amplification_component": 384732.41401911696,
+            "stability_component": 387452.85691864614,
+            "level_component": 86693.0372923077,
+            "empirical_adjustment": 0.26
+          },
+          "detected_phase": "final",
+          "model_version": "v5.0_adaptive",
+          "prediction_time": "2025-09-20T05:13:02.420533",
+          "confidence_score": 0.85
+        },
+        "input_data": {
+          "device_write_bw": 1074.8,
+          "wa": 3.2,
+          "ra": 1.1,
+          "cv": 0.041,
+          "level_depth": 6.0
+        }
+      }
+    },
+    "overall_performance": {
+      "average_accuracy": 62.67843618139923,
+      "accuracy_std": 27.327725381789904,
+      "consistency": "medium"
+    },
+    "evaluation_metadata": {
+      "evaluation_date": "2025-09-20T05:13:02.420728",
+      "evaluation_type": "Phase-B Data Validation",
+      "model_version": "v5.0_adaptive"
+    }
+  },
+  "comparison_results": {
+    "v5_performance": {
+      "average_accuracy": 62.67843618139923,
+      "phase_accuracies": {
+        "initial": 85.88592849286023,
+        "middle": 24.311542092850825,
+        "final": 77.83783795848662
+      }
+    },
+    "ranking": [
+      [
+        "v4_model",
+        {
+          "average_accuracy": 81.4,
+          "phase_accuracies": {
+            "initial": 66.7,
+            "middle": 90.8,
+            "final": 86.6
+          }
+        }
+      ],
+      [
+        "v4_1_temporal",
+        {
+          "average_accuracy": 78.6,
+          "phase_accuracies": {
+            "initial": 68.5,
+            "middle": 96.9,
+            "final": 70.5
+          }
+        }
+      ],
+      [
+        "v5_adaptive",
+        {
+          "average_accuracy": 62.67843618139923,
+          "phase_accuracies": {
+            "initial": 85.88592849286023,
+            "middle": 24.311542092850825,
+            "final": 77.83783795848662
+          }
+        }
+      ],
+      [
+        "v4_2_enhanced",
+        {
+          "average_accuracy": 30.5,
+          "phase_accuracies": {
+            "initial": 23.9,
+            "middle": 96.0,
+            "final": -28.5
+          }
+        }
+      ]
+    ],
+    "v5_rank": 3,
+    "performance_improvements": {
+      "v4_model": {
+        "initial": {
+          "v5_accuracy": 85.88592849286023,
+          "existing_accuracy": 66.7,
+          "improvement": 19.185928492860228,
+          "improvement_type": "better"
+        },
+        "middle": {
+          "v5_accuracy": 24.311542092850825,
+          "existing_accuracy": 90.8,
+          "improvement": -66.48845790714917,
+          "improvement_type": "worse"
+        },
+        "final": {
+          "v5_accuracy": 77.83783795848662,
+          "existing_accuracy": 86.6,
+          "improvement": -8.762162041513378,
+          "improvement_type": "worse"
+        }
+      },
+      "v4_1_temporal": {
+        "initial": {
+          "v5_accuracy": 85.88592849286023,
+          "existing_accuracy": 68.5,
+          "improvement": 17.38592849286023,
+          "improvement_type": "better"
+        },
+        "middle": {
+          "v5_accuracy": 24.311542092850825,
+          "existing_accuracy": 96.9,
+          "improvement": -72.58845790714918,
+          "improvement_type": "worse"
+        },
+        "final": {
+          "v5_accuracy": 77.83783795848662,
+          "existing_accuracy": 70.5,
+          "improvement": 7.337837958486617,
+          "improvement_type": "better"
+        }
+      },
+      "v4_2_enhanced": {
+        "initial": {
+          "v5_accuracy": 85.88592849286023,
+          "existing_accuracy": 23.9,
+          "improvement": 61.98592849286023,
+          "improvement_type": "better"
+        },
+        "middle": {
+          "v5_accuracy": 24.311542092850825,
+          "existing_accuracy": 96.0,
+          "improvement": -71.68845790714917,
+          "improvement_type": "worse"
+        },
+        "final": {
+          "v5_accuracy": 77.83783795848662,
+          "existing_accuracy": -28.5,
+          "improvement": 106.33783795848662,
+          "improvement_type": "better"
+        }
+      }
+    },
+    "competitive_analysis": {
+      "v5_rank": 3,
+      "total_models": 4,
+      "performance_tier": "middle",
+      "key_competitors": [
+        {
+          "model": "v4_1_temporal",
+          "rank": 2,
+          "accuracy": 78.6
+        },
+        {
+          "model": "v4_2_enhanced",
+          "rank": 4,
+          "accuracy": 30.5
+        }
+      ],
+      "competitive_advantages": [],
+      "areas_for_improvement": [
+        "\uc804\uccb4 \uc815\ud655\ub3c4 \ud5a5\uc0c1 \ud544\uc694"
+      ]
+    }
+  },
+  "model_info": {
+    "model_name": "V5 Adaptive RocksDB Put-Rate Model",
+    "version": "v5.0_adaptive",
+    "creation_time": "2025-09-20T05:13:02.420199",
+    "design_philosophy": "\uad6c\uac04\ubcc4 \ud575\uc2ec \uc694\uc18c\uc5d0 \uc9d1\uc911\ud558\ub294 \uc801\uc751\ud615 \uc811\uadfc\ubc95",
+    "supported_phases": [
+      "initial",
+      "middle",
+      "final"
+    ],
+    "key_innovations": [
+      "Phase-specific factor weighting",
+      "Adaptive model switching",
+      "Real-time phase detection",
+      "Empirical calibration"
+    ]
+  }
+}

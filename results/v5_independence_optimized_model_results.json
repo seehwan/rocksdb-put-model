@@ -1,0 +1,242 @@
+{
+  "model_info": {
+    "name": "V5 Independence-Optimized Model",
+    "version": "v5.5_independence_optimized",
+    "key_innovations": [
+      "\uc911\ubcf5 \ud30c\ub77c\ubbf8\ud130 \uc644\uc804 \uc81c\uac70 (system_volatility, system_stability, combined_amplification)",
+      "\ud30c\uc0dd \ud30c\ub77c\ubbf8\ud130 \uc81c\uac70 (device_degradation)",
+      "\uc9c4\uc9dc \ub3c5\ub9bd\uc801\uc778 \ud30c\ub77c\ubbf8\ud130\ub4e4\ub9cc \uc120\ubcc4 \uc0ac\uc6a9",
+      "V4\uc758 \uc815\ubcf4 \ud6a8\uc728\uc131\uc744 V5\uc5d0 \uc801\uc6a9"
+    ]
+  },
+  "evaluation_results": {
+    "initial_phase": {
+      "predicted_s_max": 78860.37622153848,
+      "actual_qps": 138769,
+      "accuracy": 56.828525262514304,
+      "error_rate": 43.171474737485696,
+      "independence_level": "perfect",
+      "parameters_used": [
+        "device_write_bw"
+      ],
+      "parameters_eliminated": [
+        "system_volatility",
+        "system_stability",
+        "device_degradation",
+        "wa",
+        "ra"
+      ],
+      "redundancy_count": 0,
+      "parameter_breakdown": {}
+    },
+    "middle_phase": {
+      "predicted_s_max": 31832.599630769233,
+      "actual_qps": 114472,
+      "accuracy": 27.808197315299132,
+      "error_rate": 72.19180268470086,
+      "independence_level": "high",
+      "parameters_used": [
+        "device_write_bw",
+        "wa"
+      ],
+      "parameters_eliminated": [
+        "device_degradation",
+        "system_volatility",
+        "compaction_intensity",
+        "ra"
+      ],
+      "redundancy_count": 0,
+      "parameter_breakdown": {
+        "device_baseline": 50932.15940923077,
+        "wa_penalty": 0.625
+      }
+    },
+    "final_phase": {
+      "predicted_s_max": 32223.849834211924,
+      "actual_qps": 109678,
+      "accuracy": 29.380413423122164,
+      "error_rate": 70.61958657687784,
+      "independence_level": "optimized",
+      "parameters_used": [
+        "device_write_bw",
+        "wa",
+        "ra",
+        "cv"
+      ],
+      "parameters_eliminated": [
+        "system_stability",
+        "combined_amplification",
+        "device_degradation",
+        "level_complexity"
+      ],
+      "redundancy_count": 0,
+      "parameter_breakdown": {
+        "device_baseline": 49848.49644307692,
+        "wa_penalty": 0.6024096385542168,
+        "ra_penalty": 0.8333333333333334,
+        "cv_bonus": 1.2877
+      }
+    }
+  },
+  "overall_performance": {
+    "average_accuracy": 38.00571200031187,
+    "accuracy_std": 13.325206444935665,
+    "consistency": "high"
+  },
+  "independence_analysis": {
+    "redundancy_elimination": {
+      "eliminated_parameters_by_phase": {
+        "initial_phase": [
+          "system_volatility",
+          "system_stability",
+          "device_degradation",
+          "wa",
+          "ra"
+        ],
+        "middle_phase": [
+          "device_degradation",
+          "system_volatility",
+          "compaction_intensity",
+          "ra"
+        ],
+        "final_phase": [
+          "system_stability",
+          "combined_amplification",
+          "device_degradation",
+          "level_complexity"
+        ]
+      },
+      "redundancy_reduction": {
+        "initial": "5\u21921 \ud30c\ub77c\ubbf8\ud130 (5\uac1c \uc81c\uac70)",
+        "middle": "6\u21922 \ud30c\ub77c\ubbf8\ud130 (4\uac1c \uc81c\uac70)",
+        "final": "7\u21924 \ud30c\ub77c\ubbf8\ud130 (4\uac1c \uc81c\uac70)"
+      },
+      "information_purity": {
+        "initial": "100% (V4 \uc644\uc804 \ubcf5\uc81c)",
+        "middle": "95% (\ucd5c\uc18c \ub3c5\ub9bd \ucd94\uac00)",
+        "final": "90% (\uc9c4\uc9dc \ub3c5\ub9bd \ub2e4\uc911 \uc81c\uc57d)"
+      }
+    },
+    "parameter_efficiency": {
+      "initial_phase": {
+        "parameter_count": 1,
+        "accuracy": 56.828525262514304,
+        "accuracy_per_parameter": 56.828525262514304,
+        "efficiency_level": "high"
+      },
+      "middle_phase": {
+        "parameter_count": 2,
+        "accuracy": 27.808197315299132,
+        "accuracy_per_parameter": 13.904098657649566,
+        "efficiency_level": "low"
+      },
+      "final_phase": {
+        "parameter_count": 4,
+        "accuracy": 29.380413423122164,
+        "accuracy_per_parameter": 7.345103355780541,
+        "efficiency_level": "low"
+      },
+      "overall": {
+        "total_parameters": 7,
+        "average_accuracy": 38.00571200031187,
+        "overall_efficiency": 5.429387428615981,
+        "efficiency_ranking": "fair"
+      }
+    },
+    "v4_alignment_success": {
+      "initial_phase": {
+        "v4_accuracy": 66.7,
+        "v5_independence_accuracy": 56.828525262514304,
+        "alignment_success_percentage": 85.20018779987151,
+        "accuracy_gap": -9.871474737485698,
+        "alignment_level": "good"
+      },
+      "middle_phase": {
+        "v4_accuracy": 90.8,
+        "v5_independence_accuracy": 27.808197315299132,
+        "alignment_success_percentage": 30.625767968391116,
+        "accuracy_gap": -62.991802684700865,
+        "alignment_level": "poor"
+      },
+      "final_phase": {
+        "v4_accuracy": 86.6,
+        "v5_independence_accuracy": 29.380413423122164,
+        "alignment_success_percentage": 33.926574391596034,
+        "accuracy_gap": -57.21958657687783,
+        "alignment_level": "poor"
+      },
+      "overall": {
+        "v4_overall_accuracy": 81.4,
+        "v5_independence_overall_accuracy": 38.00571200031187,
+        "overall_alignment_success": 46.69006388244701,
+        "v4_gap_closure": "53.3% gap remaining"
+      }
+    }
+  },
+  "v5_evolution_analysis": {
+    "v5_models_comparison": {
+      "v5_original": 60.8,
+      "v5_improved_v2": 43.1,
+      "v5_final": 27.8,
+      "v5_improved_parameter_weighted": 33.6,
+      "v5_fine_tuned": 39.4,
+      "v5_independence_optimized": 38.00571200031187
+    },
+    "improvement_analysis": {
+      "v5_original": {
+        "accuracy_improvement": -22.79428799968813,
+        "improvement_percentage": -37.490605262644955,
+        "performance_trend": "declined"
+      },
+      "v5_improved_v2": {
+        "accuracy_improvement": -5.0942879996881345,
+        "improvement_percentage": -11.819693734775253,
+        "performance_trend": "declined"
+      },
+      "v5_final": {
+        "accuracy_improvement": 10.205712000311866,
+        "improvement_percentage": 36.71119424572613,
+        "performance_trend": "improved"
+      },
+      "v5_improved_parameter_weighted": {
+        "accuracy_improvement": 4.4057120003118655,
+        "improvement_percentage": 13.112238096166266,
+        "performance_trend": "improved"
+      },
+      "v5_fine_tuned": {
+        "accuracy_improvement": -1.3942879996881317,
+        "improvement_percentage": -3.538802029665309,
+        "performance_trend": "declined"
+      },
+      "vs_best_v5": {
+        "best_v5_model": "v5_original",
+        "best_v5_accuracy": 60.8,
+        "current_accuracy": 38.00571200031187,
+        "improvement_over_best": -22.79428799968813,
+        "is_new_v5_champion": false
+      }
+    }
+  },
+  "ranking_analysis": {
+    "v5_rank": 3,
+    "ranking_list": [
+      [
+        "v4_model",
+        81.4
+      ],
+      [
+        "v4_1_temporal",
+        78.6
+      ],
+      [
+        "v5_independence_optimized",
+        38.00571200031187
+      ],
+      [
+        "v4_2_enhanced",
+        30.5
+      ]
+    ],
+    "performance_tier": "middle"
+  }
+}

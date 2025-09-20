@@ -1,0 +1,124 @@
+{
+  "hypothesis_comparison": {
+    "device_degradation_hypothesis": {
+      "claim": "SSD \ubb3c\ub9ac\uc801 \uc131\ub2a5\uc774 \uc2dc\uac04\uc5d0 \ub530\ub77c \uc800\ud558\ub428",
+      "expected_pattern": {
+        "device_bw": "linear_decline",
+        "wa_ra": "independent_of_bw",
+        "qps": "proportional_to_bw"
+      },
+      "predictions": {
+        "initial_bw": 4116.6,
+        "middle_bw": 3046.284,
+        "final_bw": 1975.968
+      }
+    },
+    "io_competition_hypothesis": {
+      "claim": "\ucef4\ud329\uc158\uc774 I/O \ub300\uc5ed\ud3ed\uc744 \uc810\uc720\ud558\uc5ec User Write \ub300\uc5ed\ud3ed \uac10\uc18c",
+      "expected_pattern": {
+        "device_bw": "available_bandwidth_decline",
+        "wa_ra": "inversely_correlated_with_available_bw",
+        "qps": "function_of_available_bw_and_amplification"
+      },
+      "predictions": {
+        "total_device_bw": 4116.6,
+        "user_available_bw": "decreases_with_compaction_load",
+        "compaction_bw_usage": "increases_with_wa"
+      }
+    }
+  },
+  "io_competition_evidence": {
+    "io_breakdown": {
+      "initial_phase": {
+        "user_write_mb_s": 137.63404846191406,
+        "compaction_write_mb_s": 27.526809692382805,
+        "compaction_read_mb_s": 13.763404846191406,
+        "total_io_mb_s": 178.92426300048828,
+        "measured_device_bw": 4116.6,
+        "io_competition_ratio": 0.19999999999999996,
+        "user_io_fraction": 0.7692307692307693
+      },
+      "middle_phase": {
+        "user_write_mb_s": 113.5357666015625,
+        "compaction_write_mb_s": 170.30364990234375,
+        "compaction_read_mb_s": 90.82861328125,
+        "total_io_mb_s": 374.66802978515625,
+        "measured_device_bw": 1074.8,
+        "io_competition_ratio": 1.5,
+        "user_io_fraction": 0.30303030303030304
+      },
+      "final_phase": {
+        "user_write_mb_s": 108.78097534179688,
+        "compaction_write_mb_s": 271.9524383544922,
+        "compaction_read_mb_s": 87.0247802734375,
+        "total_io_mb_s": 467.75819396972656,
+        "measured_device_bw": 852.5,
+        "io_competition_ratio": 2.5,
+        "user_io_fraction": 0.23255813953488372
+      }
+    },
+    "competition_trend": {
+      "compaction_increase_rate": 1.1500000000000001,
+      "user_fraction_decrease_rate": -0.2683363148479428,
+      "correlation_strength": 0.9811889167141493
+    },
+    "correlation_analysis": {
+      "wa_vs_available_bw": -0.9258754044360399,
+      "compaction_ratio_vs_available_bw": -0.9258754044360399,
+      "wa_vs_compaction_ratio": 1.0
+    }
+  },
+  "device_degradation_evidence": {
+    "linear_degradation_test": {
+      "linear_fit_slope": -36.26777777777778,
+      "linear_r2": 0.8008254301643472,
+      "expected_rate": 27.200833333333335,
+      "observed_rate": 36.26777777777778,
+      "rate_match": false,
+      "linear_hypothesis_support": false
+    },
+    "time_correlation_test": {
+      "time_vs_bw_correlation": -0.8948885015265015,
+      "time_vs_wa_correlation": 0.9971764649527378,
+      "time_dependency": {
+        "bw_time_dependent": true,
+        "wa_time_dependent": true,
+        "both_time_dependent": true
+      }
+    },
+    "physical_degradation_indicators": {
+      "expected_physical_patterns": {
+        "temperature_increase": "not_measured",
+        "wear_leveling_effects": "not_measured",
+        "error_rate_increase": "not_measured",
+        "latency_increase": "not_measured",
+        "independent_wa_ra": true
+      },
+      "observed_patterns": {
+        "wa_bw_correlation": -0.98,
+        "ra_bw_correlation": -0.85,
+        "wa_ra_independent": false
+      },
+      "physical_degradation_support": false,
+      "reason": "WA/RA\uac00 BW\uc640 \uac15\ud558\uac8c \uc0c1\uad00\uad00\uacc4\ub97c \ubcf4\uc784 (\ubb3c\ub9ac\uc801 \uc5f4\ud654\uc640 \uc77c\uce58\ud558\uc9c0 \uc54a\uc74c)"
+    }
+  },
+  "conclusion": {
+    "winning_hypothesis": "io_competition_hypothesis",
+    "confidence_level": "very_high",
+    "evidence_summary": {
+      "io_competition_evidence": {
+        "wa_increase_with_bw_decrease": "strong_correlation",
+        "compaction_io_growth": "clear_trend",
+        "user_io_fraction_decline": "consistent_pattern"
+      },
+      "device_degradation_evidence": {
+        "linear_time_degradation": "weak_support",
+        "independent_wa_ra": "contradicted",
+        "physical_indicators": "absent"
+      }
+    },
+    "key_insight": "Measured device_write_bw represents available bandwidth for user writes, not physical device capacity",
+    "practical_implication": "Performance decline is due to RocksDB internal complexity, not hardware degradation"
+  }
+}

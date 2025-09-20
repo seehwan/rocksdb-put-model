@@ -1,0 +1,647 @@
+{
+  "analysis_info": {
+    "analysis_time": "2025-09-20T05:52:45.318542",
+    "experiment_date": "2025-09-12",
+    "focus": "Phase-B \ub370\uc774\ud130 \uae30\ubc18 v4 vs V5 \ubaa8\ub378 \ud328\ubc00\ub9ac \uc885\ud569 \ube44\uad50"
+  },
+  "experiment_context": {
+    "experiment_info": {
+      "date": "2025-09-12",
+      "workload": "FillRandom",
+      "duration": "120 minutes",
+      "database_size": "Empty \u2192 ~50GB",
+      "device": "SSD with degradation"
+    },
+    "phase_segmentation": {
+      "initial_phase": {
+        "duration": "0-30 minutes",
+        "characteristics": [
+          "Empty DB",
+          "High volatility (CV=0.538)",
+          "Rapid performance drop"
+        ],
+        "actual_qps": 138769,
+        "key_factors": [
+          "Device Write BW: 4116.6 MB/s",
+          "WA: 1.2",
+          "RA: 0.1"
+        ]
+      },
+      "middle_phase": {
+        "duration": "30-90 minutes",
+        "characteristics": [
+          "Device degradation (73.9%)",
+          "Compaction intensifies",
+          "WA increases to 2.5"
+        ],
+        "actual_qps": 114472,
+        "key_factors": [
+          "Device Write BW: 1074.8 MB/s",
+          "WA: 2.5",
+          "RA: 0.8"
+        ]
+      },
+      "final_phase": {
+        "duration": "90-120 minutes",
+        "characteristics": [
+          "High stability (CV=0.041)",
+          "High amplification (WA+RA=4.3)",
+          "L0-L6 active"
+        ],
+        "actual_qps": 109678,
+        "key_factors": [
+          "Combined amplification: 4.3",
+          "System stability: 95.9%",
+          "Level depth: 6"
+        ]
+      }
+    },
+    "overall_trends": {
+      "performance_decline": "Steady decline from 138k to 109k ops/sec",
+      "device_degradation": "Write: 73.9%, Read: 78.7% degradation",
+      "amplification_increase": "WA: 1.2\u21923.2, RA: 0.1\u21921.1",
+      "stability_improvement": "CV: 0.538\u21920.041 (high\u2192low volatility)"
+    }
+  },
+  "family_comparison": {
+    "v4_family_stats": {
+      "models": [
+        {
+          "name": "v4_model",
+          "full_name": "V4 Device Envelope Model",
+          "average_performance": 81.4,
+          "complexity": "low",
+          "approach": "Simple Device Envelope"
+        },
+        {
+          "name": "v4_1_temporal",
+          "full_name": "V4.1 Temporal Enhanced Model",
+          "average_performance": 78.6,
+          "complexity": "medium",
+          "approach": "Phase-based Temporal Modeling"
+        },
+        {
+          "name": "v4_2_enhanced",
+          "full_name": "V4.2 Enhanced Level-wise Model",
+          "average_performance": 30.5,
+          "complexity": "high",
+          "approach": "Level-wise RA/WA Integration"
+        }
+      ],
+      "count": 3,
+      "average_performance": 63.5,
+      "best_performance": 81.4,
+      "worst_performance": 30.5,
+      "performance_range": 50.900000000000006,
+      "consistency": 23.36250557338974,
+      "best_model": {
+        "name": "v4_model",
+        "full_name": "V4 Device Envelope Model",
+        "average_performance": 81.4,
+        "complexity": "low",
+        "approach": "Simple Device Envelope"
+      },
+      "worst_model": {
+        "name": "v4_2_enhanced",
+        "full_name": "V4.2 Enhanced Level-wise Model",
+        "average_performance": 30.5,
+        "complexity": "high",
+        "approach": "Level-wise RA/WA Integration"
+      }
+    },
+    "v5_family_stats": {
+      "models": [
+        {
+          "name": "v5_original",
+          "full_name": "V5 Original Adaptive Model",
+          "average_performance": 60.8,
+          "complexity": "high",
+          "approach": "Ensemble Adaptive Modeling"
+        },
+        {
+          "name": "v5_improved_v2",
+          "full_name": "V5 Improved v2 Model",
+          "average_performance": 43.1,
+          "complexity": "high",
+          "approach": "Multi-Model Strategy"
+        },
+        {
+          "name": "v5_final",
+          "full_name": "V5 Final Adaptive Model",
+          "average_performance": 27.8,
+          "complexity": "very_high",
+          "approach": "Complete Integration"
+        },
+        {
+          "name": "v5_improved_parameter_weighted",
+          "full_name": "V5 Improved Parameter-Weighted Model",
+          "average_performance": 33.6,
+          "complexity": "medium",
+          "approach": "Parameter-Weighted Modeling"
+        },
+        {
+          "name": "v5_fine_tuned",
+          "full_name": "V5 Fine-Tuned Model",
+          "average_performance": 39.4,
+          "complexity": "medium",
+          "approach": "Precision-Tuned Parameters"
+        }
+      ],
+      "count": 5,
+      "average_performance": 40.940000000000005,
+      "best_performance": 60.8,
+      "worst_performance": 27.8,
+      "performance_range": 33.0,
+      "consistency": 11.207069197609158,
+      "best_model": {
+        "name": "v5_original",
+        "full_name": "V5 Original Adaptive Model",
+        "average_performance": 60.8,
+        "complexity": "high",
+        "approach": "Ensemble Adaptive Modeling"
+      },
+      "worst_model": {
+        "name": "v5_final",
+        "full_name": "V5 Final Adaptive Model",
+        "average_performance": 27.8,
+        "complexity": "very_high",
+        "approach": "Complete Integration"
+      }
+    },
+    "family_comparison": {
+      "v4_average": 63.5,
+      "v5_average": 40.940000000000005,
+      "performance_gap": 22.559999999999995,
+      "v4_advantage": true,
+      "relative_difference": 55.10503175378601
+    }
+  },
+  "phase_wise_analysis": {
+    "initial_phase": {
+      "actual_qps": 138769,
+      "characteristics": [
+        "Empty DB",
+        "High volatility (CV=0.538)",
+        "Rapid performance drop"
+      ],
+      "model_performances": {
+        "v4_model": {
+          "accuracy": 66.7,
+          "family": "v4",
+          "approach": "Simple Device Envelope"
+        },
+        "v4_1_temporal": {
+          "accuracy": 68.5,
+          "family": "v4",
+          "approach": "Phase-based Temporal Modeling"
+        },
+        "v4_2_enhanced": {
+          "accuracy": 23.9,
+          "family": "v4",
+          "approach": "Level-wise RA/WA Integration"
+        },
+        "v5_original": {
+          "accuracy": 86.4,
+          "family": "v5",
+          "approach": "Ensemble Adaptive Modeling"
+        },
+        "v5_improved_v2": {
+          "accuracy": 56.4,
+          "family": "v5",
+          "approach": "Multi-Model Strategy"
+        },
+        "v5_final": {
+          "accuracy": 46.6,
+          "family": "v5",
+          "approach": "Complete Integration"
+        },
+        "v5_improved_parameter_weighted": {
+          "accuracy": 56.7,
+          "family": "v5",
+          "approach": "Parameter-Weighted Modeling"
+        },
+        "v5_fine_tuned": {
+          "accuracy": 56.8,
+          "family": "v5",
+          "approach": "Precision-Tuned Parameters"
+        }
+      },
+      "family_performances": {
+        "v4_family": [
+          66.7,
+          68.5,
+          23.9
+        ],
+        "v5_family": [
+          86.4,
+          56.4,
+          46.6,
+          56.7,
+          56.8
+        ]
+      },
+      "statistics": {
+        "best_model": [
+          "v5_original",
+          {
+            "accuracy": 86.4,
+            "family": "v5",
+            "approach": "Ensemble Adaptive Modeling"
+          }
+        ],
+        "worst_model": [
+          "v4_2_enhanced",
+          {
+            "accuracy": 23.9,
+            "family": "v4",
+            "approach": "Level-wise RA/WA Integration"
+          }
+        ],
+        "v4_family_avg": 53.03333333333333,
+        "v5_family_avg": 60.580000000000005,
+        "phase_difficulty": 42.25
+      }
+    },
+    "middle_phase": {
+      "actual_qps": 114472,
+      "characteristics": [
+        "Device degradation (73.9%)",
+        "Compaction intensifies",
+        "WA increases to 2.5"
+      ],
+      "model_performances": {
+        "v4_model": {
+          "accuracy": 90.8,
+          "family": "v4",
+          "approach": "Simple Device Envelope"
+        },
+        "v4_1_temporal": {
+          "accuracy": 96.9,
+          "family": "v4",
+          "approach": "Phase-based Temporal Modeling"
+        },
+        "v4_2_enhanced": {
+          "accuracy": 96.0,
+          "family": "v4",
+          "approach": "Level-wise RA/WA Integration"
+        },
+        "v5_original": {
+          "accuracy": 85.9,
+          "family": "v5",
+          "approach": "Ensemble Adaptive Modeling"
+        },
+        "v5_improved_v2": {
+          "accuracy": 34.2,
+          "family": "v5",
+          "approach": "Multi-Model Strategy"
+        },
+        "v5_final": {
+          "accuracy": 21.1,
+          "family": "v5",
+          "approach": "Complete Integration"
+        },
+        "v5_improved_parameter_weighted": {
+          "accuracy": 18.3,
+          "family": "v5",
+          "approach": "Parameter-Weighted Modeling"
+        },
+        "v5_fine_tuned": {
+          "accuracy": 21.1,
+          "family": "v5",
+          "approach": "Precision-Tuned Parameters"
+        }
+      },
+      "family_performances": {
+        "v4_family": [
+          90.8,
+          96.9,
+          96.0
+        ],
+        "v5_family": [
+          85.9,
+          34.2,
+          21.1,
+          18.3,
+          21.1
+        ]
+      },
+      "statistics": {
+        "best_model": [
+          "v4_1_temporal",
+          {
+            "accuracy": 96.9,
+            "family": "v4",
+            "approach": "Phase-based Temporal Modeling"
+          }
+        ],
+        "worst_model": [
+          "v5_improved_parameter_weighted",
+          {
+            "accuracy": 18.3,
+            "family": "v5",
+            "approach": "Parameter-Weighted Modeling"
+          }
+        ],
+        "v4_family_avg": 94.56666666666666,
+        "v5_family_avg": 36.120000000000005,
+        "phase_difficulty": 41.96249999999999
+      }
+    },
+    "final_phase": {
+      "actual_qps": 109678,
+      "characteristics": [
+        "High stability (CV=0.041)",
+        "High amplification (WA+RA=4.3)",
+        "L0-L6 active"
+      ],
+      "model_performances": {
+        "v4_model": {
+          "accuracy": 86.6,
+          "family": "v4",
+          "approach": "Simple Device Envelope"
+        },
+        "v4_1_temporal": {
+          "accuracy": 70.5,
+          "family": "v4",
+          "approach": "Phase-based Temporal Modeling"
+        },
+        "v4_2_enhanced": {
+          "accuracy": -28.5,
+          "family": "v4",
+          "approach": "Level-wise RA/WA Integration"
+        },
+        "v5_original": {
+          "accuracy": 10.1,
+          "family": "v5",
+          "approach": "Ensemble Adaptive Modeling"
+        },
+        "v5_improved_v2": {
+          "accuracy": 38.7,
+          "family": "v5",
+          "approach": "Multi-Model Strategy"
+        },
+        "v5_final": {
+          "accuracy": 15.7,
+          "family": "v5",
+          "approach": "Complete Integration"
+        },
+        "v5_improved_parameter_weighted": {
+          "accuracy": 25.8,
+          "family": "v5",
+          "approach": "Parameter-Weighted Modeling"
+        },
+        "v5_fine_tuned": {
+          "accuracy": 40.1,
+          "family": "v5",
+          "approach": "Precision-Tuned Parameters"
+        }
+      },
+      "family_performances": {
+        "v4_family": [
+          86.6,
+          70.5,
+          -28.5
+        ],
+        "v5_family": [
+          10.1,
+          38.7,
+          15.7,
+          25.8,
+          40.1
+        ]
+      },
+      "statistics": {
+        "best_model": [
+          "v4_model",
+          {
+            "accuracy": 86.6,
+            "family": "v4",
+            "approach": "Simple Device Envelope"
+          }
+        ],
+        "worst_model": [
+          "v4_2_enhanced",
+          {
+            "accuracy": -28.5,
+            "family": "v4",
+            "approach": "Level-wise RA/WA Integration"
+          }
+        ],
+        "v4_family_avg": 42.86666666666667,
+        "v5_family_avg": 26.080000000000002,
+        "phase_difficulty": 67.625
+      }
+    }
+  },
+  "complexity_vs_performance": {
+    "models_by_complexity": {
+      "low": [
+        {
+          "name": "v4_model",
+          "performance": 81.4,
+          "family": "v4"
+        }
+      ],
+      "medium": [
+        {
+          "name": "v4_1_temporal",
+          "performance": 78.6,
+          "family": "v4"
+        },
+        {
+          "name": "v5_improved_parameter_weighted",
+          "performance": 33.6,
+          "family": "v5"
+        },
+        {
+          "name": "v5_fine_tuned",
+          "performance": 39.4,
+          "family": "v5"
+        }
+      ],
+      "high": [
+        {
+          "name": "v4_2_enhanced",
+          "performance": 30.5,
+          "family": "v4"
+        },
+        {
+          "name": "v5_original",
+          "performance": 60.8,
+          "family": "v5"
+        },
+        {
+          "name": "v5_improved_v2",
+          "performance": 43.1,
+          "family": "v5"
+        }
+      ],
+      "very_high": [
+        {
+          "name": "v5_final",
+          "performance": 27.8,
+          "family": "v5"
+        }
+      ]
+    },
+    "complexity_performance_correlation": {
+      "correlation_coefficient": -0.64033417009055,
+      "relationship": "negative",
+      "interpretation": "Higher complexity tends to lower performance"
+    },
+    "family_complexity_comparison": {
+      "v4_family": {
+        "average_complexity": 2.0,
+        "average_performance": 63.5,
+        "complexity_range": 2,
+        "performance_range": 50.900000000000006
+      },
+      "v5_family": {
+        "average_complexity": 2.8,
+        "average_performance": 40.940000000000005,
+        "complexity_range": 2,
+        "performance_range": 33.0
+      }
+    }
+  },
+  "model_evolution_analysis": {
+    "v4_evolution": {
+      "progression": [
+        "v4_model",
+        "v4_1_temporal",
+        "v4_2_enhanced"
+      ],
+      "performance_trend": [
+        81.4,
+        78.6,
+        30.5
+      ],
+      "complexity_trend": [
+        1,
+        2,
+        3
+      ],
+      "key_changes": []
+    },
+    "v5_evolution": {
+      "progression": [
+        "v5_original",
+        "v5_improved_v2",
+        "v5_final",
+        "v5_improved_parameter_weighted",
+        "v5_fine_tuned"
+      ],
+      "performance_trend": [
+        60.8,
+        43.1,
+        27.8,
+        33.6,
+        39.4
+      ],
+      "complexity_trend": [
+        3,
+        3,
+        4,
+        2,
+        2
+      ],
+      "key_changes": []
+    },
+    "evolution_patterns": {
+      "v4_pattern": {
+        "performance_direction": "declining",
+        "peak_model": "v4_model",
+        "peak_performance": 81.4
+      },
+      "v5_pattern": {
+        "performance_direction": "declining",
+        "peak_model": "v5_original",
+        "peak_performance": 60.8
+      }
+    }
+  },
+  "key_insights": {
+    "overall_ranking": [
+      [
+        "v4_model",
+        81.4
+      ],
+      [
+        "v4_1_temporal",
+        78.6
+      ],
+      [
+        "v5_original",
+        60.8
+      ],
+      [
+        "v5_improved_v2",
+        43.1
+      ],
+      [
+        "v5_fine_tuned",
+        39.4
+      ],
+      [
+        "v5_improved_parameter_weighted",
+        33.6
+      ],
+      [
+        "v4_2_enhanced",
+        30.5
+      ],
+      [
+        "v5_final",
+        27.8
+      ]
+    ],
+    "family_champions": {
+      "v4_champion": {
+        "model": "v4_model",
+        "performance": 81.4,
+        "approach": "Simple Device Envelope"
+      },
+      "v5_champion": {
+        "model": "v5_original",
+        "performance": 60.8,
+        "approach": "Ensemble Adaptive Modeling"
+      }
+    },
+    "performance_gaps": {
+      "v4_vs_v5_gap": 20.60000000000001,
+      "best_vs_worst_gap": 53.60000000000001
+    },
+    "critical_findings": [
+      "V4 \ubaa8\ub378\ub4e4\uc774 \uc804\uccb4\uc801\uc73c\ub85c V5 \ubaa8\ub378\ub4e4\ubcf4\ub2e4 \uc6b0\uc218\ud55c \uc131\ub2a5",
+      "V4.1\uc774 middle phase\uc5d0\uc11c 96.9%\ub85c \ucd5c\uace0 \uc131\ub2a5 \ub2ec\uc131",
+      "V5 \ubaa8\ub378\ub4e4\uc740 \ubcf5\uc7a1\uc131 \uc99d\uac00\uc5d0\ub3c4 \ubd88\uad6c\ud558\uace0 \uc131\ub2a5 \ud5a5\uc0c1 \uc2e4\ud328",
+      "\ub2e8\uc21c\ud55c \uc811\uadfc\ubc95(V4)\uc774 \ubcf5\uc7a1\ud55c \uc811\uadfc\ubc95(V5)\ubcf4\ub2e4 \ud6a8\uacfc\uc801",
+      "V5\uc758 \ubaa8\ub4e0 \uc2dc\ub3c4\ub4e4\uc774 V4\uc758 \ud575\uc2ec \uc131\uacf5 \uc694\uc18c\ub97c \ub193\uce68"
+    ],
+    "phase_specific_insights": {
+      "initial_phase": "V5 Original\uc774 86.4%\ub85c \ucd5c\uace0, \ud558\uc9c0\ub9cc \ubd88\uc548\uc815",
+      "middle_phase": "V4.1\uc774 96.9%\ub85c \uc555\ub3c4\uc801 \ucd5c\uace0 \uc131\ub2a5",
+      "final_phase": "V4\uac00 86.6%\ub85c \ucd5c\uace0, \uc77c\uad00\ub41c \uc131\ub2a5"
+    }
+  },
+  "recommendations": {
+    "immediate_recommendations": [
+      "V4 \ubaa8\ub378\uc744 \uae30\ubcf8 \ubaa8\ub378\ub85c \uc0ac\uc6a9 \uad8c\uc7a5 (81.4% \ud3c9\uade0 \uc131\ub2a5)",
+      "Middle phase \ud2b9\ud654\uac00 \ud544\uc694\ud55c \uacbd\uc6b0 V4.1 \uace0\ub824 (96.9% middle \uc131\ub2a5)",
+      "V5 \ubaa8\ub378\ub4e4\uc758 \ubcf5\uc7a1\ud55c \uc811\uadfc\ubc95 \uc9c0\uc591",
+      "Simple Device Envelope \uc811\uadfc\ubc95\uc758 \uac00\uce58 \uc7ac\uc778\uc2dd"
+    ],
+    "future_research_directions": [
+      "V4\uc758 \uc131\uacf5 \uc694\uc778\uc744 \ub354 \uae4a\uc774 \ubd84\uc11d",
+      "V4.1\uc758 middle phase \uc131\uacf5 \uc694\uc778\uc744 \ub2e4\ub978 \uad6c\uac04\uc5d0 \uc801\uc6a9",
+      "V5\uc758 \uc2e4\ud328 \uc6d0\uc778\uc744 \uad50\ud6c8\uc73c\ub85c \ud55c \uc0c8\ub85c\uc6b4 \uc811\uadfc\ubc95",
+      "\ubcf5\uc7a1\uc131\uacfc \uc131\ub2a5\uc758 \ucd5c\uc801 \uade0\ud615\uc810 \ud0d0\uc0c9"
+    ],
+    "practical_applications": [
+      "\uc2e4\uc81c RocksDB \uc131\ub2a5 \uc608\uce21\uc5d0\ub294 V4 \ubaa8\ub378 \uc0ac\uc6a9",
+      "Phase-specific \ucd5c\uc801\ud654\uac00 \ud544\uc694\ud55c \uacbd\uc6b0 V4.1 \ucc38\uc870",
+      "V5\uc758 \uacfc\ub3c4\ud55c \ubcf5\uc7a1\uc131\uc744 \ubc18\uba74\uad50\uc0ac\ub85c \ud65c\uc6a9",
+      "\ub2e8\uc21c\ud558\uc9c0\ub9cc \ud6a8\uacfc\uc801\uc778 \ubaa8\ub378\ub9c1\uc758 \uc911\uc694\uc131 \uc778\uc2dd"
+    ]
+  }
+}

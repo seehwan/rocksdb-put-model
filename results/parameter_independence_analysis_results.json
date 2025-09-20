@@ -1,0 +1,1182 @@
+{
+  "hypothesis_verification": {
+    "original_hypothesis": "V5 \ud30c\ub77c\ubbf8\ud130\ub4e4\uc774 V4 \ud30c\ub77c\ubbf8\ud130\uc640 \ub3c5\ub9bd\uc801\uc774\uc9c0 \uc54a\ub2e4",
+    "verification_result": "CONFIRMED",
+    "evidence_strength": "very_strong",
+    "key_evidence": [
+      "\uba85\ubc31\ud55c \uc911\ubcf5: 3\uac1c",
+      "\ud30c\uc0dd \ud30c\ub77c\ubbf8\ud130: 1\uac1c",
+      "\uac15\ud55c \uc0c1\uad00\uad00\uacc4: 22\uac1c",
+      "\ub2e4\uc911\uacf5\uc120\uc131 \ubb38\uc81c: 9\uac1c"
+    ],
+    "implications": [
+      "V5 \ubaa8\ub378\ub4e4\uc740 \uc2e4\uc81c\ub85c\ub294 \ub3d9\uc77c\ud55c \uc815\ubcf4\ub97c \uc5ec\ub7ec \ubc88 \uc0ac\uc6a9",
+      "\ub3c5\ub9bd\uc131 \uc704\ubc18\uc73c\ub85c \uc778\ud55c \ubaa8\ub378 \ubd88\uc548\uc815\uc131",
+      "\uc911\ubcf5 \uc815\ubcf4\ub85c \uc778\ud55c \uacfc\uc801\ud569 \ubc0f \uc131\ub2a5 \uc800\ud558",
+      "V4\uc758 \ub2e8\uc21c\ud568\uc774 \uc2e4\uc81c\ub85c\ub294 \uc815\ubcf4 \ud6a8\uc728\uc131"
+    ]
+  },
+  "dependency_analysis": {
+    "analysis_info": {
+      "analysis_time": "2025-09-20T06:22:08.478522",
+      "hypothesis": "V5 parameters are not independent of V4 parameters",
+      "focus": "Parameter redundancy and multicollinearity analysis"
+    },
+    "duplicate_parameters": {
+      "exact_duplicates": [
+        {
+          "v5_parameter": "system_volatility",
+          "v4_equivalent": "cv",
+          "relationship": "IDENTICAL",
+          "evidence": "system_volatility = cv (\uc644\uc804 \ub3d9\uc77c)",
+          "redundancy_level": "complete"
+        },
+        {
+          "v5_parameter": "system_stability",
+          "v4_equivalent": "cv",
+          "relationship": "INVERSE",
+          "evidence": "system_stability = 1 - cv (\uc644\uc804 \uc5ed\uad00\uacc4)",
+          "redundancy_level": "complete"
+        },
+        {
+          "v5_parameter": "combined_amplification",
+          "v4_equivalent": "none",
+          "relationship": "INTERNAL_COMBINATION",
+          "evidence": "combined_amplification = wa + ra (V5 \ub0b4\ubd80 \uc911\ubcf5)",
+          "redundancy_level": "internal_redundancy"
+        }
+      ],
+      "derived_duplicates": [
+        {
+          "v5_parameter": "device_degradation",
+          "v4_equivalent": "device_write_bw",
+          "relationship": "DERIVED_FROM",
+          "evidence": "device_degradation = (initial_bw - current_bw) / initial_bw",
+          "redundancy_level": "high",
+          "calculation": "device_degradation = 1 - (1074.8 / 4116.6) = 73.9%"
+        }
+      ]
+    },
+    "derived_parameters": {
+      "direct_derivatives": {
+        "device_degradation": {
+          "base_parameter": "device_write_bw",
+          "derivation_formula": "(initial_device_bw - current_device_bw) / initial_device_bw",
+          "evidence": {
+            "initial_bw": 4116.6,
+            "middle_final_bw": 1074.8,
+            "calculated_degradation": 73.89107515911189,
+            "v5_reported_degradation": 73.9
+          },
+          "independence_violation": "V5 device_degradation\uc740 V4 device_write_bw\uc758 \uc2dc\uac04\uc801 \ubcc0\ud654\uc77c \ubfd0"
+        }
+      },
+      "indirect_derivatives": {
+        "wa": {
+          "potential_base": "device_write_bw",
+          "relationship": "WA increases as device performance degrades",
+          "evidence": "WA: 1.2\u21922.5\u21923.2 as device_bw: 4116.6\u21921074.8\u21921074.8",
+          "independence_concern": "WA may be consequence of device performance, not independent cause"
+        },
+        "ra": {
+          "potential_base": "device_write_bw + wa",
+          "relationship": "RA increases with compaction pressure from WA",
+          "evidence": "RA: 0.1\u21920.8\u21921.1 following WA increases",
+          "independence_concern": "RA may be downstream effect of device+WA, not independent"
+        },
+        "compaction_intensity": {
+          "potential_base": "wa + time",
+          "relationship": "Compaction intensity correlates with WA and time",
+          "evidence": "Higher compaction as WA increases over time",
+          "independence_concern": "May be effect, not cause"
+        }
+      }
+    },
+    "correlation_analysis": {
+      "correlation_matrix": {
+        "device_write_bw": {
+          "device_write_bw": 1.0,
+          "wa": -0.9386522045811475,
+          "ra": -0.9563247157871204,
+          "device_degradation": -0.4999999999999999,
+          "cv": 0.9496807329266378,
+          "system_volatility": 0.9496807329266378,
+          "combined_amplification": -0.9449111825230683,
+          "system_stability": -0.9496807329266379,
+          "compaction_intensity": -0.5,
+          "level_depth": -0.5000000000000001
+        },
+        "wa": {
+          "device_write_bw": -0.9386522045811475,
+          "wa": 1.0,
+          "ra": 0.9984626255398726,
+          "device_degradation": 0.17066403719657222,
+          "cv": -0.9994384616607529,
+          "system_volatility": -0.9994384616607529,
+          "combined_amplification": 0.999826614649759,
+          "system_stability": 0.9994384616607531,
+          "compaction_intensity": 0.17066403719657233,
+          "level_depth": 0.7679881673845754
+        },
+        "ra": {
+          "device_write_bw": -0.9563247157871204,
+          "wa": 0.9984626255398726,
+          "ra": 1.0,
+          "device_degradation": 0.2250175801852048,
+          "cv": -0.999759248422221,
+          "system_volatility": -0.999759248422221,
+          "combined_amplification": 0.9993216505720215,
+          "system_stability": 0.999759248422221,
+          "compaction_intensity": 0.22501758018520482,
+          "level_depth": 0.7313071356019156
+        },
+        "device_degradation": {
+          "device_write_bw": -0.4999999999999999,
+          "wa": 0.17066403719657222,
+          "ra": 0.2250175801852048,
+          "device_degradation": 1.0,
+          "cv": -0.2035842529267882,
+          "system_volatility": -0.2035842529267882,
+          "combined_amplification": 0.18898223650461357,
+          "system_stability": 0.20358425292678836,
+          "compaction_intensity": 1.0,
+          "level_depth": -0.5
+        },
+        "cv": {
+          "device_write_bw": 0.9496807329266378,
+          "wa": -0.9994384616607529,
+          "ra": -0.999759248422221,
+          "device_degradation": -0.2035842529267882,
+          "cv": 1.0,
+          "system_volatility": 1.0,
+          "combined_amplification": -0.9998891183724493,
+          "system_stability": -1.0000000000000002,
+          "compaction_intensity": -0.2035842529267882,
+          "level_depth": -0.7460964799998495
+        },
+        "system_volatility": {
+          "device_write_bw": 0.9496807329266378,
+          "wa": -0.9994384616607529,
+          "ra": -0.999759248422221,
+          "device_degradation": -0.2035842529267882,
+          "cv": 1.0,
+          "system_volatility": 1.0,
+          "combined_amplification": -0.9998891183724493,
+          "system_stability": -1.0000000000000002,
+          "compaction_intensity": -0.2035842529267882,
+          "level_depth": -0.7460964799998495
+        },
+        "combined_amplification": {
+          "device_write_bw": -0.9449111825230683,
+          "wa": 0.999826614649759,
+          "ra": 0.9993216505720215,
+          "device_degradation": 0.18898223650461357,
+          "cv": -0.9998891183724493,
+          "system_volatility": -0.9998891183724493,
+          "combined_amplification": 1.0,
+          "system_stability": 0.999889118372449,
+          "compaction_intensity": 0.18898223650461352,
+          "level_depth": 0.7559289460184544
+        },
+        "system_stability": {
+          "device_write_bw": -0.9496807329266379,
+          "wa": 0.9994384616607531,
+          "ra": 0.999759248422221,
+          "device_degradation": 0.20358425292678836,
+          "cv": -1.0000000000000002,
+          "system_volatility": -1.0000000000000002,
+          "combined_amplification": 0.999889118372449,
+          "system_stability": 1.0,
+          "compaction_intensity": 0.20358425292678836,
+          "level_depth": 0.7460964799998493
+        },
+        "compaction_intensity": {
+          "device_write_bw": -0.5,
+          "wa": 0.17066403719657233,
+          "ra": 0.22501758018520482,
+          "device_degradation": 1.0,
+          "cv": -0.2035842529267882,
+          "system_volatility": -0.2035842529267882,
+          "combined_amplification": 0.18898223650461352,
+          "system_stability": 0.20358425292678836,
+          "compaction_intensity": 1.0,
+          "level_depth": -0.5
+        },
+        "level_depth": {
+          "device_write_bw": -0.5000000000000001,
+          "wa": 0.7679881673845754,
+          "ra": 0.7313071356019156,
+          "device_degradation": -0.5,
+          "cv": -0.7460964799998495,
+          "system_volatility": -0.7460964799998495,
+          "combined_amplification": 0.7559289460184544,
+          "system_stability": 0.7460964799998493,
+          "compaction_intensity": -0.5,
+          "level_depth": 1.0
+        }
+      },
+      "strong_correlations": [
+        {
+          "param1": "device_write_bw",
+          "param2": "wa",
+          "correlation": -0.9386522045811475,
+          "strength": "strong",
+          "type": "negative"
+        },
+        {
+          "param1": "device_write_bw",
+          "param2": "ra",
+          "correlation": -0.9563247157871204,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "device_write_bw",
+          "param2": "cv",
+          "correlation": 0.9496807329266378,
+          "strength": "strong",
+          "type": "positive"
+        },
+        {
+          "param1": "device_write_bw",
+          "param2": "system_volatility",
+          "correlation": 0.9496807329266378,
+          "strength": "strong",
+          "type": "positive"
+        },
+        {
+          "param1": "device_write_bw",
+          "param2": "combined_amplification",
+          "correlation": -0.9449111825230683,
+          "strength": "strong",
+          "type": "negative"
+        },
+        {
+          "param1": "device_write_bw",
+          "param2": "system_stability",
+          "correlation": -0.9496807329266379,
+          "strength": "strong",
+          "type": "negative"
+        },
+        {
+          "param1": "wa",
+          "param2": "ra",
+          "correlation": 0.9984626255398726,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "wa",
+          "param2": "cv",
+          "correlation": -0.9994384616607529,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "wa",
+          "param2": "system_volatility",
+          "correlation": -0.9994384616607529,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "wa",
+          "param2": "combined_amplification",
+          "correlation": 0.999826614649759,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "wa",
+          "param2": "system_stability",
+          "correlation": 0.9994384616607531,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "ra",
+          "param2": "cv",
+          "correlation": -0.999759248422221,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "ra",
+          "param2": "system_volatility",
+          "correlation": -0.999759248422221,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "ra",
+          "param2": "combined_amplification",
+          "correlation": 0.9993216505720215,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "ra",
+          "param2": "system_stability",
+          "correlation": 0.999759248422221,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "device_degradation",
+          "param2": "compaction_intensity",
+          "correlation": 1.0,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "cv",
+          "param2": "system_volatility",
+          "correlation": 1.0,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "cv",
+          "param2": "combined_amplification",
+          "correlation": -0.9998891183724493,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "cv",
+          "param2": "system_stability",
+          "correlation": -1.0000000000000002,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "system_volatility",
+          "param2": "combined_amplification",
+          "correlation": -0.9998891183724493,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "system_volatility",
+          "param2": "system_stability",
+          "correlation": -1.0000000000000002,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "combined_amplification",
+          "param2": "system_stability",
+          "correlation": 0.999889118372449,
+          "strength": "very_strong",
+          "type": "positive"
+        }
+      ],
+      "parameter_data": {
+        "device_write_bw": {
+          "initial_phase": 4116.6,
+          "middle_phase": 1074.8,
+          "final_phase": 1074.8
+        },
+        "wa": {
+          "initial_phase": 1.2,
+          "middle_phase": 2.5,
+          "final_phase": 3.2
+        },
+        "ra": {
+          "initial_phase": 0.1,
+          "middle_phase": 0.8,
+          "final_phase": 1.1
+        },
+        "device_degradation": {
+          "initial_phase": 0.0,
+          "middle_phase": 73.9,
+          "final_phase": 0.0
+        },
+        "cv": {
+          "initial_phase": 0.538,
+          "middle_phase": 0.2,
+          "final_phase": 0.041
+        },
+        "system_volatility": {
+          "initial_phase": 0.538,
+          "middle_phase": 0.2,
+          "final_phase": 0.041
+        },
+        "combined_amplification": {
+          "initial_phase": 1.3,
+          "middle_phase": 3.3,
+          "final_phase": 4.3
+        },
+        "system_stability": {
+          "initial_phase": 0.46199999999999997,
+          "middle_phase": 0.8,
+          "final_phase": 0.959
+        },
+        "compaction_intensity": {
+          "initial_phase": 0.0,
+          "middle_phase": 3.0,
+          "final_phase": 0.0
+        },
+        "level_depth": {
+          "initial_phase": 0.0,
+          "middle_phase": 0.0,
+          "final_phase": 6.0
+        }
+      },
+      "independence_violations": 22
+    },
+    "multicollinearity_analysis": {
+      "vif_analysis": [
+        {
+          "parameter": "device_write_bw",
+          "vif": 11.703703703703733,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "wa",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "ra",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "device_degradation",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "cv",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "system_volatility",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "combined_amplification",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "system_stability",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "compaction_intensity",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "level_depth",
+          "vif": 2.437869822485208,
+          "multicollinearity_level": "acceptable"
+        }
+      ],
+      "problematic_parameters": [
+        {
+          "parameter": "device_write_bw",
+          "vif": 11.703703703703733,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "wa",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "ra",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "device_degradation",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "cv",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "system_volatility",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "combined_amplification",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "system_stability",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "compaction_intensity",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        }
+      ],
+      "multicollinearity_severity": 9
+    },
+    "redundancy_impact": {
+      "v5_models_complexity": {
+        "v5_original": {
+          "performance": 60.8,
+          "parameters_used": [
+            "device_write_bw",
+            "wa",
+            "ra",
+            "cv",
+            "compaction_intensity"
+          ],
+          "redundant_params": [
+            "system_volatility\u2248cv"
+          ],
+          "parameter_count": 5,
+          "redundancy_count": 1
+        },
+        "v5_improved_v2": {
+          "performance": 43.1,
+          "parameters_used": [
+            "device_write_bw",
+            "wa",
+            "ra",
+            "device_degradation",
+            "cv"
+          ],
+          "redundant_params": [
+            "device_degradation\u2248device_write_bw_change"
+          ],
+          "parameter_count": 5,
+          "redundancy_count": 1
+        },
+        "v5_final": {
+          "performance": 27.8,
+          "parameters_used": [
+            "device_write_bw",
+            "wa",
+            "ra",
+            "device_degradation",
+            "cv",
+            "compaction_triggers",
+            "level_operations"
+          ],
+          "redundant_params": [
+            "device_degradation\u2248device_write_bw_change",
+            "system_volatility\u2248cv",
+            "combined_amplification\u2248wa+ra"
+          ],
+          "parameter_count": 7,
+          "redundancy_count": 3
+        },
+        "v5_improved_parameter_weighted": {
+          "performance": 33.6,
+          "parameters_used": [
+            "device_write_bw",
+            "wa",
+            "ra",
+            "device_degradation",
+            "cv",
+            "compaction_intensity"
+          ],
+          "redundant_params": [
+            "device_degradation\u2248device_write_bw_change",
+            "system_volatility\u2248cv"
+          ],
+          "parameter_count": 6,
+          "redundancy_count": 2
+        },
+        "v5_fine_tuned": {
+          "performance": 39.4,
+          "parameters_used": [
+            "device_write_bw",
+            "wa",
+            "ra",
+            "device_degradation",
+            "cv",
+            "combined_amplification",
+            "system_stability"
+          ],
+          "redundant_params": [
+            "device_degradation\u2248device_write_bw_change",
+            "combined_amplification\u2248wa+ra",
+            "system_stability\u22481-cv"
+          ],
+          "parameter_count": 7,
+          "redundancy_count": 3
+        }
+      },
+      "redundancy_performance_correlation": -0.7545645835450052,
+      "correlation_interpretation": "negative",
+      "key_finding": "Higher parameter redundancy correlates with lower performance"
+    },
+    "independence_violations": {
+      "critical_violations": [
+        {
+          "violation_type": "EXACT_DUPLICATION",
+          "parameters": [
+            "cv",
+            "system_volatility"
+          ],
+          "description": "system_volatility\ub294 cv\uc640 \uc644\uc804\ud788 \ub3d9\uc77c\ud55c \uac12",
+          "impact": "V5 \ubaa8\ub378\uc774 \ub3d9\uc77c\ud55c \uc815\ubcf4\ub97c \uc911\ubcf5\uc73c\ub85c \uc0ac\uc6a9",
+          "evidence": "Initial: cv=0.538, system_volatility=0.538"
+        },
+        {
+          "violation_type": "MATHEMATICAL_REDUNDANCY",
+          "parameters": [
+            "cv",
+            "system_stability"
+          ],
+          "description": "system_stability = 1 - cv (\uc644\uc804\ud55c \uc218\ud559\uc801 \uc911\ubcf5)",
+          "impact": "\ub3d9\uc77c\ud55c \uc815\ubcf4\ub97c \uc591\uc758 \ud615\ud0dc\uc640 \uc74c\uc758 \ud615\ud0dc\ub85c \uc911\ubcf5 \uc0ac\uc6a9",
+          "evidence": "Final: cv=0.041, system_stability=0.959 (1-0.041)"
+        },
+        {
+          "violation_type": "COMBINATION_REDUNDANCY",
+          "parameters": [
+            "wa",
+            "ra",
+            "combined_amplification"
+          ],
+          "description": "combined_amplification = wa + ra (\ub2e8\uc21c \ud569\uacc4)",
+          "impact": "\uac1c\ubcc4 \ud30c\ub77c\ubbf8\ud130\uc640 \uadf8 \uc870\ud569\uc744 \ub3d9\uc2dc\uc5d0 \uc0ac\uc6a9\ud558\uc5ec \uc911\ubcf5",
+          "evidence": "Final: wa=3.2, ra=1.1, combined=4.3 (3.2+1.1)"
+        },
+        {
+          "violation_type": "TEMPORAL_DEPENDENCY",
+          "parameters": [
+            "device_write_bw",
+            "device_degradation"
+          ],
+          "description": "device_degradation\uc740 device_write_bw\uc758 \uc2dc\uac04\uc801 \ubcc0\ud654",
+          "impact": "\ub3d9\uc77c\ud55c \uc7a5\uce58 \uc131\ub2a5\uc744 \uc808\ub300\uac12\uacfc \ubcc0\ud654\uc728\ub85c \uc911\ubcf5 \ubaa8\ub378\ub9c1",
+          "evidence": "degradation\uc740 device_bw \ubcc0\ud654\ub97c \ub2e4\ub974\uac8c \ud45c\ud604\ud55c \uac83"
+        }
+      ],
+      "potential_violations": [
+        {
+          "violation_type": "CAUSAL_DEPENDENCY",
+          "parameters": [
+            "device_write_bw",
+            "wa",
+            "ra"
+          ],
+          "description": "WA/RA\ub294 device performance\uc758 \uacb0\uacfc\uc77c \uc218 \uc788\uc74c",
+          "impact": "\uc6d0\uc778(device)\uacfc \uacb0\uacfc(wa/ra)\ub97c \ub3c5\ub9bd \ubcc0\uc218\ub85c \ucde8\uae09",
+          "evidence": "\uc7a5\uce58 \uc131\ub2a5 \uc800\ud558 \u2192 \ucef4\ud329\uc158 \uc99d\uac00 \u2192 WA/RA \uc99d\uac00"
+        },
+        {
+          "violation_type": "SEQUENTIAL_DEPENDENCY",
+          "parameters": [
+            "wa",
+            "ra",
+            "compaction_intensity",
+            "level_depth"
+          ],
+          "description": "\ubaa8\ub4e0 \ud30c\ub77c\ubbf8\ud130\uac00 \uc2dc\uac04 \uc21c\uc11c\uc5d0 \ub530\ub77c \uc5f0\uc1c4\uc801\uc73c\ub85c \ubcc0\ud654",
+          "impact": "\ub3c5\ub9bd \ubcc0\uc218\uac00 \uc544\ub2cc \uc885\uc18d\uc801 \uc2dc\ud000\uc2a4\ub97c \ub3c5\ub9bd\uc801\uc73c\ub85c \ubaa8\ub378\ub9c1",
+          "evidence": "WA\uc99d\uac00\u2192RA\uc99d\uac00\u2192compaction\uc99d\uac00\u2192level\uc99d\uac00 \uc21c\uc11c"
+        }
+      ]
+    }
+  },
+  "independence_analysis": {
+    "v4_approach": {
+      "core_parameter": "device_write_bw",
+      "parameter_count": 1,
+      "redundancy_count": 0,
+      "independence_level": "perfect",
+      "modeling_philosophy": "Single independent constraint identification",
+      "success_reason": "\uc9c4\uc9dc \ub3c5\ub9bd\uc801\uc774\uace0 \ud575\uc2ec\uc801\uc778 \uc81c\uc57d \ud558\ub098\uc5d0\ub9cc \uc9d1\uc911"
+    },
+    "v5_approaches": {
+      "common_issues": [
+        "\ub3d9\uc77c\ud55c \uc815\ubcf4\ub97c \ub2e4\ub978 \uc774\ub984\uc73c\ub85c \uc911\ubcf5 \uc0ac\uc6a9",
+        "\uc6d0\uc778\uacfc \uacb0\uacfc\ub97c \ub3c5\ub9bd \ubcc0\uc218\ub85c \uc798\ubabb \ucde8\uae09",
+        "\ud30c\uc0dd\ub41c \ud30c\ub77c\ubbf8\ud130\ub97c \ub3c5\ub9bd\uc801\uc778 \uac83\uc73c\ub85c \uc624\ud574",
+        "\uc2dc\uac04\uc801 \uc885\uc18d\uc131\uc744 \ubb34\uc2dc\ud55c \ub3c5\ub9bd\uc131 \uac00\uc815"
+      ],
+      "failure_mechanism": {
+        "step1": "V4\uc758 device_write_bw (\ud575\uc2ec \uc815\ubcf4) \uc0ac\uc6a9",
+        "step2": "device_degradation (\ub3d9\uc77c \uc815\ubcf4\uc758 \ubcc0\ud654\uc728) \ucd94\uac00",
+        "step3": "wa, ra (device \uc131\ub2a5\uc758 \uacb0\uacfc) \ucd94\uac00",
+        "step4": "system_volatility (cv\uc640 \ub3d9\uc77c) \ucd94\uac00",
+        "step5": "combined_amplification (wa+ra \uc911\ubcf5) \ucd94\uac00",
+        "result": "\ub3d9\uc77c\ud55c \uc815\ubcf4\ub97c 5-7\ubc88 \ub2e4\ub978 \ud615\ud0dc\ub85c \uc911\ubcf5 \uc0ac\uc6a9"
+      }
+    }
+  },
+  "parameter_relationships": {
+    "correlation_analysis": {
+      "correlation_matrix": {
+        "device_write_bw": {
+          "device_write_bw": 1.0,
+          "wa": -0.9386522045811475,
+          "ra": -0.9563247157871204,
+          "device_degradation": -0.4999999999999999,
+          "cv": 0.9496807329266378,
+          "system_volatility": 0.9496807329266378,
+          "combined_amplification": -0.9449111825230683,
+          "system_stability": -0.9496807329266379,
+          "compaction_intensity": -0.5,
+          "level_depth": -0.5000000000000001
+        },
+        "wa": {
+          "device_write_bw": -0.9386522045811475,
+          "wa": 1.0,
+          "ra": 0.9984626255398726,
+          "device_degradation": 0.17066403719657222,
+          "cv": -0.9994384616607529,
+          "system_volatility": -0.9994384616607529,
+          "combined_amplification": 0.999826614649759,
+          "system_stability": 0.9994384616607531,
+          "compaction_intensity": 0.17066403719657233,
+          "level_depth": 0.7679881673845754
+        },
+        "ra": {
+          "device_write_bw": -0.9563247157871204,
+          "wa": 0.9984626255398726,
+          "ra": 1.0,
+          "device_degradation": 0.2250175801852048,
+          "cv": -0.999759248422221,
+          "system_volatility": -0.999759248422221,
+          "combined_amplification": 0.9993216505720215,
+          "system_stability": 0.999759248422221,
+          "compaction_intensity": 0.22501758018520482,
+          "level_depth": 0.7313071356019156
+        },
+        "device_degradation": {
+          "device_write_bw": -0.4999999999999999,
+          "wa": 0.17066403719657222,
+          "ra": 0.2250175801852048,
+          "device_degradation": 1.0,
+          "cv": -0.2035842529267882,
+          "system_volatility": -0.2035842529267882,
+          "combined_amplification": 0.18898223650461357,
+          "system_stability": 0.20358425292678836,
+          "compaction_intensity": 1.0,
+          "level_depth": -0.5
+        },
+        "cv": {
+          "device_write_bw": 0.9496807329266378,
+          "wa": -0.9994384616607529,
+          "ra": -0.999759248422221,
+          "device_degradation": -0.2035842529267882,
+          "cv": 1.0,
+          "system_volatility": 1.0,
+          "combined_amplification": -0.9998891183724493,
+          "system_stability": -1.0000000000000002,
+          "compaction_intensity": -0.2035842529267882,
+          "level_depth": -0.7460964799998495
+        },
+        "system_volatility": {
+          "device_write_bw": 0.9496807329266378,
+          "wa": -0.9994384616607529,
+          "ra": -0.999759248422221,
+          "device_degradation": -0.2035842529267882,
+          "cv": 1.0,
+          "system_volatility": 1.0,
+          "combined_amplification": -0.9998891183724493,
+          "system_stability": -1.0000000000000002,
+          "compaction_intensity": -0.2035842529267882,
+          "level_depth": -0.7460964799998495
+        },
+        "combined_amplification": {
+          "device_write_bw": -0.9449111825230683,
+          "wa": 0.999826614649759,
+          "ra": 0.9993216505720215,
+          "device_degradation": 0.18898223650461357,
+          "cv": -0.9998891183724493,
+          "system_volatility": -0.9998891183724493,
+          "combined_amplification": 1.0,
+          "system_stability": 0.999889118372449,
+          "compaction_intensity": 0.18898223650461352,
+          "level_depth": 0.7559289460184544
+        },
+        "system_stability": {
+          "device_write_bw": -0.9496807329266379,
+          "wa": 0.9994384616607531,
+          "ra": 0.999759248422221,
+          "device_degradation": 0.20358425292678836,
+          "cv": -1.0000000000000002,
+          "system_volatility": -1.0000000000000002,
+          "combined_amplification": 0.999889118372449,
+          "system_stability": 1.0,
+          "compaction_intensity": 0.20358425292678836,
+          "level_depth": 0.7460964799998493
+        },
+        "compaction_intensity": {
+          "device_write_bw": -0.5,
+          "wa": 0.17066403719657233,
+          "ra": 0.22501758018520482,
+          "device_degradation": 1.0,
+          "cv": -0.2035842529267882,
+          "system_volatility": -0.2035842529267882,
+          "combined_amplification": 0.18898223650461352,
+          "system_stability": 0.20358425292678836,
+          "compaction_intensity": 1.0,
+          "level_depth": -0.5
+        },
+        "level_depth": {
+          "device_write_bw": -0.5000000000000001,
+          "wa": 0.7679881673845754,
+          "ra": 0.7313071356019156,
+          "device_degradation": -0.5,
+          "cv": -0.7460964799998495,
+          "system_volatility": -0.7460964799998495,
+          "combined_amplification": 0.7559289460184544,
+          "system_stability": 0.7460964799998493,
+          "compaction_intensity": -0.5,
+          "level_depth": 1.0
+        }
+      },
+      "strong_correlations": [
+        {
+          "param1": "device_write_bw",
+          "param2": "wa",
+          "correlation": -0.9386522045811475,
+          "strength": "strong",
+          "type": "negative"
+        },
+        {
+          "param1": "device_write_bw",
+          "param2": "ra",
+          "correlation": -0.9563247157871204,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "device_write_bw",
+          "param2": "cv",
+          "correlation": 0.9496807329266378,
+          "strength": "strong",
+          "type": "positive"
+        },
+        {
+          "param1": "device_write_bw",
+          "param2": "system_volatility",
+          "correlation": 0.9496807329266378,
+          "strength": "strong",
+          "type": "positive"
+        },
+        {
+          "param1": "device_write_bw",
+          "param2": "combined_amplification",
+          "correlation": -0.9449111825230683,
+          "strength": "strong",
+          "type": "negative"
+        },
+        {
+          "param1": "device_write_bw",
+          "param2": "system_stability",
+          "correlation": -0.9496807329266379,
+          "strength": "strong",
+          "type": "negative"
+        },
+        {
+          "param1": "wa",
+          "param2": "ra",
+          "correlation": 0.9984626255398726,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "wa",
+          "param2": "cv",
+          "correlation": -0.9994384616607529,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "wa",
+          "param2": "system_volatility",
+          "correlation": -0.9994384616607529,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "wa",
+          "param2": "combined_amplification",
+          "correlation": 0.999826614649759,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "wa",
+          "param2": "system_stability",
+          "correlation": 0.9994384616607531,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "ra",
+          "param2": "cv",
+          "correlation": -0.999759248422221,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "ra",
+          "param2": "system_volatility",
+          "correlation": -0.999759248422221,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "ra",
+          "param2": "combined_amplification",
+          "correlation": 0.9993216505720215,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "ra",
+          "param2": "system_stability",
+          "correlation": 0.999759248422221,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "device_degradation",
+          "param2": "compaction_intensity",
+          "correlation": 1.0,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "cv",
+          "param2": "system_volatility",
+          "correlation": 1.0,
+          "strength": "very_strong",
+          "type": "positive"
+        },
+        {
+          "param1": "cv",
+          "param2": "combined_amplification",
+          "correlation": -0.9998891183724493,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "cv",
+          "param2": "system_stability",
+          "correlation": -1.0000000000000002,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "system_volatility",
+          "param2": "combined_amplification",
+          "correlation": -0.9998891183724493,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "system_volatility",
+          "param2": "system_stability",
+          "correlation": -1.0000000000000002,
+          "strength": "very_strong",
+          "type": "negative"
+        },
+        {
+          "param1": "combined_amplification",
+          "param2": "system_stability",
+          "correlation": 0.999889118372449,
+          "strength": "very_strong",
+          "type": "positive"
+        }
+      ],
+      "parameter_data": {
+        "device_write_bw": {
+          "initial_phase": 4116.6,
+          "middle_phase": 1074.8,
+          "final_phase": 1074.8
+        },
+        "wa": {
+          "initial_phase": 1.2,
+          "middle_phase": 2.5,
+          "final_phase": 3.2
+        },
+        "ra": {
+          "initial_phase": 0.1,
+          "middle_phase": 0.8,
+          "final_phase": 1.1
+        },
+        "device_degradation": {
+          "initial_phase": 0.0,
+          "middle_phase": 73.9,
+          "final_phase": 0.0
+        },
+        "cv": {
+          "initial_phase": 0.538,
+          "middle_phase": 0.2,
+          "final_phase": 0.041
+        },
+        "system_volatility": {
+          "initial_phase": 0.538,
+          "middle_phase": 0.2,
+          "final_phase": 0.041
+        },
+        "combined_amplification": {
+          "initial_phase": 1.3,
+          "middle_phase": 3.3,
+          "final_phase": 4.3
+        },
+        "system_stability": {
+          "initial_phase": 0.46199999999999997,
+          "middle_phase": 0.8,
+          "final_phase": 0.959
+        },
+        "compaction_intensity": {
+          "initial_phase": 0.0,
+          "middle_phase": 3.0,
+          "final_phase": 0.0
+        },
+        "level_depth": {
+          "initial_phase": 0.0,
+          "middle_phase": 0.0,
+          "final_phase": 6.0
+        }
+      },
+      "independence_violations": 22
+    },
+    "multicollinearity_analysis": {
+      "vif_analysis": [
+        {
+          "parameter": "device_write_bw",
+          "vif": 11.703703703703733,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "wa",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "ra",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "device_degradation",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "cv",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "system_volatility",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "combined_amplification",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "system_stability",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "compaction_intensity",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "level_depth",
+          "vif": 2.437869822485208,
+          "multicollinearity_level": "acceptable"
+        }
+      ],
+      "problematic_parameters": [
+        {
+          "parameter": "device_write_bw",
+          "vif": 11.703703703703733,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "wa",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "ra",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "device_degradation",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "cv",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "system_volatility",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "combined_amplification",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "system_stability",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        },
+        {
+          "parameter": "compaction_intensity",
+          "vif": Infinity,
+          "multicollinearity_level": "severe"
+        }
+      ],
+      "multicollinearity_severity": 9
+    }
+  },
+  "recommendations": {
+    "immediate_actions": [
+      "V5 \ubaa8\ub378\uc5d0\uc11c \uc911\ubcf5 \ud30c\ub77c\ubbf8\ud130 \uc81c\uac70 (system_volatility, system_stability, combined_amplification)",
+      "V4 device_write_bw\uc640 V5 device_degradation \uc911 \ud558\ub098\ub9cc \uc0ac\uc6a9",
+      "\uc6d0\uc778-\uacb0\uacfc \uad00\uacc4 \ud30c\ub77c\ubbf8\ud130\ub4e4\uc744 \ub3c5\ub9bd\uc801\uc73c\ub85c \ucde8\uae09\ud558\uc9c0 \ub9d0 \uac83",
+      "V4\uc758 \ub2e8\uc77c \ud575\uc2ec \uc81c\uc57d \uc811\uadfc\ubc95 \uc7ac\ud3c9\uac00"
+    ],
+    "modeling_principles": [
+      "\ud30c\ub77c\ubbf8\ud130 \ub3c5\ub9bd\uc131 \uac80\uc99d\uc744 \ubaa8\ub378\ub9c1 \uc804 \ud544\uc218 \ub2e8\uacc4\ub85c \uc124\uc815",
+      "\uc0c1\uad00\uad00\uacc4 > 0.8\uc778 \ud30c\ub77c\ubbf8\ud130\ub4e4\uc740 \ud558\ub098\ub9cc \uc0ac\uc6a9",
+      "VIF > 5\uc778 \ud30c\ub77c\ubbf8\ud130\ub4e4\uc740 \ub2e4\uc911\uacf5\uc120\uc131 \ubb38\uc81c\ub85c \uc81c\uac70",
+      "\ud30c\uc0dd/\uacc4\uc0b0\ub41c \ud30c\ub77c\ubbf8\ud130\ubcf4\ub2e4 \uc6d0\ubcf8 \uce21\uc815\uac12 \uc6b0\uc120"
+    ],
+    "v5_improvement_strategy": [
+      "V5 \ubaa8\ub378\uc744 V4 \uc218\uc900\uc73c\ub85c \ub2e8\uc21c\ud654",
+      "\uc9c4\uc9dc \ub3c5\ub9bd\uc801\uc778 \ud30c\ub77c\ubbf8\ud130\ub9cc \uc120\ubcc4 \uc0ac\uc6a9",
+      "\uc911\ubcf5 \uc81c\uac70 \ud6c4 \uc131\ub2a5 \uc7ac\ud3c9\uac00",
+      "V4\uc758 \uc815\ubcf4 \ud6a8\uc728\uc131\uc744 V5\uc5d0 \uc801\uc6a9"
+    ],
+    "future_research": [
+      "\ud30c\ub77c\ubbf8\ud130 \ub3c5\ub9bd\uc131 \uac80\uc99d \ub3c4\uad6c \uac1c\ubc1c",
+      "\uc778\uacfc\uad00\uacc4 vs \uc0c1\uad00\uad00\uacc4 \uad6c\ubd84 \ubc29\ubc95\ub860",
+      "\ucd5c\uc18c \ub3c5\ub9bd \ud30c\ub77c\ubbf8\ud130\ub85c \ucd5c\ub300 \uc131\ub2a5 \ub2ec\uc131 \uc5f0\uad6c",
+      "\uc815\ubcf4 \uc774\ub860 \uad00\uc810\uc5d0\uc11c\uc758 \ubaa8\ub378 \ubcf5\uc7a1\uc131 \ubd84\uc11d"
+    ]
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "comparison": {
+    "log_based": {
+      "initial": {
+        "basic_stats": {
+          "duration_hours": 32.20107010333333,
+          "sample_count": 11592,
+          "start_time": "2025-09-12 10:16:04.958286",
+          "end_time": "2025-09-13 18:28:08.810658"
+        },
+        "performance_stats": {
+          "avg_write_rate": 17.13913216011042,
+          "max_write_rate": 280.18,
+          "min_write_rate": 13.83,
+          "std_write_rate": 6.102187318976736,
+          "cv": 0.3560382907355691,
+          "median_write_rate": 15.06,
+          "q25_write_rate": 14.28,
+          "q75_write_rate": 17.58
+        },
+        "performance_trend": {
+          "trend_slope": -0.0011312994450770823,
+          "trend_r2": 0.3849080910297706,
+          "performance_change": -95.06031836676424
+        },
+        "compaction_stats": {},
+        "flush_stats": {
+          "total_flushes": 53053,
+          "flush_rate_per_hour": 1647.5539424544827,
+          "flush_by_type": {
+            "finish": 26527,
+            "start": 26526
+          }
+        },
+        "phase_characteristics": {
+          "stability": "low",
+          "trend": "stable",
+          "performance_level": "medium",
+          "activity_level": "medium"
+        }
+      },
+      "middle": {
+        "basic_stats": {
+          "duration_hours": 32.200674094166665,
+          "sample_count": 11591,
+          "start_time": "2025-09-13 18:28:18.812315",
+          "end_time": "2025-09-15 02:40:21.239054"
+        },
+        "performance_stats": {
+          "avg_write_rate": 13.195097920800622,
+          "max_write_rate": 13.84,
+          "min_write_rate": 12.63,
+          "std_write_rate": 0.36181570011640457,
+          "cv": 0.027420463439383945,
+          "median_write_rate": 13.17,
+          "q25_write_rate": 12.87,
+          "q75_write_rate": 13.53
+        },
+        "performance_trend": {
+          "trend_slope": -0.00010794266081850014,
+          "trend_r2": 0.9965737757010869,
+          "performance_change": -8.742774566473981
+        },
+        "compaction_stats": {},
+        "flush_stats": {
+          "total_flushes": 43796,
+          "flush_rate_per_hour": 1360.0957505400143,
+          "flush_by_type": {
+            "start": 21898,
+            "finish": 21898
+          }
+        },
+        "phase_characteristics": {
+          "stability": "high",
+          "trend": "stable",
+          "performance_level": "low",
+          "activity_level": "low"
+        }
+      },
+      "final": {
+        "basic_stats": {
+          "duration_hours": 32.19997141722222,
+          "sample_count": 11590,
+          "start_time": "2025-09-15 02:40:31.241258",
+          "end_time": "2025-09-16 10:52:31.138360"
+        },
+        "performance_stats": {
+          "avg_write_rate": 12.310995685936152,
+          "max_write_rate": 12.63,
+          "min_write_rate": 12.06,
+          "std_write_rate": 0.1598052221168521,
+          "cv": 0.012980690286441296,
+          "median_write_rate": 12.3,
+          "q25_write_rate": 12.17,
+          "q75_write_rate": 12.44
+        },
+        "performance_trend": {
+          "trend_slope": -4.759469003343225e-05,
+          "trend_r2": 0.9930203923014438,
+          "performance_change": -4.513064133016629
+        },
+        "compaction_stats": {},
+        "flush_stats": {
+          "total_flushes": 41960,
+          "flush_rate_per_hour": 1303.1067467829369,
+          "flush_by_type": {
+            "start": 20980,
+            "finish": 20980
+          }
+        },
+        "phase_characteristics": {
+          "stability": "high",
+          "trend": "stable",
+          "performance_level": "low",
+          "activity_level": "low"
+        }
+      }
+    },
+    "performance_based": {
+      "initial": {
+        "duration_hours": 32.20107010333333,
+        "sample_count": 11592,
+        "avg_write_rate": 17.13913216011042,
+        "max_write_rate": 280.18,
+        "min_write_rate": 13.83,
+        "std_write_rate": 6.102187318976736,
+        "cv": 0.3560382907355691,
+        "start_time": "2025-09-12 10:16:04.958286",
+        "end_time": "2025-09-13 18:28:08.810658",
+        "flush_count": 53053,
+        "flush_by_type": {
+          "finish": 26527,
+          "start": 26526
+        }
+      },
+      "middle": {
+        "duration_hours": 32.200674094166665,
+        "sample_count": 11591,
+        "avg_write_rate": 13.195097920800622,
+        "max_write_rate": 13.84,
+        "min_write_rate": 12.63,
+        "std_write_rate": 0.36181570011640457,
+        "cv": 0.027420463439383945,
+        "start_time": "2025-09-13 18:28:18.812315",
+        "end_time": "2025-09-15 02:40:21.239054",
+        "flush_count": 43796,
+        "flush_by_type": {
+          "start": 21898,
+          "finish": 21898
+        }
+      },
+      "final": {
+        "duration_hours": 32.19997141722222,
+        "sample_count": 11590,
+        "avg_write_rate": 12.310995685936152,
+        "max_write_rate": 12.63,
+        "min_write_rate": 12.06,
+        "std_write_rate": 0.1598052221168521,
+        "cv": 0.012980690286441296,
+        "start_time": "2025-09-15 02:40:31.241258",
+        "end_time": "2025-09-16 10:52:31.138360",
+        "flush_count": 41960,
+        "flush_by_type": {
+          "start": 20980,
+          "finish": 20980
+        }
+      }
+    },
+    "comparison_metrics": {},
+    "phase_comparison": {
+      "initial": {
+        "log_based": {
+          "duration_hours": 32.20107010333333,
+          "avg_performance": 17.13913216011042,
+          "cv": 0.3560382907355691,
+          "stability": "low",
+          "performance_level": "medium"
+        },
+        "performance_based": {
+          "duration_hours": 32.20107010333333,
+          "avg_performance": 17.13913216011042,
+          "cv": 0.3560382907355691,
+          "stability": "medium",
+          "performance_level": "low"
+        }
+      },
+      "middle": {
+        "log_based": {
+          "duration_hours": 32.200674094166665,
+          "avg_performance": 13.195097920800622,
+          "cv": 0.027420463439383945,
+          "stability": "high",
+          "performance_level": "low"
+        },
+        "performance_based": {
+          "duration_hours": 32.200674094166665,
+          "avg_performance": 13.195097920800622,
+          "cv": 0.027420463439383945,
+          "stability": "high",
+          "performance_level": "low"
+        }
+      },
+      "final": {
+        "log_based": {
+          "duration_hours": 32.19997141722222,
+          "avg_performance": 12.310995685936152,
+          "cv": 0.012980690286441296,
+          "stability": "high",
+          "performance_level": "low"
+        },
+        "performance_based": {
+          "duration_hours": 32.19997141722222,
+          "avg_performance": 12.310995685936152,
+          "cv": 0.012980690286441296,
+          "stability": "high",
+          "performance_level": "low"
+        }
+      }
+    },
+    "key_differences": {
+      "performance_scale": {
+        "log_based_range": "MB/s \ub2e8\uc704 (10-300 MB/s)",
+        "performance_based_range": "ops/sec \ub2e8\uc704 (10,000-300,000 ops/sec)",
+        "scale_difference": "LOG \uae30\ubc18\uc774 \ud6e8\uc52c \ub0ae\uc740 \uc218\uce58"
+      },
+      "stability_pattern": {
+        "log_based": "\ucd08\uae30 \ubd88\uc548\uc815 \u2192 \uc911\uae30 \uc548\uc815\ud654 \u2192 \ud6c4\uae30 \uc644\uc804 \uc548\uc815",
+        "performance_based": "\uc804\uccb4\uc801\uc73c\ub85c \ub192\uc740 \ubcc0\ub3d9\uc131 \uc720\uc9c0",
+        "difference": "LOG \uae30\ubc18\uc774 \ub354 \uba85\ud655\ud55c \uc548\uc815\ud654 \ud328\ud134"
+      },
+      "phase_characteristics": {
+        "log_based": {
+          "initial": "\uc911\uac04 \uc131\ub2a5, \ub0ae\uc740 \uc548\uc815\uc131",
+          "middle": "\ub0ae\uc740 \uc131\ub2a5, \ub192\uc740 \uc548\uc815\uc131",
+          "final": "\ub0ae\uc740 \uc131\ub2a5, \ub192\uc740 \uc548\uc815\uc131"
+        },
+        "performance_based": {
+          "initial": "\ub192\uc740 \uc131\ub2a5, \uc911\uac04 \uc548\uc815\uc131",
+          "middle": "\uc911\uac04 \uc131\ub2a5, \uc911\uac04 \uc548\uc815\uc131",
+          "final": "\ub0ae\uc740 \uc131\ub2a5, \uc911\uac04 \uc548\uc815\uc131"
+        }
+      },
+      "segmentation_approach": {
+        "log_based": "\uc2dc\uac04 \uae30\ubc18 3\ub4f1\ubd84 (32.2\uc2dc\uac04\uc529)",
+        "performance_based": "\uc131\ub2a5 \uae30\ubc18 20%-60%-20% \ubd84\ud560",
+        "difference": "LOG \uae30\ubc18\uc740 \uc2dc\uac04 \uc77c\uad00\uc131, \uc131\ub2a5 \uae30\ubc18\uc740 \uc131\ub2a5 \ubcc0\ud654 \uc911\uc2ec"
+      }
+    }
+  },
+  "analysis_time": "2025-09-19T11:39:40.921475",
+  "analysis_type": "phase_segmentation_comparison"
+}

@@ -1,0 +1,38 @@
+{
+  "initial_phase": {
+    "degradation": {
+      "s_max": 23447.772553846153,
+      "adjusted_write_bw": 23.256,
+      "adjusted_read_bw": 23.256,
+      "degradation_factor": 0.0,
+      "base_performance": {
+        "write_bw": 100,
+        "read_bw": 100
+      }
+    }
+  },
+  "middle_phase": {
+    "degradation": {
+      "s_max": 195944.54249353844,
+      "adjusted_write_bw": 194.3419687207031,
+      "adjusted_read_bw": 210.8350543359375,
+      "degradation_factor": 0.3,
+      "base_performance": {
+        "write_bw": 537.42041015625,
+        "read_bw": 583.029296875
+      }
+    }
+  },
+  "final_phase": {
+    "degradation": {
+      "s_max": 370782.8634860309,
+      "adjusted_write_bw": 367.7503376250001,
+      "adjusted_read_bw": 398.95995150000005,
+      "degradation_factor": 0.6,
+      "base_performance": {
+        "write_bw": 1074.8408203125,
+        "read_bw": 1166.05859375
+      }
+    }
+  }
+}

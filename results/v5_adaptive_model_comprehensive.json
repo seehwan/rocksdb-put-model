@@ -1,0 +1,430 @@
+{
+  "model_metadata": {
+    "model_name": "V5 Adaptive Phase-Specific Model",
+    "model_version": "v5.0_adaptive",
+    "creation_date": "2025-09-20T05:01:57.493761",
+    "design_philosophy": "\uad6c\uac04\ubcc4 \uc911\uc694 \uc694\uc18c\uc5d0 \uc9d1\uc911\ud558\ub294 \uc801\uc751\ud615 \uc811\uadfc\ubc95"
+  },
+  "phase_key_factors": {
+    "initial_phase": {
+      "duration": 0.14,
+      "characteristics": "\ube48 DB, \ub192\uc740 \uc131\ub2a5, \ub192\uc740 \ubcc0\ub3d9\uc131",
+      "primary_factors": {
+        "device_write_bw": {
+          "importance": "very_high",
+          "value": 4116.6,
+          "impact_mechanism": "\ube48 DB \uc0c1\ud0dc\uc5d0\uc11c \uc7a5\uce58 \uc131\ub2a5\uc774 \uc8fc\uc694 \uc81c\uc57d",
+          "modeling_approach": "direct_measurement"
+        },
+        "system_volatility": {
+          "importance": "high",
+          "value": 0.538,
+          "impact_mechanism": "\ub192\uc740 \ubcc0\ub3d9\uc131\uc774 \ud3c9\uade0 \uc131\ub2a5\uc5d0 \uc601\ud5a5",
+          "modeling_approach": "volatility_penalty"
+        },
+        "trend_slope": {
+          "importance": "high",
+          "value": -1.39,
+          "impact_mechanism": "\uae09\uaca9\ud55c \uc131\ub2a5 \uac10\uc18c \ucd94\uc138",
+          "modeling_approach": "trend_adjustment"
+        }
+      },
+      "secondary_factors": {
+        "wa": {
+          "importance": "low",
+          "value": 1.2
+        },
+        "ra": {
+          "importance": "minimal",
+          "value": 0.1
+        }
+      },
+      "optimal_model_strategy": "device_performance_focused"
+    },
+    "middle_phase": {
+      "duration": 31.79,
+      "characteristics": "\ucef4\ud329\uc158 \ubcf8\uaca9\ud654, \uc804\ud658\uae30, \uc7a5\uce58 \uc5f4\ud654",
+      "primary_factors": {
+        "device_degradation": {
+          "importance": "very_high",
+          "value": 73.9,
+          "impact_mechanism": "\uc7a5\uce58 \uc131\ub2a5 \uc800\ud558\uac00 \uc8fc\uc694 \uc81c\uc57d\uc73c\ub85c \ub4f1\uc7a5",
+          "modeling_approach": "degradation_factor"
+        },
+        "wa": {
+          "importance": "high",
+          "value": 2.5,
+          "impact_mechanism": "\ucef4\ud329\uc158 \ubcf8\uaca9\ud654\ub85c WA \uc601\ud5a5 \uc99d\uac00",
+          "modeling_approach": "amplification_penalty"
+        },
+        "compaction_intensity": {
+          "importance": "high",
+          "value": 3.0,
+          "impact_mechanism": "\ucef4\ud329\uc158 \ubcf8\uaca9\ud654\uac00 \uc131\ub2a5\uc5d0 \uc9c1\uc811 \uc601\ud5a5",
+          "modeling_approach": "compaction_modeling"
+        }
+      },
+      "secondary_factors": {
+        "ra": {
+          "importance": "medium",
+          "value": 0.8
+        },
+        "system_stability": {
+          "importance": "medium",
+          "value": 0.272
+        }
+      },
+      "optimal_model_strategy": "degradation_amplification_focused"
+    },
+    "final_phase": {
+      "duration": 64.68,
+      "characteristics": "\uc548\uc815\ud654, \uae4a\uc740 \ucef4\ud329\uc158, \ub192\uc740 WA+RA",
+      "primary_factors": {
+        "combined_amplification": {
+          "importance": "very_high",
+          "value": 4.3,
+          "impact_mechanism": "\ub192\uc740 WA+RA\uac00 \uc131\ub2a5 \uc81c\uc57d\uc758 \uc8fc\uc694 \uc6d0\uc778",
+          "modeling_approach": "combined_amplification_constraint"
+        },
+        "system_stability": {
+          "importance": "high",
+          "value": 0.041,
+          "impact_mechanism": "\ub192\uc740 \uc548\uc815\uc131\uc73c\ub85c \uc77c\uad00\ub41c \uc131\ub2a5 \uc720\uc9c0",
+          "modeling_approach": "stability_bonus"
+        },
+        "level_distribution": {
+          "importance": "high",
+          "value": 6.0,
+          "impact_mechanism": "\uae4a\uc740 \ub808\ubca8\uae4c\uc9c0 \ud615\uc131\ub418\uc5b4 \ubcf5\uc7a1\ud55c \ucef4\ud329\uc158",
+          "modeling_approach": "level_complexity_penalty"
+        }
+      },
+      "secondary_factors": {
+        "device_degradation": {
+          "importance": "medium",
+          "value": 73.9
+        },
+        "memtable_pressure": {
+          "importance": "medium",
+          "value": 3.0
+        }
+      },
+      "optimal_model_strategy": "amplification_stability_focused"
+    }
+  },
+  "model_lessons_learned": {
+    "success_patterns": {
+      "v4_success_in_all_phases": "Device Performance \uc9d1\uc911\uc758 \ud6a8\uacfc\uc131",
+      "v4_1_success_in_middle": "Degradation + Temporal \ubaa8\ub378\ub9c1\uc758 \ud6a8\uacfc\uc131",
+      "v4_2_success_in_middle": "Level-wise \uc811\uadfc\ubc95\uc758 \ubd80\ubd84\uc801 \ud6a8\uacfc\uc131"
+    },
+    "failure_patterns": {
+      "over_complexity": "v4.2\uc758 \uacfc\ub3c4\ud55c \ubcf5\uc7a1\uc131\uc73c\ub85c \uc778\ud55c \uc2e4\ud328",
+      "wrong_trend_direction": "v4.1, v4.2\uc758 \ud2b8\ub80c\ub4dc \ubc29\ud5a5 \uc624\uc608\uce21",
+      "one_size_fits_all": "\ubaa8\ub4e0 \uad6c\uac04\uc5d0 \ub3d9\uc77c\ud55c \uc811\uadfc\ubc95 \uc801\uc6a9\uc758 \ud55c\uacc4"
+    },
+    "key_insights": [
+      "\uad6c\uac04\ubcc4\ub85c \ud575\uc2ec \uc694\uc18c\uac00 \ub2e4\ub984",
+      "\ub2e8\uc21c\ud568\uc774 \ubcf5\uc7a1\ud568\uc744 \uc774\uae40 (v4\uc758 \uc131\uacf5)",
+      "\uc801\uc808\ud55c \ubcf5\uc7a1\ub3c4\uac00 \uc911\uc694 (v4.1\uc758 \ubd80\ubd84\uc801 \uc131\uacf5)",
+      "\uacfc\ub3c4\ud55c \ubcf5\uc7a1\uc131\uc740 \uc5ed\ud6a8\uacfc (v4.2\uc758 \uc2e4\ud328)"
+    ]
+  },
+  "v5_model_design": {
+    "model_name": "V5 Adaptive Phase-Specific Model",
+    "model_version": "v5.0_adaptive",
+    "design_principles": {
+      "adaptive_strategy": "Phase-specific factor weighting",
+      "core_philosophy": "\uac01 \uad6c\uac04\uc5d0\uc11c \uac00\uc7a5 \uc911\uc694\ud55c \uc694\uc18c\ub4e4\uc5d0 \uc9d1\uc911",
+      "complexity_balance": "\ud544\uc694\ud55c \ub9cc\ud07c\ub9cc \ubcf5\uc7a1\ud558\uac8c",
+      "trend_awareness": "\uc2e4\uc81c \uc131\ub2a5 \uac10\uc18c \ud2b8\ub80c\ub4dc \ubc18\uc601"
+    },
+    "phase_specific_models": {
+      "initial_phase_model": {
+        "model_type": "Device Performance Focused",
+        "primary_equation": "S_max_initial = Device_Write_BW * volatility_adjustment * trend_adjustment",
+        "key_factors": {
+          "device_write_bw": {
+            "weight": 0.7,
+            "implementation": "Direct measurement integration",
+            "formula": "base_performance = device_write_bw * utilization_factor"
+          },
+          "volatility_adjustment": {
+            "weight": 0.2,
+            "implementation": "CV-based penalty",
+            "formula": "volatility_penalty = 1 - (cv * 0.3)"
+          },
+          "trend_adjustment": {
+            "weight": 0.1,
+            "implementation": "Slope-based adjustment",
+            "formula": "trend_factor = 1 + (trend_slope * 0.1)"
+          }
+        },
+        "model_equation": "S_max = (device_write_bw * 1024 * 1024 / 1040) * (1 - cv * 0.3) * (1 + trend_slope * 0.1)",
+        "expected_accuracy": "70-80%"
+      },
+      "middle_phase_model": {
+        "model_type": "Degradation + Amplification Focused",
+        "primary_equation": "S_max_middle = degraded_device_performance / (wa_penalty * compaction_penalty)",
+        "key_factors": {
+          "device_degradation": {
+            "weight": 0.5,
+            "implementation": "Phase-A degradation data",
+            "formula": "degraded_bw = initial_bw * (1 - degradation_rate)"
+          },
+          "wa_penalty": {
+            "weight": 0.3,
+            "implementation": "Direct WA impact",
+            "formula": "wa_penalty = 1 + (wa - 1) * 0.4"
+          },
+          "compaction_intensity": {
+            "weight": 0.2,
+            "implementation": "Compaction load factor",
+            "formula": "compaction_penalty = 1 + compaction_intensity * 0.2"
+          }
+        },
+        "model_equation": "S_max = (degraded_write_bw * 1024 * 1024 / 1040) / ((1 + (wa-1)*0.4) * (1 + compaction_intensity*0.2))",
+        "expected_accuracy": "90-95%"
+      },
+      "final_phase_model": {
+        "model_type": "Amplification + Stability Focused",
+        "primary_equation": "S_max_final = base_performance / combined_amplification_penalty * stability_bonus",
+        "key_factors": {
+          "combined_amplification": {
+            "weight": 0.6,
+            "implementation": "WA + RA combined penalty",
+            "formula": "amplification_penalty = (wa + ra) * 0.3"
+          },
+          "stability_bonus": {
+            "weight": 0.3,
+            "implementation": "Low CV stability bonus",
+            "formula": "stability_bonus = 1 + (1 - cv) * 0.2"
+          },
+          "level_complexity": {
+            "weight": 0.1,
+            "implementation": "Deep level penalty",
+            "formula": "level_penalty = 1 + level_depth * 0.05"
+          }
+        },
+        "model_equation": "S_max = (base_performance / ((wa + ra) * 0.3)) * (1 + (1-cv) * 0.2) / (1 + level_depth * 0.05)",
+        "expected_accuracy": "80-90%"
+      }
+    },
+    "phase_transition_logic": {
+      "phase_detection": {
+        "method": "Performance-based segmentation",
+        "criteria": [
+          "CV > 0.4: Initial Phase",
+          "0.1 < CV < 0.4: Middle Phase",
+          "CV < 0.1: Final Phase"
+        ]
+      },
+      "adaptive_switching": {
+        "real_time_detection": true,
+        "smooth_transition": true,
+        "fallback_mechanism": true
+      }
+    }
+  },
+  "v5_implementation": {
+    "initial_phase_model": {
+      "predicted_s_max": 119873.5162125643,
+      "actual_qps": 138769,
+      "accuracy": 86.38349790844086,
+      "model_components": {
+        "device_write_bw": {
+          "weight": 0.7,
+          "implementation": "Direct measurement integration",
+          "formula": "base_performance = device_write_bw * utilization_factor"
+        },
+        "volatility_adjustment": {
+          "weight": 0.2,
+          "implementation": "CV-based penalty",
+          "formula": "volatility_penalty = 1 - (cv * 0.3)"
+        },
+        "trend_adjustment": {
+          "weight": 0.1,
+          "implementation": "Slope-based adjustment",
+          "formula": "trend_factor = 1 + (trend_slope * 0.1)"
+        }
+      },
+      "implementation_details": {
+        "base_data": {
+          "device_write_bw": 4116.6,
+          "cv": 0.538,
+          "trend_slope": -1.39,
+          "actual_qps": 138769
+        },
+        "calculation_steps": {
+          "step1": "Base S_max = 4116.6 * 1024 * 1024 / 1040",
+          "step2": "Volatility penalty = 1 - (0.538 * 0.3)",
+          "step3": "Trend adjustment = 1 + (-1.39 * 0.1)",
+          "step4": "Empirical adjustment = 0.04 (4% device utilization)"
+        },
+        "empirical_adjustment": 0.04
+      }
+    },
+    "middle_phase_model": {
+      "predicted_s_max": 130620.08967032969,
+      "actual_qps": 114472,
+      "accuracy": 85.89341527156887,
+      "model_components": {
+        "device_degradation": {
+          "weight": 0.5,
+          "implementation": "Phase-A degradation data",
+          "formula": "degraded_bw = initial_bw * (1 - degradation_rate)"
+        },
+        "wa_penalty": {
+          "weight": 0.3,
+          "implementation": "Direct WA impact",
+          "formula": "wa_penalty = 1 + (wa - 1) * 0.4"
+        },
+        "compaction_intensity": {
+          "weight": 0.2,
+          "implementation": "Compaction load factor",
+          "formula": "compaction_penalty = 1 + compaction_intensity * 0.2"
+        }
+      },
+      "implementation_details": {
+        "base_data": {
+          "device_write_bw": 1074.8,
+          "degradation_rate": 0.739,
+          "wa": 2.5,
+          "compaction_intensity": 3.0,
+          "actual_qps": 114472
+        },
+        "calculation_steps": {
+          "step1": "Base S_max = 1074.8 * 1024 * 1024 / 1040",
+          "step2": "WA penalty = 1 + (2.5 - 1) * 0.4",
+          "step3": "Compaction penalty = 1 + (3.0 - 1) * 0.2",
+          "step4": "Empirical adjustment = 0.27 (27% observed performance)"
+        },
+        "empirical_adjustment": 0.27
+      }
+    },
+    "final_phase_model": {
+      "predicted_s_max": 208243.39596661078,
+      "actual_qps": 109678,
+      "accuracy": 10.132026507949831,
+      "model_components": {
+        "combined_amplification": {
+          "weight": 0.6,
+          "implementation": "WA + RA combined penalty",
+          "formula": "amplification_penalty = (wa + ra) * 0.3"
+        },
+        "stability_bonus": {
+          "weight": 0.3,
+          "implementation": "Low CV stability bonus",
+          "formula": "stability_bonus = 1 + (1 - cv) * 0.2"
+        },
+        "level_complexity": {
+          "weight": 0.1,
+          "implementation": "Deep level penalty",
+          "formula": "level_penalty = 1 + level_depth * 0.05"
+        }
+      },
+      "implementation_details": {
+        "base_data": {
+          "device_write_bw": 1074.8,
+          "wa": 3.2,
+          "ra": 1.1,
+          "cv": 0.041,
+          "level_depth": 6.0,
+          "actual_qps": 109678
+        },
+        "calculation_steps": {
+          "step1": "Base S_max = 1074.8 * 1024 * 1024 / 1040",
+          "step2": "Amplification penalty = (3.2 + 1.1) * 0.3",
+          "step3": "Stability bonus = 1 + (1 - 0.041) * 0.2",
+          "step4": "Level penalty = 1 + (6.0 - 1) * 0.05",
+          "step5": "Empirical adjustment = 0.26 (26% observed performance)"
+        },
+        "empirical_adjustment": 0.26
+      }
+    }
+  },
+  "evaluation_results": {
+    "v5_adaptive": {
+      "initial_phase": {
+        "predicted_s_max": 119873.5162125643,
+        "actual_qps": 138769,
+        "accuracy": 86.38349790844086,
+        "error_rate": 13.616502091559141,
+        "prediction_direction": "under"
+      },
+      "middle_phase": {
+        "predicted_s_max": 130620.08967032969,
+        "actual_qps": 114472,
+        "accuracy": 85.89341527156887,
+        "error_rate": 14.106584728431134,
+        "prediction_direction": "over"
+      },
+      "final_phase": {
+        "predicted_s_max": 208243.39596661078,
+        "actual_qps": 109678,
+        "accuracy": 10.132026507949831,
+        "error_rate": 89.86797349205017,
+        "prediction_direction": "over"
+      }
+    },
+    "comparison_with_existing": {
+      "v4_model": {
+        "average_accuracy": 81.36836734891392,
+        "accuracies_by_phase": {
+          "initial": 66.6849224250373,
+          "middle": 90.80299112446711,
+          "final": 86.61718849723736
+        }
+      },
+      "v4_1_temporal": {
+        "average_accuracy": 78.63573823498193,
+        "accuracies_by_phase": {
+          "initial": 68.45909388984572,
+          "middle": 96.91802362149696,
+          "final": 70.5300971936031
+        }
+      },
+      "v4_2_enhanced": {
+        "average_accuracy": 30.47771590726664,
+        "accuracies_by_phase": {
+          "initial": 23.8756494606144,
+          "middle": 96.04270039835069,
+          "final": -28.485202137165167
+        }
+      }
+    },
+    "performance_summary": {
+      "v5_average_accuracy": 60.80297989598652,
+      "v5_accuracy_std": 35.830333361433496,
+      "v5_consistency": "medium",
+      "ranking_vs_existing": {
+        "rank": 3,
+        "total_models": 4,
+        "ranking_list": [
+          [
+            "v4_model",
+            81.36836734891392
+          ],
+          [
+            "v4_1_temporal",
+            78.63573823498193
+          ],
+          [
+            "v5_adaptive",
+            60.80297989598652
+          ],
+          [
+            "v4_2_enhanced",
+            30.47771590726664
+          ]
+        ]
+      }
+    }
+  },
+  "key_innovations": {
+    "adaptive_approach": "\uad6c\uac04\ubcc4 \ud2b9\ud654 \ubaa8\ub378\ub9c1",
+    "factor_prioritization": "\uad6c\uac04\ubcc4 \ud575\uc2ec \uc694\uc18c \uc9d1\uc911",
+    "empirical_calibration": "\uc2e4\uc81c \ub370\uc774\ud130 \uae30\ubc18 \ubcf4\uc815",
+    "trend_awareness": "\uc2e4\uc81c \uc131\ub2a5 \uac10\uc18c \ud2b8\ub80c\ub4dc \ubc18\uc601"
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "v4_1_temporal_predictions": {
+    "device_envelope_temporal": {
+      "initial_phase": {
+        "base_performance": {
+          "write_bw": 4116.6455078125,
+          "read_bw": 0.0
+        },
+        "degradation_factor": 0.0,
+        "adjusted_write_bw": 957.367079296875,
+        "adjusted_read_bw": 0.0,
+        "s_max": 965261.6755199999,
+        "io_contention": 0.76,
+        "stability_factor": 1.02,
+        "performance_factor": 0.3,
+        "degradation_analysis": {
+          "phase": "initial_phase",
+          "degradation_factor": 0.0,
+          "io_intensity": 0.8,
+          "stability": 0.2,
+          "performance_factor": 0.3,
+          "performance_retention": 1.0
+        }
+      },
+      "middle_phase": {
+        "base_performance": {
+          "write_bw": 2595.7431640625,
+          "read_bw": 0.0
+        },
+        "degradation_factor": 0.3694518609541816,
+        "adjusted_write_bw": 845.5404117278295,
+        "adjusted_read_bw": 0.0,
+        "s_max": 852512.8680460774,
+        "io_contention": 0.8200000000000001,
+        "stability_factor": 1.05,
+        "performance_factor": 0.6,
+        "degradation_analysis": {
+          "phase": "middle_phase",
+          "degradation_factor": 0.3694518609541816,
+          "io_intensity": 0.6,
+          "stability": 0.5,
+          "performance_factor": 0.6,
+          "performance_retention": 0.6305481390458184
+        }
+      },
+      "final_phase": {
+        "base_performance": {
+          "write_bw": 1074.8408203125,
+          "read_bw": 0.0
+        },
+        "degradation_factor": 0.7389037219083632,
+        "adjusted_write_bw": 240.04561105207586,
+        "adjusted_read_bw": 0.0,
+        "s_max": 242025.06409090527,
+        "io_contention": 0.88,
+        "stability_factor": 1.08,
+        "performance_factor": 0.9,
+        "degradation_analysis": {
+          "phase": "final_phase",
+          "degradation_factor": 0.7389037219083632,
+          "io_intensity": 0.4,
+          "stability": 0.8,
+          "performance_factor": 0.9,
+          "performance_retention": 0.2610962780916368
+        }
+      }
+    },
+    "closed_ledger_temporal": {
+      "initial_phase": {
+        "base_performance": {
+          "write_bw": 4116.6455078125,
+          "read_bw": 0.0
+        },
+        "degradation_factor": 0.0,
+        "adjusted_bw": 1234.99365234375,
+        "s_max": 1245177.6,
+        "performance_factor": 0.3
+      },
+      "middle_phase": {
+        "base_performance": {
+          "write_bw": 2595.7431640625,
+          "read_bw": 0.0
+        },
+        "degradation_factor": 0.3694518609541816,
+        "adjusted_bw": 982.0446129243082,
+        "s_max": 990142.7038862687,
+        "performance_factor": 0.6
+      },
+      "final_phase": {
+        "base_performance": {
+          "write_bw": 1074.8408203125,
+          "read_bw": 0.0
+        },
+        "degradation_factor": 0.7389037219083632,
+        "adjusted_bw": 252.5732439521,
+        "s_max": 254656.00177915115,
+        "performance_factor": 0.9
+      }
+    },
+    "dynamic_simulation_temporal": {
+      "initial_phase": {
+        "base_performance": {
+          "write_bw": 4116.6455078125,
+          "read_bw": 0.0
+        },
+        "degradation_factor": 0.0,
+        "adjusted_bw": 1259.693525390625,
+        "dynamic_smax": 1270081.152,
+        "performance_factor": 0.3,
+        "stability": 0.2
+      },
+      "middle_phase": {
+        "base_performance": {
+          "write_bw": 2595.7431640625,
+          "read_bw": 0.0
+        },
+        "degradation_factor": 0.3694518609541816,
+        "adjusted_bw": 1031.1468435705237,
+        "dynamic_smax": 1039649.8390805823,
+        "performance_factor": 0.6,
+        "stability": 0.5
+      },
+      "final_phase": {
+        "base_performance": {
+          "write_bw": 1074.8408203125,
+          "read_bw": 0.0
+        },
+        "degradation_factor": 0.7389037219083632,
+        "adjusted_bw": 272.77910346826803,
+        "dynamic_smax": 275028.4819214833,
+        "performance_factor": 0.9,
+        "stability": 0.8
+      }
+    }
+  },
+  "phase_performance": {
+    "initial_phase": {
+      "device_smax": 965261.6755199999,
+      "ledger_smax": 1245177.6,
+      "dynamic_smax": 1270081.152,
+      "avg_prediction": 1160173.4758400002
+    },
+    "middle_phase": {
+      "device_smax": 852512.8680460774,
+      "ledger_smax": 990142.7038862687,
+      "dynamic_smax": 1039649.8390805823,
+      "avg_prediction": 960768.4703376428
+    },
+    "final_phase": {
+      "device_smax": 242025.06409090527,
+      "ledger_smax": 254656.00177915115,
+      "dynamic_smax": 275028.4819214833,
+      "avg_prediction": 257236.51593051324
+    }
+  },
+  "phase_a_actual_degradation_data": {
+    "initial": {
+      "write_bw": 4116.6455078125,
+      "read_bw": 0.0
+    },
+    "degraded": {
+      "write_bw": 1074.8408203125,
+      "read_bw": 0.0
+    }
+  },
+  "actual_degradation_factors": {
+    "initial_phase": {
+      "base_performance": {
+        "write_bw": 4116.6455078125,
+        "read_bw": 0.0
+      },
+      "degradation_factor": 0.0,
+      "io_intensity": 0.8,
+      "stability": 0.2,
+      "performance_factor": 0.3
+    },
+    "middle_phase": {
+      "base_performance": {
+        "write_bw": 2595.7431640625,
+        "read_bw": 0.0
+      },
+      "degradation_factor": 0.3694518609541816,
+      "io_intensity": 0.6,
+      "stability": 0.5,
+      "performance_factor": 0.6
+    },
+    "final_phase": {
+      "base_performance": {
+        "write_bw": 1074.8408203125,
+        "read_bw": 0.0
+      },
+      "degradation_factor": 0.7389037219083632,
+      "io_intensity": 0.4,
+      "stability": 0.8,
+      "performance_factor": 0.9
+    }
+  }
+}

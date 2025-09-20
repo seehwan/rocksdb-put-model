@@ -1,0 +1,25 @@
+{
+  "workload_characteristics": {
+    "write_type": "Sequential Write Only",
+    "read_type": "Compaction Read Only",
+    "user_reads": 0,
+    "system_reads": "Compaction Only"
+  },
+  "performance_analysis": {
+    "initial": {
+      "user_write_performance": 4116.6455078125,
+      "compaction_read_performance": 5487.189453125,
+      "write_degradation_rate": 0.0
+    },
+    "degraded": {
+      "user_write_performance": 1074.8408203125,
+      "compaction_read_performance": 1166.05859375,
+      "write_degradation_rate": 0.7389037219083632
+    }
+  },
+  "compaction_impact": {
+    "initial_compaction_read_performance": 5487.189453125,
+    "degraded_compaction_read_performance": 1166.05859375,
+    "compaction_read_degradation_rate": 0.7874943805547082
+  }
+}

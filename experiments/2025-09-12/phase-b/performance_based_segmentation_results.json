@@ -1,0 +1,138 @@
+{
+  "segmentation_method": "performance_based",
+  "segments": {
+    "initial": {
+      "start_idx": 0,
+      "end_idx": 51,
+      "description": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04"
+    },
+    "middle": {
+      "start_idx": 51,
+      "end_idx": "11493",
+      "description": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04"
+    },
+    "final": {
+      "start_idx": "11493",
+      "end_idx": 34772,
+      "description": "\uc548\uc815\ud654 \uad6c\uac04"
+    }
+  },
+  "segment_analysis": {
+    "initial": {
+      "basic_stats": {
+        "duration_hours": 0.14167573972222222,
+        "sample_count": 52,
+        "start_time": "2025-09-12 10:16:04.958286",
+        "end_time": "2025-09-12 10:24:34.990949",
+        "start_idx": 0,
+        "end_idx": 51
+      },
+      "performance_stats": {
+        "avg_write_rate": 65.97038461538463,
+        "max_write_rate": 280.18,
+        "min_write_rate": 46.74,
+        "std_write_rate": 35.48590987771302,
+        "cv": 0.5379066695548342,
+        "median_write_rate": 56.68,
+        "q25_write_rate": 50.3525,
+        "q75_write_rate": 66.6375
+      },
+      "performance_trend": {
+        "trend_slope": -1.3857636813796625,
+        "trend_r2": 0.3502389374512722,
+        "performance_change": -83.31786708544506,
+        "avg_change_rate": -0.0008444811927367213,
+        "change_rate_volatility": 0.006089640483154473
+      },
+      "characteristics": {
+        "stability": "low",
+        "trend": "decreasing",
+        "performance_level": "high",
+        "change_intensity": "low"
+      },
+      "description": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04"
+    },
+    "middle": {
+      "basic_stats": {
+        "duration_hours": 31.7871254975,
+        "sample_count": 11443,
+        "start_time": "2025-09-12 10:24:34.990949",
+        "end_time": "2025-09-13 18:11:48.642740",
+        "start_idx": 51,
+        "end_idx": "11493"
+      },
+      "performance_stats": {
+        "avg_write_rate": 16.948078301144804,
+        "max_write_rate": 47.05,
+        "min_write_rate": 13.84,
+        "std_write_rate": 4.606396531897306,
+        "cv": 0.2717946217882504,
+        "median_write_rate": 15.07,
+        "q25_write_rate": 14.29,
+        "q75_write_rate": 17.56
+      },
+      "performance_trend": {
+        "trend_slope": -0.0010454902632400945,
+        "trend_r2": 0.562152109864066,
+        "performance_change": -70.38938810440737,
+        "avg_change_rate": -0.00011990103862616068,
+        "change_rate_volatility": 0.0005971592010156553
+      },
+      "characteristics": {
+        "stability": "medium",
+        "trend": "stable",
+        "performance_level": "medium",
+        "change_intensity": "low"
+      },
+      "description": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04"
+    },
+    "final": {
+      "basic_stats": {
+        "duration_hours": 64.67847100555555,
+        "sample_count": 23280,
+        "start_time": "2025-09-13 18:11:48.642740",
+        "end_time": "2025-09-16 10:52:31.138360",
+        "start_idx": "11493",
+        "end_idx": 34772
+      },
+      "performance_stats": {
+        "avg_write_rate": 12.757684707903781,
+        "max_write_rate": 13.84,
+        "min_write_rate": 12.06,
+        "std_write_rate": 0.5267565801869234,
+        "cv": 0.04128935557253436,
+        "median_write_rate": 12.63,
+        "q25_write_rate": 12.3,
+        "q75_write_rate": 13.18
+      },
+      "performance_trend": {
+        "trend_slope": -7.686339009981153e-05,
+        "trend_r2": 0.961662082411416,
+        "performance_change": -12.861271676300573,
+        "avg_change_rate": -5.9266491361933265e-06,
+        "change_rate_volatility": 4.058468395048673e-06
+      },
+      "characteristics": {
+        "stability": "high",
+        "trend": "stable",
+        "performance_level": "low",
+        "change_intensity": "low"
+      },
+      "description": "\uc548\uc815\ud654 \uad6c\uac04"
+    }
+  },
+  "transition_points": {
+    "cluster_boundaries": [
+      51,
+      52,
+      549,
+      34724
+    ],
+    "performance_levels": [],
+    "stability_changes": [
+      549,
+      34724
+    ]
+  },
+  "analysis_time": "2025-09-19T19:07:59.612790"
+}

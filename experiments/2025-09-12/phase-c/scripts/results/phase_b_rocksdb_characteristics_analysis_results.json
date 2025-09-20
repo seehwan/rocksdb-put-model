@@ -1,0 +1,133 @@
+{
+  "operational_phases": {
+    "initial_phase": {
+      "start_time": 0,
+      "end_time": "69561",
+      "characteristics": {
+        "high_performance": true,
+        "rapid_changes": true,
+        "unstable": true,
+        "description": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04"
+      },
+      "statistics": {
+        "sample_count": 6956,
+        "avg_ops_per_sec": 147306.67294422083,
+        "max_ops_per_sec": "1946448",
+        "min_ops_per_sec": "160",
+        "std_ops_per_sec": 98587.73653812551,
+        "cv": 0.6692686391434335,
+        "trend": "decreasing",
+        "stability": "unstable"
+      }
+    },
+    "middle_phase": {
+      "start_time": "69561",
+      "end_time": "278233",
+      "characteristics": {
+        "compaction_active": true,
+        "stabilizing": true,
+        "moderate_stability": true,
+        "description": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04"
+      },
+      "statistics": {
+        "sample_count": 20868,
+        "avg_ops_per_sec": 116080.67701744297,
+        "max_ops_per_sec": "654823",
+        "min_ops_per_sec": "49445",
+        "std_ops_per_sec": 58085.13923529384,
+        "cv": 0.5003859447388097,
+        "trend": "decreasing",
+        "stability": "unstable"
+      }
+    },
+    "final_phase": {
+      "start_time": "278233",
+      "end_time": "347784",
+      "characteristics": {
+        "stabilized": true,
+        "consistent_performance": true,
+        "description": "\uc548\uc815\ud654 \uad6c\uac04"
+      },
+      "statistics": {
+        "sample_count": 6956,
+        "avg_ops_per_sec": 109299.11098332374,
+        "max_ops_per_sec": "250993",
+        "min_ops_per_sec": "49195",
+        "std_ops_per_sec": 51502.01945557702,
+        "cv": 0.47120254677492224,
+        "trend": "increasing",
+        "stability": "stable"
+      }
+    }
+  },
+  "operational_patterns": {
+    "phase_transitions": {
+      "initial_phase_to_middle_phase": {
+        "performance_change": -31225.99592677786,
+        "performance_change_pct": -21.197950712390266,
+        "stability_change": -0.16888269440462378,
+        "trend_change": "decreasing -> decreasing"
+      },
+      "middle_phase_to_final_phase": {
+        "performance_change": -6781.566034119227,
+        "performance_change_pct": -5.842114474487592,
+        "stability_change": -0.02918339796388747,
+        "trend_change": "decreasing -> increasing"
+      }
+    },
+    "performance_trends": {
+      "overall_trend": "decreasing",
+      "performance_degradation": 25.801656640014563,
+      "phase_transitions": 2
+    },
+    "stability_analysis": {
+      "initial_phase": {
+        "cv": 0.6692686391434335,
+        "stability_level": "low",
+        "consistency": "variable"
+      },
+      "middle_phase": {
+        "cv": 0.5003859447388097,
+        "stability_level": "medium",
+        "consistency": "variable"
+      },
+      "final_phase": {
+        "cv": 0.47120254677492224,
+        "stability_level": "medium",
+        "consistency": "variable"
+      }
+    },
+    "operational_characteristics": {
+      "initial_phase": {
+        "phase_type": "initial_loading",
+        "description": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04",
+        "key_characteristics": [
+          "high_performance",
+          "rapid_changes",
+          "unstable"
+        ],
+        "performance_pattern": "decreasing"
+      },
+      "middle_phase": {
+        "phase_type": "compaction_active",
+        "description": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04",
+        "key_characteristics": [
+          "compaction_active",
+          "stabilizing",
+          "moderate_stability"
+        ],
+        "performance_pattern": "stabilizing"
+      },
+      "final_phase": {
+        "phase_type": "stabilized",
+        "description": "\uc548\uc815\ud654 \uad6c\uac04",
+        "key_characteristics": [
+          "stabilized",
+          "consistent_performance"
+        ],
+        "performance_pattern": "stable"
+      }
+    }
+  },
+  "analysis_time": "2025-09-19T11:08:42.801805"
+}

@@ -2,41 +2,41 @@
   "model": "v4_1_temporal_enhanced",
   "phase_comparisons": {
     "initial_phase": {
-      "device_smax": 31888.97067323077,
+      "device_smax": 50803.5072,
       "ledger_smax": 103557.22951564688,
       "dynamic_smax": 55199.99999999999,
-      "avg_prediction": 63548.73339629255,
+      "avg_prediction": 69853.57890521562,
       "actual_qps": 131629.0471664594,
-      "error_percent": 51.72134512534442,
-      "accuracy": 48.27865487465558,
-      "r2_score": 0.4827865487465558
+      "error_percent": 46.931486317850435,
+      "accuracy": 53.068513682149565,
+      "r2_score": 0.5306851368214957
     },
     "middle_phase": {
-      "device_smax": 70836.95497846155,
+      "device_smax": 202942.56186830765,
       "ledger_smax": 109697.18153846155,
       "dynamic_smax": 51700.0,
-      "avg_prediction": 77411.37883897436,
+      "avg_prediction": 121446.58113558973,
       "actual_qps": 114242.28847130523,
-      "error_percent": 32.239296083062854,
-      "accuracy": 67.76070391693715,
-      "r2_score": 0.6776070391693715
+      "error_percent": 6.30615226698127,
+      "accuracy": 93.69384773301873,
+      "r2_score": 0.9369384773301873
     },
     "final_phase": {
-      "device_smax": 117288.22650092309,
+      "device_smax": 370782.8634860307,
       "ledger_smax": 123409.32923076923,
       "dynamic_smax": 80850.0,
-      "avg_prediction": 107182.51857723079,
+      "avg_prediction": 191680.73090559998,
       "actual_qps": 109685.28883854666,
-      "error_percent": 2.2817738712434594,
-      "accuracy": 97.71822612875654,
-      "r2_score": 0.9771822612875654
+      "error_percent": 74.75518634750378,
+      "accuracy": 25.24481365249622,
+      "r2_score": 0.25244813652496223
     }
   },
-  "overall_avg_prediction": 82714.21027083257,
+  "overall_avg_prediction": 127660.29698213511,
   "overall_avg_actual": 118518.8748254371,
-  "overall_error_percent": 30.2100948961422,
-  "overall_accuracy": 69.7899051038578,
-  "overall_r2_score": 0.6978990510385781,
+  "overall_error_percent": 7.713051756660818,
+  "overall_accuracy": 92.28694824333918,
+  "overall_r2_score": 0.9228694824333918,
   "rocksdb_log_enhanced": true,
   "temporal_enhanced": true,
   "model_version": "v4.1_temporal_enhanced"

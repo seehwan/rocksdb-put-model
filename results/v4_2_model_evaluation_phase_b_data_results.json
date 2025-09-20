@@ -1,0 +1,77 @@
+{
+  "temporal_performance": {
+    "initial_phase": {
+      "period": "0-33%",
+      "data_points": "       secs_elapsed  interval_qps\n0                10       1946448\n1                20        571889\n2                30        506642\n3                40        614284\n4                50        600059\n...             ...           ...\n11587        115881         71837\n11588        115891        206927\n11589        115901         69353\n11590        115911        151488\n11591        115921         94059\n\n[11592 rows x 2 columns]",
+      "avg_qps": 138768.6167184265,
+      "max_qps": "1946448",
+      "min_qps": "160",
+      "std_qps": 87622.42331352258
+    },
+    "middle_phase": {
+      "period": "33-66%",
+      "data_points": "       secs_elapsed  interval_qps\n11592        115931         68765\n11593        115941        205588\n11594        115951         71016\n11595        115961        205162\n11596        115971         73016\n...             ...           ...\n23180        231813        114930\n23181        231823         67848\n23182        231833        126055\n23183        231843        109061\n23184        231853         68966\n\n[11593 rows x 2 columns]",
+      "avg_qps": 114472.13378763046,
+      "max_qps": "648869",
+      "min_qps": "49955",
+      "std_qps": 56481.623791871025
+    },
+    "final_phase": {
+      "period": "66-100%",
+      "data_points": "       secs_elapsed  interval_qps\n23185        231863        209446\n23186        231873         70099\n23187        231883         70111\n23188        231893        176313\n23189        231903         69693\n...             ...           ...\n34773        347744         71372\n34774        347754        119657\n34775        347764         87999\n34776        347774         72194\n34777        347784        209308\n\n[11593 rows x 2 columns]",
+      "avg_qps": 109677.85801776934,
+      "max_qps": "250993",
+      "min_qps": "49195",
+      "std_qps": 51799.86252320967
+    }
+  },
+  "model_evaluation": {
+    "phase_comparison": {
+      "initial_phase": {
+        "actual_avg_qps": 138768.6167184265,
+        "model_prediction": 965261.6755199999,
+        "accuracy": -495.5907598896077,
+        "difference": 826493.0588015735,
+        "relative_error": 595.5907598896076
+      },
+      "middle_phase": {
+        "actual_avg_qps": 114472.13378763046,
+        "model_prediction": 852512.8680460774,
+        "accuracy": -544.7339713503249,
+        "difference": 738040.734258447,
+        "relative_error": 644.7339713503249
+      },
+      "final_phase": {
+        "actual_avg_qps": 109677.85801776934,
+        "model_prediction": 242025.06409090527,
+        "accuracy": -20.669028794940413,
+        "difference": 132347.20607313595,
+        "relative_error": 120.66902879494042
+      }
+    },
+    "accuracy_analysis": {
+      "overall_accuracy": -353.664586678291,
+      "accuracy_by_phase": {
+        "initial_phase": -495.5907598896077,
+        "middle_phase": -544.7339713503249,
+        "final_phase": -20.669028794940413
+      },
+      "best_phase": "final_phase",
+      "worst_phase": "middle_phase"
+    },
+    "performance_trends": {
+      "actual_trend": "decreasing",
+      "predicted_trend": "decreasing",
+      "trend_accuracy": "False",
+      "degradation_prediction": 20.963499808955234
+    },
+    "model_improvements": {
+      "fillrandom_workload_specific": true,
+      "real_degradation_data_integration": true,
+      "temporal_phase_modeling": true,
+      "compaction_efficiency_analysis": true,
+      "phase_b_data_validation": true
+    }
+  },
+  "analysis_time": "2025-09-19T19:18:46.022197"
+}

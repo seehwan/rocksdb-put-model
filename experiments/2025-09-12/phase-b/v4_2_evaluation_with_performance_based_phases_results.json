@@ -1,0 +1,118 @@
+{
+  "evaluation_method": "performance_based_segmentation",
+  "model_version": "v4.2",
+  "evaluation_results": {
+    "initial": {
+      "performance_characteristics": {
+        "avg_performance": 65.97038461538463,
+        "stability": "low",
+        "performance_level": "high",
+        "cv": 0.5379066695548342,
+        "duration_hours": 0.14167573972222222,
+        "trend": "decreasing",
+        "change_intensity": "low"
+      },
+      "model_predictions": {
+        "base_performance": {
+          "write_bw": 4116.6455078125,
+          "read_bw": 5487.189453125
+        },
+        "device_degradation": 0.0,
+        "workload_impact": 0.3,
+        "adjusted_write_bw": 1199.90007271875,
+        "adjusted_read_bw": 1599.3796432875001,
+        "s_max": 1209794.6333184,
+        "io_contention": 0.76,
+        "stability_factor": 0.2,
+        "performance_factor": 0.4,
+        "degradation_analysis": {
+          "device_degradation": 0.0,
+          "workload_impact": 0.3,
+          "io_intensity": 0.8,
+          "stability_factor": 0.2,
+          "performance_factor": 0.4
+        }
+      },
+      "performance_accuracy": 0,
+      "stability_match": 0.8200000000000001,
+      "phase_characteristics_evaluation": 0.6666666666666666,
+      "trend_match": 0.5,
+      "overall_score": 0.4216666666666667
+    },
+    "middle": {
+      "performance_characteristics": {
+        "avg_performance": 16.948078301144804,
+        "stability": "medium",
+        "performance_level": "medium",
+        "cv": 0.2717946217882504,
+        "duration_hours": 31.7871254975,
+        "trend": "stable",
+        "change_intensity": "low"
+      },
+      "model_predictions": {
+        "base_performance": {
+          "write_bw": 2595.7431640625,
+          "read_bw": 3326.6240234375
+        },
+        "device_degradation": 0.3694518609541816,
+        "workload_impact": 0.5,
+        "adjusted_write_bw": 760.9863705550466,
+        "adjusted_read_bw": 975.2565572916504,
+        "s_max": 767261.5812414698,
+        "io_contention": 0.8200000000000001,
+        "stability_factor": 0.5,
+        "performance_factor": 0.6,
+        "degradation_analysis": {
+          "device_degradation": 0.3694518609541816,
+          "workload_impact": 0.5,
+          "io_intensity": 0.6,
+          "stability_factor": 0.5,
+          "performance_factor": 0.6
+        }
+      },
+      "performance_accuracy": 0,
+      "stability_match": 0.8368493796819394,
+      "phase_characteristics_evaluation": 0.30652913423132644,
+      "trend_match": 1.0,
+      "overall_score": 0.38584462847831646
+    },
+    "final": {
+      "performance_characteristics": {
+        "avg_performance": 12.757684707903781,
+        "stability": "high",
+        "performance_level": "low",
+        "cv": 0.04128935557253436,
+        "duration_hours": 64.67847100555555,
+        "trend": "stable",
+        "change_intensity": "low"
+      },
+      "model_predictions": {
+        "base_performance": {
+          "write_bw": 1074.8408203125,
+          "read_bw": 1166.05859375
+        },
+        "device_degradation": 0.7389037219083632,
+        "workload_impact": 0.7,
+        "adjusted_write_bw": 183.50153378203132,
+        "adjusted_read_bw": 199.07463169349367,
+        "s_max": 185014.71566060313,
+        "io_contention": 0.88,
+        "stability_factor": 0.8,
+        "performance_factor": 0.8,
+        "degradation_analysis": {
+          "device_degradation": 0.7389037219083632,
+          "workload_impact": 0.7,
+          "io_intensity": 0.4,
+          "stability_factor": 0.8,
+          "performance_factor": 0.8
+        }
+      },
+      "performance_accuracy": 0,
+      "stability_match": 0.49369875936387897,
+      "phase_characteristics_evaluation": 0.023283003786731798,
+      "trend_match": 0.5,
+      "overall_score": 0.1792454407876527
+    }
+  },
+  "analysis_time": "2025-09-19T19:10:17.812984"
+}

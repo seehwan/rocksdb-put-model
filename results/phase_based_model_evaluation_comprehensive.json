@@ -1,0 +1,505 @@
+{
+  "evaluation_metadata": {
+    "evaluation_date": "2025-09-20T03:36:39.611860",
+    "evaluator": "Phase-based Model Evaluator",
+    "models_evaluated": [
+      "v4_model",
+      "v4_1_temporal",
+      "v4_2_enhanced"
+    ],
+    "phases_analyzed": [
+      "initial_phase",
+      "middle_phase",
+      "final_phase"
+    ],
+    "evaluation_scope": "v4, v4.1, v4.2 models across Initial, Middle, Final phases"
+  },
+  "phase_by_phase_evaluation": {
+    "initial_phase": {
+      "actual_qps": 138769,
+      "actual_characteristics": {
+        "stability": "low",
+        "trend": "decreasing",
+        "performance_level": "high",
+        "cv": 0.538
+      },
+      "model_evaluations": {
+        "v4_model": {
+          "predicted_s_max": 185000,
+          "accuracy_percent": 66.6849224250373,
+          "error_rate_percent": 33.31507757496271,
+          "prediction_direction": "over_prediction",
+          "direction_percent": 33.31507757496271,
+          "performance_grade": "Fair",
+          "model_type": "Device Envelope",
+          "key_features": [
+            "Device Performance",
+            "I/O Envelope"
+          ],
+          "accuracy_factors": {
+            "device_envelope": 0.8,
+            "io_modeling": 0.7,
+            "temporal_awareness": 0.2
+          }
+        },
+        "v4_1_temporal": {
+          "predicted_s_max": 95000,
+          "accuracy_percent": 68.45909388984572,
+          "error_rate_percent": 31.54090611015429,
+          "prediction_direction": "under_prediction",
+          "direction_percent": 31.54090611015429,
+          "performance_grade": "Fair",
+          "model_type": "Temporal Enhanced",
+          "key_features": [
+            "Temporal Phases",
+            "Dynamic Adaptation",
+            "Performance Degradation"
+          ],
+          "accuracy_factors": {
+            "temporal_modeling": 0.9,
+            "phase_awareness": 0.8,
+            "dynamic_adaptation": 0.7
+          }
+        },
+        "v4_2_enhanced": {
+          "predicted_s_max": 33132,
+          "accuracy_percent": 23.8756494606144,
+          "error_rate_percent": 76.1243505393856,
+          "prediction_direction": "under_prediction",
+          "direction_percent": 76.1243505393856,
+          "performance_grade": "Very Poor",
+          "model_type": "Level-wise Temporal Enhanced",
+          "key_features": [
+            "Level-wise RA/WA",
+            "Temporal Phases",
+            "Device Degradation",
+            "FillRandom Optimization"
+          ],
+          "accuracy_factors": {
+            "level_wise_modeling": 0.9,
+            "temporal_phases": 0.8,
+            "device_degradation": 0.9,
+            "workload_specific": 0.95
+          }
+        }
+      }
+    },
+    "middle_phase": {
+      "actual_qps": 114472,
+      "actual_characteristics": {
+        "stability": "medium",
+        "trend": "stable",
+        "performance_level": "medium",
+        "cv": 0.272
+      },
+      "model_evaluations": {
+        "v4_model": {
+          "predicted_s_max": 125000,
+          "accuracy_percent": 90.80299112446711,
+          "error_rate_percent": 9.197008875532882,
+          "prediction_direction": "over_prediction",
+          "direction_percent": 9.197008875532882,
+          "performance_grade": "Excellent",
+          "model_type": "Device Envelope",
+          "key_features": [
+            "Device Performance",
+            "I/O Envelope"
+          ],
+          "accuracy_factors": {
+            "device_envelope": 0.8,
+            "io_modeling": 0.7,
+            "temporal_awareness": 0.3
+          }
+        },
+        "v4_1_temporal": {
+          "predicted_s_max": 118000,
+          "accuracy_percent": 96.91802362149696,
+          "error_rate_percent": 3.08197637850304,
+          "prediction_direction": "over_prediction",
+          "direction_percent": 3.08197637850304,
+          "performance_grade": "Excellent",
+          "model_type": "Temporal Enhanced",
+          "key_features": [
+            "Temporal Phases",
+            "Dynamic Adaptation",
+            "Performance Degradation"
+          ],
+          "accuracy_factors": {
+            "temporal_modeling": 0.95,
+            "phase_awareness": 0.9,
+            "dynamic_adaptation": 0.8
+          }
+        },
+        "v4_2_enhanced": {
+          "predicted_s_max": 119002,
+          "accuracy_percent": 96.04270039835069,
+          "error_rate_percent": 3.957299601649312,
+          "prediction_direction": "over_prediction",
+          "direction_percent": 3.957299601649312,
+          "performance_grade": "Excellent",
+          "model_type": "Level-wise Temporal Enhanced",
+          "key_features": [
+            "Level-wise RA/WA",
+            "Temporal Phases",
+            "Device Degradation",
+            "FillRandom Optimization"
+          ],
+          "accuracy_factors": {
+            "level_wise_modeling": 0.95,
+            "temporal_phases": 0.9,
+            "device_degradation": 0.9,
+            "workload_specific": 0.98
+          }
+        }
+      }
+    },
+    "final_phase": {
+      "actual_qps": 109678,
+      "actual_characteristics": {
+        "stability": "high",
+        "trend": "stable",
+        "performance_level": "low",
+        "cv": 0.041
+      },
+      "model_evaluations": {
+        "v4_model": {
+          "predicted_s_max": 95000,
+          "accuracy_percent": 86.61718849723736,
+          "error_rate_percent": 13.382811502762632,
+          "prediction_direction": "under_prediction",
+          "direction_percent": 13.382811502762632,
+          "performance_grade": "Good",
+          "model_type": "Device Envelope",
+          "key_features": [
+            "Device Performance",
+            "I/O Envelope"
+          ],
+          "accuracy_factors": {
+            "device_envelope": 0.8,
+            "io_modeling": 0.7,
+            "temporal_awareness": 0.4
+          }
+        },
+        "v4_1_temporal": {
+          "predicted_s_max": 142000,
+          "accuracy_percent": 70.5300971936031,
+          "error_rate_percent": 29.46990280639691,
+          "prediction_direction": "over_prediction",
+          "direction_percent": 29.46990280639691,
+          "performance_grade": "Good",
+          "model_type": "Temporal Enhanced",
+          "key_features": [
+            "Temporal Phases",
+            "Dynamic Adaptation",
+            "Performance Degradation"
+          ],
+          "accuracy_factors": {
+            "temporal_modeling": 0.85,
+            "phase_awareness": 0.8,
+            "dynamic_adaptation": 0.9
+          }
+        },
+        "v4_2_enhanced": {
+          "predicted_s_max": 250598,
+          "accuracy_percent": -28.485202137165167,
+          "error_rate_percent": 128.48520213716517,
+          "prediction_direction": "over_prediction",
+          "direction_percent": 128.48520213716517,
+          "performance_grade": "Very Poor",
+          "model_type": "Level-wise Temporal Enhanced",
+          "key_features": [
+            "Level-wise RA/WA",
+            "Temporal Phases",
+            "Device Degradation",
+            "FillRandom Optimization"
+          ],
+          "accuracy_factors": {
+            "level_wise_modeling": 0.8,
+            "temporal_phases": 0.7,
+            "device_degradation": 0.8,
+            "workload_specific": 0.9
+          }
+        }
+      }
+    }
+  },
+  "pattern_analysis": {
+    "v4_model": {
+      "average_accuracy": 81.36836734891392,
+      "accuracy_std": 10.522449082253287,
+      "consistency": "high",
+      "best_phase": [
+        "middle_phase",
+        {
+          "accuracy": 90.80299112446711,
+          "grade": "Excellent",
+          "prediction_direction": "over_prediction"
+        }
+      ],
+      "worst_phase": [
+        "initial_phase",
+        {
+          "accuracy": 66.6849224250373,
+          "grade": "Fair",
+          "prediction_direction": "over_prediction"
+        }
+      ],
+      "prediction_bias": "over_prediction",
+      "phase_performances": {
+        "initial_phase": {
+          "accuracy": 66.6849224250373,
+          "grade": "Fair",
+          "prediction_direction": "over_prediction"
+        },
+        "middle_phase": {
+          "accuracy": 90.80299112446711,
+          "grade": "Excellent",
+          "prediction_direction": "over_prediction"
+        },
+        "final_phase": {
+          "accuracy": 86.61718849723736,
+          "grade": "Good",
+          "prediction_direction": "under_prediction"
+        }
+      }
+    },
+    "v4_1_temporal": {
+      "average_accuracy": 78.63573823498193,
+      "accuracy_std": 12.955146541986814,
+      "consistency": "high",
+      "best_phase": [
+        "middle_phase",
+        {
+          "accuracy": 96.91802362149696,
+          "grade": "Excellent",
+          "prediction_direction": "over_prediction"
+        }
+      ],
+      "worst_phase": [
+        "initial_phase",
+        {
+          "accuracy": 68.45909388984572,
+          "grade": "Fair",
+          "prediction_direction": "under_prediction"
+        }
+      ],
+      "prediction_bias": "over_prediction",
+      "phase_performances": {
+        "initial_phase": {
+          "accuracy": 68.45909388984572,
+          "grade": "Fair",
+          "prediction_direction": "under_prediction"
+        },
+        "middle_phase": {
+          "accuracy": 96.91802362149696,
+          "grade": "Excellent",
+          "prediction_direction": "over_prediction"
+        },
+        "final_phase": {
+          "accuracy": 70.5300971936031,
+          "grade": "Good",
+          "prediction_direction": "over_prediction"
+        }
+      }
+    },
+    "v4_2_enhanced": {
+      "average_accuracy": 30.47771590726664,
+      "accuracy_std": 51.05219609052577,
+      "consistency": "low",
+      "best_phase": [
+        "middle_phase",
+        {
+          "accuracy": 96.04270039835069,
+          "grade": "Excellent",
+          "prediction_direction": "over_prediction"
+        }
+      ],
+      "worst_phase": [
+        "final_phase",
+        {
+          "accuracy": -28.485202137165167,
+          "grade": "Very Poor",
+          "prediction_direction": "over_prediction"
+        }
+      ],
+      "prediction_bias": "over_prediction",
+      "phase_performances": {
+        "initial_phase": {
+          "accuracy": 23.8756494606144,
+          "grade": "Very Poor",
+          "prediction_direction": "under_prediction"
+        },
+        "middle_phase": {
+          "accuracy": 96.04270039835069,
+          "grade": "Excellent",
+          "prediction_direction": "over_prediction"
+        },
+        "final_phase": {
+          "accuracy": -28.485202137165167,
+          "grade": "Very Poor",
+          "prediction_direction": "over_prediction"
+        }
+      }
+    },
+    "phase_rankings": {
+      "initial_phase": [
+        [
+          "v4_1_temporal",
+          68.45909388984572
+        ],
+        [
+          "v4_model",
+          66.6849224250373
+        ],
+        [
+          "v4_2_enhanced",
+          23.8756494606144
+        ]
+      ],
+      "middle_phase": [
+        [
+          "v4_1_temporal",
+          96.91802362149696
+        ],
+        [
+          "v4_2_enhanced",
+          96.04270039835069
+        ],
+        [
+          "v4_model",
+          90.80299112446711
+        ]
+      ],
+      "final_phase": [
+        [
+          "v4_model",
+          86.61718849723736
+        ],
+        [
+          "v4_1_temporal",
+          70.5300971936031
+        ],
+        [
+          "v4_2_enhanced",
+          -28.485202137165167
+        ]
+      ]
+    }
+  },
+  "comparative_insights": {
+    "overall_best_model": {
+      "model": "v4_model",
+      "average_accuracy": 81.36836734891392
+    },
+    "phase_specific_winners": {
+      "initial_phase": {
+        "model": "v4_1_temporal",
+        "accuracy": 68.45909388984572
+      },
+      "middle_phase": {
+        "model": "v4_1_temporal",
+        "accuracy": 96.91802362149696
+      },
+      "final_phase": {
+        "model": "v4_model",
+        "accuracy": 86.61718849723736
+      }
+    },
+    "model_strengths_weaknesses": {
+      "v4_model": {
+        "strengths": [
+          "\ub192\uc740 \ud3c9\uade0 \uc815\ud655\ub3c4",
+          "\uc77c\uad00\ub41c \uc131\ub2a5",
+          "middle_phase\uc5d0\uc11c \uc6b0\uc218\ud55c \uc131\ub2a5 (90.8%)"
+        ],
+        "weaknesses": [
+          "over_prediction \ud3b8\ud5a5"
+        ]
+      },
+      "v4_1_temporal": {
+        "strengths": [
+          "\ub192\uc740 \ud3c9\uade0 \uc815\ud655\ub3c4",
+          "\uc77c\uad00\ub41c \uc131\ub2a5",
+          "middle_phase\uc5d0\uc11c \uc6b0\uc218\ud55c \uc131\ub2a5 (96.9%)"
+        ],
+        "weaknesses": [
+          "over_prediction \ud3b8\ud5a5"
+        ]
+      },
+      "v4_2_enhanced": {
+        "strengths": [
+          "middle_phase\uc5d0\uc11c \uc6b0\uc218\ud55c \uc131\ub2a5 (96.0%)"
+        ],
+        "weaknesses": [
+          "\ub0ae\uc740 \ud3c9\uade0 \uc815\ud655\ub3c4",
+          "\ubd88\uc77c\uad00\ud55c \uc131\ub2a5",
+          "over_prediction \ud3b8\ud5a5",
+          "final_phase\uc5d0\uc11c \ub0ae\uc740 \uc131\ub2a5 (-28.5%)"
+        ]
+      }
+    },
+    "key_findings": [
+      "\uc804\uccb4 \ucd5c\uace0 \uc131\ub2a5: v4_model (81.4%)",
+      "Initial Phase \ucd5c\uace0: v4_1_temporal (68.5%)",
+      "Middle Phase \ucd5c\uace0: v4_1_temporal (96.9%)",
+      "Final Phase \ucd5c\uace0: v4_model (86.6%)"
+    ],
+    "recommendations": [
+      "Middle Phase\uc5d0\uc11c \ubaa8\ub4e0 \ubaa8\ub378\uc774 \uc0c1\ub300\uc801\uc73c\ub85c \uc6b0\uc218\ud55c \uc131\ub2a5\uc744 \ubcf4\uc784",
+      "Initial Phase\uc640 Final Phase\uc5d0\uc11c \ubaa8\ub378 \uac1c\uc120\uc774 \ud544\uc694",
+      "v4.2 Enhanced \ubaa8\ub378\uc758 Level-wise \uc811\uadfc\ubc95\uc774 \uc720\ub9dd\ud568",
+      "\uad6c\uac04\ubcc4 \ud2b9\uc131\uc744 \uace0\ub824\ud55c \ud558\uc774\ube0c\ub9ac\ub4dc \ubaa8\ub378 \uac1c\ubc1c \uad8c\uc7a5"
+    ]
+  },
+  "summary_statistics": {
+    "overall_best_model": {
+      "model": "v4_model",
+      "accuracy": 81.36836734891392
+    },
+    "overall_worst_model": {
+      "model": "v4_2_enhanced",
+      "accuracy": 30.47771590726664
+    },
+    "most_consistent_model": {
+      "model": "v4_model",
+      "std": 10.522449082253287
+    },
+    "phase_difficulty_ranking": [
+      [
+        "middle_phase",
+        94.58790504810491
+      ],
+      [
+        "initial_phase",
+        53.006555258499134
+      ],
+      [
+        "final_phase",
+        42.887361184558436
+      ]
+    ],
+    "model_performance_summary": {
+      "v4_model": {
+        "average_accuracy": 81.36836734891392,
+        "consistency": "high",
+        "best_phase": "middle_phase",
+        "worst_phase": "initial_phase",
+        "prediction_bias": "over_prediction"
+      },
+      "v4_1_temporal": {
+        "average_accuracy": 78.63573823498193,
+        "consistency": "high",
+        "best_phase": "middle_phase",
+        "worst_phase": "initial_phase",
+        "prediction_bias": "over_prediction"
+      },
+      "v4_2_enhanced": {
+        "average_accuracy": 30.47771590726664,
+        "consistency": "low",
+        "best_phase": "middle_phase",
+        "worst_phase": "final_phase",
+        "prediction_bias": "over_prediction"
+      }
+    }
+  }
+}

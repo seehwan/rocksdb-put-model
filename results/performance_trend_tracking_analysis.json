@@ -1,0 +1,1026 @@
+{
+  "analysis_metadata": {
+    "analysis_date": "2025-09-20T04:04:08.982785",
+    "analysis_type": "Performance Trend Tracking Evaluation",
+    "focus": "Trend prediction accuracy vs average QPS accuracy",
+    "models_analyzed": [
+      "v4_model",
+      "v4_1_temporal",
+      "v4_2_enhanced"
+    ]
+  },
+  "actual_performance_trend": {
+    "phase_transitions": {
+      "initial_to_middle": {
+        "start_qps": 138769,
+        "end_qps": 114472,
+        "change_amount": -24297,
+        "change_percent": -17.5,
+        "trend_direction": "decreasing",
+        "change_magnitude": "moderate"
+      },
+      "middle_to_final": {
+        "start_qps": 114472,
+        "end_qps": 109678,
+        "change_amount": -4794,
+        "change_percent": -4.2,
+        "trend_direction": "decreasing",
+        "change_magnitude": "small"
+      },
+      "overall": {
+        "start_qps": 138769,
+        "end_qps": 109678,
+        "change_amount": -29091,
+        "change_percent": -21.0,
+        "trend_direction": "decreasing",
+        "change_magnitude": "moderate"
+      }
+    },
+    "detailed_characteristics": {
+      "initial_phase": {
+        "avg_qps": 138769,
+        "write_rate": 65.97,
+        "volatility": "high",
+        "trend_slope": -1.39,
+        "stability_score": 0.2
+      },
+      "middle_phase": {
+        "avg_qps": 114472,
+        "write_rate": 16.95,
+        "volatility": "medium",
+        "trend_slope": -0.001,
+        "stability_score": 0.5
+      },
+      "final_phase": {
+        "avg_qps": 109678,
+        "write_rate": 12.76,
+        "volatility": "low",
+        "trend_slope": -7.7e-05,
+        "stability_score": 0.8
+      }
+    },
+    "performance_evolution_pattern": {
+      "pattern_type": "exponential_decay",
+      "initial_burst": true,
+      "stabilization_trend": true,
+      "final_plateau": true,
+      "overall_trend": "decreasing_with_stabilization"
+    }
+  },
+  "model_trend_predictions": {
+    "v4_model": {
+      "predicted_trend": {
+        "initial_phase": 185000,
+        "middle_phase": 125000,
+        "final_phase": 95000
+      },
+      "trend_characteristics": {
+        "initial_to_middle": {
+          "change_amount": -60000,
+          "change_percent": -32.4,
+          "predicted_direction": "decreasing",
+          "predicted_magnitude": "large"
+        },
+        "middle_to_final": {
+          "change_amount": -30000,
+          "change_percent": -24.0,
+          "predicted_direction": "decreasing",
+          "predicted_magnitude": "moderate"
+        },
+        "overall": {
+          "change_amount": -90000,
+          "change_percent": -48.6,
+          "predicted_direction": "decreasing",
+          "predicted_magnitude": "large"
+        }
+      },
+      "model_type": "Device Envelope",
+      "trend_modeling_capability": "basic"
+    },
+    "v4_1_temporal": {
+      "predicted_trend": {
+        "initial_phase": 95000,
+        "middle_phase": 118000,
+        "final_phase": 142000
+      },
+      "trend_characteristics": {
+        "initial_to_middle": {
+          "change_amount": 23000,
+          "change_percent": 24.2,
+          "predicted_direction": "increasing",
+          "predicted_magnitude": "moderate"
+        },
+        "middle_to_final": {
+          "change_amount": 24000,
+          "change_percent": 20.3,
+          "predicted_direction": "increasing",
+          "predicted_magnitude": "moderate"
+        },
+        "overall": {
+          "change_amount": 47000,
+          "change_percent": 49.5,
+          "predicted_direction": "increasing",
+          "predicted_magnitude": "large"
+        }
+      },
+      "model_type": "Temporal Enhanced",
+      "trend_modeling_capability": "advanced"
+    },
+    "v4_2_enhanced": {
+      "predicted_trend": {
+        "initial_phase": 33132,
+        "middle_phase": 119002,
+        "final_phase": 250598
+      },
+      "trend_characteristics": {
+        "initial_to_middle": {
+          "change_amount": 85870,
+          "change_percent": 259.1,
+          "predicted_direction": "increasing",
+          "predicted_magnitude": "very_large"
+        },
+        "middle_to_final": {
+          "change_amount": 131596,
+          "change_percent": 110.6,
+          "predicted_direction": "increasing",
+          "predicted_magnitude": "very_large"
+        },
+        "overall": {
+          "change_amount": 217466,
+          "change_percent": 656.2,
+          "predicted_direction": "increasing",
+          "predicted_magnitude": "extreme"
+        }
+      },
+      "model_type": "Level-wise Temporal Enhanced",
+      "trend_modeling_capability": "sophisticated"
+    }
+  },
+  "trend_tracking_evaluation": {
+    "v4_model": {
+      "direction_accuracy": 1.0,
+      "magnitude_accuracy": 0.04952380952380958,
+      "pattern_consistency": 0.983990334344899,
+      "trend_tracking_score": 0.6166075906785037,
+      "trend_grade": "Good",
+      "direction_scores": {
+        "initial_to_middle": {
+          "actual_direction": "decreasing",
+          "predicted_direction": "decreasing",
+          "correct": true,
+          "score": 1.0
+        },
+        "middle_to_final": {
+          "actual_direction": "decreasing",
+          "predicted_direction": "decreasing",
+          "correct": true,
+          "score": 1.0
+        },
+        "overall": {
+          "actual_direction": "decreasing",
+          "predicted_direction": "decreasing",
+          "correct": true,
+          "score": 1.0
+        }
+      },
+      "magnitude_scores": {
+        "initial_to_middle": {
+          "actual_change_percent": -17.5,
+          "predicted_change_percent": -32.4,
+          "magnitude_error": 85.14285714285712,
+          "magnitude_accuracy": 0.14857142857142874
+        },
+        "middle_to_final": {
+          "actual_change_percent": -4.2,
+          "predicted_change_percent": -24.0,
+          "magnitude_error": 471.42857142857144,
+          "magnitude_accuracy": 0
+        },
+        "overall": {
+          "actual_change_percent": -21.0,
+          "predicted_change_percent": -48.6,
+          "magnitude_error": 131.42857142857142,
+          "magnitude_accuracy": 0
+        }
+      },
+      "correlation_coefficient": 0.983990334344899,
+      "p_value": 0.11406893038170074,
+      "predicted_values": [
+        185000,
+        125000,
+        95000
+      ],
+      "actual_values": [
+        138769,
+        114472,
+        109678
+      ]
+    },
+    "v4_1_temporal": {
+      "direction_accuracy": 0.0,
+      "magnitude_accuracy": 0.2057142857142857,
+      "pattern_consistency": 0,
+      "trend_tracking_score": 0.0822857142857143,
+      "trend_grade": "Very Poor",
+      "direction_scores": {
+        "initial_to_middle": {
+          "actual_direction": "decreasing",
+          "predicted_direction": "increasing",
+          "correct": false,
+          "score": 0.0
+        },
+        "middle_to_final": {
+          "actual_direction": "decreasing",
+          "predicted_direction": "increasing",
+          "correct": false,
+          "score": 0.0
+        },
+        "overall": {
+          "actual_direction": "decreasing",
+          "predicted_direction": "increasing",
+          "correct": false,
+          "score": 0.0
+        }
+      },
+      "magnitude_scores": {
+        "initial_to_middle": {
+          "actual_change_percent": -17.5,
+          "predicted_change_percent": 24.2,
+          "magnitude_error": 38.285714285714285,
+          "magnitude_accuracy": 0.6171428571428571
+        },
+        "middle_to_final": {
+          "actual_change_percent": -4.2,
+          "predicted_change_percent": 20.3,
+          "magnitude_error": 383.33333333333337,
+          "magnitude_accuracy": 0
+        },
+        "overall": {
+          "actual_change_percent": -21.0,
+          "predicted_change_percent": 49.5,
+          "magnitude_error": 135.71428571428572,
+          "magnitude_accuracy": 0
+        }
+      },
+      "correlation_coefficient": -0.9280744094343509,
+      "p_value": 0.2429265234072979,
+      "predicted_values": [
+        95000,
+        118000,
+        142000
+      ],
+      "actual_values": [
+        138769,
+        114472,
+        109678
+      ]
+    },
+    "v4_2_enhanced": {
+      "direction_accuracy": 0.0,
+      "magnitude_accuracy": 0.0,
+      "pattern_consistency": 0,
+      "trend_tracking_score": 0.0,
+      "trend_grade": "Very Poor",
+      "direction_scores": {
+        "initial_to_middle": {
+          "actual_direction": "decreasing",
+          "predicted_direction": "increasing",
+          "correct": false,
+          "score": 0.0
+        },
+        "middle_to_final": {
+          "actual_direction": "decreasing",
+          "predicted_direction": "increasing",
+          "correct": false,
+          "score": 0.0
+        },
+        "overall": {
+          "actual_direction": "decreasing",
+          "predicted_direction": "increasing",
+          "correct": false,
+          "score": 0.0
+        }
+      },
+      "magnitude_scores": {
+        "initial_to_middle": {
+          "actual_change_percent": -17.5,
+          "predicted_change_percent": 259.1,
+          "magnitude_error": 1380.571428571429,
+          "magnitude_accuracy": 0
+        },
+        "middle_to_final": {
+          "actual_change_percent": -4.2,
+          "predicted_change_percent": 110.6,
+          "magnitude_error": 2533.333333333333,
+          "magnitude_accuracy": 0
+        },
+        "overall": {
+          "actual_change_percent": -21.0,
+          "predicted_change_percent": 656.2,
+          "magnitude_error": 3024.761904761905,
+          "magnitude_accuracy": 0
+        }
+      },
+      "correlation_coefficient": -0.882280413330885,
+      "p_value": 0.31201462424080323,
+      "predicted_values": [
+        33132,
+        119002,
+        250598
+      ],
+      "actual_values": [
+        138769,
+        114472,
+        109678
+      ]
+    }
+  },
+  "trend_modeling_analysis": {
+    "best_trend_tracker": [
+      "v4_model",
+      {
+        "direction_accuracy": 1.0,
+        "magnitude_accuracy": 0.04952380952380958,
+        "pattern_consistency": 0.983990334344899,
+        "trend_tracking_score": 0.6166075906785037,
+        "trend_grade": "Good",
+        "direction_scores": {
+          "initial_to_middle": {
+            "actual_direction": "decreasing",
+            "predicted_direction": "decreasing",
+            "correct": true,
+            "score": 1.0
+          },
+          "middle_to_final": {
+            "actual_direction": "decreasing",
+            "predicted_direction": "decreasing",
+            "correct": true,
+            "score": 1.0
+          },
+          "overall": {
+            "actual_direction": "decreasing",
+            "predicted_direction": "decreasing",
+            "correct": true,
+            "score": 1.0
+          }
+        },
+        "magnitude_scores": {
+          "initial_to_middle": {
+            "actual_change_percent": -17.5,
+            "predicted_change_percent": -32.4,
+            "magnitude_error": 85.14285714285712,
+            "magnitude_accuracy": 0.14857142857142874
+          },
+          "middle_to_final": {
+            "actual_change_percent": -4.2,
+            "predicted_change_percent": -24.0,
+            "magnitude_error": 471.42857142857144,
+            "magnitude_accuracy": 0
+          },
+          "overall": {
+            "actual_change_percent": -21.0,
+            "predicted_change_percent": -48.6,
+            "magnitude_error": 131.42857142857142,
+            "magnitude_accuracy": 0
+          }
+        },
+        "correlation_coefficient": 0.983990334344899,
+        "p_value": 0.11406893038170074,
+        "predicted_values": [
+          185000,
+          125000,
+          95000
+        ],
+        "actual_values": [
+          138769,
+          114472,
+          109678
+        ]
+      }
+    ],
+    "direction_accuracy_ranking": [
+      [
+        "v4_model",
+        {
+          "direction_accuracy": 1.0,
+          "magnitude_accuracy": 0.04952380952380958,
+          "pattern_consistency": 0.983990334344899,
+          "trend_tracking_score": 0.6166075906785037,
+          "trend_grade": "Good",
+          "direction_scores": {
+            "initial_to_middle": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "decreasing",
+              "correct": true,
+              "score": 1.0
+            },
+            "middle_to_final": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "decreasing",
+              "correct": true,
+              "score": 1.0
+            },
+            "overall": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "decreasing",
+              "correct": true,
+              "score": 1.0
+            }
+          },
+          "magnitude_scores": {
+            "initial_to_middle": {
+              "actual_change_percent": -17.5,
+              "predicted_change_percent": -32.4,
+              "magnitude_error": 85.14285714285712,
+              "magnitude_accuracy": 0.14857142857142874
+            },
+            "middle_to_final": {
+              "actual_change_percent": -4.2,
+              "predicted_change_percent": -24.0,
+              "magnitude_error": 471.42857142857144,
+              "magnitude_accuracy": 0
+            },
+            "overall": {
+              "actual_change_percent": -21.0,
+              "predicted_change_percent": -48.6,
+              "magnitude_error": 131.42857142857142,
+              "magnitude_accuracy": 0
+            }
+          },
+          "correlation_coefficient": 0.983990334344899,
+          "p_value": 0.11406893038170074,
+          "predicted_values": [
+            185000,
+            125000,
+            95000
+          ],
+          "actual_values": [
+            138769,
+            114472,
+            109678
+          ]
+        }
+      ],
+      [
+        "v4_1_temporal",
+        {
+          "direction_accuracy": 0.0,
+          "magnitude_accuracy": 0.2057142857142857,
+          "pattern_consistency": 0,
+          "trend_tracking_score": 0.0822857142857143,
+          "trend_grade": "Very Poor",
+          "direction_scores": {
+            "initial_to_middle": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "middle_to_final": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "overall": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            }
+          },
+          "magnitude_scores": {
+            "initial_to_middle": {
+              "actual_change_percent": -17.5,
+              "predicted_change_percent": 24.2,
+              "magnitude_error": 38.285714285714285,
+              "magnitude_accuracy": 0.6171428571428571
+            },
+            "middle_to_final": {
+              "actual_change_percent": -4.2,
+              "predicted_change_percent": 20.3,
+              "magnitude_error": 383.33333333333337,
+              "magnitude_accuracy": 0
+            },
+            "overall": {
+              "actual_change_percent": -21.0,
+              "predicted_change_percent": 49.5,
+              "magnitude_error": 135.71428571428572,
+              "magnitude_accuracy": 0
+            }
+          },
+          "correlation_coefficient": -0.9280744094343509,
+          "p_value": 0.2429265234072979,
+          "predicted_values": [
+            95000,
+            118000,
+            142000
+          ],
+          "actual_values": [
+            138769,
+            114472,
+            109678
+          ]
+        }
+      ],
+      [
+        "v4_2_enhanced",
+        {
+          "direction_accuracy": 0.0,
+          "magnitude_accuracy": 0.0,
+          "pattern_consistency": 0,
+          "trend_tracking_score": 0.0,
+          "trend_grade": "Very Poor",
+          "direction_scores": {
+            "initial_to_middle": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "middle_to_final": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "overall": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            }
+          },
+          "magnitude_scores": {
+            "initial_to_middle": {
+              "actual_change_percent": -17.5,
+              "predicted_change_percent": 259.1,
+              "magnitude_error": 1380.571428571429,
+              "magnitude_accuracy": 0
+            },
+            "middle_to_final": {
+              "actual_change_percent": -4.2,
+              "predicted_change_percent": 110.6,
+              "magnitude_error": 2533.333333333333,
+              "magnitude_accuracy": 0
+            },
+            "overall": {
+              "actual_change_percent": -21.0,
+              "predicted_change_percent": 656.2,
+              "magnitude_error": 3024.761904761905,
+              "magnitude_accuracy": 0
+            }
+          },
+          "correlation_coefficient": -0.882280413330885,
+          "p_value": 0.31201462424080323,
+          "predicted_values": [
+            33132,
+            119002,
+            250598
+          ],
+          "actual_values": [
+            138769,
+            114472,
+            109678
+          ]
+        }
+      ]
+    ],
+    "magnitude_accuracy_ranking": [
+      [
+        "v4_1_temporal",
+        {
+          "direction_accuracy": 0.0,
+          "magnitude_accuracy": 0.2057142857142857,
+          "pattern_consistency": 0,
+          "trend_tracking_score": 0.0822857142857143,
+          "trend_grade": "Very Poor",
+          "direction_scores": {
+            "initial_to_middle": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "middle_to_final": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "overall": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            }
+          },
+          "magnitude_scores": {
+            "initial_to_middle": {
+              "actual_change_percent": -17.5,
+              "predicted_change_percent": 24.2,
+              "magnitude_error": 38.285714285714285,
+              "magnitude_accuracy": 0.6171428571428571
+            },
+            "middle_to_final": {
+              "actual_change_percent": -4.2,
+              "predicted_change_percent": 20.3,
+              "magnitude_error": 383.33333333333337,
+              "magnitude_accuracy": 0
+            },
+            "overall": {
+              "actual_change_percent": -21.0,
+              "predicted_change_percent": 49.5,
+              "magnitude_error": 135.71428571428572,
+              "magnitude_accuracy": 0
+            }
+          },
+          "correlation_coefficient": -0.9280744094343509,
+          "p_value": 0.2429265234072979,
+          "predicted_values": [
+            95000,
+            118000,
+            142000
+          ],
+          "actual_values": [
+            138769,
+            114472,
+            109678
+          ]
+        }
+      ],
+      [
+        "v4_model",
+        {
+          "direction_accuracy": 1.0,
+          "magnitude_accuracy": 0.04952380952380958,
+          "pattern_consistency": 0.983990334344899,
+          "trend_tracking_score": 0.6166075906785037,
+          "trend_grade": "Good",
+          "direction_scores": {
+            "initial_to_middle": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "decreasing",
+              "correct": true,
+              "score": 1.0
+            },
+            "middle_to_final": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "decreasing",
+              "correct": true,
+              "score": 1.0
+            },
+            "overall": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "decreasing",
+              "correct": true,
+              "score": 1.0
+            }
+          },
+          "magnitude_scores": {
+            "initial_to_middle": {
+              "actual_change_percent": -17.5,
+              "predicted_change_percent": -32.4,
+              "magnitude_error": 85.14285714285712,
+              "magnitude_accuracy": 0.14857142857142874
+            },
+            "middle_to_final": {
+              "actual_change_percent": -4.2,
+              "predicted_change_percent": -24.0,
+              "magnitude_error": 471.42857142857144,
+              "magnitude_accuracy": 0
+            },
+            "overall": {
+              "actual_change_percent": -21.0,
+              "predicted_change_percent": -48.6,
+              "magnitude_error": 131.42857142857142,
+              "magnitude_accuracy": 0
+            }
+          },
+          "correlation_coefficient": 0.983990334344899,
+          "p_value": 0.11406893038170074,
+          "predicted_values": [
+            185000,
+            125000,
+            95000
+          ],
+          "actual_values": [
+            138769,
+            114472,
+            109678
+          ]
+        }
+      ],
+      [
+        "v4_2_enhanced",
+        {
+          "direction_accuracy": 0.0,
+          "magnitude_accuracy": 0.0,
+          "pattern_consistency": 0,
+          "trend_tracking_score": 0.0,
+          "trend_grade": "Very Poor",
+          "direction_scores": {
+            "initial_to_middle": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "middle_to_final": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "overall": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            }
+          },
+          "magnitude_scores": {
+            "initial_to_middle": {
+              "actual_change_percent": -17.5,
+              "predicted_change_percent": 259.1,
+              "magnitude_error": 1380.571428571429,
+              "magnitude_accuracy": 0
+            },
+            "middle_to_final": {
+              "actual_change_percent": -4.2,
+              "predicted_change_percent": 110.6,
+              "magnitude_error": 2533.333333333333,
+              "magnitude_accuracy": 0
+            },
+            "overall": {
+              "actual_change_percent": -21.0,
+              "predicted_change_percent": 656.2,
+              "magnitude_error": 3024.761904761905,
+              "magnitude_accuracy": 0
+            }
+          },
+          "correlation_coefficient": -0.882280413330885,
+          "p_value": 0.31201462424080323,
+          "predicted_values": [
+            33132,
+            119002,
+            250598
+          ],
+          "actual_values": [
+            138769,
+            114472,
+            109678
+          ]
+        }
+      ]
+    ],
+    "pattern_consistency_ranking": [
+      [
+        "v4_model",
+        {
+          "direction_accuracy": 1.0,
+          "magnitude_accuracy": 0.04952380952380958,
+          "pattern_consistency": 0.983990334344899,
+          "trend_tracking_score": 0.6166075906785037,
+          "trend_grade": "Good",
+          "direction_scores": {
+            "initial_to_middle": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "decreasing",
+              "correct": true,
+              "score": 1.0
+            },
+            "middle_to_final": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "decreasing",
+              "correct": true,
+              "score": 1.0
+            },
+            "overall": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "decreasing",
+              "correct": true,
+              "score": 1.0
+            }
+          },
+          "magnitude_scores": {
+            "initial_to_middle": {
+              "actual_change_percent": -17.5,
+              "predicted_change_percent": -32.4,
+              "magnitude_error": 85.14285714285712,
+              "magnitude_accuracy": 0.14857142857142874
+            },
+            "middle_to_final": {
+              "actual_change_percent": -4.2,
+              "predicted_change_percent": -24.0,
+              "magnitude_error": 471.42857142857144,
+              "magnitude_accuracy": 0
+            },
+            "overall": {
+              "actual_change_percent": -21.0,
+              "predicted_change_percent": -48.6,
+              "magnitude_error": 131.42857142857142,
+              "magnitude_accuracy": 0
+            }
+          },
+          "correlation_coefficient": 0.983990334344899,
+          "p_value": 0.11406893038170074,
+          "predicted_values": [
+            185000,
+            125000,
+            95000
+          ],
+          "actual_values": [
+            138769,
+            114472,
+            109678
+          ]
+        }
+      ],
+      [
+        "v4_1_temporal",
+        {
+          "direction_accuracy": 0.0,
+          "magnitude_accuracy": 0.2057142857142857,
+          "pattern_consistency": 0,
+          "trend_tracking_score": 0.0822857142857143,
+          "trend_grade": "Very Poor",
+          "direction_scores": {
+            "initial_to_middle": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "middle_to_final": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "overall": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            }
+          },
+          "magnitude_scores": {
+            "initial_to_middle": {
+              "actual_change_percent": -17.5,
+              "predicted_change_percent": 24.2,
+              "magnitude_error": 38.285714285714285,
+              "magnitude_accuracy": 0.6171428571428571
+            },
+            "middle_to_final": {
+              "actual_change_percent": -4.2,
+              "predicted_change_percent": 20.3,
+              "magnitude_error": 383.33333333333337,
+              "magnitude_accuracy": 0
+            },
+            "overall": {
+              "actual_change_percent": -21.0,
+              "predicted_change_percent": 49.5,
+              "magnitude_error": 135.71428571428572,
+              "magnitude_accuracy": 0
+            }
+          },
+          "correlation_coefficient": -0.9280744094343509,
+          "p_value": 0.2429265234072979,
+          "predicted_values": [
+            95000,
+            118000,
+            142000
+          ],
+          "actual_values": [
+            138769,
+            114472,
+            109678
+          ]
+        }
+      ],
+      [
+        "v4_2_enhanced",
+        {
+          "direction_accuracy": 0.0,
+          "magnitude_accuracy": 0.0,
+          "pattern_consistency": 0,
+          "trend_tracking_score": 0.0,
+          "trend_grade": "Very Poor",
+          "direction_scores": {
+            "initial_to_middle": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "middle_to_final": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            },
+            "overall": {
+              "actual_direction": "decreasing",
+              "predicted_direction": "increasing",
+              "correct": false,
+              "score": 0.0
+            }
+          },
+          "magnitude_scores": {
+            "initial_to_middle": {
+              "actual_change_percent": -17.5,
+              "predicted_change_percent": 259.1,
+              "magnitude_error": 1380.571428571429,
+              "magnitude_accuracy": 0
+            },
+            "middle_to_final": {
+              "actual_change_percent": -4.2,
+              "predicted_change_percent": 110.6,
+              "magnitude_error": 2533.333333333333,
+              "magnitude_accuracy": 0
+            },
+            "overall": {
+              "actual_change_percent": -21.0,
+              "predicted_change_percent": 656.2,
+              "magnitude_error": 3024.761904761905,
+              "magnitude_accuracy": 0
+            }
+          },
+          "correlation_coefficient": -0.882280413330885,
+          "p_value": 0.31201462424080323,
+          "predicted_values": [
+            33132,
+            119002,
+            250598
+          ],
+          "actual_values": [
+            138769,
+            114472,
+            109678
+          ]
+        }
+      ]
+    ],
+    "model_trend_insights": {
+      "v4_model": [
+        "\ubaa8\ub4e0 \uad6c\uac04\uc5d0\uc11c \ud2b8\ub80c\ub4dc \ubc29\ud5a5 \uc815\ud655\ud788 \uc608\uce21",
+        "\ubcc0\ud654\ub7c9 \ud06c\uae30 \uc608\uce21 \ubd80\uc815\ud655",
+        "\uc2e4\uc81c \uc131\ub2a5 \ud328\ud134\uacfc \ub192\uc740 \uc77c\uce58\ub3c4"
+      ],
+      "v4_1_temporal": [
+        "\ud2b8\ub80c\ub4dc \ubc29\ud5a5 \uc608\uce21\uc5d0 \uc5b4\ub824\uc6c0",
+        "\ubcc0\ud654\ub7c9 \ud06c\uae30 \uc608\uce21 \ubd80\uc815\ud655",
+        "\uc2e4\uc81c \uc131\ub2a5 \ud328\ud134\uacfc \ub0ae\uc740 \uc77c\uce58\ub3c4",
+        "\uc2e4\uc81c \uc131\ub2a5 \uac10\uc18c\ub97c \uc99d\uac00\ub85c \uc798\ubabb \uc608\uce21 (\uce58\uba85\uc801 \uc624\ub958)"
+      ],
+      "v4_2_enhanced": [
+        "\ud2b8\ub80c\ub4dc \ubc29\ud5a5 \uc608\uce21\uc5d0 \uc5b4\ub824\uc6c0",
+        "\ubcc0\ud654\ub7c9 \ud06c\uae30 \uc608\uce21 \ubd80\uc815\ud655",
+        "\uc2e4\uc81c \uc131\ub2a5 \ud328\ud134\uacfc \ub0ae\uc740 \uc77c\uce58\ub3c4",
+        "\uc2e4\uc81c \uc131\ub2a5 \uac10\uc18c\ub97c \uc99d\uac00\ub85c \uc798\ubabb \uc608\uce21 (\uce58\uba85\uc801 \uc624\ub958)"
+      ]
+    }
+  },
+  "key_findings": {
+    "best_trend_tracker": "v4_model",
+    "best_trend_score": 0.6166075906785037,
+    "direction_prediction_analysis": {
+      "v4_model": {
+        "accuracy": 1.0,
+        "correct_predictions": 3,
+        "status": "excellent"
+      },
+      "v4_1_temporal": {
+        "accuracy": 0.0,
+        "correct_predictions": 0,
+        "status": "poor"
+      },
+      "v4_2_enhanced": {
+        "accuracy": 0.0,
+        "correct_predictions": 0,
+        "status": "poor"
+      }
+    },
+    "magnitude_prediction_analysis": {
+      "v4_model": {
+        "accuracy": 0.04952380952380958,
+        "status": "poor"
+      },
+      "v4_1_temporal": {
+        "accuracy": 0.2057142857142857,
+        "status": "poor"
+      },
+      "v4_2_enhanced": {
+        "accuracy": 0.0,
+        "status": "poor"
+      }
+    },
+    "critical_insights": [
+      "QPS \ud3c9\uade0\uac12 \uc815\ud655\ub3c4\uc640 \ud2b8\ub80c\ub4dc \ucd94\uc801 \ub2a5\ub825\uc740 \ub2e4\ub978 \ub2a5\ub825\uc784",
+      "\uc2e4\uc81c \uc131\ub2a5\uc740 \uac10\uc18c \ucd94\uc138\uc774\uc9c0\ub9cc \uc77c\ubd80 \ubaa8\ub378\uc740 \uc99d\uac00\ub85c \uc608\uce21",
+      "\ud2b8\ub80c\ub4dc \ubc29\ud5a5 \uc608\uce21\uc774 \ubcc0\ud654\ub7c9 \ud06c\uae30 \uc608\uce21\ubcf4\ub2e4 \uc911\uc694\ud568",
+      "\ubaa8\ub4e0 \ubaa8\ub378\uc774 \uc2e4\uc81c \uc131\ub2a5 \ubcc0\ud654 \ud328\ud134\uc744 \uc644\uc804\ud788 \ud3ec\ucc29\ud558\uc9c0 \ubabb\ud568"
+    ]
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "v4_1_temporal_predictions": {
+    "device_envelope_temporal": {
+      "initial_phase": {
+        "base_performance": {
+          "write_bw": 100,
+          "read_bw": 100
+        },
+        "performance_factor": 0.3,
+        "adjusted_write_bw": 23.72112,
+        "adjusted_read_bw": 23.72112,
+        "s_max": 23916.728004923076,
+        "io_contention": 0.76,
+        "stability_factor": 1.02,
+        "adaptation_boost": 1.02,
+        "performance_analysis": {
+          "phase": "initial_phase",
+          "performance_factor": 0.3,
+          "io_intensity": 0.8,
+          "stability": 0.2,
+          "adaptation_factor": 0.1,
+          "performance_improvement": true
+        }
+      },
+      "middle_phase": {
+        "base_performance": {
+          "write_bw": 537.42041015625,
+          "read_bw": 583.029296875
+        },
+        "performance_factor": 0.6,
+        "adjusted_write_bw": 305.39452227539067,
+        "adjusted_read_bw": 331.31222824218753,
+        "s_max": 307912.8524898462,
+        "io_contention": 0.8200000000000001,
+        "stability_factor": 1.05,
+        "adaptation_boost": 1.1,
+        "performance_analysis": {
+          "phase": "middle_phase",
+          "performance_factor": 0.6,
+          "io_intensity": 0.6,
+          "stability": 0.5,
+          "adaptation_factor": 0.5,
+          "performance_improvement": true
+        }
+      },
+      "final_phase": {
+        "base_performance": {
+          "write_bw": 1074.8408203125,
+          "read_bw": 1166.05859375
+        },
+        "performance_factor": 0.9,
+        "adjusted_write_bw": 1084.8634959937501,
+        "adjusted_read_bw": 1176.9318569250001,
+        "s_max": 1093809.447283791,
+        "io_contention": 0.88,
+        "stability_factor": 1.08,
+        "adaptation_boost": 1.18,
+        "performance_analysis": {
+          "phase": "final_phase",
+          "performance_factor": 0.9,
+          "io_intensity": 0.4,
+          "stability": 0.8,
+          "adaptation_factor": 0.9,
+          "performance_improvement": true
+        }
+      }
+    },
+    "closed_ledger_temporal": {
+      "initial_phase": {
+        "base_performance": {
+          "write_bw": 100,
+          "read_bw": 100
+        },
+        "performance_factor": 0.3,
+        "adjusted_bw": 30.6,
+        "s_max": 30852.332307692308,
+        "adaptation_factor": 0.1
+      },
+      "middle_phase": {
+        "base_performance": {
+          "write_bw": 537.42041015625,
+          "read_bw": 583.029296875
+        },
+        "performance_factor": 0.6,
+        "adjusted_bw": 354.697470703125,
+        "s_max": 357622.36061538465,
+        "adaptation_factor": 0.5
+      },
+      "final_phase": {
+        "base_performance": {
+          "write_bw": 1074.8408203125,
+          "read_bw": 1166.05859375
+        },
+        "performance_factor": 0.9,
+        "adjusted_bw": 1141.480951171875,
+        "s_max": 1150893.7787076922,
+        "adaptation_factor": 0.9
+      }
+    },
+    "dynamic_simulation_temporal": {
+      "initial_phase": {
+        "base_performance": {
+          "write_bw": 100,
+          "read_bw": 100
+        },
+        "performance_factor": 0.3,
+        "adjusted_bw": 31.212000000000003,
+        "dynamic_smax": 31469.378953846157,
+        "stability": 0.2,
+        "adaptation_factor": 0.1
+      },
+      "middle_phase": {
+        "base_performance": {
+          "write_bw": 537.42041015625,
+          "read_bw": 583.029296875
+        },
+        "performance_factor": 0.6,
+        "adjusted_bw": 372.43234423828125,
+        "dynamic_smax": 375503.4786461538,
+        "stability": 0.5,
+        "adaptation_factor": 0.5
+      },
+      "final_phase": {
+        "base_performance": {
+          "write_bw": 1074.8408203125,
+          "read_bw": 1166.05859375
+        },
+        "performance_factor": 0.9,
+        "adjusted_bw": 1232.7994272656251,
+        "dynamic_smax": 1242965.2810043078,
+        "stability": 0.8,
+        "adaptation_factor": 0.9
+      }
+    }
+  },
+  "phase_performance": {
+    "initial_phase": {
+      "device_smax": 23916.728004923076,
+      "ledger_smax": 30852.332307692308,
+      "dynamic_smax": 31469.378953846157,
+      "avg_prediction": 28746.146422153848
+    },
+    "middle_phase": {
+      "device_smax": 307912.8524898462,
+      "ledger_smax": 357622.36061538465,
+      "dynamic_smax": 375503.4786461538,
+      "avg_prediction": 347012.89725046157
+    },
+    "final_phase": {
+      "device_smax": 1093809.447283791,
+      "ledger_smax": 1150893.7787076922,
+      "dynamic_smax": 1242965.2810043078,
+      "avg_prediction": 1162556.168998597
+    }
+  },
+  "phase_a_performance_data": {
+    "initial": {
+      "write_bw": 0,
+      "read_bw": 0
+    },
+    "degraded": {
+      "write_bw": 1074.8408203125,
+      "read_bw": 1166.05859375
+    }
+  },
+  "temporal_factors": {
+    "initial_phase": {
+      "base_performance": {
+        "write_bw": 100,
+        "read_bw": 100
+      },
+      "performance_factor": 0.3,
+      "io_intensity": 0.8,
+      "stability": 0.2,
+      "adaptation_factor": 0.1
+    },
+    "middle_phase": {
+      "base_performance": {
+        "write_bw": 537.42041015625,
+        "read_bw": 583.029296875
+      },
+      "performance_factor": 0.6,
+      "io_intensity": 0.6,
+      "stability": 0.5,
+      "adaptation_factor": 0.5
+    },
+    "final_phase": {
+      "base_performance": {
+        "write_bw": 1074.8408203125,
+        "read_bw": 1166.05859375
+      },
+      "performance_factor": 0.9,
+      "io_intensity": 0.4,
+      "stability": 0.8,
+      "adaptation_factor": 0.9
+    }
+  }
+}

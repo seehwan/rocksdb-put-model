@@ -1,0 +1,151 @@
+{
+  "phase_characteristics": {
+    "initial_phase": {
+      "avg_ops_per_sec": 147306.67294422083,
+      "max_ops_per_sec": "1946448",
+      "min_ops_per_sec": "160",
+      "std_ops_per_sec": 98587.73653812551,
+      "cv": 0.6692686391434335,
+      "trend": "decreasing",
+      "stability": "unstable",
+      "sample_count": 6956,
+      "phase_type": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04",
+      "operational_characteristics": {
+        "high_performance": true,
+        "rapid_changes": true,
+        "unstable": true,
+        "description": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04"
+      }
+    },
+    "middle_phase": {
+      "avg_ops_per_sec": 116080.67701744297,
+      "max_ops_per_sec": "654823",
+      "min_ops_per_sec": "49445",
+      "std_ops_per_sec": 58085.13923529384,
+      "cv": 0.5003859447388097,
+      "trend": "decreasing",
+      "stability": "unstable",
+      "sample_count": 20868,
+      "phase_type": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04",
+      "operational_characteristics": {
+        "compaction_active": true,
+        "stabilizing": true,
+        "moderate_stability": true,
+        "description": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04"
+      }
+    },
+    "final_phase": {
+      "avg_ops_per_sec": 109299.11098332374,
+      "max_ops_per_sec": "250993",
+      "min_ops_per_sec": "49195",
+      "std_ops_per_sec": 51502.01945557702,
+      "cv": 0.47120254677492224,
+      "trend": "increasing",
+      "stability": "stable",
+      "sample_count": 6956,
+      "phase_type": "\uc548\uc815\ud654 \uad6c\uac04",
+      "operational_characteristics": {
+        "stabilized": true,
+        "consistent_performance": true,
+        "description": "\uc548\uc815\ud654 \uad6c\uac04"
+      }
+    }
+  },
+  "model_evaluation": {
+    "phase_comparison": {
+      "initial_phase": {
+        "actual_avg_qps": 147306.67294422083,
+        "model_prediction": 965261.6755199999,
+        "accuracy": -455.2735570136093,
+        "difference": 817955.0025757791,
+        "relative_error": 555.2735570136093,
+        "phase_type": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04",
+        "stability": "unstable",
+        "trend": "decreasing",
+        "cv": 0.6692686391434335,
+        "operational_characteristics": {
+          "high_performance": true,
+          "rapid_changes": true,
+          "unstable": true,
+          "description": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04"
+        }
+      },
+      "middle_phase": {
+        "actual_avg_qps": 116080.67701744297,
+        "model_prediction": 852512.8680460774,
+        "accuracy": -534.414107455605,
+        "difference": 736432.1910286344,
+        "relative_error": 634.414107455605,
+        "phase_type": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04",
+        "stability": "unstable",
+        "trend": "decreasing",
+        "cv": 0.5003859447388097,
+        "operational_characteristics": {
+          "compaction_active": true,
+          "stabilizing": true,
+          "moderate_stability": true,
+          "description": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04"
+        }
+      },
+      "final_phase": {
+        "actual_avg_qps": 109299.11098332374,
+        "model_prediction": 242025.06409090527,
+        "accuracy": -21.433698694797364,
+        "difference": 132725.95310758153,
+        "relative_error": 121.43369869479737,
+        "phase_type": "\uc548\uc815\ud654 \uad6c\uac04",
+        "stability": "stable",
+        "trend": "increasing",
+        "cv": 0.47120254677492224,
+        "operational_characteristics": {
+          "stabilized": true,
+          "consistent_performance": true,
+          "description": "\uc548\uc815\ud654 \uad6c\uac04"
+        }
+      }
+    },
+    "accuracy_analysis": {
+      "overall_accuracy": -337.04045438800387,
+      "accuracy_by_phase": {
+        "initial_phase": -455.2735570136093,
+        "middle_phase": -534.414107455605,
+        "final_phase": -21.433698694797364
+      },
+      "best_phase": "final_phase",
+      "worst_phase": "middle_phase"
+    },
+    "performance_trends": {
+      "actual_trend": "decreasing",
+      "predicted_trend": "decreasing",
+      "trend_accuracy": false,
+      "degradation_prediction": 25.801656640014563
+    },
+    "model_improvements": {
+      "rocksdb_characteristics_based": true,
+      "operational_phases_analysis": true,
+      "stability_aware_evaluation": true,
+      "performance_trend_analysis": true,
+      "phase_specific_modeling": true
+    },
+    "rocksdb_characteristics_analysis": {
+      "phase_segmentation_method": "rocksdb_operational_characteristics",
+      "segmentation_criteria": [
+        "performance_changes",
+        "stability_analysis",
+        "operational_characteristics"
+      ],
+      "phase_identification": {
+        "initial_phase": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04",
+        "middle_phase": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04",
+        "final_phase": "\uc548\uc815\ud654 \uad6c\uac04"
+      },
+      "evaluation_improvements": [
+        "RocksDB \ub0b4\ubd80 \ub3d9\uc791 \ud2b9\uc131 \ubc18\uc601",
+        "\uad6c\uac04\ubcc4 \uc548\uc815\uc131 \ud2b9\uc131 \uace0\ub824",
+        "\uc131\ub2a5 \ubcc0\ud654 \ud328\ud134 \ubd84\uc11d",
+        "\uc6b4\uc601 \ud2b9\uc131 \uae30\ubc18 \ud3c9\uac00"
+      ]
+    }
+  },
+  "analysis_time": "2025-09-19T11:13:46.366347"
+}

@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocksDB Put-Rate Model Analysis - Comprehensive Findings</title>
+    <style>
+        body {
+            font-family: 'Liberation Serif', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        h4 {
+            color: #7f8c8d;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .discovery-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .discovery-success {
+            border-left: 5px solid #27ae60;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+        }
+        
+        .discovery-failure {
+            border-left: 5px solid #e74c3c;
+            background: linear-gradient(135deg, #ffb3ba 0%, #ffc3a0 100%);
+        }
+        
+        .discovery-insight {
+            border-left: 5px solid #f39c12;
+            background: linear-gradient(135deg, #ffd93d 0%, #ff6b6b 100%);
+            color: white;
+        }
+        
+        .discovery-insight h3, .discovery-insight h4 {
+            color: white;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #e3f2fd;
+            transition: background-color 0.3s;
+        }
+        
+        .model-rank-1 {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            font-weight: bold;
+        }
+        
+        .model-rank-2 {
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+            font-weight: bold;
+        }
+        
+        .model-rank-3 {
+            background: linear-gradient(135deg, #cd7f32 0%, #deb887 100%);
+            font-weight: bold;
+        }
+        
+        .metric-excellent {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        
+        .metric-good {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        
+        .metric-poor {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .insight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .insight-box h3, .insight-box h4 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        .phase-indicator {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        .phase-initial {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .phase-middle {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+        
+        .phase-final {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+        
+        .correlation-negative {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .correlation-positive {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-card h4 {
+            margin: 0 0 10px 0;
+            color: white;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .paradox-box {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .paradox-box h3 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 10px 0;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #636e72 0%, #2d3436 100%);
+            color: white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 RocksDB Put-Rate Model Analysis</h1>
+            <p><strong>Comprehensive Findings & Discoveries</strong></p>
+            <p>분석 기간: 2025-09-12 ~ 2025-09-20</p>
+            <p>모델 분석: v4, v4.1, v4.2, V5 | 실험 범위: Phase-A, Phase-B, Phase-C</p>
+        </div>
+
+        <h2>📊 1. Phase Segmentation Discovery</h2>
+        
+        <div class="discovery-card discovery-success">
+            <h3>Performance-Based Segmentation Algorithm</h3>
+            <p><strong>핵심 발견</strong>: 시간 기반이 아닌 <span class="highlight">성능 변화 패턴 기반</span> 구간 분할이 더 의미있음</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Duration</th>
+                        <th>Characteristics</th>
+                        <th>Key Metrics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="phase-indicator phase-initial">Initial</span></td>
+                        <td>0.14 hours</td>
+                        <td>빈 DB, 빠른 성능 변화</td>
+                        <td>평균 65.97 MB/s, CV: 0.538</td>
+                    </tr>
+                    <tr>
+                        <td><span class="phase-indicator phase-middle">Middle</span></td>
+                        <td>31.79 hours</td>
+                        <td>컴팩션 본격화, 안정화 진행</td>
+                        <td>평균 16.95 MB/s, CV: 0.272</td>
+                    </tr>
+                    <tr>
+                        <td><span class="phase-indicator phase-final">Final</span></td>
+                        <td>64.68 hours</td>
+                        <td>완전 안정화</td>
+                        <td>평균 12.76 MB/s, CV: 0.041</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🏆 2. Model Performance Rankings</h2>
+        
+        <h3>2.1 QPS 평균값 기준 성능</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Model</th>
+                    <th>Initial</th>
+                    <th>Middle</th>
+                    <th>Final</th>
+                    <th>Average</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="model-rank-1">
+                    <td>1위</td>
+                    <td><strong>v4 Model</strong></td>
+                    <td>66.7%</td>
+                    <td>90.8%</td>
+                    <td>86.6%</td>
+                    <td><strong>81.4%</strong></td>
+                </tr>
+                <tr class="model-rank-2">
+                    <td>2위</td>
+                    <td><strong>v4.1 Temporal</strong></td>
+                    <td>68.5%</td>
+                    <td>96.9%</td>
+                    <td>70.5%</td>
+                    <td><strong>78.6%</strong></td>
+                </tr>
+                <tr class="model-rank-3">
+                    <td>3위</td>
+                    <td><strong>V5 Adaptive</strong></td>
+                    <td>86.4%</td>
+                    <td>85.9%</td>
+                    <td>10.1%</td>
+                    <td><strong>60.8%</strong></td>
+                </tr>
+                <tr>
+                    <td>4위</td>
+                    <td><strong>v4.2 Enhanced</strong></td>
+                    <td>23.9%</td>
+                    <td>96.0%</td>
+                    <td>-28.5%</td>
+                    <td><strong>30.5%</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2.2 트렌드 추적 능력 (성능 변화 패턴)</h3>
+        
+        <div class="discovery-card discovery-insight">
+            <h4>실제 트렌드: 감소 (-21.0%)</h4>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>예측 트렌드</th>
+                        <th>방향 정확도</th>
+                        <th>트렌드 점수</th>
+                        <th>순위</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="model-rank-1">
+                        <td><strong>v4 Model</strong></td>
+                        <td>감소 (-48.6%)</td>
+                        <td><span class="metric-excellent">100%</span></td>
+                        <td><span class="metric-excellent">0.617</span></td>
+                        <td>1위</td>
+                    </tr>
+                    <tr>
+                        <td><strong>v4.1 Temporal</strong></td>
+                        <td>증가 (+49.5%)</td>
+                        <td><span class="metric-poor">0%</span></td>
+                        <td><span class="metric-poor">0.082</span></td>
+                        <td>2위</td>
+                    </tr>
+                    <tr>
+                        <td><strong>v4.2 Enhanced</strong></td>
+                        <td>증가 (+656%)</td>
+                        <td><span class="metric-poor">0%</span></td>
+                        <td><span class="metric-poor">0.000</span></td>
+                        <td>3위</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="paradox-box">
+            <h3>⚡ 핵심 발견: QPS 평균값 정확도 ≠ 트렌드 추적 능력</h3>
+            <p><strong>v4.1 Temporal</strong>: Middle Phase 96.9% 정확도 but 트렌드 방향 완전 오류</p>
+            <p><strong>v4 Model</strong>: 유일하게 올바른 트렌드 예측 (감소)</p>
+        </div>
+
+        <h2>🔬 3. WA/RA Modeling Analysis</h2>
+        
+        <h3>3.1 모델별 WA/RA 접근 방식</h3>
+        
+        <div class="summary-stats">
+            <div class="stat-card">
+                <h4>v4 Model</h4>
+                <div class="stat-value">0.00</div>
+                <p>Implicit/Indirect</p>
+                <p>Device Envelope에 암묵적 포함</p>
+            </div>
+            <div class="stat-card">
+                <h4>v4.1 Temporal</h4>
+                <div class="stat-value">0.20</div>
+                <p>Temporal Implicit</p>
+                <p>시기별 간접 반영</p>
+            </div>
+            <div class="stat-card">
+                <h4>v4.2 Enhanced</h4>
+                <div class="stat-value">1.00</div>
+                <p>Explicit Level-wise</p>
+                <p>레벨별 시기별 명시적 계산</p>
+            </div>
+        </div>
+
+        <h3>3.2 WA/RA 모델링의 역설</h3>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>WA/RA 정교함</th>
+                    <th>WA/RA 정확도</th>
+                    <th>성능 예측 정확도</th>
+                    <th>결과</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>v4.2</strong></td>
+                    <td><span class="metric-excellent">1위 (1.00)</span></td>
+                    <td><span class="metric-excellent">1위 (0.813)</span></td>
+                    <td><span class="metric-poor">4위 (30.5%)</span></td>
+                    <td>⚡ 역설</td>
+                </tr>
+                <tr>
+                    <td><strong>v4</strong></td>
+                    <td><span class="metric-poor">3위 (0.00)</span></td>
+                    <td><span class="metric-good">2위 (0.534)</span></td>
+                    <td><span class="metric-excellent">1위 (81.4%)</span></td>
+                    <td>⚡ 역설</td>
+                </tr>
+                <tr>
+                    <td><strong>v4.1</strong></td>
+                    <td><span class="metric-good">2위 (0.20)</span></td>
+                    <td><span class="metric-good">3위 (0.532)</span></td>
+                    <td><span class="metric-good">2위 (78.6%)</span></td>
+                    <td>적절</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>📈 4. WA/RA와 Put Rate 간의 음의 상관관계</h2>
+        
+        <div class="discovery-card discovery-success">
+            <h3>강력한 음의 상관관계 확인</h3>
+            
+            <h4>상관계수 (Pearson)</h4>
+            <ul>
+                <li><strong>WA vs Put Rate</strong>: <span class="correlation-negative">-0.981</span> (매우 강한 음의 상관관계)</li>
+                <li><strong>RA vs Put Rate</strong>: <span class="correlation-negative">-0.990</span> (거의 완벽한 음의 상관관계)</li>
+                <li><strong>Combined vs Put Rate</strong>: <span class="correlation-negative">-0.984</span> (매우 강한 음의 상관관계)</li>
+            </ul>
+            
+            <h4>실제 관찰된 음의 관계</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>WA</th>
+                        <th>RA</th>
+                        <th>Combined</th>
+                        <th>Put Rate</th>
+                        <th>I/O Overhead</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="phase-indicator phase-initial">Initial</span></td>
+                        <td>1.2</td>
+                        <td>0.1</td>
+                        <td>1.3</td>
+                        <td>138,769</td>
+                        <td>30.0%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="phase-indicator phase-middle">Middle</span></td>
+                        <td>2.5</td>
+                        <td>0.8</td>
+                        <td>3.3</td>
+                        <td>114,472</td>
+                        <td>230.0%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="phase-indicator phase-final">Final</span></td>
+                        <td>3.2</td>
+                        <td>1.1</td>
+                        <td>4.3</td>
+                        <td>109,678</td>
+                        <td>330.0%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p><strong>명확한 패턴</strong>: WA/RA ↑ → I/O Overhead ↑ → Put Rate ↓</p>
+        </div>
+
+        <h2>🎯 5. 구간별 핵심 영향 요소</h2>
+        
+        <div class="discovery-card discovery-insight">
+            <h3>Phase-Specific Key Factors</h3>
+            
+            <h4><span class="phase-indicator phase-initial">Initial Phase</span>: Device Performance 중심</h4>
+            <ol>
+                <li><strong>Device Write BW</strong> (Very High) - 빈 DB 상태에서 장치 성능이 주요 제약</li>
+                <li><strong>System Volatility</strong> (High) - 높은 변동성이 평균 성능에 영향</li>
+                <li><strong>Trend Slope</strong> (High) - 급격한 성능 감소 추세</li>
+            </ol>
+            
+            <h4><span class="phase-indicator phase-middle">Middle Phase</span>: Degradation + WA 중심</h4>
+            <ol>
+                <li><strong>Device Degradation</strong> (Very High) - 장치 성능 저하가 주요 제약</li>
+                <li><strong>WA</strong> (High) - 컴팩션 본격화로 WA 영향 증가</li>
+                <li><strong>Compaction Intensity</strong> (High) - 컴팩션 본격화가 성능에 직접 영향</li>
+            </ol>
+            
+            <h4><span class="phase-indicator phase-final">Final Phase</span>: Combined Amplification 중심</h4>
+            <ol>
+                <li><strong>Combined Amplification (WA+RA)</strong> (Very High) - 높은 WA+RA가 주요 제약</li>
+                <li><strong>System Stability</strong> (High) - 높은 안정성으로 일관된 성능 유지</li>
+                <li><strong>Level Distribution</strong> (High) - 깊은 레벨까지 형성된 복잡한 컴팩션</li>
+            </ol>
+        </div>
+
+        <h2>⚡ 6. Major Paradoxes Discovered</h2>
+        
+        <div class="paradox-box">
+            <h3>6.1 단순함의 역설 (The Simplicity Paradox)</h3>
+            <p><strong>"단순함이 복잡함을 이긴다"</strong></p>
+            <ul>
+                <li>가장 단순한 v4 Model → 가장 정확한 예측</li>
+                <li>가장 복잡한 v4.2 Enhanced → 가장 부정확한 예측</li>
+                <li>적절한 복잡도(v4.1) → 차선책</li>
+            </ul>
+        </div>
+
+        <div class="paradox-box">
+            <h3>6.2 WA/RA 모델링의 역설 (The WA/RA Modeling Paradox)</h3>
+            <p><strong>"정교한 WA/RA 모델링의 함정"</strong></p>
+            <ul>
+                <li>완벽한 WA/RA 모델링 → 최하위 성능 예측</li>
+                <li>WA/RA 완전 무시 → 최고 성능 예측</li>
+                <li>FillRandom 워크로드에서는 다른 요인이 더 중요</li>
+            </ul>
+        </div>
+
+        <div class="paradox-box">
+            <h3>6.3 트렌드 예측의 역설 (The Trend Prediction Paradox)</h3>
+            <p><strong>"QPS 정확도 ≠ 트렌드 추적 능력"</strong></p>
+            <ul>
+                <li>v4.1: Middle Phase 96.9% 정확도 but 트렌드 방향 완전 오류</li>
+                <li>v4: 전체적으로 낮은 정확도 but 유일한 정확한 트렌드 예측</li>
+            </ul>
+        </div>
+
+        <h2>🔬 7. Device Envelope vs WA/RA Relationship</h2>
+        
+        <div class="discovery-card discovery-failure">
+            <h3>이론적 모델의 완전한 실패</h3>
+            
+            <h4>이론 vs 실제 성능 격차</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>이론적 S_max</th>
+                        <th>실제 QPS</th>
+                        <th>차이 배수</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="phase-indicator phase-initial">Initial</span></td>
+                        <td>3,458,788</td>
+                        <td>138,769</td>
+                        <td><span class="metric-poor">25배</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="phase-indicator phase-middle">Middle</span></td>
+                        <td>366,635</td>
+                        <td>114,472</td>
+                        <td><span class="metric-poor">3.2배</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="phase-indicator phase-final">Final</span></td>
+                        <td>281,371</td>
+                        <td>109,678</td>
+                        <td><span class="metric-poor">2.6배</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p><strong>핵심 발견</strong>: Device 사용률 < 50% → <span class="highlight">소프트웨어 병목이 더 중요</span></p>
+        </div>
+
+        <h2>🚀 8. V5 Adaptive Model Innovation</h2>
+        
+        <div class="discovery-card discovery-success">
+            <h3>구간별 특화 접근법</h3>
+            
+            <h4>V5 Design Philosophy</h4>
+            <ul>
+                <li><strong>Adaptive Strategy</strong>: Phase-specific factor weighting</li>
+                <li><strong>Core Philosophy</strong>: 각 구간에서 가장 중요한 요소들에 집중</li>
+                <li><strong>Complexity Balance</strong>: 필요한 만큼만 복잡하게</li>
+                <li><strong>Trend Awareness</strong>: 실제 성능 감소 트렌드 반영</li>
+            </ul>
+            
+            <h4>V5 구간별 모델</h4>
+            <div class="code-block">
+# Initial Phase: Device Performance Focused (86.4% 성공)
+S_max = (device_write_bw * 1024 * 1024 / 1040) * (1 - cv * 0.3) * (1 + trend_slope * 0.1)
+
+# Middle Phase: Degradation + Amplification Focused (85.9% 성공)
+S_max = (degraded_write_bw * 1024 * 1024 / 1040) / ((1 + (wa-1)*0.4) * (1 + compaction_intensity*0.2))
+
+# Final Phase: Amplification + Stability Focused (10.1% 실패)
+S_max = (base_performance / ((wa + ra) * 0.3)) * (1 + (1-cv) * 0.2) / (1 + level_depth * 0.05)
+            </div>
+        </div>
+
+        <h2>💡 9. Critical Insights</h2>
+        
+        <div class="insight-box">
+            <h3>9.1 모델링 접근법의 교훈</h3>
+            <ul>
+                <li><strong>핵심 제약 집중</strong>: 가장 중요한 제약 요소에만 집중 (v4의 성공)</li>
+                <li><strong>적절한 복잡도</strong>: 필요할 때만 복잡성 추가 (v4.1의 부분 성공)</li>
+                <li><strong>실제 데이터 우선</strong>: 이론보다 실제 측정 데이터 중시</li>
+                <li><strong>트렌드 인식</strong>: 평균값뿐만 아니라 변화 패턴도 고려</li>
+            </ul>
+        </div>
+
+        <div class="insight-box">
+            <h3>9.2 RocksDB 성능 이해</h3>
+            <ul>
+                <li><strong>Device Performance</strong>: 여전히 가장 중요한 요소</li>
+                <li><strong>WA/RA</strong>: 강한 음의 상관관계 but 절대적 제약은 아님</li>
+                <li><strong>Phase Transition</strong>: 구간별로 완전히 다른 성능 특성</li>
+                <li><strong>Software Bottleneck</strong>: Hardware보다 Software 제약이 더 중요</li>
+            </ul>
+        </div>
+
+        <h2>📋 10. Model Architecture Comparison</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Core Approach</th>
+                    <th>Key Strength</th>
+                    <th>Main Weakness</th>
+                    <th>Best Use Case</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="model-rank-1">
+                    <td><strong>v4</strong></td>
+                    <td>Device Envelope</td>
+                    <td>단순하고 효과적</td>
+                    <td>WA/RA 명시적 미고려</td>
+                    <td>전체적 성능 예측</td>
+                </tr>
+                <tr class="model-rank-2">
+                    <td><strong>v4.1</strong></td>
+                    <td>Temporal Enhanced</td>
+                    <td>Middle Phase 최고 성능</td>
+                    <td>트렌드 방향 오류</td>
+                    <td>특정 구간 정밀 예측</td>
+                </tr>
+                <tr class="model-rank-3">
+                    <td><strong>V5</strong></td>
+                    <td>Adaptive Phase-Specific</td>
+                    <td>구간별 특화</td>
+                    <td>Final Phase 실패</td>
+                    <td>연구 및 개발</td>
+                </tr>
+                <tr>
+                    <td><strong>v4.2</strong></td>
+                    <td>Level-wise Temporal</td>
+                    <td>혁신적 WA/RA 모델링</td>
+                    <td>과도한 복잡성</td>
+                    <td>연구 목적</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🎯 11. Final Conclusions</h2>
+        
+        <div class="discovery-card discovery-success">
+            <h3>핵심 발견사항</h3>
+            
+            <h4>1. 성능 예측의 새로운 패러다임</h4>
+            <ul>
+                <li><strong>단순함 > 복잡함</strong>: v4의 Device Envelope 접근법이 최고</li>
+                <li><strong>핵심 제약 집중</strong>: 모든 요소보다 핵심 요소에 집중</li>
+                <li><strong>실제 데이터 기반</strong>: 이론적 모델보다 실제 측정 데이터</li>
+            </ul>
+            
+            <h4>2. WA/RA 모델링의 새로운 이해</h4>
+            <ul>
+                <li><strong>강한 음의 상관관계</strong>: WA/RA ↑ → Put Rate ↓ 확실</li>
+                <li><strong>모델링 방식의 중요성</strong>: 어떻게 모델링하느냐가 핵심</li>
+                <li><strong>암묵적 반영의 효과</strong>: 명시적 계산보다 효과적일 수 있음</li>
+            </ul>
+            
+            <h4>3. 구간별 특성의 발견</h4>
+            <ul>
+                <li><strong>Initial</strong>: Device Performance 절대적</li>
+                <li><strong>Middle</strong>: Device Degradation + WA 핵심</li>
+                <li><strong>Final</strong>: Combined Amplification 주요 제약</li>
+            </ul>
+        </div>
+
+        <h2>🚀 12. Innovation Contributions</h2>
+        
+        <div class="summary-stats">
+            <div class="stat-card">
+                <h4>Research Contributions</h4>
+                <div class="stat-value">4</div>
+                <p>Performance-Based Segmentation<br>
+                WA/RA Modeling Paradox<br>
+                Trend vs Accuracy Separation<br>
+                Phase-Specific Analysis</p>
+            </div>
+            <div class="stat-card">
+                <h4>Technical Innovations</h4>
+                <div class="stat-value">4</div>
+                <p>Level-wise Temporal WA/RA<br>
+                Adaptive Phase Modeling<br>
+                Device Degradation Integration<br>
+                Negative Correlation Analysis</p>
+            </div>
+            <div class="stat-card">
+                <h4>Models Developed</h4>
+                <div class="stat-value">4</div>
+                <p>v4 (Device Envelope)<br>
+                v4.1 (Temporal Enhanced)<br>
+                v4.2 (Level-wise Enhanced)<br>
+                V5 (Adaptive)</p>
+            </div>
+        </div>
+
+        <h2>📋 13. Practical Guidelines</h2>
+        
+        <div class="discovery-card discovery-success">
+            <h3>모델 선택 가이드라인</h3>
+            
+            <h4>용도별 모델 선택</h4>
+            <ul>
+                <li><strong>전체적 성능 예측</strong>: v4 Model 사용</li>
+                <li><strong>Middle Phase 정밀 예측</strong>: v4.1 Temporal 사용</li>
+                <li><strong>트렌드 분석</strong>: v4 Model만 신뢰 가능</li>
+                <li><strong>연구 목적</strong>: v4.2 Enhanced의 혁신적 접근법 참고</li>
+            </ul>
+            
+            <h4>운영 환경 적용</h4>
+            <ul>
+                <li><strong>Production</strong>: v4 Model (단순하고 신뢰성 높음)</li>
+                <li><strong>Capacity Planning</strong>: v4 Model (정확한 트렌드 예측)</li>
+                <li><strong>Performance Tuning</strong>: v4.1 Temporal (특정 구간 최적화)</li>
+                <li><strong>Research & Development</strong>: V5 Adaptive (구간별 특화)</li>
+            </ul>
+        </div>
+
+        <h2>🎯 14. Future Directions</h2>
+        
+        <div class="discovery-card discovery-insight">
+            <h3>향후 연구 방향</h3>
+            
+            <h4>즉시 개선 방안</h4>
+            <ul>
+                <li><strong>Final Phase 모델링</strong>: 여전히 해결되지 않은 과제</li>
+                <li><strong>하이브리드 접근</strong>: 구간별 최적 모델 조합</li>
+                <li><strong>Real-time Adaptation</strong>: 실시간 성능 데이터 기반 동적 조정</li>
+            </ul>
+            
+            <h4>장기 연구 과제</h4>
+            <ul>
+                <li><strong>다른 워크로드 확장</strong>: RandomRead, MixGraph 등</li>
+                <li><strong>Machine Learning Integration</strong>: ML 기반 패턴 학습</li>
+                <li><strong>Production Deployment</strong>: 실제 운영 환경 적용</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <h3>🏆 Summary Achievement</h3>
+            <p><strong>RocksDB 성능 예측의 새로운 패러다임 발견</strong></p>
+            <p>단순함의 효과성 | WA/RA 모델링의 한계 | 구간별 특성의 중요성 | 트렌드 vs 정확도의 분리</p>
+            <br>
+            <p><strong>Analysis Period</strong>: 2025-09-12 ~ 2025-09-20</p>
+            <p><strong>Total Models</strong>: v4, v4.1, v4.2, V5</p>
+            <p><strong>Key Innovation</strong>: Performance-Based Segmentation + Phase-Specific Modeling</p>
+        </div>
+    </div>
+</body>
+</html>

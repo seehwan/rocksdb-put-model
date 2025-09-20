@@ -1,0 +1,789 @@
+{
+  "analysis_metadata": {
+    "analysis_date": "2025-09-20T04:24:33.957390",
+    "analysis_type": "WA, RA, Device Envelope Relationship Analysis",
+    "focus": "How WA, RA, and Device Envelope interact to determine Put Rate",
+    "theoretical_foundation": "S_max = f(Device_Envelope, WA, RA)"
+  },
+  "theoretical_model": {
+    "fundamental_equation": {
+      "description": "Put Rate\ub294 WA, RA, Device Envelope\uc758 \ud568\uc218",
+      "equation": "S_max = f(Device_Envelope, WA, RA)",
+      "detailed_equation": "S_max = min(Write_Constraint, Read_Constraint, Mixed_IO_Constraint)"
+    },
+    "constraint_equations": {
+      "write_constraint": {
+        "equation": "S_max_write = Device_Write_BW / (WA * Record_Size)",
+        "description": "Write \ub300\uc5ed\ud3ed \uc81c\uc57d\uc5d0 \uc758\ud55c Put Rate \ud55c\uacc4"
+      },
+      "read_constraint": {
+        "equation": "S_max_read = Device_Read_BW / (RA * Record_Size)",
+        "description": "Read \ub300\uc5ed\ud3ed \uc81c\uc57d\uc5d0 \uc758\ud55c Put Rate \ud55c\uacc4 (FillRandom\uc5d0\uc11c\ub294 \ud574\ub2f9 \uc5c6\uc74c)"
+      },
+      "mixed_io_constraint": {
+        "equation": "S_max_mixed = Device_Envelope_Capacity / ((WA + RA) * Record_Size)",
+        "description": "\ud63c\ud569 I/O \ub300\uc5ed\ud3ed \uc81c\uc57d\uc5d0 \uc758\ud55c Put Rate \ud55c\uacc4"
+      }
+    },
+    "interaction_factors": {
+      "wa_envelope_interaction": {
+        "description": "WA\uac00 \ub192\uc744\uc218\ub85d Device Write BW \uc694\uad6c\ub7c9 \uc99d\uac00",
+        "formula": "Required_Write_BW = User_Write_Rate * WA"
+      },
+      "ra_envelope_interaction": {
+        "description": "RA\uac00 \ub192\uc744\uc218\ub85d Device Read BW \uc694\uad6c\ub7c9 \uc99d\uac00",
+        "formula": "Required_Read_BW = User_Write_Rate * RA"
+      },
+      "envelope_efficiency_impact": {
+        "description": "WA+RA\uac00 \ub192\uc744\uc218\ub85d Device Envelope \ud6a8\uc728\uc131 \uc800\ud558",
+        "formula": "Effective_Envelope = Base_Envelope * (1 - (WA+RA-2) * degradation_factor)"
+      }
+    }
+  },
+  "device_envelope_data": {
+    "initial_state": {
+      "write_bw": 4116.6,
+      "read_bw": 5487.2,
+      "mixed_io_efficiency": 0.85,
+      "envelope_capacity": 4800.0
+    },
+    "degraded_state": {
+      "write_bw": 1074.8,
+      "read_bw": 1166.1,
+      "mixed_io_efficiency": 0.75,
+      "envelope_capacity": 1200.0
+    },
+    "envelope_characteristics": {
+      "write_read_ratio_optimal": 0.75,
+      "contention_factor": 0.1,
+      "efficiency_degradation_rate": 0.12
+    }
+  },
+  "actual_wa_ra_data": {
+    "initial_phase": {
+      "observed_wa": 1.2,
+      "observed_ra": 0.1,
+      "user_write_rate": 65.97,
+      "system_write_rate": 79.16,
+      "system_read_rate": 6.6,
+      "total_io_demand": 85.76,
+      "device_utilization": 0.18
+    },
+    "middle_phase": {
+      "observed_wa": 2.5,
+      "observed_ra": 0.8,
+      "user_write_rate": 16.95,
+      "system_write_rate": 42.38,
+      "system_read_rate": 13.56,
+      "total_io_demand": 55.94,
+      "device_utilization": 0.47
+    },
+    "final_phase": {
+      "observed_wa": 3.2,
+      "observed_ra": 1.1,
+      "user_write_rate": 12.76,
+      "system_write_rate": 40.83,
+      "system_read_rate": 14.04,
+      "total_io_demand": 54.87,
+      "device_utilization": 0.46
+    }
+  },
+  "relationship_analysis": {
+    "initial_phase": {
+      "wa_ra_characteristics": {
+        "wa": 1.2,
+        "ra": 0.1,
+        "wa_impact_mb_s": 13.193999999999997,
+        "ra_impact_mb_s": 6.597,
+        "total_amplification_impact": 19.790999999999997
+      },
+      "device_envelope_characteristics": {
+        "write_bw": 4116.6,
+        "read_bw": 5487.2,
+        "envelope_capacity": 4800.0,
+        "effective_capacity": 4080.0,
+        "efficiency": 0.85
+      },
+      "constraint_analysis": {
+        "write_constraint": {
+          "s_max": 3458788.430769231,
+          "utilization": 0.04012069624308819,
+          "is_bottleneck": true
+        },
+        "read_constraint": {
+          "s_max": 55324482.95384615,
+          "utilization": 0.002508274684026718,
+          "is_bottleneck": false
+        },
+        "mixed_io_constraint": {
+          "s_max": 3722755.0295857987,
+          "utilization": 0.03727588812510173,
+          "is_bottleneck": false
+        }
+      },
+      "theoretical_s_max": 3458788.430769231,
+      "actual_qps": 138769,
+      "theoretical_accuracy": -2292.479178180452,
+      "bottleneck_identification": {
+        "primary_bottleneck": "write_constraint",
+        "bottleneck_s_max": 3458788.430769231
+      }
+    },
+    "middle_phase": {
+      "wa_ra_characteristics": {
+        "wa": 2.5,
+        "ra": 0.8,
+        "wa_impact_mb_s": 25.424999999999997,
+        "ra_impact_mb_s": 13.56,
+        "total_amplification_impact": 38.985
+      },
+      "device_envelope_characteristics": {
+        "write_bw": 1074.8,
+        "read_bw": 1166.1,
+        "envelope_capacity": 1200.0,
+        "effective_capacity": 900.0,
+        "efficiency": 0.75
+      },
+      "constraint_analysis": {
+        "write_constraint": {
+          "s_max": 433465.1864615384,
+          "utilization": 0.26408579875689087,
+          "is_bottleneck": false
+        },
+        "read_constraint": {
+          "s_max": 1469644.7999999998,
+          "utilization": 0.07789092983556299,
+          "is_bottleneck": false
+        },
+        "mixed_io_constraint": {
+          "s_max": 366634.965034965,
+          "utilization": 0.3122233581542969,
+          "is_bottleneck": true
+        }
+      },
+      "theoretical_s_max": 366634.965034965,
+      "actual_qps": 114472,
+      "theoretical_accuracy": -120.2835322480301,
+      "bottleneck_identification": {
+        "primary_bottleneck": "mixed_io_constraint",
+        "bottleneck_s_max": 366634.965034965
+      }
+    },
+    "final_phase": {
+      "wa_ra_characteristics": {
+        "wa": 3.2,
+        "ra": 1.1,
+        "wa_impact_mb_s": 28.072000000000003,
+        "ra_impact_mb_s": 14.036000000000001,
+        "total_amplification_impact": 42.108000000000004
+      },
+      "device_envelope_characteristics": {
+        "write_bw": 1074.8,
+        "read_bw": 1166.1,
+        "envelope_capacity": 1200.0,
+        "effective_capacity": 900.0,
+        "efficiency": 0.75
+      },
+      "constraint_analysis": {
+        "write_constraint": {
+          "s_max": 338644.6769230769,
+          "utilization": 0.3238733914158448,
+          "is_bottleneck": false
+        },
+        "read_constraint": {
+          "s_max": 1068832.5818181818,
+          "utilization": 0.10261476106335354,
+          "is_bottleneck": false
+        },
+        "mixed_io_constraint": {
+          "s_max": 281371.01967799634,
+          "utilization": 0.38979849497477226,
+          "is_bottleneck": true
+        }
+      },
+      "theoretical_s_max": 281371.01967799634,
+      "actual_qps": 109678,
+      "theoretical_accuracy": -56.54280683272519,
+      "bottleneck_identification": {
+        "primary_bottleneck": "mixed_io_constraint",
+        "bottleneck_s_max": 281371.01967799634
+      }
+    }
+  },
+  "interaction_models": {
+    "linear_model": {
+      "initial_phase": {
+        "predicted_s_max": 454500.0,
+        "actual_qps": 138769,
+        "accuracy": -127.5227176098408,
+        "coefficients": {
+          "alpha": 100,
+          "beta": 20000,
+          "gamma": 15000
+        }
+      },
+      "middle_phase": {
+        "predicted_s_max": 58000.0,
+        "actual_qps": 114472,
+        "accuracy": 50.667412118247256,
+        "coefficients": {
+          "alpha": 100,
+          "beta": 20000,
+          "gamma": 15000
+        }
+      },
+      "final_phase": {
+        "predicted_s_max": 39500.0,
+        "actual_qps": 109678,
+        "accuracy": 36.01451521727238,
+        "coefficients": {
+          "alpha": 100,
+          "beta": 20000,
+          "gamma": 15000
+        }
+      }
+    },
+    "multiplicative_model": {
+      "initial_phase": {
+        "predicted_s_max": 1677185.0850517903,
+        "actual_qps": 138769,
+        "accuracy": -1008.616539033783,
+        "coefficients": {
+          "alpha": 1.2,
+          "beta": 0.8,
+          "base_factor": 120
+        }
+      },
+      "middle_phase": {
+        "predicted_s_max": 52172.35901477906,
+        "actual_qps": 114472,
+        "accuracy": 45.57652440315454,
+        "coefficients": {
+          "alpha": 1.2,
+          "beta": 0.8,
+          "base_factor": 120
+        }
+      },
+      "final_phase": {
+        "predicted_s_max": 30820.346803447977,
+        "actual_qps": 109678,
+        "accuracy": 28.10075566973137,
+        "coefficients": {
+          "alpha": 1.2,
+          "beta": 0.8,
+          "base_factor": 120
+        }
+      }
+    },
+    "constrained_model": {
+      "initial_phase": {
+        "predicted_s_max": 3458788.430769231,
+        "actual_qps": 138769,
+        "accuracy": -2292.479178180452,
+        "write_constraint": 3458788.430769231,
+        "read_constraint": 55324482.95384615,
+        "bottleneck": "write"
+      },
+      "middle_phase": {
+        "predicted_s_max": 433465.1864615384,
+        "actual_qps": 114472,
+        "accuracy": -178.664814506201,
+        "write_constraint": 433465.1864615384,
+        "read_constraint": 1469644.7999999998,
+        "bottleneck": "write"
+      },
+      "final_phase": {
+        "predicted_s_max": 338644.6769230769,
+        "actual_qps": 109678,
+        "accuracy": -108.76262962770737,
+        "write_constraint": 338644.6769230769,
+        "read_constraint": 1068832.5818181818,
+        "bottleneck": "write"
+      }
+    }
+  },
+  "sensitivity_analysis": {
+    "wa_sensitivity": {
+      "1.0": {
+        "s_max": 1083662.9661538461,
+        "relative_change": 0
+      },
+      "1.5": {
+        "s_max": 722441.9774358975,
+        "relative_change": 0
+      },
+      "2.0": {
+        "s_max": 541831.4830769231,
+        "relative_change": 0
+      },
+      "2.5": {
+        "s_max": 433465.1864615384,
+        "relative_change": 0
+      },
+      "3.0": {
+        "s_max": 361220.9887179487,
+        "relative_change": -19.999999999999986
+      },
+      "3.5": {
+        "s_max": 309617.9903296703,
+        "relative_change": -40.0
+      },
+      "4.0": {
+        "s_max": 270915.74153846153,
+        "relative_change": -59.999999999999986
+      },
+      "4.5": {
+        "s_max": 240813.99247863246,
+        "relative_change": -80.0
+      },
+      "5.0": {
+        "s_max": 216732.5932307692,
+        "relative_change": -100.0
+      }
+    },
+    "ra_sensitivity": {
+      "0.0": {
+        "s_max": 433465.1864615384,
+        "io_contention_factor": 1.0
+      },
+      "0.2": {
+        "s_max": 424965.8690799397,
+        "io_contention_factor": 1.02
+      },
+      "0.4": {
+        "s_max": 416793.44852071,
+        "io_contention_factor": 1.04
+      },
+      "0.6000000000000001": {
+        "s_max": 408929.4211901306,
+        "io_contention_factor": 1.06
+      },
+      "0.8": {
+        "s_max": 401356.6541310541,
+        "io_contention_factor": 1.08
+      },
+      "1.0": {
+        "s_max": 394059.2604195804,
+        "io_contention_factor": 1.1
+      },
+      "1.2000000000000002": {
+        "s_max": 387022.4879120879,
+        "io_contention_factor": 1.12
+      },
+      "1.4000000000000001": {
+        "s_max": 380232.61970310385,
+        "io_contention_factor": 1.1400000000000001
+      },
+      "1.6": {
+        "s_max": 373676.8848806366,
+        "io_contention_factor": 1.1600000000000001
+      },
+      "1.8": {
+        "s_max": 367343.378357236,
+        "io_contention_factor": 1.18
+      },
+      "2.0": {
+        "s_max": 361220.9887179487,
+        "io_contention_factor": 1.2
+      }
+    },
+    "envelope_sensitivity": {
+      "800": {
+        "s_max": 244423.31002331
+      },
+      "1000": {
+        "s_max": 305529.13752913754
+      },
+      "1200": {
+        "s_max": 366634.965034965
+      },
+      "1400": {
+        "s_max": 427740.79254079255
+      },
+      "1600": {
+        "s_max": 488846.62004662
+      },
+      "1800": {
+        "s_max": 549952.4475524476
+      },
+      "2000": {
+        "s_max": 611058.2750582751
+      },
+      "2200": {
+        "s_max": 672164.1025641026
+      },
+      "2400": {
+        "s_max": 733269.93006993
+      },
+      "2600": {
+        "s_max": 794375.7575757576
+      },
+      "2800": {
+        "s_max": 855481.5850815851
+      },
+      "3000": {
+        "s_max": 916587.4125874126
+      },
+      "3200": {
+        "s_max": 977693.24009324
+      },
+      "3400": {
+        "s_max": 1038799.0675990676
+      },
+      "3600": {
+        "s_max": 1099904.895104895
+      },
+      "3800": {
+        "s_max": 1161010.7226107225
+      },
+      "4000": {
+        "s_max": 1222116.5501165502
+      },
+      "4200": {
+        "s_max": 1283222.3776223776
+      },
+      "4400": {
+        "s_max": 1344328.2051282052
+      },
+      "4600": {
+        "s_max": 1405434.0326340327
+      },
+      "4800": {
+        "s_max": 1466539.86013986
+      }
+    },
+    "combined_sensitivity": {
+      "wa_1.5_ra_0.2_env_1000": {
+        "wa": 1.5,
+        "ra": 0.2,
+        "envelope": 1000,
+        "s_max": 403298.46153846156,
+        "write_constraint": 403298.46153846156,
+        "read_constraint": 2016492.3076923077,
+        "bottleneck": "write"
+      },
+      "wa_1.5_ra_0.2_env_1500": {
+        "wa": 1.5,
+        "ra": 0.2,
+        "envelope": 1500,
+        "s_max": 604947.6923076923,
+        "write_constraint": 604947.6923076923,
+        "read_constraint": 3024738.4615384615,
+        "bottleneck": "write"
+      },
+      "wa_1.5_ra_0.2_env_2000": {
+        "wa": 1.5,
+        "ra": 0.2,
+        "envelope": 2000,
+        "s_max": 806596.9230769231,
+        "write_constraint": 806596.9230769231,
+        "read_constraint": 4032984.6153846155,
+        "bottleneck": "write"
+      },
+      "wa_1.5_ra_0.8_env_1000": {
+        "wa": 1.5,
+        "ra": 0.8,
+        "envelope": 1000,
+        "s_max": 403298.46153846156,
+        "write_constraint": 403298.46153846156,
+        "read_constraint": 504123.07692307694,
+        "bottleneck": "write"
+      },
+      "wa_1.5_ra_0.8_env_1500": {
+        "wa": 1.5,
+        "ra": 0.8,
+        "envelope": 1500,
+        "s_max": 604947.6923076923,
+        "write_constraint": 604947.6923076923,
+        "read_constraint": 756184.6153846154,
+        "bottleneck": "write"
+      },
+      "wa_1.5_ra_0.8_env_2000": {
+        "wa": 1.5,
+        "ra": 0.8,
+        "envelope": 2000,
+        "s_max": 806596.9230769231,
+        "write_constraint": 806596.9230769231,
+        "read_constraint": 1008246.1538461539,
+        "bottleneck": "write"
+      },
+      "wa_1.5_ra_1.4_env_1000": {
+        "wa": 1.5,
+        "ra": 1.4,
+        "envelope": 1000,
+        "s_max": 288070.3296703297,
+        "write_constraint": 403298.46153846156,
+        "read_constraint": 288070.3296703297,
+        "bottleneck": "read"
+      },
+      "wa_1.5_ra_1.4_env_1500": {
+        "wa": 1.5,
+        "ra": 1.4,
+        "envelope": 1500,
+        "s_max": 432105.4945054945,
+        "write_constraint": 604947.6923076923,
+        "read_constraint": 432105.4945054945,
+        "bottleneck": "read"
+      },
+      "wa_1.5_ra_1.4_env_2000": {
+        "wa": 1.5,
+        "ra": 1.4,
+        "envelope": 2000,
+        "s_max": 576140.6593406594,
+        "write_constraint": 806596.9230769231,
+        "read_constraint": 576140.6593406594,
+        "bottleneck": "read"
+      },
+      "wa_2.5_ra_0.2_env_1000": {
+        "wa": 2.5,
+        "ra": 0.2,
+        "envelope": 1000,
+        "s_max": 241979.07692307694,
+        "write_constraint": 241979.07692307694,
+        "read_constraint": 2016492.3076923077,
+        "bottleneck": "write"
+      },
+      "wa_2.5_ra_0.2_env_1500": {
+        "wa": 2.5,
+        "ra": 0.2,
+        "envelope": 1500,
+        "s_max": 362968.6153846154,
+        "write_constraint": 362968.6153846154,
+        "read_constraint": 3024738.4615384615,
+        "bottleneck": "write"
+      },
+      "wa_2.5_ra_0.2_env_2000": {
+        "wa": 2.5,
+        "ra": 0.2,
+        "envelope": 2000,
+        "s_max": 483958.1538461539,
+        "write_constraint": 483958.1538461539,
+        "read_constraint": 4032984.6153846155,
+        "bottleneck": "write"
+      },
+      "wa_2.5_ra_0.8_env_1000": {
+        "wa": 2.5,
+        "ra": 0.8,
+        "envelope": 1000,
+        "s_max": 241979.07692307694,
+        "write_constraint": 241979.07692307694,
+        "read_constraint": 504123.07692307694,
+        "bottleneck": "write"
+      },
+      "wa_2.5_ra_0.8_env_1500": {
+        "wa": 2.5,
+        "ra": 0.8,
+        "envelope": 1500,
+        "s_max": 362968.6153846154,
+        "write_constraint": 362968.6153846154,
+        "read_constraint": 756184.6153846154,
+        "bottleneck": "write"
+      },
+      "wa_2.5_ra_0.8_env_2000": {
+        "wa": 2.5,
+        "ra": 0.8,
+        "envelope": 2000,
+        "s_max": 483958.1538461539,
+        "write_constraint": 483958.1538461539,
+        "read_constraint": 1008246.1538461539,
+        "bottleneck": "write"
+      },
+      "wa_2.5_ra_1.4_env_1000": {
+        "wa": 2.5,
+        "ra": 1.4,
+        "envelope": 1000,
+        "s_max": 241979.07692307694,
+        "write_constraint": 241979.07692307694,
+        "read_constraint": 288070.3296703297,
+        "bottleneck": "write"
+      },
+      "wa_2.5_ra_1.4_env_1500": {
+        "wa": 2.5,
+        "ra": 1.4,
+        "envelope": 1500,
+        "s_max": 362968.6153846154,
+        "write_constraint": 362968.6153846154,
+        "read_constraint": 432105.4945054945,
+        "bottleneck": "write"
+      },
+      "wa_2.5_ra_1.4_env_2000": {
+        "wa": 2.5,
+        "ra": 1.4,
+        "envelope": 2000,
+        "s_max": 483958.1538461539,
+        "write_constraint": 483958.1538461539,
+        "read_constraint": 576140.6593406594,
+        "bottleneck": "write"
+      },
+      "wa_3.5_ra_0.2_env_1000": {
+        "wa": 3.5,
+        "ra": 0.2,
+        "envelope": 1000,
+        "s_max": 172842.1978021978,
+        "write_constraint": 172842.1978021978,
+        "read_constraint": 2016492.3076923077,
+        "bottleneck": "write"
+      },
+      "wa_3.5_ra_0.2_env_1500": {
+        "wa": 3.5,
+        "ra": 0.2,
+        "envelope": 1500,
+        "s_max": 259263.2967032967,
+        "write_constraint": 259263.2967032967,
+        "read_constraint": 3024738.4615384615,
+        "bottleneck": "write"
+      },
+      "wa_3.5_ra_0.2_env_2000": {
+        "wa": 3.5,
+        "ra": 0.2,
+        "envelope": 2000,
+        "s_max": 345684.3956043956,
+        "write_constraint": 345684.3956043956,
+        "read_constraint": 4032984.6153846155,
+        "bottleneck": "write"
+      },
+      "wa_3.5_ra_0.8_env_1000": {
+        "wa": 3.5,
+        "ra": 0.8,
+        "envelope": 1000,
+        "s_max": 172842.1978021978,
+        "write_constraint": 172842.1978021978,
+        "read_constraint": 504123.07692307694,
+        "bottleneck": "write"
+      },
+      "wa_3.5_ra_0.8_env_1500": {
+        "wa": 3.5,
+        "ra": 0.8,
+        "envelope": 1500,
+        "s_max": 259263.2967032967,
+        "write_constraint": 259263.2967032967,
+        "read_constraint": 756184.6153846154,
+        "bottleneck": "write"
+      },
+      "wa_3.5_ra_0.8_env_2000": {
+        "wa": 3.5,
+        "ra": 0.8,
+        "envelope": 2000,
+        "s_max": 345684.3956043956,
+        "write_constraint": 345684.3956043956,
+        "read_constraint": 1008246.1538461539,
+        "bottleneck": "write"
+      },
+      "wa_3.5_ra_1.4_env_1000": {
+        "wa": 3.5,
+        "ra": 1.4,
+        "envelope": 1000,
+        "s_max": 172842.1978021978,
+        "write_constraint": 172842.1978021978,
+        "read_constraint": 288070.3296703297,
+        "bottleneck": "write"
+      },
+      "wa_3.5_ra_1.4_env_1500": {
+        "wa": 3.5,
+        "ra": 1.4,
+        "envelope": 1500,
+        "s_max": 259263.2967032967,
+        "write_constraint": 259263.2967032967,
+        "read_constraint": 432105.4945054945,
+        "bottleneck": "write"
+      },
+      "wa_3.5_ra_1.4_env_2000": {
+        "wa": 3.5,
+        "ra": 1.4,
+        "envelope": 2000,
+        "s_max": 345684.3956043956,
+        "write_constraint": 345684.3956043956,
+        "read_constraint": 576140.6593406594,
+        "bottleneck": "write"
+      }
+    }
+  },
+  "key_findings": {
+    "fundamental_relationships": [
+      "WA \uc99d\uac00 \u2192 Write I/O \uc694\uad6c\ub7c9 \uc99d\uac00 \u2192 S_max \uac10\uc18c",
+      "RA \uc99d\uac00 \u2192 Read I/O \uc694\uad6c\ub7c9 \uc99d\uac00 \u2192 I/O \uacbd\ud569 \u2192 S_max \uac10\uc18c",
+      "Device Envelope \uac10\uc18c \u2192 \uc804\uccb4 I/O \uc6a9\ub7c9 \uac10\uc18c \u2192 S_max \uac10\uc18c",
+      "WA + RA \uc99d\uac00 \u2192 \uc804\uccb4 I/O \ubd80\ub2f4 \uc99d\uac00 \u2192 S_max \uac10\uc18c"
+    ],
+    "bottleneck_analysis": {
+      "initial_phase": {
+        "primary_bottleneck": "write_constraint",
+        "bottleneck_capacity": 3458788.430769231,
+        "bottleneck_type": "write_amplification"
+      },
+      "middle_phase": {
+        "primary_bottleneck": "mixed_io_constraint",
+        "bottleneck_capacity": 366634.965034965,
+        "bottleneck_type": "mixed_io"
+      },
+      "final_phase": {
+        "primary_bottleneck": "mixed_io_constraint",
+        "bottleneck_capacity": 281371.01967799634,
+        "bottleneck_type": "mixed_io"
+      }
+    },
+    "interaction_model_performance": {
+      "linear_model": {
+        "average_accuracy": -13.613596758107052,
+        "best_phase": [
+          "middle_phase",
+          {
+            "predicted_s_max": 58000.0,
+            "actual_qps": 114472,
+            "accuracy": 50.667412118247256,
+            "coefficients": {
+              "alpha": 100,
+              "beta": 20000,
+              "gamma": 15000
+            }
+          }
+        ],
+        "model_effectiveness": "low"
+      },
+      "multiplicative_model": {
+        "average_accuracy": -311.6464196536324,
+        "best_phase": [
+          "middle_phase",
+          {
+            "predicted_s_max": 52172.35901477906,
+            "actual_qps": 114472,
+            "accuracy": 45.57652440315454,
+            "coefficients": {
+              "alpha": 1.2,
+              "beta": 0.8,
+              "base_factor": 120
+            }
+          }
+        ],
+        "model_effectiveness": "low"
+      },
+      "constrained_model": {
+        "average_accuracy": -859.9688741047867,
+        "best_phase": [
+          "final_phase",
+          {
+            "predicted_s_max": 338644.6769230769,
+            "actual_qps": 109678,
+            "accuracy": -108.76262962770737,
+            "write_constraint": 338644.6769230769,
+            "read_constraint": 1068832.5818181818,
+            "bottleneck": "write"
+          }
+        ],
+        "model_effectiveness": "low"
+      }
+    },
+    "sensitivity_insights": [
+      "WA\uac00 S_max\uc5d0 \uac00\uc7a5 \ud070 \uc601\ud5a5\uc744 \ubbf8\uce68 (Write \uc81c\uc57d\uc774 \uc8fc\uc694 \ubcd1\ubaa9)",
+      "RA\ub294 FillRandom \uc6cc\ud06c\ub85c\ub4dc\uc5d0\uc11c \uac04\uc811\uc801 \uc601\ud5a5\ub9cc \uc788\uc74c",
+      "Device Envelope \uc6a9\ub7c9\uc774 \uc804\uccb4 \uc131\ub2a5\uc758 \uc0c1\ud55c\uc120 \uacb0\uc815",
+      "WA + RA \uc870\ud569\uc774 \uc2e4\uc81c I/O \ubd80\ub2f4 \uacb0\uc815"
+    ],
+    "practical_implications": [
+      "FillRandom \uc6cc\ud06c\ub85c\ub4dc\uc5d0\uc11c\ub294 Write \uc81c\uc57d\uc774 \uc8fc\uc694 \ubcd1\ubaa9",
+      "RA \ucd5c\uc801\ud654\ubcf4\ub2e4 WA \ucd5c\uc801\ud654\uac00 \ub354 \uc911\uc694",
+      "Device Envelope \uac1c\uc120\uc774 \uadfc\ubcf8\uc801 \uc131\ub2a5 \ud5a5\uc0c1 \ubc29\ubc95",
+      "\ubcf5\uc7a1\ud55c WA/RA \ubaa8\ub378\ub9c1\ubcf4\ub2e4 Device \uc81c\uc57d \uc774\ud574\uac00 \uc911\uc694"
+    ]
+  }
+}

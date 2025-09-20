@@ -1,0 +1,105 @@
+{
+  "performance_changes": {
+    "change_stats": {
+      "mean_change": -49.950829571268365,
+      "std_change": 108519.62619182977,
+      "mean_change_pct": 40.064051425486014,
+      "std_change_pct": 121.33858620851443,
+      "max_increase": 606219.0,
+      "max_decrease": -1374559.0,
+      "max_increase_pct": 10271.195652173912,
+      "max_decrease_pct": -99.83140680484284
+    },
+    "dataframe": "       secs_elapsed  interval_qps  ...  qps_change  qps_change_pct\n0                10       1946448  ...         NaN             NaN\n1                20        571889  ...  -1374559.0      -70.618840\n2                30        506642  ...    -65247.0      -11.409032\n3                40        614284  ...    107642.0       21.246166\n4                50        600059  ...    -14225.0       -2.315704\n...             ...           ...  ...         ...             ...\n34773        347744         71372  ...     -2945.0       -3.962754\n34774        347754        119657  ...     48285.0       67.652581\n34775        347764         87999  ...    -31658.0      -26.457290\n34776        347774         72194  ...    -15805.0      -17.960431\n34777        347784        209308  ...    137114.0      189.924370\n\n[34778 rows x 6 columns]"
+  },
+  "rocksdb_phases": {
+    "initial_phase": {
+      "start": 0,
+      "end": "6717",
+      "type": "initial_loading",
+      "description": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04"
+    },
+    "middle_phase": {
+      "start": "6717",
+      "end": 32296,
+      "type": "compaction_active",
+      "description": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04"
+    },
+    "final_phase": {
+      "start": 32296,
+      "end": 34778,
+      "type": "stabilized",
+      "description": "\uc548\uc815\ud654 \uad6c\uac04"
+    }
+  },
+  "phase_characteristics": {
+    "initial_phase": {
+      "sample_count": 6717,
+      "avg_qps": 147925.06118803038,
+      "max_qps": "1946448",
+      "min_qps": "160",
+      "std_qps": 99458.38510058036,
+      "median_qps": 110408.0,
+      "q25": 71323.0,
+      "q75": 207617.0,
+      "cv": 0.6723565587994377,
+      "trend": "decreasing",
+      "stability": "unstable",
+      "phase_type": "initial_loading",
+      "description": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04"
+    },
+    "middle_phase": {
+      "sample_count": 25579,
+      "avg_qps": 115056.10219320537,
+      "max_qps": "654823",
+      "min_qps": "49285",
+      "std_qps": 57156.94305614749,
+      "median_qps": 73979.0,
+      "q25": 69585.0,
+      "q75": 173514.0,
+      "cv": 0.49677454708284813,
+      "trend": "decreasing",
+      "stability": "moderate",
+      "phase_type": "compaction_active",
+      "description": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04"
+    },
+    "final_phase": {
+      "sample_count": 2482,
+      "avg_qps": 109002.41176470589,
+      "max_qps": "250993",
+      "min_qps": "49195",
+      "std_qps": 51539.65657812166,
+      "median_qps": 73363.5,
+      "q25": 69270.75,
+      "q75": 166181.75,
+      "cv": 0.47283042405865183,
+      "trend": "stable",
+      "stability": "moderate",
+      "phase_type": "stabilized",
+      "description": "\uc548\uc815\ud654 \uad6c\uac04"
+    }
+  },
+  "performance_trends": {
+    "overall_trend": "decreasing",
+    "phase_transitions": [
+      {
+        "from_phase": "initial_phase",
+        "to_phase": "middle_phase",
+        "transition_slope": -14.767512187804694,
+        "transition_type": "decreasing"
+      },
+      {
+        "from_phase": "middle_phase",
+        "to_phase": "final_phase",
+        "transition_slope": -6.407518187954698,
+        "transition_type": "decreasing"
+      }
+    ],
+    "performance_degradation": {
+      "first_phase_avg": 147925.06118803038,
+      "last_phase_avg": 109002.41176470589,
+      "degradation_percent": 26.31241056162158
+    },
+    "stability_analysis": {}
+  }
+}

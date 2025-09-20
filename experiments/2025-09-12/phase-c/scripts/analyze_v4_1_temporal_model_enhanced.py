@@ -339,8 +339,11 @@ class V4_1TemporalModelAnalyzer:
         return self.v4_1_temporal_predictions
     
     def _analyze_device_envelope_temporal(self, temporal_analysis):
-        """시기별 Device Envelope 모델 분석"""
+        """시기별 Device Envelope 모델 분석 (동적 열화 모델 적용)"""
         print("📊 시기별 Device Envelope 모델 분석 중...")
+        
+        # Phase-A 실제 측정 데이터 로드
+        phase_a_data = self._load_phase_a_device_data()
         
         phase_models = temporal_analysis.get('phase_models', {})
         device_envelope_temporal = {}
@@ -348,54 +351,194 @@ class V4_1TemporalModelAnalyzer:
         for phase_name, phase_model in phase_models.items():
             characteristics = phase_model['characteristics']
             
-            # 기본 성능 특성
-            initial_perf = {'write_bw': 136, 'read_bw': 138}  # MB/s
+            # 시기별 디바이스 열화 모델링
+            device_degradation = self._calculate_device_degradation_factor(phase_name, characteristics)
             
-            # 시기별 I/O 특성에 따른 대역폭 조정
-            io_intensity = characteristics.get('io_intensity', 0.5)
-            performance_factor = characteristics.get('performance_factor', 1.0)
-            stability = characteristics.get('stability', 0.5)
+            # 시기별 기본 성능 (Phase-A 실제 데이터 기반)
+            base_performance = self._get_phase_base_performance(phase_name, phase_a_data)
             
-            # I/O 대역폭 사용률 계산
-            io_usage = characteristics.get('io_usage_mb', 0)
-            bandwidth_utilization = min(1.0, io_usage / 1000)  # 1GB 기준 정규화
-            
-            # I/O 경합도 계산
-            io_contention = 1.0 - (io_intensity * 0.3)  # 최대 30% 감소
-            
-            # 안정성에 따른 대역폭 조정
-            stability_factor = 1.0 + (stability * 0.1)  # 최대 10% 증가
-            
-            # 조정된 성능
-            adjusted_write_bw = (initial_perf['write_bw'] * performance_factor * 
-                               io_contention * stability_factor)
-            adjusted_read_bw = (initial_perf['read_bw'] * performance_factor * 
-                              io_contention * stability_factor)
+            # 동적 성능 조정
+            adjusted_performance = self._adjust_performance_with_degradation(
+                base_performance, device_degradation, characteristics
+            )
             
             # S_max 계산
-            key_size = 16  # bytes
-            value_size = 1024  # bytes
-            record_size = key_size + value_size
-            s_max = (adjusted_write_bw * 1024 * 1024) / record_size  # ops/sec
+            s_max = self._calculate_s_max_with_degradation(adjusted_performance, characteristics)
             
             device_envelope_temporal[phase_name] = {
-                'initial_perf': initial_perf,
-                'adjusted_write_bw': adjusted_write_bw,
-                'adjusted_read_bw': adjusted_read_bw,
+                'base_performance': base_performance,
+                'device_degradation_factor': device_degradation,
+                'adjusted_write_bw': adjusted_performance['write_bw'],
+                'adjusted_read_bw': adjusted_performance['read_bw'],
                 's_max': s_max,
-                'bandwidth_utilization': bandwidth_utilization,
-                'io_contention': io_contention,
-                'stability_factor': stability_factor,
-                'performance_factor': performance_factor,
+                'degradation_analysis': {
+                    'phase': phase_name,
+                    'degradation_factor': device_degradation['total_degradation'],
+                    'io_degradation': device_degradation['io_degradation'],
+                    'stability_impact': device_degradation['stability_impact'],
+                    'performance_retention': device_degradation['performance_retention']
+                },
                 'enhancement_factors': {
-                    'io_contention': io_contention,
-                    'stability_factor': stability_factor,
-                    'performance_factor': performance_factor,
-                    'bandwidth_utilization': bandwidth_utilization
+                    'io_contention': device_degradation['io_contention'],
+                    'stability_factor': device_degradation['stability_factor'],
+                    'performance_factor': device_degradation['performance_factor'],
+                    'bandwidth_utilization': device_degradation['bandwidth_utilization']
                 }
             }
         
         return device_envelope_temporal
+    
+    def _load_phase_a_device_data(self):
+        """Phase-A 실제 디바이스 성능 데이터 로드"""
+        print("📊 Phase-A 디바이스 성능 데이터 로드 중...")
+        
+        phase_a_data = {
+            'initial': {'write_bw': 0, 'read_bw': 0},  # 초기 상태 (완전 초기화)
+            'degraded': {'write_bw': 1074.8, 'read_bw': 1166.1}  # 열화 상태 (Phase-B 후)
+        }
+        
+        # 실제 Phase-A 데이터 파일에서 로드 시도
+        try:
+            initial_file = '/home/sslab/rocksdb-put-model/experiments/2025-09-12/phase-a/data/initial_state_results.json'
+            degraded_file = '/home/sslab/rocksdb-put-model/experiments/2025-09-12/phase-a/data/degraded_state_results_fixed.json'
+            
+            if os.path.exists(initial_file):
+                with open(initial_file, 'r') as f:
+                    initial_data = json.load(f)
+                    phase_a_data['initial'] = {
+                        'write_bw': initial_data['summary']['max_write_bandwidth_mib_s'],
+                        'read_bw': initial_data['summary']['max_read_bandwidth_mib_s']
+                    }
+            
+            if os.path.exists(degraded_file):
+                with open(degraded_file, 'r') as f:
+                    degraded_data = json.load(f)
+                    phase_a_data['degraded'] = {
+                        'write_bw': degraded_data['summary']['max_write_bandwidth_mib_s'],
+                        'read_bw': degraded_data['summary']['max_read_bandwidth_mib_s']
+                    }
+            
+            print(f"✅ Phase-A 데이터 로드 완료:")
+            print(f"   - 초기 상태: Write {phase_a_data['initial']['write_bw']:.1f} MB/s, Read {phase_a_data['initial']['read_bw']:.1f} MB/s")
+            print(f"   - 열화 상태: Write {phase_a_data['degraded']['write_bw']:.1f} MB/s, Read {phase_a_data['degraded']['read_bw']:.1f} MB/s")
+            
+        except Exception as e:
+            print(f"⚠️ Phase-A 데이터 로드 실패, 기본값 사용: {e}")
+        
+        return phase_a_data
+    
+    def _calculate_device_degradation_factor(self, phase_name, characteristics):
+        """시기별 디바이스 열화 인자 계산"""
+        
+        # 시기별 기본 열화 패턴
+        phase_degradation_patterns = {
+            'initial_phase': {
+                'base_degradation': 0.0,      # 초기: 열화 없음
+                'io_sensitivity': 0.1,        # I/O 강도에 대한 낮은 민감도
+                'stability_impact': 0.05      # 안정성 영향 최소
+            },
+            'middle_phase': {
+                'base_degradation': 0.3,      # 중기: 30% 열화
+                'io_sensitivity': 0.3,        # I/O 강도에 대한 중간 민감도
+                'stability_impact': 0.15      # 안정성 영향 중간
+            },
+            'final_phase': {
+                'base_degradation': 0.6,      # 후기: 60% 열화
+                'io_sensitivity': 0.5,        # I/O 강도에 대한 높은 민감도
+                'stability_impact': 0.25      # 안정성 영향 높음
+            }
+        }
+        
+        pattern = phase_degradation_patterns[phase_name]
+        
+        # I/O 강도에 따른 추가 열화
+        io_intensity = characteristics.get('io_intensity', 0.5)
+        io_degradation = io_intensity * pattern['io_sensitivity']
+        
+        # 안정성에 따른 열화 완화
+        stability = characteristics.get('stability', 0.5)
+        stability_mitigation = stability * pattern['stability_impact']
+        
+        # 성능 인자에 따른 열화 조정
+        performance_factor = characteristics.get('performance_factor', 1.0)
+        performance_degradation = (1.0 - performance_factor) * 0.4  # 최대 40% 추가 열화
+        
+        # 총 열화율 계산
+        total_degradation = (pattern['base_degradation'] + 
+                           io_degradation + 
+                           performance_degradation - 
+                           stability_mitigation)
+        
+        # 0-100% 범위 제한
+        total_degradation = max(0.0, min(1.0, total_degradation))
+        
+        # 성능 유지율
+        performance_retention = 1.0 - total_degradation
+        
+        return {
+            'total_degradation': total_degradation,
+            'io_degradation': io_degradation,
+            'stability_impact': stability_mitigation,
+            'performance_retention': performance_retention,
+            'io_contention': 1.0 - (io_intensity * 0.3),
+            'stability_factor': 1.0 + (stability * 0.1),
+            'performance_factor': performance_factor,
+            'bandwidth_utilization': min(1.0, characteristics.get('io_usage_mb', 0) / 1000)
+        }
+    
+    def _get_phase_base_performance(self, phase_name, phase_a_data):
+        """시기별 기본 성능 설정"""
+        
+        if phase_name == 'initial_phase':
+            # 초기 시기: 초기 상태 성능 (실제로는 0이지만 모델링을 위해 최소값 사용)
+            return {
+                'write_bw': max(100, phase_a_data['initial']['write_bw']),  # 최소 100 MB/s
+                'read_bw': max(100, phase_a_data['initial']['read_bw'])
+            }
+        elif phase_name == 'middle_phase':
+            # 중기 시기: 초기와 열화 상태의 중간값
+            return {
+                'write_bw': (phase_a_data['initial']['write_bw'] + phase_a_data['degraded']['write_bw']) / 2,
+                'read_bw': (phase_a_data['initial']['read_bw'] + phase_a_data['degraded']['read_bw']) / 2
+            }
+        else:  # final_phase
+            # 후기 시기: 열화 상태 성능 (실제 측정값)
+            return {
+                'write_bw': phase_a_data['degraded']['write_bw'],
+                'read_bw': phase_a_data['degraded']['read_bw']
+            }
+    
+    def _adjust_performance_with_degradation(self, base_performance, device_degradation, characteristics):
+        """열화를 고려한 성능 조정"""
+        
+        # 기본 성능에 열화 인자 적용
+        adjusted_write_bw = (base_performance['write_bw'] * 
+                            device_degradation['performance_retention'] *
+                            device_degradation['io_contention'] *
+                            device_degradation['stability_factor'])
+        
+        adjusted_read_bw = (base_performance['read_bw'] * 
+                           device_degradation['performance_retention'] *
+                           device_degradation['io_contention'] *
+                           device_degradation['stability_factor'])
+        
+        return {
+            'write_bw': adjusted_write_bw,
+            'read_bw': adjusted_read_bw
+        }
+    
+    def _calculate_s_max_with_degradation(self, adjusted_performance, characteristics):
+        """열화를 고려한 S_max 계산"""
+        
+        # 레코드 크기
+        key_size = 16  # bytes
+        value_size = 1024  # bytes
+        record_size = key_size + value_size
+        
+        # S_max 계산 (쓰기 대역폭 기준)
+        s_max = (adjusted_performance['write_bw'] * 1024 * 1024) / record_size  # ops/sec
+        
+        return s_max
     
     def _analyze_closed_ledger_temporal(self, temporal_analysis):
         """시기별 Closed Ledger 모델 분석"""
@@ -748,6 +891,141 @@ class V4_1TemporalModelAnalyzer:
         
         print("✅ Enhanced v4.1 Temporal 모델 시각화 완료")
     
+    def create_degradation_analysis_visualization(self):
+        """디바이스 열화 분석 시각화 생성"""
+        print("📊 디바이스 열화 분석 시각화 생성 중...")
+        
+        fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
+        fig.suptitle('V4.1 Temporal Model - Device Degradation Analysis', fontsize=16, fontweight='bold')
+        
+        # 디바이스 성능 데이터 로드
+        phase_a_data = self._load_phase_a_device_data()
+        
+        # 1. 시기별 디바이스 성능 변화
+        phases = ['Initial', 'Middle', 'Final']
+        write_bw = [
+            max(100, phase_a_data['initial']['write_bw']),
+            (phase_a_data['initial']['write_bw'] + phase_a_data['degraded']['write_bw']) / 2,
+            phase_a_data['degraded']['write_bw']
+        ]
+        read_bw = [
+            max(100, phase_a_data['initial']['read_bw']),
+            (phase_a_data['initial']['read_bw'] + phase_a_data['degraded']['read_bw']) / 2,
+            phase_a_data['degraded']['read_bw']
+        ]
+        
+        x = np.arange(len(phases))
+        width = 0.35
+        
+        bars1 = ax1.bar(x - width/2, write_bw, width, label='Write BW', color='skyblue', alpha=0.8)
+        bars2 = ax1.bar(x + width/2, read_bw, width, label='Read BW', color='lightcoral', alpha=0.8)
+        
+        ax1.set_xlabel('Temporal Phase')
+        ax1.set_ylabel('Bandwidth (MB/s)')
+        ax1.set_title('Device Performance by Phase')
+        ax1.set_xticks(x)
+        ax1.set_xticklabels(phases)
+        ax1.legend()
+        ax1.grid(True, alpha=0.3)
+        
+        # 값 표시
+        for bars in [bars1, bars2]:
+            for bar in bars:
+                height = bar.get_height()
+                ax1.text(bar.get_x() + bar.get_width()/2., height,
+                        f'{height:.0f}', ha='center', va='bottom', fontsize=9)
+        
+        # 2. 시기별 열화율
+        device_envelope = self.v4_1_temporal_predictions.get('device_envelope_temporal', {})
+        degradation_factors = []
+        phase_names = []
+        
+        for phase_name in ['initial_phase', 'middle_phase', 'final_phase']:
+            if phase_name in device_envelope:
+                degradation_data = device_envelope[phase_name].get('degradation_analysis', {})
+                degradation_factors.append(degradation_data.get('degradation_factor', 0) * 100)
+                phase_names.append(phase_name.replace('_phase', '').title())
+        
+        if degradation_factors:
+            colors = ['green' if df < 20 else 'orange' if df < 50 else 'red' for df in degradation_factors]
+            bars = ax2.bar(phase_names, degradation_factors, color=colors, alpha=0.7)
+            ax2.set_ylabel('Device Degradation (%)')
+            ax2.set_title('Device Degradation by Phase')
+            ax2.set_ylim(0, 100)
+            
+            for bar, value in zip(bars, degradation_factors):
+                height = bar.get_height()
+                ax2.text(bar.get_x() + bar.get_width()/2., height,
+                        f'{value:.1f}%', ha='center', va='bottom', fontweight='bold')
+        
+        # 3. 열화 인자 분석
+        if device_envelope:
+            io_degradation = []
+            stability_impact = []
+            performance_retention = []
+            
+            for phase_name in ['initial_phase', 'middle_phase', 'final_phase']:
+                if phase_name in device_envelope:
+                    degradation_data = device_envelope[phase_name].get('degradation_analysis', {})
+                    io_degradation.append(degradation_data.get('io_degradation', 0) * 100)
+                    stability_impact.append(degradation_data.get('stability_impact', 0) * 100)
+                    performance_retention.append(degradation_data.get('performance_retention', 1.0) * 100)
+            
+            x = np.arange(len(phase_names))
+            width = 0.25
+            
+            bars1 = ax3.bar(x - width, io_degradation, width, label='I/O Degradation', color='red', alpha=0.7)
+            bars2 = ax3.bar(x, stability_impact, width, label='Stability Impact', color='blue', alpha=0.7)
+            bars3 = ax3.bar(x + width, performance_retention, width, label='Performance Retention', color='green', alpha=0.7)
+            
+            ax3.set_xlabel('Temporal Phase')
+            ax3.set_ylabel('Percentage (%)')
+            ax3.set_title('Degradation Factors Analysis')
+            ax3.set_xticks(x)
+            ax3.set_xticklabels(phase_names)
+            ax3.legend()
+            ax3.grid(True, alpha=0.3)
+        
+        # 4. 성능 예측 vs 실제 성능
+        phase_performance = self.results.get('phase_performance', {})
+        predictions = []
+        actuals = []
+        
+        for phase_name in ['initial_phase', 'middle_phase', 'final_phase']:
+            if phase_name in device_envelope and phase_name in phase_performance:
+                device_smax = device_envelope[phase_name]['s_max']
+                actual_qps = phase_performance[phase_name]['actual_qps']
+                predictions.append(device_smax)
+                actuals.append(actual_qps)
+        
+        if predictions and actuals:
+            x = np.arange(len(phase_names))
+            width = 0.35
+            
+            bars1 = ax4.bar(x - width/2, predictions, width, label='Predicted S_max', color='lightblue', alpha=0.8)
+            bars2 = ax4.bar(x + width/2, actuals, width, label='Actual QPS', color='lightcoral', alpha=0.8)
+            
+            ax4.set_xlabel('Temporal Phase')
+            ax4.set_ylabel('Performance (ops/sec)')
+            ax4.set_title('Predicted vs Actual Performance')
+            ax4.set_xticks(x)
+            ax4.set_xticklabels(phase_names)
+            ax4.legend()
+            ax4.grid(True, alpha=0.3)
+            
+            # 값 표시
+            for bars in [bars1, bars2]:
+                for bar in bars:
+                    height = bar.get_height()
+                    ax4.text(bar.get_x() + bar.get_width()/2., height,
+                            f'{height:.0f}', ha='center', va='bottom', fontsize=9)
+        
+        plt.tight_layout()
+        plt.savefig(f"{self.results_dir}/v4_1_temporal_degradation_analysis.png", dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        print("✅ 디바이스 열화 분석 시각화 완료")
+    
     def save_results(self):
         """결과 저장"""
         print("💾 Enhanced v4.1 Temporal 모델 결과 저장 중...")
@@ -862,6 +1140,7 @@ This report presents the enhanced v4.1 temporal model analysis using phase-wise 
         self.save_results()
         self.generate_report()
         self.create_visualizations()
+        self.create_degradation_analysis_visualization()
         
         print("=" * 60)
         print("✅ Enhanced v4.1 Temporal 모델 분석 완료!")

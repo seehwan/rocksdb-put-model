@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase Segmentation Analysis - RocksDB Performance-Based Segmentation</title>
+    <style>
+        body {
+            font-family: 'Liberation Serif', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h4 {
+            color: #7f8c8d;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-box h2 {
+            color: white;
+            border-left: 4px solid white;
+            margin-top: 0;
+        }
+        
+        .phase-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            background-color: #fafafa;
+        }
+        
+        .phase-initial {
+            border-left: 5px solid #e74c3c;
+            background-color: #fdf2f2;
+        }
+        
+        .phase-middle {
+            border-left: 5px solid #f39c12;
+            background-color: #fef9e7;
+        }
+        
+        .phase-final {
+            border-left: 5px solid #27ae60;
+            background-color: #f0f9f0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .metric-highlight {
+            background-color: #e8f5e8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .metric-low {
+            background-color: #ffe8e8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .metric-medium {
+            background-color: #fff8e8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .code-block {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .algorithm-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .validation-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .insight-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .performance-chart {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .phase-indicator {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .indicator-initial {
+            background-color: #e74c3c;
+        }
+        
+        .indicator-middle {
+            background-color: #f39c12;
+        }
+        
+        .indicator-final {
+            background-color: #27ae60;
+        }
+        
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Phase Segmentation Analysis</h1>
+        <p><strong>RocksDB Performance-Based Segmentation</strong></p>
+        
+        <div class="summary-box">
+            <h2>🎯 Executive Summary</h2>
+            <p>이 문서는 RocksDB FillRandom 워크로드 실험에서 <strong>Performance-Based Segmentation</strong> 알고리즘을 통해 결정된 <strong>Initial, Middle, Final Phase</strong> 구분 기준과 각 구간에서 관찰된 특징을 상세히 분석합니다.</p>
+        </div>
+
+        <h2>🔬 Segmentation Algorithm Details</h2>
+        
+        <h3>Multi-Method Integration Approach</h3>
+        
+        <div class="algorithm-box">
+            <h4>Method 1: Performance Change Rate Based</h4>
+            <div class="code-block">
+# 초기 구간: 빠른 성능 변화 구간 (높은 변화율)
+high_change_period = stats_df[stats_df['performance_change_abs'] > 0.01]  # 1% 이상 변화
+
+# 중기 구간: 안정화 진행 구간 (중간 안정성)
+stable_threshold = remaining_data['performance_stability'].quantile(0.3)  # 하위 30% 안정성
+
+# 후기 구간: 나머지 (안정화)
+            </div>
+        </div>
+
+        <div class="algorithm-box">
+            <h4>Method 2: K-means Clustering Based</h4>
+            <div class="code-block">
+# 특성 벡터 구성
+features = ['write_rate_smooth', 'performance_change_abs', 'performance_stability']
+
+# 3개 클러스터로 분할
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+stats_df['cluster'] = kmeans.fit_predict(feature_data_scaled)
+            </div>
+        </div>
+
+        <div class="algorithm-box">
+            <h4>Method 3: Performance Level Based</h4>
+            <div class="code-block">
+# 성능 분위수 기반 경계점 탐지
+performance_quantiles = stats_df['write_rate_smooth'].quantile([0.33, 0.67])
+
+# 첫 번째 경계: 성능이 67% 분위수 아래로 떨어지는 지점
+# 두 번째 경계: 성능이 33% 분위수 아래로 떨어지는 지점
+            </div>
+        </div>
+
+        <h3>Statistical Thresholds</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Threshold Type</th>
+                    <th>Value</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Change Rate</strong></td>
+                    <td>2%</td>
+                    <td>Significant performance change detection</td>
+                </tr>
+                <tr>
+                    <td><strong>Stability</strong></td>
+                    <td>0.5</td>
+                    <td>Stability change detection</td>
+                </tr>
+                <tr>
+                    <td><strong>Performance Level</strong></td>
+                    <td>5 MB/s</td>
+                    <td>Performance level change detection</td>
+                </tr>
+                <tr>
+                    <td><strong>Minimum Distance</strong></td>
+                    <td>10% of total length</td>
+                    <td>Boundary point filtering</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>📊 Phase Segmentation Results</h2>
+        
+        <div class="performance-chart">
+            <h3>Segmentation Boundaries</h3>
+            <p><strong>Total Experiment Duration:</strong> 96.6 hours (34,772 samples)</p>
+            <p><strong>Total Data Points:</strong> 34,772 measurements</p>
+            <p><strong>Boundary Points:</strong></p>
+            <ul style="text-align: left; display: inline-block;">
+                <li>Initial → Middle: Sample 51 (0.14 hours)</li>
+                <li>Middle → Final: Sample 11,493 (32.0 hours)</li>
+            </ul>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Phase</th>
+                    <th>Duration</th>
+                    <th>Sample Count</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="phase-indicator indicator-initial">Initial</span></td>
+                    <td>0.14 hours</td>
+                    <td>52 samples</td>
+                    <td>0.15%</td>
+                </tr>
+                <tr>
+                    <td><span class="phase-indicator indicator-middle">Middle</span></td>
+                    <td>31.79 hours</td>
+                    <td>11,443 samples</td>
+                    <td>32.93%</td>
+                </tr>
+                <tr>
+                    <td><span class="phase-indicator indicator-final">Final</span></td>
+                    <td>64.68 hours</td>
+                    <td>23,280 samples</td>
+                    <td>66.92%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🔍 Phase Characteristics Analysis</h2>
+
+        <div class="phase-card phase-initial">
+            <h3><span class="phase-indicator indicator-initial">Phase 1: Initial Phase</span></h3>
+            <p><strong>Period:</strong> 2025-09-12 10:16:04 ~ 10:24:34 (8분 30초)</p>
+            <p><strong>Description:</strong> 빈 DB에서 빠르게 성능이 변하는 구간</p>
+            
+            <h4>Performance Characteristics</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Average Write Rate</strong></td>
+                        <td><span class="metric-highlight">65.97 MB/s</span></td>
+                        <td>높은 성능 (빈 DB 상태)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Max Write Rate</strong></td>
+                        <td><span class="metric-highlight">280.18 MB/s</span></td>
+                        <td>최고 성능 (초기 버스트)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Min Write Rate</strong></td>
+                        <td><span class="metric-highlight">46.74 MB/s</span></td>
+                        <td>최저 성능</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Standard Deviation</strong></td>
+                        <td><span class="metric-low">35.49 MB/s</span></td>
+                        <td>높은 변동성</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Coefficient of Variation</strong></td>
+                        <td><span class="metric-low">0.538</span></td>
+                        <td>매우 높은 불안정성</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Trend Analysis</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Trend Slope</strong></td>
+                        <td><span class="metric-low">-1.39</span></td>
+                        <td>급격한 성능 감소</td>
+                    </tr>
+                    <tr>
+                        <td><strong>R² Score</strong></td>
+                        <td><span class="metric-medium">0.35</span></td>
+                        <td>중간 정도의 추세 일관성</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance Change</strong></td>
+                        <td><span class="metric-low">-83.32%</span></td>
+                        <td>큰 폭의 성능 저하</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Observed Behavior</h4>
+            <ul>
+                <li><strong>Empty DB State:</strong> 초기 빈 DB에서 시작</li>
+                <li><strong>High Initial Performance:</strong> 280 MB/s 최고 성능 달성</li>
+                <li><strong>Rapid Degradation:</strong> 빠른 성능 저하 (83% 감소)</li>
+                <li><strong>High Volatility:</strong> 높은 성능 변동성 (CV: 0.538)</li>
+            </ul>
+        </div>
+
+        <div class="phase-card phase-middle">
+            <h3><span class="phase-indicator indicator-middle">Phase 2: Middle Phase</span></h3>
+            <p><strong>Period:</strong> 2025-09-12 10:24:34 ~ 2025-09-13 18:11:48 (31시간 47분)</p>
+            <p><strong>Description:</strong> 컴팩션이 진행되며 안정화되어 가는 구간</p>
+            
+            <h4>Performance Characteristics</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Average Write Rate</strong></td>
+                        <td><span class="metric-medium">16.95 MB/s</span></td>
+                        <td>중간 성능</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Max Write Rate</strong></td>
+                        <td><span class="metric-medium">47.05 MB/s</span></td>
+                        <td>최고 성능</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Min Write Rate</strong></td>
+                        <td><span class="metric-medium">13.84 MB/s</span></td>
+                        <td>최저 성능</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Standard Deviation</strong></td>
+                        <td><span class="metric-medium">4.61 MB/s</span></td>
+                        <td>중간 변동성</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Coefficient of Variation</strong></td>
+                        <td><span class="metric-medium">0.272</span></td>
+                        <td>중간 안정성</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Trend Analysis</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Trend Slope</strong></td>
+                        <td><span class="metric-highlight">-0.001</span></td>
+                        <td>매우 완만한 감소</td>
+                    </tr>
+                    <tr>
+                        <td><strong>R² Score</strong></td>
+                        <td><span class="metric-highlight">0.56</span></td>
+                        <td>높은 추세 일관성</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance Change</strong></td>
+                        <td><span class="metric-low">-70.39%</span></td>
+                        <td>큰 폭의 성능 저하</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Observed Behavior</h4>
+            <ul>
+                <li><strong>Compaction Intensification:</strong> 컴팩션 본격화</li>
+                <li><strong>Performance Stabilization:</strong> 성능 안정화 진행</li>
+                <li><strong>Moderate Volatility:</strong> 중간 수준의 성능 변동성</li>
+                <li><strong>Gradual Transition:</strong> 점진적 전환 과정</li>
+            </ul>
+        </div>
+
+        <div class="phase-card phase-final">
+            <h3><span class="phase-indicator indicator-final">Phase 3: Final Phase</span></h3>
+            <p><strong>Period:</strong> 2025-09-13 18:11:48 ~ 2025-09-16 10:52:31 (64시간 41분)</p>
+            <p><strong>Description:</strong> 안정화 구간</p>
+            
+            <h4>Performance Characteristics</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Average Write Rate</strong></td>
+                        <td><span class="metric-low">12.76 MB/s</span></td>
+                        <td>낮은 성능</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Max Write Rate</strong></td>
+                        <td><span class="metric-low">13.84 MB/s</span></td>
+                        <td>최고 성능</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Min Write Rate</strong></td>
+                        <td><span class="metric-low">12.06 MB/s</span></td>
+                        <td>최저 성능</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Standard Deviation</strong></td>
+                        <td><span class="metric-highlight">0.53 MB/s</span></td>
+                        <td>낮은 변동성</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Coefficient of Variation</strong></td>
+                        <td><span class="metric-highlight">0.041</span></td>
+                        <td>매우 높은 안정성</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Trend Analysis</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Trend Slope</strong></td>
+                        <td><span class="metric-highlight">-0.000077</span></td>
+                        <td>거의 수평 (매우 완만)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>R² Score</strong></td>
+                        <td><span class="metric-highlight">0.96</span></td>
+                        <td>매우 높은 추세 일관성</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance Change</strong></td>
+                        <td><span class="metric-highlight">-12.86%</span></td>
+                        <td>작은 성능 변화</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Observed Behavior</h4>
+            <ul>
+                <li><strong>Full Stabilization:</strong> 완전한 안정화 상태</li>
+                <li><strong>Consistent Performance:</strong> 일관된 성능 유지</li>
+                <li><strong>Minimal Volatility:</strong> 최소한의 성능 변동성</li>
+                <li><strong>Steady State:</strong> 지속적인 안정 상태</li>
+            </ul>
+        </div>
+
+        <h2>📈 Performance Evolution Pattern</h2>
+        
+        <div class="performance-chart">
+            <h3>Overall Performance Trend</h3>
+            <div class="code-block">
+Initial Phase (65.97 MB/s) 
+    ↓ 83% 감소
+Middle Phase (16.95 MB/s)
+    ↓ 25% 감소  
+Final Phase (12.76 MB/s)
+            </div>
+        </div>
+
+        <div class="performance-chart">
+            <h3>Stability Evolution</h3>
+            <div class="code-block">
+Initial Phase (CV: 0.538) - 매우 불안정
+    ↓ 안정화 진행
+Middle Phase (CV: 0.272) - 중간 안정성
+    ↓ 완전 안정화
+Final Phase (CV: 0.041) - 매우 안정
+            </div>
+        </div>
+
+        <h2>🔬 Technical Insights</h2>
+        
+        <div class="insight-box">
+            <h3>1. RocksDB LSM-Tree Behavior</h3>
+            <ul>
+                <li><strong>Initial:</strong> Memtable flush 위주, 낮은 WA/RA</li>
+                <li><strong>Middle:</strong> Compaction 본격화, 높은 WA/RA</li>
+                <li><strong>Final:</strong> Deep compaction 지속, 최고 WA/RA</li>
+            </ul>
+        </div>
+
+        <div class="insight-box">
+            <h3>2. Device Performance Impact</h3>
+            <ul>
+                <li><strong>Initial:</strong> 장치 성능 최적화 상태</li>
+                <li><strong>Middle:</strong> 장치 성능 저하 시작</li>
+                <li><strong>Final:</strong> 장치 성능 최대 저하 상태</li>
+            </ul>
+        </div>
+
+        <div class="insight-box">
+            <h3>3. Workload Characteristics</h3>
+            <ul>
+                <li><strong>FillRandom:</strong> Sequential write + Compaction read</li>
+                <li><strong>No User Reads:</strong> 시스템 읽기만 발생</li>
+                <li><strong>Continuous Write:</strong> 지속적인 쓰기 작업</li>
+            </ul>
+        </div>
+
+        <h2>🎯 Segmentation Validation</h2>
+        
+        <div class="validation-success">
+            <h3>✅ Statistical Validation</h3>
+            <ul>
+                <li><strong>R² Scores:</strong> 0.35 → 0.56 → 0.96 (점진적 개선)</li>
+                <li><strong>Coefficient of Variation:</strong> 0.538 → 0.272 → 0.041 (안정성 증가)</li>
+                <li><strong>Trend Consistency:</strong> 불안정 → 중간 → 매우 안정</li>
+            </ul>
+        </div>
+
+        <div class="validation-success">
+            <h3>✅ Semantic Validation</h3>
+            <ul>
+                <li><strong>Initial:</strong> 빈 DB 특성 반영 ✓</li>
+                <li><strong>Middle:</strong> 컴팩션 전환기 특성 반영 ✓</li>
+                <li><strong>Final:</strong> 안정화 상태 특성 반영 ✓</li>
+            </ul>
+        </div>
+
+        <h2>📋 Summary</h2>
+        
+        <div class="summary-box">
+            <h3>🎯 Segmentation Success Criteria</h3>
+            <ul>
+                <li>✅ <strong>Objectivity:</strong> 다중 방법론 통합으로 객관성 확보</li>
+                <li>✅ <strong>Statistical Significance:</strong> 통계적 임계값 기반 경계점 결정</li>
+                <li>✅ <strong>Semantic Validity:</strong> RocksDB 운영 특성과 일치</li>
+                <li>✅ <strong>Temporal Consistency:</strong> 시간적 논리성 확보</li>
+            </ul>
+        </div>
+
+        <h3>Key Findings</h3>
+        <ol>
+            <li><strong>Performance-Based Segmentation</strong>이 시간 기반 분할보다 의미있는 구간 분할 제공</li>
+            <li><strong>3단계 구간</strong>이 RocksDB FillRandom 워크로드의 성능 특성을 정확히 반영</li>
+            <li><strong>통계적 분석</strong>을 통한 자동화된 구간 분할의 타당성 입증</li>
+            <li><strong>각 구간의 고유한 특성</strong>이 명확히 구분됨</li>
+        </ol>
+
+        <h3>Implications for V4.2 Model</h3>
+        <ul>
+            <li><strong>Initial Phase:</strong> 빈 DB 상태의 특성 모델링 필요</li>
+            <li><strong>Middle Phase:</strong> 컴팩션 전환기의 정확한 모델링 가능</li>
+            <li><strong>Final Phase:</strong> 안정화 상태의 일관된 성능 예측 가능</li>
+        </ul>
+
+        <hr style="margin: 40px 0; border: 1px solid #ddd;">
+        
+        <div style="text-align: center; color: #7f8c8d; font-size: 0.9em;">
+            <p><strong>Analysis Date:</strong> 2025-09-19</p>
+            <p><strong>Algorithm Version:</strong> Performance-Based Segmentation v1.0</p>
+            <p><strong>Validation Status:</strong> Statistically and Semantically Validated</p>
+        </div>
+    </div>
+</body>
+</html>

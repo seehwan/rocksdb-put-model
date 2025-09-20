@@ -1,0 +1,276 @@
+{
+  "v4_2_predictions": {
+    "device_envelope_temporal": {
+      "initial_phase": {
+        "workload_characteristics": {
+          "write_type": "Sequential Write Only",
+          "read_type": "Compaction Read Only",
+          "user_reads": 0,
+          "system_reads": "Compaction Only"
+        },
+        "base_performance": {
+          "write_performance": 4116.6455078125,
+          "compaction_read_performance": 5487.189453125
+        },
+        "degradation_factors": {
+          "write_degradation_factor": 0.0,
+          "compaction_read_degradation_factor": 0.0
+        },
+        "adjusted_performance": {
+          "adjusted_write_bw": 957.367079296875,
+          "adjusted_compaction_read_bw": 1276.10077921875
+        },
+        "s_max": 965261.6755199999,
+        "compaction_efficiency": 1.3329273659127328,
+        "io_characteristics": {
+          "io_contention": 0.76,
+          "stability_factor": 1.02,
+          "performance_factor": 0.3
+        }
+      },
+      "middle_phase": {
+        "workload_characteristics": {
+          "write_type": "Sequential Write Only",
+          "read_type": "Compaction Read Only",
+          "user_reads": 0,
+          "system_reads": "Compaction Only"
+        },
+        "base_performance": {
+          "write_performance": 2595.7431640625,
+          "compaction_read_performance": 3326.6240234375
+        },
+        "degradation_factors": {
+          "write_degradation_factor": 0.3694518609541816,
+          "compaction_read_degradation_factor": 0.3937471902773541
+        },
+        "adjusted_performance": {
+          "adjusted_write_bw": 845.5404117278295,
+          "adjusted_compaction_read_bw": 1041.866048224176
+        },
+        "s_max": 852512.8680460774,
+        "compaction_efficiency": 1.2321895367427356,
+        "io_characteristics": {
+          "io_contention": 0.8200000000000001,
+          "stability_factor": 1.05,
+          "performance_factor": 0.6
+        }
+      },
+      "final_phase": {
+        "workload_characteristics": {
+          "write_type": "Sequential Write Only",
+          "read_type": "Compaction Read Only",
+          "user_reads": 0,
+          "system_reads": "Compaction Only"
+        },
+        "base_performance": {
+          "write_performance": 1074.8408203125,
+          "compaction_read_performance": 1166.05859375
+        },
+        "degradation_factors": {
+          "write_degradation_factor": 0.7389037219083632,
+          "compaction_read_degradation_factor": 0.7874943805547082
+        },
+        "adjusted_performance": {
+          "adjusted_write_bw": 240.04561105207586,
+          "adjusted_compaction_read_bw": 211.95307906842766
+        },
+        "s_max": 242025.06409090527,
+        "compaction_efficiency": 0.8829700244860809,
+        "io_characteristics": {
+          "io_contention": 0.88,
+          "stability_factor": 1.08,
+          "performance_factor": 0.9
+        }
+      }
+    },
+    "closed_ledger_temporal": {
+      "initial_phase": {
+        "base_performance": 4116.6455078125,
+        "degradation_factor": 0.0,
+        "adjusted_bw": 1234.99365234375,
+        "s_max": 1245177.6,
+        "performance_factor": 0.3,
+        "workload_type": "FillRandom (Sequential Write Only)"
+      },
+      "middle_phase": {
+        "base_performance": 2595.7431640625,
+        "degradation_factor": 0.3694518609541816,
+        "adjusted_bw": 982.0446129243082,
+        "s_max": 990142.7038862687,
+        "performance_factor": 0.6,
+        "workload_type": "FillRandom (Sequential Write Only)"
+      },
+      "final_phase": {
+        "base_performance": 1074.8408203125,
+        "degradation_factor": 0.7389037219083632,
+        "adjusted_bw": 252.5732439521,
+        "s_max": 254656.00177915115,
+        "performance_factor": 0.9,
+        "workload_type": "FillRandom (Sequential Write Only)"
+      }
+    },
+    "dynamic_simulation_temporal": {
+      "initial_phase": {
+        "base_performance": {
+          "write_performance": 4116.6455078125,
+          "compaction_read_performance": 5487.189453125
+        },
+        "degradation_factors": {
+          "write_degradation_factor": 0.0,
+          "compaction_read_degradation_factor": 0.0
+        },
+        "adjusted_performance": {
+          "adjusted_write_bw": 1259.693525390625,
+          "adjusted_compaction_read_bw": 1679.07997265625
+        },
+        "dynamic_smax": 1270081.152,
+        "compaction_efficiency": 1.332927365912733,
+        "stability": 0.2,
+        "performance_factor": 0.3,
+        "workload_type": "FillRandom (Sequential Write + Compaction Read)"
+      },
+      "middle_phase": {
+        "base_performance": {
+          "write_performance": 2595.7431640625,
+          "compaction_read_performance": 3326.6240234375
+        },
+        "degradation_factors": {
+          "write_degradation_factor": 0.3694518609541816,
+          "compaction_read_degradation_factor": 0.3937471902773541
+        },
+        "adjusted_performance": {
+          "adjusted_write_bw": 1031.1468435705237,
+          "adjusted_compaction_read_bw": 1270.5683514928976
+        },
+        "dynamic_smax": 1039649.8390805823,
+        "compaction_efficiency": 1.2321895367427356,
+        "stability": 0.5,
+        "performance_factor": 0.6,
+        "workload_type": "FillRandom (Sequential Write + Compaction Read)"
+      },
+      "final_phase": {
+        "base_performance": {
+          "write_performance": 1074.8408203125,
+          "compaction_read_performance": 1166.05859375
+        },
+        "degradation_factors": {
+          "write_degradation_factor": 0.7389037219083632,
+          "compaction_read_degradation_factor": 0.7874943805547082
+        },
+        "adjusted_performance": {
+          "adjusted_write_bw": 272.77910346826803,
+          "adjusted_compaction_read_bw": 240.8557716686678
+        },
+        "dynamic_smax": 275028.4819214833,
+        "compaction_efficiency": 0.8829700244860809,
+        "stability": 0.8,
+        "performance_factor": 0.9,
+        "workload_type": "FillRandom (Sequential Write + Compaction Read)"
+      }
+    }
+  },
+  "phase_performance": {
+    "initial_phase": {
+      "device_smax": 965261.6755199999,
+      "ledger_smax": 1245177.6,
+      "dynamic_smax": 1270081.152,
+      "avg_prediction": 1160173.4758400002,
+      "compaction_efficiency": 1.3329273659127328
+    },
+    "middle_phase": {
+      "device_smax": 852512.8680460774,
+      "ledger_smax": 990142.7038862687,
+      "dynamic_smax": 1039649.8390805823,
+      "avg_prediction": 960768.4703376428,
+      "compaction_efficiency": 1.2321895367427356
+    },
+    "final_phase": {
+      "device_smax": 242025.06409090527,
+      "ledger_smax": 254656.00177915115,
+      "dynamic_smax": 275028.4819214833,
+      "avg_prediction": 257236.51593051324,
+      "compaction_efficiency": 0.8829700244860809
+    }
+  },
+  "phase_a_fillrandom_data": {
+    "initial": {
+      "seq_write": {
+        "write_bw": 4116.6455078125,
+        "read_bw": 0.0
+      },
+      "seq_read": {
+        "write_bw": 0.0,
+        "read_bw": 5487.189453125
+      }
+    },
+    "degraded": {
+      "seq_write": {
+        "write_bw": 1074.8408203125,
+        "read_bw": 0.0
+      },
+      "seq_read": {
+        "write_bw": 0.0,
+        "read_bw": 1166.05859375
+      }
+    }
+  },
+  "fillrandom_temporal_factors": {
+    "initial_phase": {
+      "workload_characteristics": {
+        "write_type": "Sequential Write Only",
+        "read_type": "Compaction Read Only",
+        "user_reads": 0,
+        "system_reads": "Compaction Only"
+      },
+      "performance_factors": {
+        "write_performance": 4116.6455078125,
+        "compaction_read_performance": 5487.189453125,
+        "write_degradation_factor": 0.0,
+        "compaction_read_degradation_factor": 0.0
+      },
+      "io_characteristics": {
+        "io_intensity": 0.8,
+        "stability": 0.2,
+        "performance_factor": 0.3
+      }
+    },
+    "middle_phase": {
+      "workload_characteristics": {
+        "write_type": "Sequential Write Only",
+        "read_type": "Compaction Read Only",
+        "user_reads": 0,
+        "system_reads": "Compaction Only"
+      },
+      "performance_factors": {
+        "write_performance": 2595.7431640625,
+        "compaction_read_performance": 3326.6240234375,
+        "write_degradation_factor": 0.3694518609541816,
+        "compaction_read_degradation_factor": 0.3937471902773541
+      },
+      "io_characteristics": {
+        "io_intensity": 0.6,
+        "stability": 0.5,
+        "performance_factor": 0.6
+      }
+    },
+    "final_phase": {
+      "workload_characteristics": {
+        "write_type": "Sequential Write Only",
+        "read_type": "Compaction Read Only",
+        "user_reads": 0,
+        "system_reads": "Compaction Only"
+      },
+      "performance_factors": {
+        "write_performance": 1074.8408203125,
+        "compaction_read_performance": 1166.05859375,
+        "write_degradation_factor": 0.7389037219083632,
+        "compaction_read_degradation_factor": 0.7874943805547082
+      },
+      "io_characteristics": {
+        "io_intensity": 0.4,
+        "stability": 0.8,
+        "performance_factor": 0.9
+      }
+    }
+  }
+}

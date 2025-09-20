@@ -1,0 +1,425 @@
+{
+  "model_version": "v4.2_enhanced_level_wise_temporal",
+  "creation_time": "2025-09-19T19:48:11.037953",
+  "temporal_level_amplification": {
+    "initial_phase": {
+      "duration_hours": 0.14,
+      "characteristics": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04",
+      "level_amplification": {
+        "0": {
+          "wa": 1.0,
+          "ra": 0.0,
+          "io_impact": 0.1,
+          "flush_ratio": 1.0
+        },
+        "1": {
+          "wa": 1.1,
+          "ra": 0.1,
+          "io_impact": 0.2,
+          "flush_ratio": 0.0
+        },
+        "2": {
+          "wa": 1.3,
+          "ra": 0.2,
+          "io_impact": 0.3,
+          "flush_ratio": 0.0
+        },
+        "3": {
+          "wa": 1.5,
+          "ra": 0.3,
+          "io_impact": 0.2,
+          "flush_ratio": 0.0
+        },
+        "4": {
+          "wa": 2.0,
+          "ra": 0.5,
+          "io_impact": 0.1,
+          "flush_ratio": 0.0
+        },
+        "5": {
+          "wa": 2.5,
+          "ra": 0.8,
+          "io_impact": 0.05,
+          "flush_ratio": 0.0
+        },
+        "6": {
+          "wa": 3.0,
+          "ra": 1.0,
+          "io_impact": 0.05,
+          "flush_ratio": 0.0
+        }
+      },
+      "performance_factors": {
+        "write_amplification_avg": 1.3,
+        "read_amplification_avg": 0.2,
+        "io_contention": 0.6,
+        "stability_factor": 0.2,
+        "performance_factor": 0.3
+      }
+    },
+    "middle_phase": {
+      "duration_hours": 31.79,
+      "characteristics": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04",
+      "level_amplification": {
+        "0": {
+          "wa": 1.0,
+          "ra": 0.0,
+          "io_impact": 0.1,
+          "flush_ratio": 1.0
+        },
+        "1": {
+          "wa": 1.2,
+          "ra": 0.2,
+          "io_impact": 0.2,
+          "flush_ratio": 0.0
+        },
+        "2": {
+          "wa": 2.5,
+          "ra": 0.8,
+          "io_impact": 0.4,
+          "flush_ratio": 0.0
+        },
+        "3": {
+          "wa": 3.5,
+          "ra": 1.2,
+          "io_impact": 0.2,
+          "flush_ratio": 0.0
+        },
+        "4": {
+          "wa": 4.0,
+          "ra": 1.5,
+          "io_impact": 0.1,
+          "flush_ratio": 0.0
+        },
+        "5": {
+          "wa": 4.5,
+          "ra": 1.8,
+          "io_impact": 0.05,
+          "flush_ratio": 0.0
+        },
+        "6": {
+          "wa": 5.0,
+          "ra": 2.0,
+          "io_impact": 0.05,
+          "flush_ratio": 0.0
+        }
+      },
+      "performance_factors": {
+        "write_amplification_avg": 2.4,
+        "read_amplification_avg": 0.8,
+        "io_contention": 0.8,
+        "stability_factor": 0.5,
+        "performance_factor": 0.6
+      }
+    },
+    "final_phase": {
+      "duration_hours": 64.68,
+      "characteristics": "\uc548\uc815\ud654 \uad6c\uac04",
+      "level_amplification": {
+        "0": {
+          "wa": 1.0,
+          "ra": 0.0,
+          "io_impact": 0.1,
+          "flush_ratio": 1.0
+        },
+        "1": {
+          "wa": 1.3,
+          "ra": 0.3,
+          "io_impact": 0.2,
+          "flush_ratio": 0.0
+        },
+        "2": {
+          "wa": 3.0,
+          "ra": 1.0,
+          "io_impact": 0.4,
+          "flush_ratio": 0.0
+        },
+        "3": {
+          "wa": 4.0,
+          "ra": 1.5,
+          "io_impact": 0.2,
+          "flush_ratio": 0.0
+        },
+        "4": {
+          "wa": 5.0,
+          "ra": 2.0,
+          "io_impact": 0.1,
+          "flush_ratio": 0.0
+        },
+        "5": {
+          "wa": 5.5,
+          "ra": 2.2,
+          "io_impact": 0.05,
+          "flush_ratio": 0.0
+        },
+        "6": {
+          "wa": 6.0,
+          "ra": 2.5,
+          "io_impact": 0.05,
+          "flush_ratio": 0.0
+        }
+      },
+      "performance_factors": {
+        "write_amplification_avg": 3.2,
+        "read_amplification_avg": 1.1,
+        "io_contention": 0.9,
+        "stability_factor": 0.8,
+        "performance_factor": 0.9
+      }
+    }
+  },
+  "enhanced_predictions": {
+    "initial_phase": {
+      "level_wise_impact": {
+        "0": {
+          "write_amplification": 1.0,
+          "read_amplification": 0.0,
+          "io_impact": 0.11000000000000001,
+          "level_weight": 1.0,
+          "flush_ratio": 1.0,
+          "compaction_intensity": 0.0
+        },
+        "1": {
+          "write_amplification": 1.1,
+          "read_amplification": 0.1,
+          "io_impact": 0.2899,
+          "level_weight": 1.3,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "2": {
+          "write_amplification": 1.3,
+          "read_amplification": 0.2,
+          "io_impact": 0.5471999999999999,
+          "level_weight": 1.6,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "3": {
+          "write_amplification": 1.5,
+          "read_amplification": 0.3,
+          "io_impact": 0.4426999999999999,
+          "level_weight": 1.9,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "4": {
+          "write_amplification": 2.0,
+          "read_amplification": 0.5,
+          "io_impact": 0.2695,
+          "level_weight": 2.2,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "5": {
+          "write_amplification": 2.5,
+          "read_amplification": 0.8,
+          "io_impact": 0.16125,
+          "level_weight": 2.5,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "6": {
+          "write_amplification": 3.0,
+          "read_amplification": 1.0,
+          "io_impact": 0.189,
+          "level_weight": 2.8,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        }
+      },
+      "overall_amplification": {
+        "avg_write_amplification": 1.9857142857142853,
+        "avg_read_amplification": 0.5203007518796993,
+        "performance_factor": 0.3,
+        "stability_factor": 0.2,
+        "io_contention": 0.6
+      },
+      "predicted_s_max": 33132.28281348463,
+      "phase_characteristics": {
+        "duration_hours": 0.14,
+        "characteristics": "\ube48 DB\uc5d0\uc11c \ube60\ub974\uac8c \uc131\ub2a5\uc774 \ubcc0\ud558\ub294 \uad6c\uac04"
+      }
+    },
+    "middle_phase": {
+      "level_wise_impact": {
+        "0": {
+          "write_amplification": 1.0,
+          "read_amplification": 0.0,
+          "io_impact": 0.11000000000000001,
+          "level_weight": 1.0,
+          "flush_ratio": 1.0,
+          "compaction_intensity": 0.0
+        },
+        "1": {
+          "write_amplification": 1.2,
+          "read_amplification": 0.2,
+          "io_impact": 0.29380000000000006,
+          "level_weight": 1.3,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "2": {
+          "write_amplification": 2.5,
+          "read_amplification": 0.8,
+          "io_impact": 0.8256000000000002,
+          "level_weight": 1.6,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "3": {
+          "write_amplification": 3.5,
+          "read_amplification": 1.2,
+          "io_impact": 0.5358,
+          "level_weight": 1.9,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "4": {
+          "write_amplification": 4.0,
+          "read_amplification": 1.5,
+          "io_impact": 0.3245,
+          "level_weight": 2.2,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "5": {
+          "write_amplification": 4.5,
+          "read_amplification": 1.8,
+          "io_impact": 0.1925,
+          "level_weight": 2.5,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "6": {
+          "write_amplification": 5.0,
+          "read_amplification": 2.0,
+          "io_impact": 0.22399999999999998,
+          "level_weight": 2.8,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        }
+      },
+      "overall_amplification": {
+        "avg_write_amplification": 3.553383458646617,
+        "avg_read_amplification": 1.294736842105263,
+        "performance_factor": 0.6,
+        "stability_factor": 0.5,
+        "io_contention": 0.8
+      },
+      "predicted_s_max": 119002.04100512974,
+      "phase_characteristics": {
+        "duration_hours": 31.79,
+        "characteristics": "\ucef4\ud329\uc158\uc774 \uc9c4\ud589\ub418\uba70 \uc548\uc815\ud654\ub418\uc5b4 \uac00\ub294 \uad6c\uac04"
+      }
+    },
+    "final_phase": {
+      "level_wise_impact": {
+        "0": {
+          "write_amplification": 1.0,
+          "read_amplification": 0.0,
+          "io_impact": 0.11000000000000001,
+          "level_weight": 1.0,
+          "flush_ratio": 1.0,
+          "compaction_intensity": 0.0
+        },
+        "1": {
+          "write_amplification": 1.3,
+          "read_amplification": 0.3,
+          "io_impact": 0.29769999999999996,
+          "level_weight": 1.3,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "2": {
+          "write_amplification": 3.0,
+          "read_amplification": 1.0,
+          "io_impact": 0.8640000000000002,
+          "level_weight": 1.6,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "3": {
+          "write_amplification": 4.0,
+          "read_amplification": 1.5,
+          "io_impact": 0.5605,
+          "level_weight": 1.9,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "4": {
+          "write_amplification": 5.0,
+          "read_amplification": 2.0,
+          "io_impact": 0.3520000000000001,
+          "level_weight": 2.2,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "5": {
+          "write_amplification": 5.5,
+          "read_amplification": 2.2,
+          "io_impact": 0.20750000000000002,
+          "level_weight": 2.5,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        },
+        "6": {
+          "write_amplification": 6.0,
+          "read_amplification": 2.5,
+          "io_impact": 0.2415,
+          "level_weight": 2.8,
+          "flush_ratio": 0.0,
+          "compaction_intensity": 1.0
+        }
+      },
+      "overall_amplification": {
+        "avg_write_amplification": 4.258646616541353,
+        "avg_read_amplification": 1.6345864661654137,
+        "performance_factor": 0.9,
+        "stability_factor": 0.8,
+        "io_contention": 0.9
+      },
+      "predicted_s_max": 250597.923598277,
+      "phase_characteristics": {
+        "duration_hours": 64.68,
+        "characteristics": "\uc548\uc815\ud654 \uad6c\uac04"
+      }
+    }
+  },
+  "comparison_with_original": {
+    "initial_phase": {
+      "enhanced_s_max": 33132.28281348463,
+      "original_s_max": 965261.68,
+      "actual_qps": 138769,
+      "enhanced_accuracy": 23.875853262244906,
+      "original_accuracy": -598.0,
+      "improvement": 621.875853262245,
+      "improvement_ratio": 103.9926176023821
+    },
+    "middle_phase": {
+      "enhanced_s_max": 119002.04100512974,
+      "original_s_max": 852512.87,
+      "actual_qps": 114472,
+      "enhanced_accuracy": 96.04266457725056,
+      "original_accuracy": -505.0,
+      "improvement": 601.0426645772505,
+      "improvement_ratio": 119.01834942123773
+    },
+    "final_phase": {
+      "enhanced_s_max": 250597.923598277,
+      "original_s_max": 242025.06,
+      "actual_qps": 109678,
+      "enhanced_accuracy": -28.48513247713944,
+      "original_accuracy": -20.7,
+      "improvement": -7.785132477139442,
+      "improvement_ratio": -37.60933563835479
+    }
+  },
+  "model_improvements": {
+    "level_wise_modeling": true,
+    "temporal_ra_wa_modeling": true,
+    "real_data_integration": true,
+    "phase_based_optimization": true,
+    "io_impact_analysis": true
+  }
+}

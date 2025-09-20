@@ -1,0 +1,53 @@
+{
+  "phase_analysis": {
+    "initial": {
+      "duration_hours": 32.20107010333333,
+      "sample_count": 11592,
+      "avg_write_rate": 17.13913216011042,
+      "max_write_rate": 280.18,
+      "min_write_rate": 13.83,
+      "std_write_rate": 6.102187318976736,
+      "cv": 0.3560382907355691,
+      "start_time": "2025-09-12 10:16:04.958286",
+      "end_time": "2025-09-13 18:28:08.810658",
+      "flush_count": 53053,
+      "flush_by_type": {
+        "finish": 26527,
+        "start": 26526
+      }
+    },
+    "middle": {
+      "duration_hours": 32.200674094166665,
+      "sample_count": 11591,
+      "avg_write_rate": 13.195097920800622,
+      "max_write_rate": 13.84,
+      "min_write_rate": 12.63,
+      "std_write_rate": 0.36181570011640457,
+      "cv": 0.027420463439383945,
+      "start_time": "2025-09-13 18:28:18.812315",
+      "end_time": "2025-09-15 02:40:21.239054",
+      "flush_count": 43796,
+      "flush_by_type": {
+        "start": 21898,
+        "finish": 21898
+      }
+    },
+    "final": {
+      "duration_hours": 32.19997141722222,
+      "sample_count": 11590,
+      "avg_write_rate": 12.310995685936152,
+      "max_write_rate": 12.63,
+      "min_write_rate": 12.06,
+      "std_write_rate": 0.1598052221168521,
+      "cv": 0.012980690286441296,
+      "start_time": "2025-09-15 02:40:31.241258",
+      "end_time": "2025-09-16 10:52:31.138360",
+      "flush_count": 41960,
+      "flush_by_type": {
+        "start": 20980,
+        "finish": 20980
+      }
+    }
+  },
+  "analysis_time": "2025-09-19T11:31:02.011144"
+}

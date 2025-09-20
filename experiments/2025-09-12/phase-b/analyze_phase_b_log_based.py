@@ -302,16 +302,14 @@ def main():
     """메인 함수"""
     print("🚀 Phase-B LOG 기반 분석 시작...")
     
-    # LOG 파일 찾기
-    log_files = list(Path('.').glob('LOG*')) + list(Path('logs').glob('LOG*'))
+    # LOG 파일 경로 설정
+    main_log = "rocksdb_log_phase_b.log"
     
-    if not log_files:
+    if not os.path.exists(main_log):
         print("❌ LOG 파일을 찾을 수 없습니다!")
         print("Phase-B 실행 후 LOG 파일이 생성되었는지 확인하세요.")
         return
     
-    # 가장 큰 LOG 파일 선택 (메인 로그)
-    main_log = max(log_files, key=lambda f: f.stat().st_size)
     print(f"📖 메인 LOG 파일: {main_log}")
     
     # LOG 파일 분석

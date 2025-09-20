@@ -1910,3 +1910,40 @@ def model_transition_progress(time_minutes, context):
 ```
 
 This comprehensive model specification provides the detailed internal mechanisms, algorithms, and mathematical foundations that were missing from the evaluation-focused documents. The specifications show exactly how V4 and V4.1 work internally, why they succeed, and how they can be implemented and calibrated for production use.
+
+
+---
+
+## 📚 Document Navigation
+
+### Main Documents
+| Document | Description | Formats |
+|----------|-------------|---------|
+| 🎯 **Complete V4/V5 Model Analysis** | Comprehensive comparison with dual-structure theory | [📄 MD](COMPLETE_V4_V5_MODEL_ANALYSIS.md) \| [🌐 HTML](COMPLETE_V4_V5_MODEL_ANALYSIS.html) |
+| 🔬 **Complete Model Specifications** | Detailed algorithms, mathematics, and internal mechanisms | [📄 MD](COMPLETE_MODEL_SPECIFICATIONS.md) \| [🌐 HTML](COMPLETE_MODEL_SPECIFICATIONS.html) |
+| 🔧 **Technical Implementation Guide** | Production-ready code and deployment guide | [📄 MD](TECHNICAL_IMPLEMENTATION_GUIDE.md) \| [🌐 HTML](TECHNICAL_IMPLEMENTATION_GUIDE.html) |
+| 📈 **Phase-Based Detailed Analysis** | In-depth analysis of Initial, Middle, and Final phases | [📄 MD](PHASE_BASED_DETAILED_ANALYSIS.md) \| [🌐 HTML](PHASE_BASED_DETAILED_ANALYSIS.html) |
+
+### Quick Links
+
+**📊 For Context:**
+- [🎯 Main Analysis](COMPLETE_V4_V5_MODEL_ANALYSIS.md) - Overall model comparison
+- [📈 Phase Details](PHASE_BASED_DETAILED_ANALYSIS.md) - Phase-specific analysis
+
+**🛠️ For Implementation:**
+- [🔧 Production Code](TECHNICAL_IMPLEMENTATION_GUIDE.md) - Implementation guide
+- [🏠 Main Page](index.html) - Project overview
+
+### 📊 Performance Visualizations
+- [📊 V4 vs V5 Performance Comparison](v4_v5_performance_comparison.png) - Overall performance and efficiency
+- [🔄 Dual-Structure Analysis](dual_structure_analysis.png) - Phase-A vs Phase-B breakdown  
+- [📈 Phase Evolution Analysis](phase_analysis.png) - Performance evolution patterns
+- [🧪 Experimental Validation](experimental_validation.png) - 120-minute experiment results
+
+### 🏠 Project Resources
+- [🏠 Main Page](index.html) - Project overview and model cards
+- [📄 README](README.md) - Quick start and summary
+- [📁 Project Structure](FINAL_PROJECT_STRUCTURE.md) - File organization
+- [📊 Legacy Models](models.html) - Historical model development
+
+---

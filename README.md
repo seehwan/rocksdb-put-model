@@ -44,6 +44,8 @@ Total Performance Decline = Physical Device Degradation (Phase-A) × Software I/
 2. **[Complete V4/V5 Model Analysis (HTML)](COMPLETE_V4_V5_MODEL_ANALYSIS.html)** - Web-friendly version with styling
 3. **[Technical Implementation Guide](TECHNICAL_IMPLEMENTATION_GUIDE.md)** - Production-ready code and deployment
 4. **[Phase-Based Detailed Analysis](PHASE_BASED_DETAILED_ANALYSIS.md)** - In-depth phase analysis
+5. **[Complete Model Specifications (Markdown)](COMPLETE_MODEL_SPECIFICATIONS.md)** - Detailed algorithms and internal mechanisms
+6. **[Complete Model Specifications (HTML)](COMPLETE_MODEL_SPECIFICATIONS.html)** - Web-friendly model specifications
 
 ### 🔬 Supporting Analysis
 - **[Performance Decline Explanation](PERFORMANCE_DECLINE_EXPLANATION.md)** - Dual-structure mechanism details

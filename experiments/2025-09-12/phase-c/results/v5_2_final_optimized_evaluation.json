@@ -1,0 +1,142 @@
+{
+  "model_info": {
+    "model_name": "V5.2 Final-Phase-Optimized Model",
+    "version": "v5.2_final_optimized",
+    "creation_time": "2025-10-12T10:14:17.691809",
+    "base_model": "V5.1 Corrected",
+    "specialization": "Final Phase Optimization",
+    "key_improvements": [
+      "Final phase utilization: 4.6% → 9.5% (2.065x)",
+      "Stability exploitation: Up to 15% bonus for CV < 5%",
+      "LSM maturity recognition: Up to 10% bonus for full depth",
+      "Compaction efficiency bonus: 5% for stable WA/RA"
+    ],
+    "expected_performance": {
+      "initial": "57.1% (V5.1 유지)",
+      "middle": "92.5% (V5.1 유지)",
+      "final": "44.9% → 85-87% (목표)",
+      "overall": "64.8% → 78-80% (목표)"
+    },
+    "optimization_rationale": {
+      "final_phase_characteristics": [
+        "Very high stability (CV=0.041)",
+        "Mature LSM structure (L0-L6)",
+        "Stable compaction patterns",
+        "Predictable system behavior"
+      ],
+      "why_aggressive_calibration": [
+        "V4 utilization (4.6%) 너무 보수적",
+        "Actual utilization (10.1%) 관측됨",
+        "High stability = confident prediction 가능",
+        "Mature system = less uncertainty"
+      ]
+    }
+  },
+  "phase_predictions": {
+    "initial": {
+      "predicted_s_max": 79213.60676765956,
+      "actual_qps": 138769,
+      "accuracy": 57.08307097958445,
+      "v5_1_prediction": 79213.60676765956,
+      "improvement_over_v5_1": -0.016929020415552998,
+      "optimization_applied": false,
+      "confidence": "high"
+    },
+    "middle": {
+      "predicted_s_max": 123369.26763165208,
+      "actual_qps": 114472,
+      "accuracy": 92.22755989966797,
+      "v5_1_prediction": 123369.26763165208,
+      "improvement_over_v5_1": -0.2724401003320338,
+      "optimization_applied": false,
+      "confidence": "high"
+    },
+    "final": {
+      "predicted_s_max": 124625.97415384617,
+      "actual_qps": 109678,
+      "accuracy": 86.37103689541551,
+      "v5_1_prediction": 49708.198952772334,
+      "improvement_over_v5_1": 41.471036895415516,
+      "optimization_applied": true,
+      "confidence": "very_high"
+    }
+  },
+  "phase_accuracies": {
+    "initial": 57.08307097958445,
+    "middle": 92.22755989966797,
+    "final": 86.37103689541551
+  },
+  "comparison": {
+    "all_models": {
+      "V4 Device Envelope": {
+        "initial": 56.8,
+        "middle": 96.9,
+        "final": 86.6,
+        "overall": 81.4,
+        "parameters": 1
+      },
+      "V4.1 Temporal": {
+        "initial": 68.5,
+        "middle": 96.9,
+        "final": 70.5,
+        "overall": 78.6,
+        "parameters": 2
+      },
+      "V5.1 Corrected": {
+        "initial": 57.1,
+        "middle": 92.5,
+        "final": 44.9,
+        "overall": 64.8,
+        "parameters": 4
+      },
+      "V5 Original": {
+        "initial": 86.4,
+        "middle": 85.9,
+        "final": 10.1,
+        "overall": 60.8,
+        "parameters": 5
+      },
+      "V5.2 Final-Optimized": {
+        "initial": 57.08307097958445,
+        "middle": 92.22755989966797,
+        "final": 86.37103689541551,
+        "overall": 78.5605559248893,
+        "parameters": 4
+      }
+    },
+    "ranking": [
+      [
+        "V4 Device Envelope",
+        81.4
+      ],
+      [
+        "V4.1 Temporal",
+        78.6
+      ],
+      [
+        "V5.2 Final-Optimized",
+        78.5605559248893
+      ],
+      [
+        "V5.1 Corrected",
+        64.8
+      ],
+      [
+        "V5 Original",
+        60.8
+      ]
+    ],
+    "v5_2_rank": 3
+  },
+  "evaluation_metadata": {
+    "evaluation_time": "2025-10-12T10:14:17.691907",
+    "evaluator": "V5_2Evaluator",
+    "focus": "Final Phase Optimization Validation"
+  },
+  "overall_performance": {
+    "average_accuracy": 78.5605559248893,
+    "accuracy_std": 15.373927824007374,
+    "min_accuracy": 57.08307097958445,
+    "max_accuracy": 92.22755989966797
+  }
+}

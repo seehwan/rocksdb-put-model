@@ -1,0 +1,375 @@
+{
+  "timestamp": "2025-09-20T09:37:13.617863",
+  "experiments_data": {
+    "2025-09-05": {
+      "date": "2025-09-05",
+      "device_calibration": {
+        "write_test": {
+          "command": "fio --name=w --filename=/dev/nvme1n1p1 --rw=write --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
+          "bandwidth_mib_s": 1484,
+          "bandwidth_mb_s": 1556,
+          "iops": 11900,
+          "latency_avg_us": 41.55,
+          "utilization_percent": 15.74,
+          "extracted_value": "B_w = 1484 MiB/s"
+        },
+        "read_test": {
+          "command": "fio --name=r --filename=/dev/nvme1n1p1 --rw=read --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
+          "bandwidth_mib_s": 2368,
+          "bandwidth_mb_s": 2483,
+          "iops": 18900,
+          "latency_avg_us": 44.43,
+          "utilization_percent": 65.84,
+          "extracted_value": "B_r = 2368 MiB/s"
+        },
+        "mixed_test": {
+          "command": "fio --name=rw --filename=/dev/nvme1n1p1 --rw=rw --rwmixread=50 --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60",
+          "read_bandwidth_mib_s": 1116,
+          "write_bandwidth_mib_s": 1115,
+          "total_bandwidth_mib_s": 2231,
+          "read_iops": 8900,
+          "write_iops": 8900,
+          "utilization_percent": 36.24,
+          "extracted_value": "B_eff = 2231 MiB/s"
+        }
+      },
+      "benchmark_results": {
+        "performance_results": {
+          "throughput": {
+            "microseconds_per_operation": 84.824,
+            "operations_per_second": 188617,
+            "put_rate_mib_s": 187.1
+          }
+        },
+        "write_amplification": {
+          "write_amplification": 1.02
+        }
+      },
+      "metadata": {
+        "date": "2025-09-05",
+        "environment": "GPU-01 server",
+        "device": "/dev/nvme1n1p1",
+        "experimenter": "yooseehwan",
+        "phase": "D - Model Validation",
+        "status": "completed",
+        "total_duration_hours": 8
+      }
+    },
+    "2025-09-08": {
+      "date": "2025-09-08",
+      "device_calibration": {
+        "write_test": {
+          "command": "fio --name=w --filename=/dev/nvme1n1p1 --rw=write --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60 --allow_mounted_write=1",
+          "bandwidth_mib_s": 1421.0,
+          "bandwidth_mb_s": 1490.0,
+          "iops": 11368,
+          "latency_avg_us": 42.56,
+          "utilization_percent": 97.03,
+          "extracted_value": "B_w = 1421.0 MiB/s",
+          "status": "completed"
+        },
+        "read_test": {
+          "command": "fio --name=r --filename=/dev/nvme1n1p1 --rw=read --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60 --allow_mounted_write=1",
+          "bandwidth_mib_s": 2320.3,
+          "bandwidth_mb_s": 2433.0,
+          "iops": 18562,
+          "latency_avg_us": 45.35,
+          "utilization_percent": 82.64,
+          "extracted_value": "B_r = 2320.3 MiB/s",
+          "status": "completed"
+        },
+        "mixed_test": {
+          "command": "fio --name=rw --filename=/dev/nvme1n1p1 --rw=rw --rwmixread=50 --bs=128k --iodepth=32 --numjobs=1 --time_based=1 --runtime=60 --allow_mounted_write=1",
+          "read_bandwidth_mib_s": 1087.3,
+          "write_bandwidth_mib_s": 1085.7,
+          "total_bandwidth_mib_s": 2173.0,
+          "read_iops": 8699,
+          "write_iops": 8686,
+          "utilization_percent": 97.23,
+          "extracted_value": "B_eff = 2173.0 MiB/s",
+          "status": "completed"
+        }
+      },
+      "benchmark_results": {
+        "experiment_info": {
+          "date": "2025-09-08",
+          "phase": "Phase-B",
+          "test_type": "RocksDB fillrandom benchmark",
+          "timestamp": "2025-09-07 02:57:19",
+          "duration_seconds": 31697.384
+        },
+        "benchmark_configuration": {
+          "command": "./db_bench --options_file=options-leveled.ini --benchmarks=fillrandom --num=300000000 --value_size=1024 --threads=16 --db=/rocksdb/data --wal_dir=/rocksdb/wal --statistics=1 --stats_dump_period_sec=60",
+          "options_file": "options-leveled.ini",
+          "benchmark": "fillrandom",
+          "num_operations": 300000000,
+          "value_size_bytes": 1024,
+          "key_size_bytes": 16,
+          "threads": 16,
+          "db_path": "/rocksdb/data",
+          "wal_dir": "/rocksdb/wal",
+          "statistics_enabled": true,
+          "stats_dump_period_sec": 60
+        },
+        "rocksdb_configuration": {
+          "version": "10.7.0",
+          "cpu_info": "48 * Intel(R) Xeon(R) Silver 4310 CPU @ 2.10GHz",
+          "cpu_cache": "18432 KB",
+          "compression": "Snappy",
+          "compression_sampling_rate": 0,
+          "memtable_rep": "SkipListFactory",
+          "perf_level": 1
+        },
+        "performance_results": {
+          "throughput": {
+            "operations_per_second": 151432,
+            "microseconds_per_operation": 105.652,
+            "total_operations": 4800000000,
+            "put_rate_mib_s": 150.2,
+            "put_rate_mb_s": 157.5
+          },
+          "data_volume": {
+            "raw_size_mb": 297546.4,
+            "file_size_mb": 151062.0,
+            "compression_ratio": 0.508,
+            "total_bytes_written": 5018512255644,
+            "total_bytes_read": 0
+          },
+          "write_amplification": {
+            "bytes_written_total": 5018512255644,
+            "bytes_written_user": 4800000000,
+            "write_amplification": 1.045,
+            "compaction_read_bytes": 26526931937954,
+            "compaction_write_bytes": 23872204708864,
+            "flush_write_bytes": 2822184954576
+          },
+          "stall_analysis": {
+            "stall_microseconds": 17127491411,
+            "stall_count": 9719092,
+            "average_stall_micros": 1763.2,
+            "stall_percentage": 54.0
+          },
+          "compaction_stats": {
+            "compaction_count": 24427,
+            "compaction_time_micros": 260414411104,
+            "compaction_cpu_micros": 233534586083,
+            "compaction_efficiency": 0.896
+          }
+        },
+        "detailed_statistics": {
+          "block_cache": {
+            "miss_count": 764142642,
+            "hit_count": 117016,
+            "add_count": 124388,
+            "bytes_read": 18030544384,
+            "bytes_written": 19127957552
+          },
+          "compaction": {
+            "key_drop_new": 4436934700,
+            "key_drop_obsolete": 0,
+            "range_del_drop": 0,
+            "user_drop": 0,
+            "cancelled": 0
+          },
+          "file_operations": {
+            "files_opened": 123577,
+            "file_errors": 0,
+            "files_deleted_immediately": 132453,
+            "files_marked_trash": 0
+          },
+          "compression": {
+            "blocks_compressed": 769842677,
+            "blocks_decompressed": 764139225,
+            "bytes_compressed_from": 49927201977073,
+            "bytes_compressed_to": 26690383573343,
+            "compression_ratio": 0.535
+          }
+        },
+        "latency_metrics": {
+          "db_write_micros": {
+            "p50": 40.838857,
+            "p95": 101.16775,
+            "p99": 2419.203676,
+            "p100": 2320491.0,
+            "count": 4800000000,
+            "sum": 502379545056
+          },
+          "compaction_times_micros": {
+            "p50": 10522217.289979,
+            "p95": 20254472.984942,
+            "p99": 21985349.867139,
+            "p100": 41552583.0,
+            "count": 24427,
+            "sum": 260414411104
+          },
+          "db_write_stall": {
+            "p50": 2107.960081,
+            "p95": 2821.081136,
+            "p99": 2884.469675,
+            "p100": 2318927.0,
+            "count": 9719092,
+            "sum": 17127491411
+          }
+        },
+        "analysis_summary": {
+          "performance_grade": "Good",
+          "bottleneck_identified": "Write Stall",
+          "stall_impact": "High (54% stall time)",
+          "compression_efficiency": "Good (0.508 ratio)",
+          "write_amplification": "Low (1.045)",
+          "throughput_consistency": "Stable"
+        },
+        "recommendations": {
+          "immediate": [
+            "Write stall 비율이 높음 (54%) - L0 파일 수 조정 필요",
+            "Compaction 효율성 개선 필요",
+            "메모리 설정 최적화 검토"
+          ],
+          "optimization": [
+            "max_write_buffer_number 증가",
+            "level0_file_num_compaction_trigger 조정",
+            "compaction_style 최적화"
+          ]
+        }
+      },
+      "metadata": {
+        "date": "2025-09-08",
+        "environment": "GPU-01 server",
+        "device": "/dev/nvme1n1p1",
+        "experimenter": "yooseehwan",
+        "phase": "A - Device Calibration",
+        "status": "in_progress",
+        "total_duration_hours": 0,
+        "description": "RocksDB Put Model v4 추가 검증 및 성능 분석 실험"
+      }
+    },
+    "2025-09-09": {
+      "date": "2025-09-09",
+      "device_calibration": {},
+      "benchmark_results": {
+        "performance_results": {
+          "throughput": {
+            "operations_per_second": 0,
+            "put_rate_mib_s": 30.1
+          }
+        }
+      },
+      "metadata": {}
+    },
+    "2025-09-12": {
+      "date": "2025-09-12",
+      "device_calibration": {},
+      "benchmark_results": {
+        "performance_results": {
+          "throughput": {
+            "operations_per_second": 149626.88,
+            "put_rate_mib_s": 146.12,
+            "initial_put_rate": 280.18,
+            "final_put_rate": 12.06
+          }
+        }
+      },
+      "metadata": {}
+    }
+  },
+  "model_predictions": {
+    "2025-09-05": {
+      "v4": {
+        "predicted_qps": 182353.91999999998,
+        "actual_qps": 188617,
+        "accuracy_percent": 96.67947215786488,
+        "error_percent": 3.320527842135121
+      },
+      "v4.1": {
+        "predicted_qps": 217305.08800000005,
+        "actual_qps": 188617,
+        "accuracy_percent": 84.79029567854433,
+        "error_percent": 15.209704321455675
+      },
+      "v5_final": {
+        "predicted_qps": 89019.73333333334,
+        "actual_qps": 188617,
+        "accuracy_percent": 47.19602863651385,
+        "error_percent": 52.80397136348615
+      }
+    },
+    "2025-09-08": {
+      "v4": {
+        "predicted_qps": 174612.47999999998,
+        "actual_qps": 151432,
+        "accuracy_percent": 84.69248243435999,
+        "error_percent": 15.307517565640012
+      },
+      "v4.1": {
+        "predicted_qps": 208079.87200000003,
+        "actual_qps": 151432,
+        "accuracy_percent": 62.59187490094562,
+        "error_percent": 37.40812509905438
+      },
+      "v5_final": {
+        "predicted_qps": 86322.51733333335,
+        "actual_qps": 151432,
+        "accuracy_percent": 57.004145314948865,
+        "error_percent": 42.995854685051135
+      }
+    },
+    "2025-09-09": {},
+    "2025-09-12": {}
+  },
+  "consistency_analysis": {
+    "v4": {
+      "mean_accuracy": 90.68597729611244,
+      "std_accuracy": 5.9934948617524455,
+      "min_accuracy": 84.69248243435999,
+      "max_accuracy": 96.67947215786488,
+      "mean_error": 9.314022703887566,
+      "std_error": 5.9934948617524455,
+      "consistency_score": 93.390935356872,
+      "experiment_count": 2,
+      "accuracies": [
+        96.67947215786488,
+        84.69248243435999
+      ],
+      "errors": [
+        3.320527842135121,
+        15.307517565640012
+      ]
+    },
+    "v4.1": {
+      "mean_accuracy": 73.69108528974498,
+      "std_accuracy": 11.099210388799353,
+      "min_accuracy": 62.59187490094562,
+      "max_accuracy": 84.79029567854433,
+      "mean_error": 26.308914710255028,
+      "std_error": 11.099210388799353,
+      "consistency_score": 84.93819117311338,
+      "experiment_count": 2,
+      "accuracies": [
+        84.79029567854433,
+        62.59187490094562
+      ],
+      "errors": [
+        15.209704321455675,
+        37.40812509905438
+      ]
+    },
+    "v5_final": {
+      "mean_accuracy": 52.10008697573136,
+      "std_accuracy": 4.904058339217507,
+      "min_accuracy": 47.19602863651385,
+      "max_accuracy": 57.004145314948865,
+      "mean_error": 47.89991302426864,
+      "std_error": 4.904058339217507,
+      "consistency_score": 90.58723579194435,
+      "experiment_count": 2,
+      "accuracies": [
+        47.19602863651385,
+        57.004145314948865
+      ],
+      "errors": [
+        52.80397136348615,
+        42.995854685051135
+      ]
+    }
+  }
+}

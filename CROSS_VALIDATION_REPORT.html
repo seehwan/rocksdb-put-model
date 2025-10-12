@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocksDB Put-Rate Model Cross-Validation Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .cross-validation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .summary-card.winner {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .summary-card h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.4em;
+        }
+        
+        .summary-card .metric {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .summary-card .description {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+        
+        .performance-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 30px 0;
+        }
+        
+        .performance-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .performance-table th {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .performance-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .performance-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .performance-table tr:hover {
+            background: #e3f2fd;
+        }
+        
+        .model-v4 { color: #28a745; font-weight: bold; }
+        .model-v4-1 { color: #17a2b8; font-weight: bold; }
+        .model-v5 { color: #ffc107; font-weight: bold; }
+        
+        .accuracy-high { color: #28a745; font-weight: bold; }
+        .accuracy-medium { color: #ffc107; font-weight: bold; }
+        .accuracy-low { color: #dc3545; font-weight: bold; }
+        
+        .experiment-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .experiment-section h3 {
+            color: #2c3e50;
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .key-findings {
+            background: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .key-findings h4 {
+            color: #1e7e34;
+            margin: 0 0 15px 0;
+        }
+        
+        .key-findings ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .key-findings li {
+            margin: 8px 0;
+            color: #2d5a2d;
+        }
+        
+        .recommendation {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .recommendation h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.3em;
+        }
+        
+        .chart-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 RocksDB Put-Rate Model Cross-Validation Analysis</h1>
+            <p class="subtitle">다중 실험 데이터를 통한 모델 성능 일관성 검증</p>
+        </div>
+
+        <div style="background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 5px;">
+            <p style="margin: 0; color: #1565c0;"><strong>📅 Generated:</strong> 2025-09-20 09:37:13 | <strong>🧪 Experiments:</strong> 2025-09-05, 2025-09-08, 2025-09-09, 2025-09-12 | <strong>🔧 Models:</strong> V4, V4.1, V5</p>
+        </div>
+
+        <div class="cross-validation-container">
+            <div class="summary-cards">
+                <div class="summary-card winner">
+                    <h3>🏆 Best Performing Model</h3>
+                    <div class="metric">V4</div>
+                    <div class="description">90.7% Average Accuracy<br>93.4/100 Consistency Score</div>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>📊 Experiments Analyzed</h3>
+                    <div class="metric">4</div>
+                    <div class="description">2025-09-05, 09-08, 09-09, 09-12<br>2 Complete Evaluations</div>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>🎯 Key Finding</h3>
+                    <div class="metric">V4 >> V4.1 > V5</div>
+                    <div class="description">Consistent Performance Hierarchy<br>Across Multiple Experiments</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📊 Model Performance Summary</h2>
+                <div class="performance-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Mean Accuracy</th>
+                                <th>Std Deviation</th>
+                                <th>Min Accuracy</th>
+                                <th>Max Accuracy</th>
+                                <th>Consistency Score</th>
+                                <th>Experiments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="model-v4">V4</td>
+                                <td class="accuracy-high">90.7%</td>
+                                <td>±6.0%</td>
+                                <td class="accuracy-high">84.7%</td>
+                                <td class="accuracy-high">96.7%</td>
+                                <td class="accuracy-high">93.4/100</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="model-v4-1">V4.1</td>
+                                <td class="accuracy-medium">73.7%</td>
+                                <td>±11.1%</td>
+                                <td class="accuracy-medium">62.6%</td>
+                                <td class="accuracy-high">84.8%</td>
+                                <td class="accuracy-high">84.9/100</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="model-v5">V5 Final</td>
+                                <td class="accuracy-low">52.1%</td>
+                                <td>±4.9%</td>
+                                <td class="accuracy-low">47.2%</td>
+                                <td class="accuracy-low">57.0%</td>
+                                <td class="accuracy-high">90.6/100</td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🔍 Experiment-by-Experiment Results</h2>
+                
+                <div class="experiment-section">
+                    <h3>📅 2025-09-05 Experiment</h3>
+                    <div class="performance-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Predicted QPS</th>
+                                    <th>Actual QPS</th>
+                                    <th>Accuracy</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="model-v4">V4</td>
+                                    <td>182,354</td>
+                                    <td>188,617</td>
+                                    <td class="accuracy-high">96.7%</td>
+                                    <td>3.3%</td>
+                                </tr>
+                                <tr>
+                                    <td class="model-v4-1">V4.1</td>
+                                    <td>217,305</td>
+                                    <td>188,617</td>
+                                    <td class="accuracy-high">84.8%</td>
+                                    <td>15.2%</td>
+                                </tr>
+                                <tr>
+                                    <td class="model-v5">V5 Final</td>
+                                    <td>89,020</td>
+                                    <td>188,617</td>
+                                    <td class="accuracy-low">47.2%</td>
+                                    <td>52.8%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="experiment-section">
+                    <h3>📅 2025-09-08 Experiment</h3>
+                    <div class="performance-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Predicted QPS</th>
+                                    <th>Actual QPS</th>
+                                    <th>Accuracy</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="model-v4">V4</td>
+                                    <td>174,612</td>
+                                    <td>151,432</td>
+                                    <td class="accuracy-high">84.7%</td>
+                                    <td>15.3%</td>
+                                </tr>
+                                <tr>
+                                    <td class="model-v4-1">V4.1</td>
+                                    <td>208,080</td>
+                                    <td>151,432</td>
+                                    <td class="accuracy-medium">62.6%</td>
+                                    <td>37.4%</td>
+                                </tr>
+                                <tr>
+                                    <td class="model-v5">V5 Final</td>
+                                    <td>86,323</td>
+                                    <td>151,432</td>
+                                    <td class="accuracy-low">57.0%</td>
+                                    <td>43.0%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="experiment-section">
+                    <h3>📅 2025-09-09 & 2025-09-12 Experiments</h3>
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px;">
+                        <p style="margin: 0; color: #856404;"><strong>⚠️ Data Limitation:</strong> These experiments had insufficient benchmark data for cross-validation. Future analysis should include standardized data collection protocols.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📈 Cross-Validation Analysis</h2>
+                
+                <div class="key-findings">
+                    <h4>🎯 Key Findings</h4>
+                    <ul>
+                        <li><strong>Most Consistent Model:</strong> V4 (Consistency Score: 93.4/100)</li>
+                        <li><strong>Best Performance:</strong> V4 maintains 90.7% accuracy across experiments</li>
+                        <li><strong>Lowest Variability:</strong> V4 shows only 6.6% coefficient of variation</li>
+                        <li><strong>Performance Hierarchy:</strong> V4 > V4.1 > V5 consistently across experiments</li>
+                    </ul>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0;">
+                    <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <h4 style="color: #28a745; margin: 0 0 15px 0;">✅ V4 Model</h4>
+                        <p><strong>Accuracy:</strong> 90.7% ± 6.0%</p>
+                        <p><strong>Consistency:</strong> 93.4/100</p>
+                        <p><strong>Variability:</strong> 6.6% CV</p>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <h4 style="color: #17a2b8; margin: 0 0 15px 0;">⚡ V4.1 Model</h4>
+                        <p><strong>Accuracy:</strong> 73.7% ± 11.1%</p>
+                        <p><strong>Consistency:</strong> 84.9/100</p>
+                        <p><strong>Variability:</strong> 15.1% CV</p>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                        <h4 style="color: #ffc107; margin: 0 0 15px 0;">🔧 V5 Final Model</h4>
+                        <p><strong>Accuracy:</strong> 52.1% ± 4.9%</p>
+                        <p><strong>Consistency:</strong> 90.6/100</p>
+                        <p><strong>Variability:</strong> 9.4% CV</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>📊 Cross-Validation Visualization</h3>
+                <img src="cross_validation_analysis.png" alt="Cross-Validation Analysis Results">
+                <p style="color: #6c757d; font-style: italic; margin-top: 10px;">
+                    Model performance comparison across multiple experiments showing accuracy distribution, 
+                    performance vs consistency trade-off, and error analysis.
+                </p>
+            </div>
+
+            <div class="recommendation">
+                <h4>🎯 Final Recommendation</h4>
+                <p style="margin: 0; font-size: 1.1em;">
+                    <strong>✅ V4 모델 사용을 강력히 권장합니다.</strong><br>
+                    높은 정확도(90.7%)와 우수한 일관성(93.4/100)을 보이며, 
+                    다양한 실험 환경에서 안정적인 성능을 유지합니다.
+                </p>
+            </div>
+
+            <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin: 30px 0;">
+                <h4 style="color: #2c3e50; margin: 0 0 15px 0;">📋 Analysis Methodology</h4>
+                <ul style="color: #6c757d; margin: 0;">
+                    <li>모델 예측값과 실제 벤치마크 결과 비교</li>
+                    <li>정확도 = max(0, (1 - |predicted - actual| / actual) × 100)</li>
+                    <li>일관성 점수 = 100 - (표준편차 / 평균 × 100)</li>
+                    <li>변동계수(CV) = 표준편차 / 평균 × 100</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Cross-validation analysis completed at 2025-09-20 09:37:13</p>
+            <p>🔗 <a href="index.html" style="color: white;">Return to Main Page</a> | 
+               <a href="COMPLETE_V4_V5_MODEL_ANALYSIS.html" style="color: white;">Model Analysis</a> | 
+               <a href="README.md" style="color: white;">Project README</a></p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+

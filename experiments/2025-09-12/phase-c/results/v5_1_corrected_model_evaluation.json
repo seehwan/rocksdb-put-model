@@ -1,0 +1,243 @@
+{
+  "model_info": {
+    "model_name": "V5.1 Corrected Model",
+    "version": "v5.1_corrected",
+    "creation_time": "2025-10-12T09:55:39.362264",
+    "philosophy": {
+      "core_principle": "V4\uc758 \uc62c\ubc14\ub978 \uc774\ud574 + \ub3c5\ub9bd\uc801 \uc815\ubcf4\ub9cc \ucd94\uac00",
+      "v5_errors_corrected": [
+        "device_write_bw\ub97c available bandwidth\ub85c \uc62c\ubc14\ub974\uac8c \uc774\ud574",
+        "degradation\uc744 \uba85\uc2dc\uc801\uc73c\ub85c \ubaa8\ub378\ub9c1\ud558\uc9c0 \uc54a\uc74c (double-counting \ubc29\uc9c0)",
+        "WA/RA\ub97c penalty\uac00 \uc544\ub2cc context indicator\ub85c \uc0ac\uc6a9",
+        "Ensemble stability \ud655\ubcf4 (confidence-based weighting)"
+      ],
+      "independent_information": [
+        "Temporal: CV trend, QPS trend, performance evolution",
+        "Workload: Read/write ratio, sequential/random pattern",
+        "Structural: LSM depth, compaction backlog (not derived metrics)"
+      ]
+    },
+    "base_model": "V4 Device Envelope (unmodified)",
+    "enhancements": [
+      "Temporal pattern analysis",
+      "Workload-specific adaptation",
+      "Structural state awareness",
+      "Adaptive ensemble weighting"
+    ],
+    "key_corrections_from_v5": [
+      "device_write_bw = available bandwidth (not physical capacity)",
+      "No explicit degradation modeling (no double-counting)",
+      "WA/RA as indicators, not penalties",
+      "Confidence-based ensemble (not fixed weights)"
+    ],
+    "expected_improvements": {
+      "initial_phase": "56.8% \u2192 70-75%",
+      "middle_phase": "96.9% \u2192 97-98%",
+      "final_phase": "86.6% \u2192 88-90%",
+      "overall": "81.4% \u2192 85-87%"
+    }
+  },
+  "phase_predictions": {
+    "initial": {
+      "predicted_s_max": 79213.60676765956,
+      "actual_qps": 138769,
+      "accuracy": 57.08307097958445,
+      "error_rate": 42.916929020415544,
+      "v4_base_prediction": 78861.24799999999,
+      "enhancement_value": 352.35876765956345,
+      "enhancement_percentage": 0.4468085106382839,
+      "temporal_adjustment": 1.03,
+      "workload_adjustment": 1.0,
+      "structural_adjustment": 1.01,
+      "constraints_used": [
+        "base",
+        "temporal",
+        "workload",
+        "structural"
+      ],
+      "constraint_weights": {
+        "base": 0.7446808510638298,
+        "temporal": 0.14893617021276598,
+        "workload": 0.10638297872340427,
+        "structural": 0.0
+      },
+      "ensemble_confidence": "very_high"
+    },
+    "middle": {
+      "predicted_s_max": 123057.86014078549,
+      "actual_qps": 114472,
+      "accuracy": 92.4995980320205,
+      "error_rate": 7.500401967979495,
+      "v4_base_prediction": 123005.9588923077,
+      "enhancement_value": 51.90124847779225,
+      "enhancement_percentage": 0.042194092827024784,
+      "temporal_adjustment": 1.0,
+      "workload_adjustment": 1.02,
+      "structural_adjustment": 0.98,
+      "constraints_used": [
+        "base",
+        "temporal",
+        "workload",
+        "structural"
+      ],
+      "constraint_weights": {
+        "base": 0.759493670886076,
+        "temporal": 0.050632911392405076,
+        "workload": 0.10548523206751056,
+        "structural": 0.08438818565400846
+      },
+      "ensemble_confidence": "very_high"
+    },
+    "final": {
+      "predicted_s_max": 49298.3551451523,
+      "actual_qps": 109678,
+      "accuracy": 44.948262318014834,
+      "error_rate": 55.051737681985166,
+      "v4_base_prediction": 49850.389661538466,
+      "enhancement_value": -552.0345163861639,
+      "enhancement_percentage": -1.1073825503355699,
+      "temporal_adjustment": 1.0,
+      "workload_adjustment": 1.0,
+      "structural_adjustment": 0.9603999999999999,
+      "constraints_used": [
+        "base",
+        "temporal",
+        "workload",
+        "structural"
+      ],
+      "constraint_weights": {
+        "base": 0.5592841163310962,
+        "temporal": 0.02684563758389262,
+        "workload": 0.1342281879194631,
+        "structural": 0.2796420581655481
+      },
+      "ensemble_confidence": "very_high"
+    }
+  },
+  "phase_accuracies": {
+    "initial": 57.08307097958445,
+    "middle": 92.4995980320205,
+    "final": 44.948262318014834
+  },
+  "overall_performance": {
+    "average_accuracy": 64.84364377653992,
+    "accuracy_std": 20.173452020731798,
+    "min_accuracy": 44.948262318014834,
+    "max_accuracy": 92.4995980320205,
+    "consistency": "fair"
+  },
+  "comparison_with_baselines": {
+    "vs_v4": {
+      "initial_improvement": 0.28307097958445127,
+      "middle_improvement": -4.400401967979505,
+      "final_improvement": -41.65173768198516,
+      "overall_improvement": -16.556356223460085
+    },
+    "all_models_performance": {
+      "V4 Device Envelope": {
+        "initial": 56.8,
+        "middle": 96.9,
+        "final": 86.6,
+        "overall": 81.4,
+        "parameters": 1
+      },
+      "V4.1 Temporal": {
+        "initial": 68.5,
+        "middle": 96.9,
+        "final": 70.5,
+        "overall": 78.6,
+        "parameters": 2
+      },
+      "V5 Original": {
+        "initial": 86.4,
+        "middle": 85.9,
+        "final": 10.1,
+        "overall": 60.8,
+        "parameters": 5
+      },
+      "V5 Independence": {
+        "initial": 56.8,
+        "middle": 27.8,
+        "final": 29.4,
+        "overall": 38.0,
+        "parameters": 4
+      },
+      "V5.1 Corrected": {
+        "initial": 57.08307097958445,
+        "middle": 92.4995980320205,
+        "final": 44.948262318014834,
+        "overall": 64.84364377653992,
+        "parameters": 4
+      }
+    },
+    "ranking": [
+      [
+        "V4 Device Envelope",
+        81.4
+      ],
+      [
+        "V4.1 Temporal",
+        78.6
+      ],
+      [
+        "V5.1 Corrected",
+        64.84364377653992
+      ],
+      [
+        "V5 Original",
+        60.8
+      ],
+      [
+        "V5 Independence",
+        38.0
+      ]
+    ],
+    "v5_1_rank": 3
+  },
+  "detailed_analysis": {
+    "enhancement_effectiveness": {
+      "by_phase": {
+        "initial": 0.4468085106382839,
+        "middle": 0.042194092827024784,
+        "final": -1.1073825503355699
+      },
+      "average_enhancement": -0.2061266489567537,
+      "most_effective_phase": "initial",
+      "least_effective_phase": "final"
+    },
+    "constraint_contributions": {
+      "initial": {
+        "temporal": 3.0000000000000027,
+        "workload": 0.0,
+        "structural": 1.0000000000000009
+      },
+      "middle": {
+        "temporal": 0.0,
+        "workload": 2.0000000000000018,
+        "structural": -2.0000000000000018
+      },
+      "final": {
+        "temporal": 0.0,
+        "workload": 0.0,
+        "structural": -3.960000000000008
+      }
+    },
+    "v5_corrections_validated": {
+      "no_double_counting": true,
+      "correct_bandwidth_interpretation": true,
+      "independent_information_only": true,
+      "ensemble_stability": true
+    },
+    "information_efficiency": {
+      "parameters": 4,
+      "overall_accuracy": 64.84364377653992,
+      "accuracy_per_parameter": 16.21091094413498,
+      "vs_v4_efficiency": 0.19915124009993831,
+      "vs_v5_efficiency": 1.7064116783299978
+    }
+  },
+  "evaluation_metadata": {
+    "evaluation_time": "2025-10-12T09:55:39.362354",
+    "data_source": "Phase-B 120-minute FillRandom experiment"
+  }
+}

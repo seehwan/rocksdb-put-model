@@ -1,0 +1,41 @@
+{
+  "model_version": "v5.1_corrected",
+  "metrics": {
+    "total_predictions": 3,
+    "successful_predictions": 3,
+    "failed_predictions": 0,
+    "average_response_time_ms": 0.700078010559082,
+    "average_accuracy": 0.0,
+    "accuracy_by_phase": {
+      "initial": [
+        57.08307097958445,
+        69.19911137016874
+      ],
+      "middle": [],
+      "final": [
+        45.321941458425876
+      ]
+    },
+    "last_prediction_time": "2025-10-12T10:01:07.064071"
+  },
+  "online_learning": {
+    "enabled": true,
+    "learning_rate": 0.05,
+    "min_samples_required": 20,
+    "learned_adjustments": {
+      "initial": 1.0,
+      "middle": 1.0,
+      "final": 1.0
+    }
+  },
+  "health_status": {
+    "status": "healthy",
+    "last_check": "2025-10-12T10:01:07.064488",
+    "model_loaded": true,
+    "validation_passed": true,
+    "issues": [],
+    "error_rate": 0.0,
+    "average_accuracy": 57.201374602726354
+  },
+  "saved_at": "2025-10-12T10:01:07.064870"
+}

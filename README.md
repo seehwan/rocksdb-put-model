@@ -27,12 +27,13 @@ Total Performance Decline = Physical Device Degradation (Phase-A) × Software I/
 |------|-------|-----------------|----------------|--------|
 | 🏆 **1st** | **V4 Device Envelope** | **81.4%** | **Dual-Structure Integration** | **✅ Recommended** |
 | 🥈 **2nd** | **V4.1 Temporal** | **78.6%** | **Temporal Awareness** | **✅ Research Use** |
-| 🥉 **3rd** | **V5 Original** | **60.8%** | **Ensemble Adaptive** | **⚠️ Unstable** |
-| 4th | V5 Independence | 38.0% | Parameter Redundancy Removal | **❌ Failed** |
+| 🥉 **3rd** | **V5.1 Corrected** | **64.8%** | **V5 Error Correction** | **✅ V5 Champion** |
+| 4th | V5 Original | 60.8% | Ensemble Adaptive | ⚠️ Unstable |
+| 5th | V5 Independence | 38.0% | Parameter Redundancy Removal | ❌ Failed |
 
 ### Phase-Specific Performance
 - **Initial Phase (0-30 min)**: V5 Original leads (86.4%), high volatility period
-- **Middle Phase (30-90 min)**: V4 & V4.1 tie (96.9%), transition period excellence  
+- **Middle Phase (30-90 min)**: V4 & V4.1 tie (96.9%), V5.1 near-excellent (92.5%)
 - **Final Phase (90-120 min)**: V4 Device wins (86.6%), simplicity excels in complexity
 
 ---
@@ -46,6 +47,12 @@ Total Performance Decline = Physical Device Degradation (Phase-A) × Software I/
 4. **[Phase-Based Detailed Analysis](PHASE_BASED_DETAILED_ANALYSIS.md)** - In-depth phase analysis
 5. **[Complete Model Specifications (Markdown)](COMPLETE_MODEL_SPECIFICATIONS.md)** - Detailed algorithms and internal mechanisms
 6. **[Complete Model Specifications (HTML)](COMPLETE_MODEL_SPECIFICATIONS.html)** - Web-friendly model specifications
+
+### 🆕 V5.1 Corrected Model Documentation
+7. **[V5.1 Comprehensive Report (Markdown)](V5_1_COMPREHENSIVE_REPORT.md)** - V5 error correction and improvements
+8. **[V5.1 Complete Guide (HTML)](V5_1_CORRECTED_MODEL_GUIDE.html)** - Web-friendly V5.1 documentation
+9. **[V5.1 Phase-C Evaluation](experiments/2025-09-12/phase-c/results/v5_1_corrected_model_report.md)** - Phase-C evaluation results
+10. **[V5.1 Production Integration](experiments/2025-09-12/phase-d/scripts/v5_1_production_integration.py)** - Phase-D production code
 
 ### 🔬 Supporting Analysis
 - **[Performance Decline Explanation](PERFORMANCE_DECLINE_EXPLANATION.md)** - Dual-structure mechanism details

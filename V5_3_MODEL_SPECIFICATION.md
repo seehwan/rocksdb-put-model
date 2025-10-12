@@ -46,6 +46,132 @@ V5.3 is a **phase-optimized, context-aware prediction model** for RocksDB put-ra
 
 ## Theoretical Foundation
 
+### Why This Model Architecture?
+
+V5.3 is designed based on three fundamental principles derived from empirical observation of RocksDB behavior:
+
+#### Principle 1: Device Bandwidth as the Primary Constraint
+
+**Observation**: RocksDB write throughput is fundamentally limited by available device write bandwidth.
+
+**Why This Matters**:
+- Storage devices have finite write capacity (measured in MB/s)
+- All user writes must eventually reach the storage device
+- Device bandwidth already incorporates physical degradation effects
+- This is a measured reality, not a theoretical estimate
+
+**Model Implementation**:
+```python
+theoretical_max = (device_write_bw * 1024²) / record_size
+```
+
+**Justification**: By using **available** (not theoretical) bandwidth, we automatically capture:
+- Device-level degradation (wear, fragmentation)
+- Hardware-specific limitations
+- Real-world capacity (not idealized specs)
+
+#### Principle 2: Phase-Specific Utilization Reflects Different Operating Regimes
+
+**Observation**: RocksDB utilizes device bandwidth differently across operational phases.
+
+**Why Different Phases Matter**:
+- **Initial Phase**: Fresh system, minimal overhead, high volatility
+  - Actual utilization: ~3.34%
+  - Characteristics: Cache warmup, minimal compaction, near-theoretical performance spikes
+  
+- **Middle Phase**: Active compaction, growing database, moderate overhead
+  - Actual utilization: ~4.7%
+  - Characteristics: Balanced read/write, stable compaction patterns
+  
+- **Final Phase**: Mature LSM structure, stable operation, high but predictable overhead
+  - Actual utilization: ~10.1%
+  - Characteristics: Full-depth LSM, steady-state compaction, excellent stability
+
+**Model Implementation**:
+```python
+U_initial = 0.030  # 3.0% target (conservative vs 3.34% actual)
+U_middle  = 0.047  # 4.7% target (matches actual)
+U_final   = 0.095  # 9.5% target (conservative vs 10.1% actual)
+```
+
+**Justification**: Phase-specific utilization factors capture the complex interplay of:
+- Compaction overhead (varies by LSM depth)
+- Read/write competition (varies by workload phase)
+- System maturity (improves predictability over time)
+
+#### Principle 3: Context-Aware Bonuses Enable Confident Predictions
+
+**Observation**: System state indicators (CV, LSM depth, amplification) provide additional predictive power.
+
+**Why Context Matters**:
+
+**High Volatility (Initial Phase)**:
+- CV = 0.538 (53.8% variation)
+- Contains high-performance spikes (not just noise)
+- Represents true system capacity during optimal moments
+- Bonus: 1.20x exploits this upside potential
+
+**Low Volatility (Final Phase)**:
+- CV = 0.041 (4.1% variation)
+- Indicates highly predictable behavior
+- Allows confident higher predictions
+- Bonus: 1.15x leverages stability
+
+**LSM Maturity (Final Phase)**:
+- Depth = 7 (L0-L6 all active)
+- Fully developed compaction patterns
+- Predictable overhead
+- Bonus: 1.10x recognizes maturity
+
+**Model Implementation**:
+```python
+# Initial bonuses (exploit potential)
+if cv > 0.50:         volatility_bonus = 1.20
+if runtime < 15:      warmup_bonus = 1.15
+if positive_trend:    potential_bonus = 1.12
+
+# Final bonuses (leverage stability)
+if cv < 0.05:         stability_bonus = 1.15
+if lsm_depth >= 7:    maturity_bonus = 1.10
+if stable_wa_ra:      efficiency_bonus = 1.05
+```
+
+**Justification**: Context bonuses are **independent information** because:
+- CV measures temporal variation (not captured in bandwidth)
+- LSM depth indicates structural maturity (not in bandwidth)
+- WA/RA indicate efficiency state (not in bandwidth)
+- These are orthogonal dimensions that refine the base prediction
+
+#### Principle 4: Calibration Factors Bridge Observed Gaps
+
+**Observation**: Base utilization alone under-predicts actual performance.
+
+**Why Calibration is Needed**:
+
+**Initial Phase Gap**:
+- Base utilization: 1.9% (too conservative)
+- Actual utilization: 3.34%
+- Gap: 1.76x under-prediction
+- Solution: Calibration factor 1.579x (slightly conservative for safety)
+
+**Final Phase Gap**:
+- Base utilization: 4.6% (too conservative)
+- Actual utilization: 10.1%
+- Gap: 2.2x under-prediction
+- Solution: Calibration factor 2.065x (slightly conservative for safety)
+
+**Model Implementation**:
+```python
+C_initial = 1.579  # Bridge 1.9% → 3.0% gap
+C_middle  = 1.0    # No gap (4.7% already accurate)
+C_final   = 2.065  # Bridge 4.6% → 9.5% gap
+```
+
+**Justification**: Calibration factors are empirically derived from:
+- Observed actual performance across 120-minute experiments
+- Statistical analysis of utilization patterns
+- Conservative adjustment (slightly below actual for safety)
+
 ### Mathematical Formulation
 
 #### Core Prediction Formula
@@ -63,6 +189,14 @@ Where:
   C_phase         = Phase-specific calibration factor
   B_context       = Product of context-aware bonus factors
 ```
+
+**Why This Formula Structure?**
+
+This multiplicative structure reflects the cascading nature of performance constraints:
+1. **Bandwidth → Ops**: Physical conversion (device capacity)
+2. **× U_phase**: Software efficiency (phase-specific overhead)
+3. **× C_phase**: Empirical correction (observed vs theoretical gap)
+4. **× B_context**: System state refinement (context-aware optimization)
 
 #### Phase-Specific Formulas
 

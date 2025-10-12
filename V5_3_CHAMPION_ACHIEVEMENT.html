@@ -371,6 +371,74 @@
                 </div>
             </div>
 
+            <!-- Mathematical Formulas -->
+            <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); padding: 40px; border-radius: 20px; margin: 50px 0;">
+                <h2 style="color: #2c3e50; text-align: center; font-size: 2.5em; margin-bottom: 40px;">
+                    📐 V5.3 Mathematical Formulation
+                </h2>
+                
+                <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); margin-bottom: 30px;">
+                    <h3 style="color: #3498db; margin-top: 0; text-align: center; font-size: 1.8em;">Core Prediction Formula</h3>
+                    <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; margin: 20px 0; font-family: 'Courier New', monospace; font-size: 1.3em; text-align: center; border: 2px solid #3498db;">
+                        <strong>S<sub>max</sub></strong> = (device_write_bw × 1024² / 1040) × U<sub>phase</sub> × C<sub>phase</sub> × B<sub>context</sub>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; margin: 30px 0;">
+                    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 4px solid #3498db;">
+                        <h4 style="color: #3498db; margin-top: 0; text-align: center; font-size: 1.4em;">Initial Phase</h4>
+                        <div style="background: #e3f2fd; padding: 18px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 1.05em; margin: 15px 0; text-align: center;">
+                            S<sub>max</sub> = T<sub>max</sub> × 0.030<br>
+                            × 1.579<br>
+                            × B<sub>vol</sub> × B<sub>warm</sub> × B<sub>pot</sub>
+                        </div>
+                        <div style="margin-top: 15px; font-size: 0.95em; line-height: 1.8;">
+                            <strong>Adjustment Factors:</strong><br>
+                            • Calibration: <strong>1.579x</strong><br>
+                            • Volatility: <strong>1.20x</strong><br>
+                            • Warmup: <strong>1.15x</strong><br>
+                            • Potential: <strong>1.12x</strong><br>
+                            <div style="margin-top: 12px; padding: 10px; background: #3498db; color: white; border-radius: 5px; text-align: center; font-weight: bold;">
+                                Total: 2.440x
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 4px solid #27ae60;">
+                        <h4 style="color: #27ae60; margin-top: 0; text-align: center; font-size: 1.4em;">Middle Phase</h4>
+                        <div style="background: #e8f5e9; padding: 18px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 1.05em; margin: 15px 0; text-align: center;">
+                            S<sub>max</sub> = T<sub>max</sub> × 0.047
+                        </div>
+                        <div style="margin-top: 15px; font-size: 0.95em; line-height: 1.8;">
+                            <strong>No Adjustments:</strong><br>
+                            Baseline already accurate<br><br><br>
+                            <div style="margin-top: 12px; padding: 10px; background: #27ae60; color: white; border-radius: 5px; text-align: center; font-weight: bold;">
+                                Total: 1.0x
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 4px solid #f39c12;">
+                        <h4 style="color: #f39c12; margin-top: 0; text-align: center; font-size: 1.4em;">Final Phase</h4>
+                        <div style="background: #fff3e0; padding: 18px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 1.05em; margin: 15px 0; text-align: center;">
+                            S<sub>max</sub> = T<sub>max</sub> × 0.095<br>
+                            × 2.065<br>
+                            × B<sub>stab</sub> × B<sub>mat</sub> × B<sub>eff</sub>
+                        </div>
+                        <div style="margin-top: 15px; font-size: 0.95em; line-height: 1.8;">
+                            <strong>Adjustment Factors:</strong><br>
+                            • Calibration: <strong>2.065x</strong><br>
+                            • Stability: <strong>1.15x</strong><br>
+                            • Maturity: <strong>1.10x</strong><br>
+                            • Efficiency: <strong>1.05x</strong><br>
+                            <div style="margin-top: 12px; padding: 10px; background: #f39c12; color: white; border-radius: 5px; text-align: center; font-weight: bold;">
+                                Total: 2.743x
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- V5.3 Visualizations -->
             <div style="margin: 60px 0;">
                 <h2 style="color: #2c3e50; text-align: center; font-size: 2.5em; margin-bottom: 40px;">

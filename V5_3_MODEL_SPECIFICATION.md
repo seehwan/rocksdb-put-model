@@ -46,6 +46,90 @@ V5.3 is a **phase-optimized, context-aware prediction model** for RocksDB put-ra
 
 ## Theoretical Foundation
 
+### Mathematical Formulation
+
+#### Core Prediction Formula
+
+The V5.3 model prediction follows this general formula:
+
+```
+S_max = (device_write_bw × 1024² / record_size) × U_phase × C_phase × B_context
+
+Where:
+  S_max           = Maximum sustainable put rate (ops/sec)
+  device_write_bw = Available device write bandwidth (MB/s)
+  record_size     = Size of each record in bytes (1040 bytes)
+  U_phase         = Base utilization factor for the phase
+  C_phase         = Phase-specific calibration factor
+  B_context       = Product of context-aware bonus factors
+```
+
+#### Phase-Specific Formulas
+
+**Initial Phase:**
+```
+S_max_initial = Theoretical_max × 0.030 × 1.579 × B_volatility × B_warmup × B_potential
+
+Where:
+  Theoretical_max = (device_write_bw × 1024²) / 1040
+  B_volatility    = 1.20 if CV > 0.50, else 1.0
+  B_warmup        = 1.15 if runtime < 15 min, else 1.0
+  B_potential     = 1.12 if positive QPS trend, else 1.0
+  
+  Total adjustment: 1.579 × 1.20 × 1.15 × 1.12 = 2.440x
+```
+
+**Middle Phase:**
+```
+S_max_middle = Theoretical_max × 0.047
+
+Where:
+  Theoretical_max = (device_write_bw × 1024²) / 1040
+  
+  No additional adjustments (baseline already accurate)
+```
+
+**Final Phase:**
+```
+S_max_final = Theoretical_max × 0.095 × 2.065 × B_stability × B_maturity × B_efficiency
+
+Where:
+  Theoretical_max = (device_write_bw × 1024²) / 1040
+  B_stability     = 1.15 if CV < 0.05, else 1.0
+  B_maturity      = 1.10 if LSM_depth ≥ 7, else 1.0
+  B_efficiency    = 1.05 if 3.0 ≤ (WA + RA) ≤ 4.5, else 1.0
+  
+  Total adjustment: 2.065 × 1.15 × 1.10 × 1.05 = 2.743x
+```
+
+#### Key Statistical Measures
+
+**Coefficient of Variation (CV):**
+```
+CV = σ / μ
+
+Where:
+  σ = Standard deviation of QPS over measurement window
+  μ = Mean QPS over measurement window
+```
+
+**Write Amplification (WA):**
+```
+WA = Total_bytes_written_to_storage / User_bytes_written
+```
+
+**Read Amplification (RA):**
+```
+RA = Total_bytes_read_from_storage / User_bytes_read
+```
+
+**Model Accuracy:**
+```
+Accuracy = min(Predicted, Actual) / max(Predicted, Actual) × 100%
+```
+
+---
+
 ### RocksDB Performance Characteristics
 
 #### 1. Operational Phases

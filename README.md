@@ -54,10 +54,12 @@ Total Performance Decline = Physical Device Degradation (Phase-A) × Software I/
 ### 🆕 V5 Model Family Documentation (NEW CHAMPION! 🏆)
 
 #### 📘 V5.3 Complete Independent Specification (Recommended Starting Point)
-7. **[V5.3 Model Specification (HTML)](V5_3_MODEL_SPECIFICATION.html)** - ⭐ **INDEPENDENT** V5.3 technical specification (web-friendly)
-8. **[V5.3 Model Specification (Markdown)](V5_3_MODEL_SPECIFICATION.md)** - ⭐ **INDEPENDENT** V5.3 technical specification (no model comparison)
+7. **[V5.3 Complete Independent Guide (Markdown)](V5_3_COMPLETE_INDEPENDENT_GUIDE.md)** - ⭐ **COMPLETE INDEPENDENT** V5.3 comprehensive guide (no model comparison)
+8. **[V5.3 Complete Independent Guide (HTML)](V5_3_COMPLETE_INDEPENDENT_GUIDE.html)** - ⭐ **COMPLETE INDEPENDENT** V5.3 comprehensive guide (web-friendly)
+9. **[V5.3 Model Specification (HTML)](V5_3_MODEL_SPECIFICATION.html)** - ⭐ **INDEPENDENT** V5.3 technical specification (web-friendly)
+10. **[V5.3 Model Specification (Markdown)](V5_3_MODEL_SPECIFICATION.md)** - ⭐ **INDEPENDENT** V5.3 technical specification (no model comparison)
    - **독립 문서**: 이전 모델 지식 없이도 V5.3 완전 이해 가능
-   - **1,100+ lines**: Complete theoretical foundation, algorithms, implementation
+   - **완전한 설명**: 입/출력 파라미터, 모델링 원리, 알고리즘 흐름 모두 포함
    - **Production-ready**: Full operational guidelines and usage examples
 
 #### 📚 V5.3 Complete Documentation with Evolution Context
@@ -399,10 +401,11 @@ Historical development documentation and earlier model versions:
 ### 📖 Suggested Reading Flow
 
 #### For New Users (No Prior Knowledge Required)
-1. **⭐ [V5.3 Model Specification](V5_3_MODEL_SPECIFICATION.md)** - **START HERE!** Complete independent V5.3 documentation
+1. **⭐ [V5.3 Complete Independent Guide](V5_3_COMPLETE_INDEPENDENT_GUIDE.md)** - **START HERE!** Complete independent V5.3 comprehensive guide
    - No prior model knowledge needed
-   - Self-contained technical specification
-   - Full implementation guide
+   - Complete input/output parameters explanation
+   - Full modeling philosophy and algorithm flow
+   - Self-contained with implementation examples
 
 #### For Understanding Evolution & Context
 2. **🏆 [V5.3 Complete Guide](V5_3_COMPLETE_GUIDE.md)** - V5.3 with evolution context (84.5%)

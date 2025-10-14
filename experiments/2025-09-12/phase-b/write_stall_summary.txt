@@ -1,0 +1,10 @@
+flush_delay_total: 0
+comp_delay_total: 209588
+flush_stop_total: 30
+comp_stop_total: 0
+stall_seconds_total: 297544.8949999998
+flush_delay_peak: 0
+comp_delay_peak: 140
+flush_stop_peak: 30
+comp_stop_peak: 0
+stall_seconds_peak: 55.775999999999996

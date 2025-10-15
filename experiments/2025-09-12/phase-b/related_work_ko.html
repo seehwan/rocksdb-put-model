@@ -76,6 +76,285 @@
     </div>
 
     <div class="card">
+      <h2>2-1) 컴팩션 전략: 레벨드 vs 사이즈-티어드, 그리고 혼합형</h2>
+      <p>
+        LSM에서는 크게 <strong>레벨드(leveled)</strong>와 <strong>사이즈-티어드(size-tiered)</strong> 컴팩션이 널리 쓰입니다.
+        레벨드는 각 레벨에 <em>정렬 런 1개</em>를 유지해 <strong>읽기 증폭</strong>을 낮추는 대신, 데이터를 여러 번 다시 써서
+        <strong>쓰기 증폭</strong>이 커집니다. 반대로 사이즈-티어드는 각 레벨에 여러 런을 두어 쓰기 비용을 줄이되,
+        읽기 시 병합 비용이 큽니다. 최근에는 <strong>Dostoevsky</strong>(SIGMOD 2018)처럼 <em>큰 레벨만 레벨드</em>로 유지하고,
+        작은 레벨은 티어드로 두는 <strong>혼합형</strong>이 제안되어, 중복 병합과 공간 오버헤드를 절감합니다.
+        더 나아가 각 레벨이 독립적으로 정책을 선택하는 <em>LSM-bush</em>류 접근은 두 극단 사이의 연속체를 형성합니다.
+      </p>
+      <p>
+        <strong>우리 관측과 연결</strong>: 혼합형 설계의 핵심 통찰은 <em>깊은 레벨 비용을 낮추는 것</em>입니다. 우리는 분당·레벨별
+        증가분에서 L2–L4가 I/O를 지배한다는 사실을 직접 확인했고, 이 비용을 줄이는 설계가 스톨 위험을 낮춘다는
+        기존 주장을 뒷받침합니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2-2) 세부 기법: WiscKey·PebblesDB·Monkey·SlimDB·Lethe</h2>
+      <ul>
+        <li><strong>WiscKey(FAST 2016)</strong>: 큰 값(<em>values</em>)을 LSM 밖 <em>로그</em>로 분리해, 키만 정렬·머지합니다.
+          값 재작성 비용을 막아 WA를 크게 줄입니다. 값 접근 시 추가 읽기 비용이 생기지만, 순차 접근성과
+          <em>prefetch</em>로 완화합니다.</li>
+        <li><strong>PebblesDB(SOSP 2017)</strong>: <em>Fragmented LSM(FLSM)</em>. 런을 <em>guard</em> 단위로 쪼개 머지 범위를 제한해
+          “전체 런 재작성”을 피합니다. 결과적으로 쓰기 I/O가 줄고, 쓰기 처리량이 크게 향상됩니다.</li>
+        <li><strong>Monkey(SIGMOD 2017)</strong>: 레벨별로 <em>Bloom filter</em> 예산을 최적으로 분배해 읽기 비용의 최악값에서
+          O(L) 요인을 제거합니다. 필터/버퍼/레벨 비율을 함께 조정해 읽기/쓰기 트레이드오프를 최적화합니다.</li>
+        <li><strong>SlimDB(SIGMOD 2017)</strong>: <em>semi-sorted</em> 레이아웃으로 냉데이터의 공간을 절약해 간접적으로 컴팩션 부담을 낮춥니다.</li>
+        <li><strong>Lethe(SIGMOD 2020)</strong>: <em>delete-aware</em> LSM. tombstone 처리를 개선해 삭제가 많은 워크로드에서 불필요한 병합을 줄입니다.</li>
+      </ul>
+      <p>
+        <strong>우리 관측과 연결</strong>: L2–L4 쓰기량이 커질수록 분당 스톨 초가 커집니다. 위 기법들은 모두 <em>깊은 레벨의 다시 쓰기</em>
+        를 줄이는 데 초점을 맞추고 있어, 우리 데이터에서 보인 스톨 민감도(>5 GB/min에서 평균 51.4초)를 낮추는 데 유효합니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3-1) 스톨의 본질과 S<sub>max</sub> 방법론</h2>
+      <p>
+        <strong>Luo &amp; Carey(PVLDB 2019)</strong>는 LSM의 성능 불안정성을 분석하며, <em>지속 가능한 처리율(S<sub>max</sub>)</em>
+        을 넘으면 스톨이 주기적으로 나타난다고 주장했습니다. 이들은 (1) 최대 무스톨 처리율을 찾고,
+        (2) 그 처리율에서 스톨 빈도/지연을 측정하는 <em>2단계 실험법</em>을 제시했습니다. 또한 스케줄러(스로틀링,
+        병렬화) 설계에 따라 동일 I/O 예산에서도 스톨과 꼬리지연을 크게 줄일 수 있음을 보였습니다.
+      </p>
+      <p>
+        <strong>우리 관측과 연결</strong>: 평균 속도를 S<sub>max</sub> 근처로 맞춰도, <em>분 단위 피크</em>(L2–L4 GB/min 폭주)가 있으면
+        스톨 초가 크게 증가합니다. 따라서 <em>평균 제어</em>만으로는 부족하며, <strong>피크 억제</strong>와 <strong>레벨 의식적 제어</strong>가 필요합니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3-2) I/O 스케줄링과 격리: SILK, bLSM</h2>
+      <p>
+        <strong>SILK(SIGMOD 2019/2020)</strong>는 RocksDB/Cassandra에서 컴팩션 간섭으로 야기되는 꼬리 지연을 낮추기 위해,
+        (i) <em>적응형 대역폭 배분</em>, (ii) <em>L0 보호에 중요한 내부 작업 우선순위화</em>, (iii) <em>비핵심 작업 선제 중단</em>을 결합한
+        스케줄러를 제시했습니다. 더 과거의 <strong>bLSM(SIGMOD 2012)</strong>은 <em>geared merge</em>로 유입을 평탄화하는 개념을
+        도입하기도 했습니다.
+      </p>
+      <p>
+        <strong>우리 관측과 연결</strong>: 동시 job 수 자체와 스톨 초의 상관은 낮았지만, <em>어떤 레벨의 작업이 폭주하는가</em>가 더 중요했습니다.
+        L2–L4가 GB/분으로 치솟을 때 스톨 초가 최소 2배 가까이 증가했으며, 이때가 곧 <em>SILK식 보호 정책</em>이 작동해야 할
+        타이밍입니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3-3) 멀티티어·NVM 접근: NoveLSM, MatrixKV, TriangleKV</h2>
+      <p>
+        NVM으로 L0 버스트를 흡수하려는 시도(<strong>NoveLSM, NVM‑Rocks</strong>)는 초기 플러시 스톨을 줄이지만, 더 큰 런을 L0에
+        모으면서 이후 L0→L1 병합이 <em>매우 무거워지는 역효과</em>가 보고되었습니다. <strong>MatrixKV(ATC 2020)</strong>는 L0 전체를 NVM에
+        올리고 <em>receiver/compactor</em> 구성과 <em>matrix container</em>로 <em>열 단위 병합</em>을 수행해 작업 단위를 줄입니다. 
+        <strong>TriangleKV(TPDS 2022)</strong>는 <em>triangle container</em>와 <em>right‑angle compaction</em>으로 이 접근을 더 미세화했습니다.
+      </p>
+      <p>
+        <strong>우리 관측과 연결</strong>: 이런 구조적 변화는 분명 효과가 있지만, 추가 하드웨어와 복잡한 설계가 필요합니다. 우리는
+        <em>로그에서 직접</em> <strong>분당·레벨별 증가분</strong>과 <strong>스톨 초</strong>를 추출해, <em>언제</em> 개입해야 하는지 명확한 <em>운영 신호</em>를 제공합니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>4-1) 학습/적응형: RTune·K2V‑Tune, LLM‑Tune, RusKey</h2>
+      <p>
+        자동 튜닝은 <strong>RTune</strong>, <strong>K2V‑Tune</strong>처럼 베이지안 최적화/딥러닝으로 RocksDB의 수많은 설정을 최적화합니다(일부 노브 집중).
+        <strong>LLM‑Tune(HotStorage 2024)</strong>은 LLM이 문서·코드 지식을 바탕으로 워크로드 설명에서 설정을 생성하는 접근을 제안했습니다.
+        <strong>RusKey(SIGMOD 2024)</strong>는 <em>online RL</em>로 FLSM‑트리를 <em>실행 중</em> 전환·재구성하며, 부하 변화에 따라 <em>tiered/leveled</em>
+        정책을 오가며 꾸준한 처리율을 유지하려 합니다.
+      </p>
+      <p>
+        <strong>우리 관측과 연결</strong>: 우리는 학습기가 바로 사용할 수 있는 <em>정제된 분당 신호</em>(L2–L4 I/O·시간, 동시성, 스톨 초)를 제공합니다.
+        이는 “무엇을 최적화할 것인가”와 “언제 개입할 것인가” 사이의 공백을 메워 줍니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>7) 현대 시스템과 실무 경험</h2>
+      <p>
+        RocksDB/LevelDB/Cassandra/HBase 등 산업계 시스템들은 다양한 실무 기능(컴팩션 파이프라이닝, tombstone 컴팩션,
+        leveled/FIFO/universal 등 여러 스타일)을 제공합니다. Cassandra는 워크로드에 따라 <em>size‑tiered</em>와 <em>leveled</em>를 전환합니다.
+        MongoDB의 WiredTiger는 LSM을 옵션으로 제공하지만 기본은 B+tree를 유지합니다. Facebook의 MyRocks는 대규모 서비스에서
+        LSM을 성공적으로 운영하며 compaction 스케줄링/리밋 튜닝의 중요성을 강조합니다.
+      </p>
+      <p>
+        <strong>우리 관측과 연결</strong>: 이러한 경험적 지침(레이트 리미터, 백그라운드 스레드/작업 조정)은 우리 데이터가 제시한
+        <em>분당 임계 신호</em>와 잘 맞물립니다. 우리는 “언제 보호/억제해야 하는지”를 수치로 제공해, 실무자의 결정을 돕습니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>7-1) 하드웨어/시스템 사례와 현대적 이슈</h2>
+      <p>
+        <strong>Bigtable(OSDI 2006)</strong>과 <strong>bLSM(SIGMOD 2012)</strong>는 LSM 시스템의 설계·스케줄링 통찰을 제공했습니다.
+        <strong>Disaggregating RocksDB(CIDR 2023)</strong>는 스토리지/컴퓨팅 분리 환경에서의 RocksDB 운영 경험을 공유하고,
+        <strong>WALTZ(HotStorage 2023)</strong>는 ZNS SSD에서 tail latency를 낮추는 방법을 탐구합니다. 이러한 최신 사례는
+        하드웨어·배치 모델 변화에도 <em>깊은 레벨 컴팩션의 간섭</em>과 <em>L0 보호</em>가 여전히 핵심 이슈임을 시사합니다.
+      </p>
+      <p>
+        <strong>우리 관측과 연결</strong>: 하드웨어가 바뀌어도 운영자가 관찰·제어해야 하는 핵심 신호는 같습니다. 우리는 로그에서 바로 얻을 수 있는
+        <em>분당·레벨별 증가분</em>과 <em>스톨 초</em>를 제시해, 최신 배치 모델에서도 일관된 <em>개입 타이밍</em>을 제공합니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>추가 출처(요약)</h2>
+      <ul>
+        <li>Bigtable(OSDI 2006), bLSM(SIGMOD 2012) — LSM 시스템의 초기 설계와 스케줄링 통찰</li>
+        <li>Luo &amp; Carey(PVLDB 2019) — 스톨 안정성 분석과 S<sub>max</sub> 방법론</li>
+        <li>SILK(SIGMOD 2019/2020) — 적응형 I/O 스케줄링</li>
+        <li>MatrixKV(ATC 2020), TriangleKV(TPDS 2022) — NVM 기반 L0 흡수·미세 병합</li>
+        <li>RusKey(SIGMOD 2024), LLM‑Tune(HotStorage 2024) — 학습/적응형 LSM 최적화</li>
+        <li>SplinterDB(ATC 2023) — LSM 대안으로서의 Bε‑계열 설계</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>참고문헌 BibTeX</h2>
+      <p>논문/보고서에 복사해 사용할 수 있는 BibTeX입니다(필요 시 DOI/페이지 보강 권장).</p>
+      <pre><code>@article{ONeil1996LSM,
+  title   = {The Log-Structured Merge-Tree (LSM-tree)},
+  author  = {O'Neil, Patrick and Cheng, Edward and Gawlick, Dieter and O'Neil, Elizabeth},
+  journal = {Acta Informatica},
+  volume  = {33},
+  number  = {4},
+  pages   = {351--385},
+  year    = {1996}
+}
+
+@inproceedings{Bigtable2006,
+  title     = {Bigtable: A Distributed Storage System for Structured Data},
+  author    = {Chang, Fay and Dean, Jeffrey and others},
+  booktitle = {OSDI},
+  year      = {2006}
+}
+
+@inproceedings{bLSM2012,
+  title     = {bLSM: A General Purpose Log Structured Merge Tree},
+  author    = {Sears, Russell and Ramakrishnan, Raghu},
+  booktitle = {SIGMOD},
+  year      = {2012}
+}
+
+@inproceedings{Dayan2017Monkey,
+  title     = {Monkey: Optimal Navigable Key-Value Store},
+  author    = {Dayan, Niv and Athanassoulis, Manos and Idreos, Stratos},
+  booktitle = {SIGMOD},
+  year      = {2017}
+}
+
+@inproceedings{Dayan2018Dostoevsky,
+  title     = {Dostoevsky: Better Space--Time Trade-offs in LSM Trees},
+  author    = {Dayan, Niv and Athanassoulis, Manos and Idreos, Stratos},
+  booktitle = {SIGMOD},
+  year      = {2018}
+}
+
+@article{Dayan2022Survey,
+  title   = {The LSM-tree: A Survey},
+  author  = {Dayan, Niv and Idreos, Stratos},
+  journal = {Foundations and Trends in Databases},
+  year    = {2022}
+}
+
+@inproceedings{WiscKey2016,
+  title     = {WiscKey: Separating Keys from Values in SSD-conscious Storage},
+  author    = {Lu, Youjip and others},
+  booktitle = {USENIX FAST},
+  year      = {2016}
+}
+
+@inproceedings{HashKV2018,
+  title     = {HashKV: Enabling Efficient Garbage Collection for KV Separation},
+  author    = {Li, Jun and others},
+  booktitle = {USENIX ATC},
+  year      = {2018}
+}
+
+@inproceedings{Titan2019,
+  title     = {Titan: A RocksDB Plugin for Key-Value Separation},
+  author    = {TiKV Authors},
+  booktitle = {VLDB (Industrial Track)},
+  year      = {2019}
+}
+
+@inproceedings{PebblesDB2017,
+  title     = {PebblesDB: Building Key-Value Stores using Fragmented LSM Trees},
+  author    = {Srinivasan, Vijay and others},
+  booktitle = {SOSP},
+  year      = {2017}
+}
+
+@inproceedings{SlimDB2017,
+  title     = {SlimDB: A Space-Efficient Key-Value Store for LSM-Tree-based Storage Systems},
+  author    = {Yang, Cheng and others},
+  booktitle = {SIGMOD},
+  year      = {2017}
+}
+
+@article{Lethe2020,
+  title   = {Lethe: A Tunable Delete-Aware LSM Engine},
+  author  = {Sarkar, Rahul and others},
+  journal = {PVLDB},
+  year    = {2020}
+}
+
+@article{Luo2019Stability,
+  title   = {On Performance Stability in LSM-based Storage Systems},
+  author  = {Luo, Chen and Carey, Michael J.},
+  journal = {PVLDB},
+  year    = {2019}
+}
+
+@inproceedings{SILK2020,
+  title     = {SILK: Preventing Latency Spikes in Log-Structured Merge Key-Value Stores},
+  booktitle = {SIGMOD},
+  year      = {2020}
+}
+
+@inproceedings{MatrixKV2020,
+  title     = {MatrixKV: Reducing Write Stalls and Write Amplification in LSM-tree KV Stores},
+  booktitle = {USENIX ATC},
+  year      = {2020}
+}
+
+@article{TriangleKV2022,
+  title   = {TriangleKV: Reducing Write Stalls and Write Amplification in LSM-Tree Based KV Stores With Triangle Container in NVM},
+  journal = {IEEE TPDS},
+  year    = {2022}
+}
+
+@inproceedings{RusKey2024,
+  title     = {Learning to Optimize LSM-trees: A Reinforcement Learning based Key-Value Store for Dynamic Workloads},
+  booktitle = {SIGMOD},
+  year      = {2024}
+}
+
+@inproceedings{LLMTune2024,
+  title     = {Can Modern LLMs Tune and Configure LSM-based Key-Value Stores?},
+  booktitle = {USENIX HotStorage},
+  year      = {2024}
+}
+
+@inproceedings{SplinterDB2023,
+  title     = {SplinterDB and Maplets: Improving the Trade-offs in KV Store Compaction Policy},
+  booktitle = {USENIX ATC},
+  year      = {2023}
+}
+
+@inproceedings{DisaggRocksDB2023,
+  title     = {Disaggregating RocksDB: A Production Experience},
+  booktitle = {CIDR},
+  year      = {2023}
+}
+
+@inproceedings{WALTZ2023,
+  title     = {WALTZ: Leveraging Zone Append to Tighten Tail Latency of LSM on ZNS SSDs},
+  booktitle = {USENIX HotStorage},
+  year      = {2023}
+}
+</code></pre>
+    </div>
+    <div class="card">
       <h2>3) 스케줄링·격리로 스톨 완화</h2>
       <p>
         <strong>SILK</strong>(SIGMOD 2019/2020) 같은 연구는 클라이언트 I/O와 내부 컴팩션 I/O의 충돌을 줄이기 위해

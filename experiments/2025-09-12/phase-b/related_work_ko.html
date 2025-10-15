@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>관련 연구 정리 — LSM 컴팩션과 Write Stall, 그리고 우리의 차별성</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="LSM 기반 저장소의 컴팩션/스톨 관련 연구를 대학생도 이해하기 쉬운 언어로 정리하고, 본 분석과의 공통점과 차별성을 설명합니다." />
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fb; color: #2c3e50; margin: 0; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 48px 28px; }
+    .card { background: #fff; border-radius: 16px; padding: 28px 32px; box-shadow: 0 12px 36px rgba(0,0,0,0.08); margin-bottom: 24px; }
+    h1 { margin: 0 0 10px 0; font-size: 32px; }
+    h2 { margin: 28px 0 12px 0; font-size: 22px; border-left: 6px solid #6c5ce7; padding-left: 12px; }
+    h3 { margin: 22px 0 8px 0; font-size: 18px; color: #34495e; }
+    p, li { line-height: 1.7; }
+    .pill { display: inline-block; background: #6c5ce7; color: #fff; border-radius: 999px; padding: 4px 10px; font-size: 12px; letter-spacing: .3px; }
+    a { color: #2f80ed; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ul { margin-top: 8px; }
+    .note { background: #fef6e4; border: 1px solid #f5deb3; padding: 12px 14px; border-radius: 10px; }
+    .list-inline li { margin: 6px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <span class="pill">Related Work (KO)</span>
+      <h1>LSM 컴팩션과 Write Stall — 관련 연구 정리와 우리의 차별성</h1>
+      <p>
+        이 문서는 LSM(로그 구조 합병) 계열 저장소에서 <strong>컴팩션(compaction)</strong>과 <strong>write stall</strong>이 어떻게
+        발생하고, 이를 줄이기 위해 어떤 연구들이 있어 왔는지 쉽고 친절하게 정리합니다.
+        또한, 이번 Phase‑B 로그 분석이 기존 연구와 어떤 <strong>공통점</strong>을 가지며, 어떤 <strong>새로운 차별성</strong>을
+        보여주는지 논리적인 흐름으로 설명합니다.
+      </p>
+      <p class="note">
+        함께 보면 좋은 문서: 
+        <a href="COMPACTION_ANALYSIS_SUMMARY.html">컴팩션·스톨 실증 요약</a>, 
+        <a href="RELATED_WORK.html">영문 관련연구</a>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>1) LSM 기본과 “깊은 레벨 지배” 현상</h2>
+      <p>
+        LSM‑트리는 메모리에 먼저 데이터를 적재하고, 주기적으로 디스크의 <em>레벨</em> 구조로 합치는 방식입니다.
+        이때 실제 데이터의 대부분은 <strong>L2, L3, L4</strong> 같은 <em>깊은 레벨</em>에 쌓입니다. 따라서 대규모 컴팩션 I/O도
+        자연스럽게 깊은 레벨에서 발생합니다. 이는 고전 이론과 최근 모델링 연구(예: Monkey, Dostoevsky)가
+        공통적으로 예측하는 부분입니다.
+      </p>
+      <ul class="list-inline">
+        <li>고전: O’Neil et al., LSM‑tree (Acta Informatica, 1996) — 레벨 구조와 비용 모델의 기초</li>
+        <li>모델링: Monkey (SIGMOD 2017), Dostoevsky (SIGMOD 2018) — 파라미터(필터, 레벨 비율 등)가
+            레벨별 비용 분포에 미치는 영향 분석</li>
+      </ul>
+      <p>
+        <strong>우리 관측</strong>: 분당·레벨별 증가분을 계산하면 L2–L4에서 <em>GB/분</em> 단위의 스파이크가 반복적으로 나타납니다.
+        이는 이론이 예측한 “깊은 레벨 비용 지배”가 실제 로그에서도 뚜렷이 드러난 사례입니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2) 쓰기 증폭(WA) 줄이기: 구조/레이아웃 혁신</h2>
+      <p>
+        컴팩션에서 “다시 쓰는 바이트”를 줄이면, 배경 I/O가 줄고 스톨 위험도 줄어듭니다. 대표적인 방법은
+        <strong>KV‑분리(WiscKey→HashKV→Titan)</strong>처럼 큰 값을 LSM 바깥으로 빼거나, <strong>Fragmented LSM(PebblesDB)</strong>처럼
+        병합 범위를 잘게 쪼개는 것입니다. SlimDB는 공간 절약 측면에서 간접적으로 컴팩션 부담을 낮춥니다.
+      </p>
+      <ul class="list-inline">
+        <li>WiscKey (FAST 2016), HashKV (ATC 2018), Titan (VLDB 2019)</li>
+        <li>PebblesDB (SOSP 2017), SlimDB (SIGMOD 2017)</li>
+      </ul>
+      <p>
+        <strong>우리 관측</strong>: L2–L4에서 쓰기량이 커질수록 분당 스톨 시간이 크게 증가합니다(>5 GB/min 구간 평균 51.4초).
+        즉, <em>깊은 레벨의 다시 쓰기</em>를 줄이는 전략은 실무적으로 매우 효과적인 스톨 완화 수단이 될 수 있습니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3) 스케줄링·격리로 스톨 완화</h2>
+      <p>
+        <strong>SILK</strong>(SIGMOD 2019/2020) 같은 연구는 클라이언트 I/O와 내부 컴팩션 I/O의 충돌을 줄이기 위해
+        <em>적응형 대역폭 배분</em>, <em>중요 작업 우선순위</em>(예: L0를 보호하는 컴팩션), <em>비중요 작업 선제 중단</em>을 사용합니다.
+        NVM을 활용한 <strong>MatrixKV</strong>(ATC 2020), <strong>TriangleKV</strong>(TPDS 2022)는 L0를 빠른 매체에서 흡수해
+        스톨을 거의 보이지 않게 만들기도 합니다(추가 하드웨어 필요).
+      </p>
+      <p>
+        <strong>우리 관측</strong>: 동시 실행(job 수) 자체와 스톨 시간의 선형 상관은 낮았지만, <strong>깊은 레벨 I/O가 폭증</strong>
+        하는 분(minute)에는 스톨 초(seconds)가 크게 늘었습니다. 즉, “언제 L0을 보호해야 하는지”를 <em>분 단위 신호</em>로
+        제시하며, 스케줄러·스로틀러가 개입할 타이밍을 명확히 잡아줍니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>4) 학습/적응형 LSM: 자동 튜닝과 구조 전환</h2>
+      <p>
+        최근에는 ML/RL을 이용해 LSM 튜닝을 자동화하거나, 상황에 따라 <em>tiered/leveled</em> 전략을 바꾸는
+        <strong>RusKey</strong>(SIGMOD 2024) 같은 시도가 등장했습니다. LLM을 이용한 설정 추천(LLM‑Tune, HotStorage 2024)도
+        제안되었습니다. 이들은 복잡한 파라미터 상호작용을 다루는 데 강점이 있지만, <em>어떤 신호로 언제 개입할지</em>
+        정의하는 것은 여전히 과제입니다.
+      </p>
+      <p>
+        <strong>우리 관측</strong>: 원 로그에서 <strong>분당·레벨별 증가분</strong>(I/O, 시간, 동시성)과 <strong>스톨 초</strong>를 재구성하여,
+        학습 기반 튜너가 즉시 사용할 수 있는 <em>명확한 목표/특징</em>을 제공합니다(예: “L2–L4 합이 5 GB/min를 넘을 때
+        스톨 시간 급증” 같은 임계 신호).
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>5) 우리의 공통점과 차별성</h2>
+      <h3>공통점</h3>
+      <ul>
+        <li><strong>깊은 레벨 지배</strong>: 이론과 동일하게 L2–L4가 I/O를 지배하는 모습 확인</li>
+        <li><strong>포그라운드 간섭</strong>: 깊은 레벨 폭주 시 L0→L1 정리 지연, <code>cf-l0-file-count-limit</code> 기반 stall 다발</li>
+        <li><strong>S_max 인식</strong>: 평균만 S_max 근처로 맞추면 부족. <em>분 단위 피크</em>를 관리해야 함</li>
+      </ul>
+      <h3>차별성/기여</h3>
+      <ul>
+        <li><strong>분당·레벨별 “증가분” 분석</strong>: 누적치가 아닌 실제 증가분을 사용해 스파이크를 정확히 포착</li>
+        <li><strong>시간(초)·동시성 vs 스톨의 직접 검증</strong>: 단순 동시성보다 <em>깊은 레벨 I/O</em>가 스톨에 더 강하게 연관</li>
+        <li><strong>정량 임계 제시</strong>: L2–L4 &gt; 5 GB/min 구간 평균 스톨 ≈ 51.4초(≤5 GB/min는 ≈ 26.3초)</li>
+        <li><strong>원인 분해형 시계열</strong>: warm‑up의 <em>memtable‑limit</em> vs 본 구간의 <em>L0‑file‑count</em>를 구분해 설명</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>6) 실무적 시사점</h2>
+      <ul>
+        <li><strong>S_max 이하 + 피크 억제</strong>: 토큰 버킷 등으로 순간 피크를 제한해 L0 백로그 예방</li>
+        <li><strong>L0 보호형 스케줄링</strong>: 깊은 레벨 폭주 시 L0→L1에 쓰레드/I/O 할당을 보장</li>
+        <li><strong>Warm‑up 제어</strong>: 시작 구간에는 QPS를 천천히 올려 초기 memtable‑limit 스톨 완화</li>
+        <li><strong>모니터링 신호</strong>: L0 파일 수, 분당 L2–L4 I/O, 분당 스톨 초를 핵심 지표로 삼아 즉시 개입</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>참고 문헌(대표)</h2>
+      <ul>
+        <li>O’Neil et al., “The Log‑Structured Merge‑Tree (LSM‑tree)”, Acta Informatica, 1996.</li>
+        <li>Dayan et al., “Monkey”, SIGMOD 2017; “Dostoevsky”, SIGMOD 2018; Dayan &amp; Idreos, Survey 2022.</li>
+        <li>Lu et al., “WiscKey”, FAST 2016; Li et al., “HashKV”, ATC 2018; Titan, VLDB 2019.</li>
+        <li>Srinivasan et al., “PebblesDB”, SOSP 2017; Yang et al., “SlimDB”, SIGMOD 2017.</li>
+        <li>Luo &amp; Carey, “On Performance Stability in LSM-based Storage Systems”, PVLDB 2019.</li>
+        <li>SILK, SIGMOD 2019/2020; MatrixKV, ATC 2020; TriangleKV, TPDS 2022.</li>
+        <li>RusKey, SIGMOD 2024; LLM‑Tune, HotStorage 2024.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>부록: 빠른 이동</h2>
+      <ul>
+        <li><a href="COMPACTION_ANALYSIS_SUMMARY.html">컴팩션·스톨 실증 요약(HTML)</a></li>
+        <li><a href="RELATED_WORK.html">관련연구(영문, HTML)</a></li>
+      </ul>
+    </div>
+
+    <footer>
+      <p>본 문서는 Phase‑B 로그 분석을 바탕으로 작성되었습니다. 대학생도 이해할 수 있도록 핵심 개념과 연결 고리를 쉬운 언어로 설명하는 데 집중했습니다.</p>
+    </footer>
+  </div>
+</body>
+</html>

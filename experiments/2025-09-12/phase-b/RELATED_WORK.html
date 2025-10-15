@@ -73,6 +73,57 @@
     </div>
 
     <div class="card">
+      <h2>Mitigating Write Stalls and I/O Contention</h2>
+      <div class="ref"><strong>Luo &amp; Carey.</strong> On Performance Stability in LSM-based Storage Systems. <em>PVLDB</em>, 2019.</div>
+      <p>
+        Provides an early, rigorous treatment of <em>write stalls</em> in LSM engines. They show that unless
+        the foreground ingest stays below the engine’s sustainable processing capacity, compactions
+        periodically force <em>stalls</em>. They propose a two-phase methodology to (i) identify the maximum
+        stall-free rate and (ii) evaluate stall frequency/latency at that rate. This directly underpins our
+        S<sub>max</sub>-aware recommendation and our finding that <em>average</em> near S<sub>max</sub> is insufficient if
+        minute-scale <em>bursts</em> occur at deep levels.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>I/O Scheduling and Isolation</h2>
+      <div class="ref"><strong>SILK.</strong> Preventing Latency Spikes in LSM KV Stores. <em>SIGMOD</em>, 2019/2020.</div>
+      <p>
+        SILK coordinates client I/O and compaction I/O using adaptive bandwidth allocation, prioritization
+        of critical internal tasks (e.g., compactions that protect L0), and preemption of non-critical work.
+        This reduces tail-latency spikes under mixed workloads. Our analysis complements SILK by exposing
+        the <em>minute-level windows</em> where such scheduling should favor L0 cleanup—precisely when L2–L4
+        I/O surges, our stall seconds peak.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Multi-tier &amp; Transient Solutions</h2>
+      <div class="ref"><strong>NoveLSM / NVM-Rocks.</strong> (2019). Use NVM to absorb bursts.</div>
+      <div class="ref"><strong>MatrixKV.</strong> Reducing Write Stalls and WA in LSM KVs with NVM. <em>USENIX ATC</em>, 2020.</div>
+      <div class="ref"><strong>TriangleKV.</strong> Reducing Write Stalls &amp; WA with a Triangle Container in NVM. <em>IEEE TPDS</em>, 2022.</div>
+      <p>
+        NVM-based designs absorb L0 bursts to postpone stalls; MatrixKV/ TriangleKV further partition
+        L0→L1 merges by key-range, shrinking per-job rewrite volume and flattening the tree (fewer SSD
+        levels). These deliver large p99 improvements, but require extra hardware and structural changes.
+        Our log-centric approach is orthogonal: it quantifies <em>when</em> deep-level bursts translate into stall
+        seconds, guiding operators even without NVM.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Learned &amp; Adaptive LSM Optimization</h2>
+      <div class="ref"><strong>RTune / K2V-Tune.</strong> (2021–2022). Workload-guided autotuning for RocksDB.</div>
+      <div class="ref"><strong>LLM-Tune.</strong> Can Modern LLMs Tune and Configure LSM-based KV Stores? <em>HotStorage</em>, 2024.</div>
+      <div class="ref"><strong>RusKey.</strong> Reinforcement Learning to Optimize LSM-trees under Dynamic Workloads. <em>SIGMOD</em>, 2024.</div>
+      <p>
+        ML (black/white-box) and RL (RusKey) are tackling the high-dimensional tuning problem and even
+        <em>online</em> structural adaptation. Our contribution is complementary: we turn noisy logs into minute-
+        resolution signals (L2–L4 IO/time, stall seconds, concurrency) that a learned tuner can consume as
+        <em>targets</em> or <em>features</em>, closing the loop between <em>what to optimize</em> and <em>when intervention is needed</em>.
+      </p>
+    </div>
+    <div class="card">
       <h2>Scheduling, Adaptivity, and Production Engines</h2>
       <div class="ref"><strong>X‑Engine (Alibaba).</strong> An Optimized Storage Engine for Large‑Scale E‑commerce. <em>SIGMOD</em>, 2018.</div>
       <div class="ref"><strong>Fluid/Adaptive LSM Trees.</strong> (e.g., Fluid LSM). <em>SIGMOD</em>, 2022.</div>
@@ -285,6 +336,43 @@
   booktitle = {Proceedings of the 2023 USENIX Annual Technical Conference (ATC)},
   year      = {2023},
   organization = {USENIX Association}
+}
+
+@article{Luo2019Stability,
+  title   = {On Performance Stability in LSM-based Storage Systems},
+  author  = {Luo, Chen and Carey, Michael J.},
+  journal = {Proceedings of the VLDB Endowment},
+  year    = {2019}
+}
+
+@inproceedings{SILK2020,
+  title     = {SILK: Preventing Latency Spikes in Log-Structured Merge Key-Value Stores},
+  booktitle = {Proceedings of the ACM SIGMOD International Conference on Management of Data},
+  year      = {2020}
+}
+
+@inproceedings{MatrixKV2020,
+  title     = {MatrixKV: Reducing Write Stalls and Write Amplification in LSM-tree KV Stores},
+  booktitle = {Proceedings of the USENIX Annual Technical Conference (ATC)},
+  year      = {2020}
+}
+
+@article{TriangleKV2022,
+  title   = {TriangleKV: Reducing Write Stalls and Write Amplification in LSM-Tree Based KV Stores With Triangle Container in NVM},
+  journal = {IEEE Transactions on Parallel and Distributed Systems},
+  year    = {2022}
+}
+
+@inproceedings{RusKey2024,
+  title     = {Learning to Optimize LSM-trees: A Reinforcement Learning based Key-Value Store for Dynamic Workloads},
+  booktitle = {Proceedings of the 2024 ACM SIGMOD International Conference on Management of Data},
+  year      = {2024}
+}
+
+@inproceedings{LLMTune2024,
+  title     = {Can Modern LLMs Tune and Configure LSM-based Key-Value Stores?},
+  booktitle = {Proceedings of the 2024 USENIX HotStorage Workshop},
+  year      = {2024}
 }
 </code></pre>
     </div>

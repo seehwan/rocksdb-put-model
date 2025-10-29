@@ -1,0 +1,29 @@
+{
+  "Initial": {
+    "mean_qps": 168046.5344095157,
+    "p50": 135030.0,
+    "p25": 72424.5,
+    "p10": 69436.0,
+    "stall_free_conservative": 69436.0,
+    "stall_free_moderate": 72424.5,
+    "stall_free_optimistic": 135030.0
+  },
+  "Middle": {
+    "mean_qps": 124767.12366240939,
+    "p50": 76362.0,
+    "p25": 70158.0,
+    "p10": 67583.5,
+    "stall_free_conservative": 67583.5,
+    "stall_free_moderate": 70158.0,
+    "stall_free_optimistic": 76362.0
+  },
+  "Final": {
+    "mean_qps": 110280.4271834783,
+    "p50": 73571.0,
+    "p25": 69367.0,
+    "p10": 66378.6,
+    "stall_free_conservative": 66378.6,
+    "stall_free_moderate": 69367.0,
+    "stall_free_optimistic": 73571.0
+  }
+}

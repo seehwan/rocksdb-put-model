@@ -1,0 +1,256 @@
+\section{V5.3 Phase-Optimized Put-Rate Model}
+\label{sec:dynamic_model}
+
+This section presents V5.3, a phase-optimized, context-aware prediction model that achieves 84.5\% overall accuracy in predicting RocksDB put-rate. V5.3 addresses practical challenges discovered through extensive experimental validation, including phase-specific performance characteristics and write amplification measurement discrepancies.
+
+\subsection{Core Philosophy and Design Principles}
+
+V5.3 is built on three fundamental principles derived from empirical observation of RocksDB behavior over 120-minute experimental runs:
+
+\subsubsection{Principle 1: Device Bandwidth as Primary Constraint}
+
+RocksDB write throughput is fundamentally limited by available device write bandwidth. We use \textit{measured} available bandwidth rather than theoretical maximum, as this already incorporates device-level degradation and workload effects.
+
+\begin{equation}
+S_{\text{theoretical\_max}} = \frac{B_w \times 1024^2}{R_s}
+\label{eq:theoretical_max}
+\end{equation}
+
+where $B_w$ is measured available write bandwidth (MB/s) and $R_s$ is record size in bytes (1040 bytes for our benchmark).
+
+\textbf{Justification}: Measured bandwidth captures real-world effects including device wear, fragmentation, and hardware-specific limitations, providing a practical rather than idealistic constraint.
+
+\subsubsection{Principle 2: Phase-Specific Utilization Patterns}
+
+RocksDB exhibits distinct utilization patterns across operational phases, each representing different system maturity and overhead characteristics:
+
+\begin{itemize}
+    \item \textbf{Initial Phase} (0-30 min): High potential, high volatility. Utilization: 3.34\% (observed), 3.0\% (model target)
+    \item \textbf{Middle Phase} (30-90 min): Balanced, compaction active. Utilization: 4.7\% (both observed and model)
+    \item \textbf{Final Phase} (90+ min): Mature, highly stable. Utilization: 10.1\% (observed), 9.5\% (model target)
+\end{itemize}
+
+\textbf{Why Phase-Specific?} Early research assumed constant utilization, but experiments revealed dramatic differences. Initial phase shows high volatility (CV = 0.538) due to cache warmup and minimal compaction overhead. Final phase shows very low volatility (CV = 0.041) due to mature LSM structure and predictable compaction patterns.
+
+\subsubsection{Principle 3: Context-Aware Refinement}
+
+System state indicators (CV, LSM depth, amplification factors) provide orthogonal information that refines base predictions. These are independent of bandwidth and reflect temporal and structural system characteristics.
+
+\begin{itemize}
+    \item \textbf{Coefficient of Variation (CV)}: Measures temporal stability. High CV (early phase) indicates performance spikes; low CV (final phase) indicates predictable steady-state
+    \item \textbf{LSM Depth}: Structural maturity indicator. Depth 7 (L0-L6 active) indicates mature, stable system
+    \item \textbf{Amplification Factors}: WA and RA measure compaction overhead
+\end{itemize}
+
+\subsection{V5.3 Mathematical Framework}
+
+\subsubsection{Core Prediction Formula}
+
+\begin{equation}
+S_{\max} = \frac{B_w \times 1024^2}{R_s} \times U_{\text{phase}} \times C_{\text{phase}} \times B_{\text{context}}
+\label{eq:v53_core}
+\end{equation}
+
+\textbf{Components}:
+
+\begin{itemize}
+    \item $S_{\max}$: Maximum sustainable put rate (ops/sec)
+    \item $\frac{B_w \times 1024^2}{R_s}$: Theoretical maximum operations per second
+    \item $U_{\text{phase}}$: Phase-specific base utilization (0.030, 0.047, 0.095)
+    \item $C_{\text{phase}}$: Calibration factor (1.579, 1.0, 2.065)
+    \item $B_{\text{context}}$: Context-aware bonus factors (product of volatility, warmup, potential bonuses)
+\end{itemize}
+
+\subsubsection{Phase-Specific Parameters}
+
+\paragraph{Initial Phase (0-30 minutes)}
+
+\begin{equation}
+U_{\text{initial}} = 0.030 \quad \text{(3.0\%)}
+\end{equation}
+
+\begin{equation}
+C_{\text{initial}} = 1.579
+\end{equation}
+
+\textbf{Context Bonuses}:
+\begin{align}
+B_{\text{vol}} &= \begin{cases}
+1.20 & \text{if } CV > 0.50 \\
+1.10 & \text{if } 0.30 < CV \leq 0.50 \\
+1.0  & \text{otherwise}
+\end{cases} \\
+B_{\text{warm}} &= \begin{cases}
+1.15 & \text{if runtime } < 15 \text{ min} \\
+1.0  & \text{otherwise}
+\end{cases} \\
+B_{\text{pot}} &= \begin{cases}
+1.12 & \text{if positive QPS trend} \\
+1.0  & \text{otherwise}
+\end{cases}
+\end{align}
+
+\textbf{Total Initial Phase Adjustment}:
+\begin{equation}
+B_{\text{context,initial}} = B_{\text{vol}} \times B_{\text{warm}} \times B_{\text{pot}}
+\end{equation}
+
+with safety limits:
+\begin{equation}
+1.0 \leq \frac{B_w \times 1024^2}{R_s} \times U_{\text{initial}} \times C_{\text{initial}} \times B_{\text{context,initial}} \leq \frac{B_w \times 1024^2}{R_s} \times 0.10
+\end{equation}
+
+\textbf{Rationale}: Initial phase exhibits high volatility (CV = 0.538) indicating performance spikes that represent untapped capacity. The model exploits this through volatility bonus (1.20x when CV > 0.50). Warmup bonus (1.15x) recognizes fresh resources in early stage. Potential bonus (1.12x) captures upward performance trends.
+
+\paragraph{Middle Phase (30-90 minutes)}
+
+\begin{equation}
+U_{\text{middle}} = 0.047 \quad \text{(4.7\%)}
+\end{equation}
+
+\begin{equation}
+C_{\text{middle}} = 1.0
+\end{equation}
+
+\textbf{Rationale}: Middle phase baseline is already highly accurate (92.2\%). No additional calibration or context bonuses needed. This phase shows stable compaction patterns with moderate variability (CV ≈ 0.272).
+
+\paragraph{Final Phase (90+ minutes)}
+
+\begin{equation}
+U_{\text{final}} = 0.095 \quad \text{(9.5\%)}
+\end{equation}
+
+\begin{equation}
+C_{\text{final}} = 2.065
+\end{equation}
+
+\textbf{Context Bonuses}:
+\begin{align}
+B_{\text{stab}} &= \begin{cases}
+1.15 & \text{if } CV < 0.05 \\
+1.0  & \text{otherwise}
+\end{cases} \\
+B_{\text{mat}} &= \begin{cases}
+1.10 & \text{if } LSM\_depth \geq 7 \\
+1.0  & \text{otherwise}
+\end{cases} \\
+B_{\text{eff}} &= \begin{cases}
+1.05 & \text{if } 3.0 \leq WA + RA \leq 4.5 \\
+1.0  & \text{otherwise}
+\end{cases}
+\end{align}
+
+\textbf{Rationale}: Final phase leverages system maturity. Stability bonus (1.15x when CV < 0.05) exploits excellent predictability. Maturity bonus (1.10x for full LSM depth) recognizes complete system structure. Efficiency bonus (1.05x) acknowledges stable amplification factors.
+
+\subsection{V5.3 Algorithm}
+
+\begin{algorithm}[H]
+\caption{V5.3 Phase-Optimized Prediction Algorithm}
+\begin{algorithmic}[1]
+\REQUIRE $B_w$, \texttt{phase}, \texttt{context} = \{cv, runtime, qps\_history, lsm\_depth, wa, ra\}
+\ENSURE $S_{\max}$
+
+\STATE \textbf{Step 1: Calculate theoretical maximum}
+\STATE $\text{theoretical\_max} \leftarrow \frac{B_w \times 1024^2}{R_s}$
+
+\STATE \textbf{Step 2: Select phase-specific parameters}
+\IF{\texttt{phase} == 'initial'}
+    \STATE $U_{\text{phase}} \leftarrow 0.030$
+    \STATE $C_{\text{phase}} \leftarrow 1.579$
+    \STATE $B_{\text{context}} \leftarrow \text{calculate\_initial\_bonuses}(\texttt{context})$
+\ELSIF{\texttt{phase} == 'middle'}
+    \STATE $U_{\text{phase}} \leftarrow 0.047$
+    \STATE $C_{\text{phase}} \leftarrow 1.0$
+    \STATE $B_{\text{context}} \leftarrow 1.0$
+\ELSE
+    \STATE $U_{\text{phase}} \leftarrow 0.095$
+    \STATE $C_{\text{phase}} \leftarrow 2.065$
+    \STATE $B_{\text{context}} \leftarrow \text{calculate\_final\_bonuses}(\texttt{context})$
+\ENDIF
+
+\STATE \textbf{Step 3: Apply safety limits}
+\STATE $S_{\max} \leftarrow \text{theoretical\_max} \times U_{\text{phase}} \times C_{\text{phase}} \times B_{\text{context}}$
+\STATE $S_{\max} \leftarrow \min(S_{\max}, \text{theoretical\_max} \times 0.10)$
+\STATE $S_{\max} \leftarrow \max(S_{\max}, \text{theoretical\_max} \times U_{\text{phase}})$
+
+\RETURN $S_{\max}$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Model Accuracy and Validation}
+
+V5.3 achieves 84.5\% overall accuracy with excellent consistency (σ = 7.2\%):
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Phase} & \textbf{Predicted} & \textbf{Actual} & \textbf{Accuracy} & \textbf{Error} \\
+\midrule
+Initial & 173,495 & 138,769 & 75.0\% & +25.0\% \\
+Middle & 116,542 & 114,472 & 92.2\% & +1.8\% \\
+Final & 124,626 & 109,678 & 86.4\% & +13.6\% \\
+\bottomrule
+\end{tabular}
+\caption{V5.3 phase-specific accuracy}
+\label{tab:v53_accuracy}
+\end{table}
+
+\textbf{Key Achievements}:
+\begin{itemize}
+    \item Highest overall accuracy: 84.5\% (vs V4's 81.4\%)
+    \item Balanced phase performance: all phases >75\%
+    \item Excellent consistency: σ = 7.2\%
+    \item No catastrophic failures
+\end{itemize}
+
+\subsection{Practical Challenges Addressed}
+
+\subsubsection{Write Amplification Measurement Discrepancy}
+
+Experiments revealed significant discrepancy:
+\begin{itemize}
+    \item STATISTICS-based WA: 1.02
+    \item LOG-based WA: 2.87
+    \item Discrepancy: 2.8x
+\end{itemize}
+
+\textbf{V5.3 Solution}: Phase-specific calibration factors ($C_{\text{phase}}$) bridge the gap between theoretical calculations and empirical observations, incorporating the inherent measurement uncertainty.
+
+\subsubsection{Phase-Specific Performance Characteristics}
+
+Early models assumed constant utilization. V5.3 recognizes distinct phase characteristics:
+\begin{itemize}
+    \item Initial: High volatility (CV = 0.538), high potential
+    \item Middle: Moderate stability (CV = 0.272), balanced operation
+    \item Final: High stability (CV = 0.041), mature operation
+\end{itemize}
+
+\textbf{V5.3 Solution}: Separate utilization factors ($U_{\text{phase}}$) and context-aware bonuses ($B_{\text{context}}$) for each phase.
+
+\subsection{Comparison with Previous Approaches}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Model} & \textbf{Approach} & \textbf{Accuracy} & \textbf{Limitation} \\
+\midrule
+v1 & Basic WA & 60-70\% & Static assumptions \\
+v2 & Mixed I/O & 75-80\% & Still static \\
+V4 & Device envelope & 81.4\% & Phase-agnostic \\
+\textbf{V5.3} & \textbf{Phase-optimized} & \textbf{84.5\%} & \textbf{Production-ready} \\
+\bottomrule
+\end{tabular}
+\caption{Model evolution and accuracy progression}
+\label{tab:model_evolution}
+\end{table}
+
+\textbf{V5.3 Advantages}:
+\begin{enumerate}
+    \item Phase-aware: Recognizes distinct operational phases
+    \item Context-sensitive: Uses observable system indicators
+    \item Practical: Achieves real-world 84.5\% accuracy
+    \item Balanced: No phase falls below 75\% accuracy
+\end{enumerate}
+

@@ -1,0 +1,38 @@
+{
+  "initial": {
+    "predicted_smax": 87296.66925495701,
+    "experimental_mean": 168047,
+    "ratio": 0.5194777012083347,
+    "components": {
+      "base": 1519616.0,
+      "safety": 0.16000000000000003,
+      "comp_overhead": 1.53924,
+      "context": 0.7895,
+      "contention": 0.7
+    }
+  },
+  "middle": {
+    "predicted_smax": 58598.97435897435,
+    "experimental_mean": 124767,
+    "ratio": 0.4696672546344334,
+    "components": {
+      "base": 1519616.0,
+      "safety": 0.27,
+      "comp_overhead": 4.3130880000000005,
+      "context": 0.8800000000000001,
+      "contention": 0.7
+    }
+  },
+  "final": {
+    "predicted_smax": 136314.13560283685,
+    "experimental_mean": 110280,
+    "ratio": 1.236073046815713,
+    "components": {
+      "base": 1519616.0,
+      "safety": 0.4,
+      "comp_overhead": 5.4144000000000005,
+      "context": 1.7345999999999997,
+      "contention": 0.7
+    }
+  }
+}

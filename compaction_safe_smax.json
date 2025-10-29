@@ -1,0 +1,29 @@
+{
+  "Initial": {
+    "mean_qps": 168046.5344095157,
+    "median": 135030.0,
+    "p25": 72424.5,
+    "p75": 237567.0,
+    "recommended_stable": 135030.0,
+    "recommended_conservative": 72424.5,
+    "compaction_too_high_ratio": 10.70518266779949
+  },
+  "Middle": {
+    "mean_qps": 124767.12366240939,
+    "median": 76362.0,
+    "p25": 70158.0,
+    "p75": 189795.75,
+    "recommended_stable": 76362.0,
+    "recommended_conservative": 70158.0,
+    "compaction_too_high_ratio": 38.53986882982395
+  },
+  "Final": {
+    "mean_qps": 110280.4271834783,
+    "median": 73571.0,
+    "p25": 69367.0,
+    "p75": 167500.0,
+    "recommended_stable": 73571.0,
+    "recommended_conservative": 69367.0,
+    "compaction_too_high_ratio": 33.063736710921205
+  }
+}

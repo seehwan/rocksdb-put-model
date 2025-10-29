@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Control for Initial Phase Stability</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Rate Control for Initial Phase Stability</h1>
+        
+        <div class="section">
+            <h2>Problem Statement</h2>
+            <p>The initial phase of RocksDB operation exhibits high volatility (CV = 0.538), leading to:</p>
+            <ul>
+                <li>Performance overshooting</li>
+                <li>Prediction challenges</li>
+                <li>Inconsistent throughput</li>
+                <li>Lower accuracy (75.0%)</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Rate Control Strategy</h2>
+            
+            <div class="formula-box">
+                <h3>Rate Control Equation</h3>
+                <p class="formula">
+                    R<sub>controlled</sub> = R<sub>predicted</sub> × (1 - α)
+                </p>
+                <p>where α is the reduction factor (recommended: 5-10%).</p>
+            </div>
+            
+            <h3>Comprehensive Analysis Results</h3>
+            
+            <table class="performance-table">
+                <thead>
+                    <tr>
+                        <th>Reduction</th>
+                        <th>CV</th>
+                        <th>Accuracy</th>
+                        <th>Throughput</th>
+                        <th>Efficiency</th>
+                        <th>Recommendation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1%</td>
+                        <td>0.534</td>
+                        <td>75.1%</td>
+                        <td>99%</td>
+                        <td>0.07</td>
+                        <td>✅ Good</td>
+                    </tr>
+                    <tr>
+                        <td>5%</td>
+                        <td>0.519</td>
+                        <td>75.3%</td>
+                        <td>95%</td>
+                        <td>0.07</td>
+                        <td>Max throughput</td>
+                    </tr>
+                    <tr class="recommended">
+                        <td><strong>8%</strong></td>
+                        <td><strong>0.508</strong></td>
+                        <td><strong>75.6%</strong></td>
+                        <td><strong>92%</strong></td>
+                        <td><strong>0.07</strong></td>
+                        <td><strong>⭐ Recommended</strong></td>
+                    </tr>
+                    <tr>
+                        <td>10%</td>
+                        <td>0.500</td>
+                        <td>75.7%</td>
+                        <td>90%</td>
+                        <td>0.07</td>
+                        <td>Max stability</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>Key Findings</h2>
+            
+            <div class="findings-grid">
+                <div class="finding-box">
+                    <h3>Constant Returns</h3>
+                    <p>Efficiency remains <strong>0.07</strong> across all reduction levels (1-10%)</p>
+                    <p class="highlight">No diminishing returns!</p>
+                </div>
+                
+                <div class="finding-box">
+                    <h3>Linear Relationships</h3>
+                    <p>1% reduction yields consistent improvements:</p>
+                    <ul>
+                        <li>CV: -0.0038 per 1%</li>
+                        <li>Accuracy: +0.07% per 1%</li>
+                    </ul>
+                </div>
+                
+                <div class="finding-box">
+                    <h3>8% Optimal</h3>
+                    <p>Balanced trade-off:</p>
+                    <ul>
+                        <li>CV: 0.538 → 0.508 (-5.6%)</li>
+                        <li>Accuracy: 75.0% → 75.6% (+0.56%)</li>
+                        <li>Throughput: Only -8% loss</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Benefits of 8% Rate Control</h2>
+            
+            <div class="benefits-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Before</th>
+                            <th>After</th>
+                            <th>Improvement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CV (Volatility)</td>
+                            <td>0.538</td>
+                            <td>0.508</td>
+                            <td class="positive">-5.6%</td>
+                        </tr>
+                        <tr>
+                            <td>Accuracy</td>
+                            <td>75.0%</td>
+                            <td>75.6%</td>
+                            <td class="positive">+0.56%</td>
+                        </tr>
+                        <tr>
+                            <td>Stability</td>
+                            <td>Low</td>
+                            <td>Good</td>
+                            <td class="positive">✅</td>
+                        </tr>
+                        <tr>
+                            <td>Throughput</td>
+                            <td>100%</td>
+                            <td>92%</td>
+                            <td>-8% (acceptable)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Implementation</h2>
+            
+            <div class="code-block">
+                <h3>RocksDB Configuration</h3>
+                <pre><code># Rate control implementation
+import rocksdb
+
+# Predict base throughput
+base_prediction = model.predict_s_max(device_bw, 'initial', context)
+
+# Apply 8% rate control
+rate_reduction = 0.08
+controlled_rate = base_prediction * (1 - rate_reduction)
+
+# Configure RocksDB
+options = rocksdb.Options()
+options.rate_limiter = rocksdb.RateLimiter(
+    bytes_per_sec=int(controlled_rate * 1024 * 1024)
+)
+</code></pre>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Selection Guide</h2>
+            
+            <div class="guide-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Priority</th>
+                            <th>Recommended</th>
+                            <th>Rationale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Maximum Throughput</td>
+                            <td>5%</td>
+                            <td>Throughput 95%, Good CV</td>
+                        </tr>
+                        <tr class="recommended">
+                            <td><strong>Balanced</strong></td>
+                            <td><strong>8%</strong></td>
+                            <td><strong>⭐ Best balance</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Maximum Stability</td>
+                            <td>10%</td>
+                            <td>Best CV, best accuracy</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Rate Control Visualization</h2>
+            
+            <div class="visualization-grid">
+                <div class="viz-item">
+                    <img src="figs/rate_control_analysis.png" alt="Rate Control Analysis">
+                    <p class="caption">Rate Control Trade-off Analysis</p>
+                </div>
+                <div class="viz-item">
+                    <img src="figs/rate_control_comparative.png" alt="Comparative Analysis">
+                    <p class="caption">Comparative Analysis: CV vs Accuracy</p>
+                </div>
+                <div class="viz-item">
+                    <img src="figs/rate_control_3d.png" alt="3D Analysis">
+                    <p class="caption">3D Analysis: Rate, Accuracy, CV</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Model Parameter Visualization</h2>
+            
+            <div class="visualization-grid">
+                <div class="viz-item">
+                    <img src="figs/model_parameter_analysis.png" alt="Parameter Analysis">
+                    <p class="caption">Parameter Impact Analysis</p>
+                </div>
+                <div class="viz-item">
+                    <img src="figs/model_phase_comparison.png" alt="Phase Comparison">
+                    <p class="caption">Phase-Specific Outputs</p>
+                </div>
+                <div class="viz-item">
+                    <img src="figs/model_parameter_sensitivity.png" alt="Sensitivity Analysis">
+                    <p class="caption">Parameter Sensitivity Analysis</p>
+                </div>
+            </div>
+            
+            <div class="explanation-box">
+                <h3>Key Insights from Visualizations</h3>
+                <ul>
+                    <li><strong>Utilization Factor Impact</strong>: Linear relationship with S_max</li>
+                    <li><strong>Calibration Factor Impact</strong>: Significant amplification for Initial and Final phases</li>
+                    <li><strong>Context Bonus Impact</strong>: Adaptive adjustments based on system state</li>
+                    <li><strong>Phase Differences</strong>: Each phase shows distinct sensitivity patterns</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>WA/RA Sensitivity Visualization</h2>
+            
+            <div class="visualization-grid">
+                <div class="viz-item">
+                    <img src="figs/wa_ra_utilization_sensitivity.png" alt="WA/RA Sensitivity">
+                    <p class="caption">WA/RA Impact on Utilization</p>
+                </div>
+                <div class="viz-item">
+                    <img src="figs/wa_ra_combined_sensitivity.png" alt="Combined Sensitivity">
+                    <p class="caption">Combined WA/RA Sensitivity</p>
+                </div>
+                <div class="viz-item">
+                    <img src="figs/wa_ra_sensitivity_comparison.png" alt="Sensitivity Comparison">
+                    <p class="caption">Phase Comparison</p>
+                </div>
+            </div>
+            
+            <div class="explanation-box">
+                <h3>WA/RA Sensitivity Key Findings</h3>
+                <ul>
+                    <li><strong>WA Impact</strong>: Higher WA reduces utilization due to write overhead (penalty: 85-100%)</li>
+                    <li><strong>RA Impact</strong>: Higher RA reduces utilization due to read overhead (penalty: 85-100%)</li>
+                    <li><strong>Initial Phase</strong>: Sensitive to both WA and RA with moderate penalties</li>
+                    <li><strong>Middle Phase</strong>: Most sensitive to RA changes (compaction-heavy period)</li>
+                    <li><strong>Final Phase</strong>: Sensitive to WA increases (write accumulation)</li>
+                    <li><strong>Combined Effect</strong>: Non-linear interaction between WA and RA</li>
+                    <li><strong>Utilization Adjustment</strong>: ±5-15% based on WA/RA variations</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Conclusion</h2>
+            
+            <div class="conclusion-box">
+                <h3>8% Rate Control Recommended</h3>
+                
+                <p><strong>Why 8%?</strong></p>
+                <ul>
+                    <li>✅ Excellent CV (0.508)</li>
+                    <li>✅ Good accuracy (75.6%)</li>
+                    <li>✅ Acceptable throughput loss (8%)</li>
+                    <li>✅ Best balance in all metrics</li>
+                    <li>✅ Constant efficiency (0.07)</li>
+                </ul>
+                
+                <p class="highlight">
+                    <strong>Final Recommendation: 8% reduction</strong> for balanced performance in initial phase.
+                </p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>References</h2>
+            <ul>
+                <li>RocksDB Rate Limiter Documentation</li>
+                <li>LSM-tree Performance Optimization</li>
+                <li>Phase-Optimized Model (V5.3)</li>
+                <li>Initial Phase Volatility Analysis</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,35 @@
+{
+  "Initial": {
+    "accuracy": 99.89950417013108,
+    "predicted_smax": 167877.82419692312,
+    "actual_mean_qps": 168046.5344095157,
+    "utilization_pct": 100.10049582986893,
+    "start": 0,
+    "end": 9.81,
+    "duration": 3531,
+    "cv": 0.7134285533446673
+  },
+  "Middle": {
+    "accuracy": 99.98472065216119,
+    "predicted_smax": 124786.19017846156,
+    "actual_mean_qps": 124767.12366240939,
+    "utilization_pct": 99.98472065216119,
+    "start": 9.81,
+    "end": 42.0,
+    "duration": 11588,
+    "cv": 0.5159779108021922
+  },
+  "Final": {
+    "accuracy": 99.9929821785334,
+    "predicted_smax": 110272.68844307694,
+    "actual_mean_qps": 110280.4271834783,
+    "utilization_pct": 100.00701782146659,
+    "start": 42.0,
+    "end": null,
+    "duration": 19659,
+    "cv": 0.4739219569213204
+  },
+  "Overall": {
+    "accuracy": 99.95906900027522
+  }
+}

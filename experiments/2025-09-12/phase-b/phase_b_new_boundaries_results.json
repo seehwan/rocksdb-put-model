@@ -1,0 +1,76 @@
+{
+  "phase_boundaries": {
+    "initial_to_middle": 9.81,
+    "middle_to_final": 42.0
+  },
+  "phase_stats": {
+    "initial": {
+      "duration_hours": 9.805555555555555,
+      "sample_count": 3531,
+      "avg_write_rate": 166.67213038053163,
+      "max_write_rate": 1930.528564453125,
+      "min_write_rate": 45.35003662109375,
+      "std_write_rate": 118.92549825356521,
+      "cv": 0.7135295983920324,
+      "avg_qps": 168046.5344095157,
+      "std_qps": 119906.17620839461,
+      "time_range": [
+        0.002777777777777778,
+        9.808333333333334
+      ]
+    },
+    "middle": {
+      "duration_hours": 32.18666666666667,
+      "sample_count": 11588,
+      "avg_write_rate": 123.74668942347122,
+      "max_write_rate": 649.4673919677734,
+      "min_write_rate": 0.15869140625,
+      "std_write_rate": 63.85331348500096,
+      "cv": 0.5160001757015877,
+      "avg_qps": 124767.12366240939,
+      "std_qps": 64379.85773158497,
+      "time_range": [
+        9.811111111111112,
+        41.99777777777778
+      ]
+    },
+    "final": {
+      "duration_hours": 54.60611111111111,
+      "sample_count": 19659,
+      "avg_write_rate": 109.37847544748061,
+      "max_write_rate": 248.94020080566406,
+      "min_write_rate": 48.79264831542969,
+      "std_write_rate": 51.838179579692856,
+      "cv": 0.4739340109433467,
+      "avg_qps": 110280.4271834783,
+      "std_qps": 52265.64518361155,
+      "time_range": [
+        42.00055555555556,
+        96.60666666666667
+      ]
+    }
+  },
+  "model_predictions": {
+    "initial": {
+      "predicted_qps": 70876.76053661539,
+      "actual_qps": 168046.5344095157,
+      "accuracy": 42.17686534605617
+    },
+    "middle": {
+      "predicted_qps": 70323.15273846155,
+      "actual_qps": 124767.12366240939,
+      "accuracy": 56.36352804665076
+    },
+    "final": {
+      "predicted_qps": 293524.35081846156,
+      "actual_qps": 110280.4271834783,
+      "accuracy": -66.16178257100186
+    }
+  },
+  "overall_accuracy": 10.79287027390169,
+  "device_bandwidth": {
+    "write_mb_s": 1484.0,
+    "read_mb_s": 2368.0,
+    "mixed_mb_s": 2231.0
+  }
+}

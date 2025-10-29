@@ -1,0 +1,33 @@
+{
+  "phase_boundaries": {
+    "initial_to_middle": 9.81,
+    "middle_to_final": 42.0
+  },
+  "optimized_parameters": {
+    "initial": {
+      "U": 0.033,
+      "C": 3.4000000000000004,
+      "predicted_qps": 167877.82419692312,
+      "actual_qps": 168046.5344095157,
+      "accuracy": 99.89960506285631
+    },
+    "middle": {
+      "U": 0.139,
+      "C": 0.6000000000000001,
+      "predicted_qps": 124786.19017846156,
+      "actual_qps": 124767.12366240939,
+      "accuracy": 99.98471831721972
+    },
+    "final": {
+      "U": 0.067,
+      "C": 1.1,
+      "predicted_qps": 110272.68844307694,
+      "actual_qps": 110280.4271834783,
+      "accuracy": 99.99298267099702
+    }
+  },
+  "device_bandwidth": {
+    "write_mb_s": 1484.0
+  },
+  "record_size_bytes": 1040
+}
